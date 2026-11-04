@@ -12,20 +12,18 @@ def inline(m):
     data = base64.b64encode(open(path, 'rb').read()).decode()
     return 'src="data:image/jpeg;base64,' + data + '"'
 
-# les images sont construites en JS : src="img/${src}.jpg" -> on remplace la fonction fig/fig2 par une table d'images
-imgs = {}
-for folder in ('img', 'img2'):
-    for f in os.listdir(os.path.join(SITE, folder)):
-        imgs[folder + '/' + f[:-4]] = base64.b64encode(open(os.path.join(SITE, folder, f), 'rb').read()).decode()
-used = set(re.findall(r"fig\('([a-z0-9_]+)'", html))
-used2 = set(re.findall(r"fig2\('([a-z0-9_]+)'", html))
-table = {('img/' + k): imgs['img/' + k] for k in used}
-table.update({('img2/' + k): imgs['img2/' + k] for k in used2})
+# les images sont construites en JS : src="imgN/${src}.jpg" via fig/fig2/fig3... -> table d'images inline
+# (générique : gère img, img2, img3 et tout futur dossier imgN avec son helper figN)
+table = {}
+folders = sorted(d for d in os.listdir(SITE) if re.fullmatch(r'img\d*', d) and os.path.isdir(os.path.join(SITE, d)))
+for folder in folders:
+    n = folder[3:]
+    for k in set(re.findall(r"fig" + n + r"\('([a-z0-9_]+)'", html)):
+        table[folder + '/' + k] = base64.b64encode(open(os.path.join(SITE, folder, k + '.jpg'), 'rb').read()).decode()
+    html = html.replace('src="' + folder + '/${src}.jpg"', 'src="${IMG(\'' + folder + '/\'+src)}"')
 inject = '<script>const IMGS=' + json.dumps(table) + ';const IMG=p=>"data:image/jpeg;base64,"+IMGS[p];</script>\n'
 html = html.replace('<script>\nconst CALC', inject + '<script>\nconst CALC', 1)
-html = html.replace('src="img/${src}.jpg"', 'src="${IMG(\'img/\'+src)}"')
-html = html.replace('src="img2/${src}.jpg"', 'src="${IMG(\'img2/\'+src)}"')
-assert 'src="img/' not in html and 'src="img2/' not in html
+assert not re.search(r'src="img\d*/', html), 'un dossier d images n est pas géré'
 html = html.replace('<meta name="theme-color"', '<meta name="robots" content="noindex, nofollow">\n<meta name="apple-mobile-web-app-capable" content="yes">\n<meta name="theme-color"', 1)
 html = html.replace('<meta name="viewport" content="width=device-width, initial-scale=1">', '<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">')
 html = html.replace('header{position:sticky;top:0;', 'header{position:sticky;top:0;padding-top:env(safe-area-inset-top);')
@@ -47,7 +45,7 @@ shutil.rmtree(DIST, ignore_errors=True)
 os.makedirs(DIST + '/icons')
 open(APP + '/app_plain.html', 'w', encoding='utf-8').write(html)
 subprocess.run(['node', APP + '/encrypt.mjs', KEYS, APP + '/app_plain.html', DIST + '/content.enc'], check=True)
-os.remove(APP + '/app_plain.html')
+os.remove(APP + "/app_plain.html")
 shutil.copy(KEYS, DIST + '/keys.json')
 shutil.copy(APP + '/shell.html', DIST + '/index.html')
 for f in os.listdir('/home/claude/src/pwa/icons'):
