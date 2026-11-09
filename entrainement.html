@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#111417">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}</style>
+</head>
+<body>
+<title>Entraînement TSSR</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout : une colonne d'exercice centrée, barre d'onglets collante en haut, une "console" par exercice. */
+:root{
+  --bg:#111417; --surface:#181c21; --sunk:#0c0e10; --line:#2a3038; --fg:#dfe3e8; --muted:#8d96a1;
+  --accent:#6aa6e0; --accent-ink:#0d1620; --ok:#5fbf86; --ko:#e2806f; --okbg:rgba(95,191,134,.12); --kobg:rgba(226,128,111,.12);
+  --f-ui:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  color-scheme:dark;
+}
+@media (prefers-color-scheme: light){:root:not([data-theme="dark"]){
+  --bg:#f3f5f7; --surface:#ffffff; --sunk:#eef1f4; --line:#d5dbe1; --fg:#1b2128; --muted:#5b6672;
+  --accent:#1f6fb2; --accent-ink:#ffffff; --ok:#1f8a4c; --ko:#b8432f; --okbg:rgba(31,138,76,.1); --kobg:rgba(184,67,47,.1); color-scheme:light}}
+:root[data-theme="light"]{
+  --bg:#f3f5f7; --surface:#ffffff; --sunk:#eef1f4; --line:#d5dbe1; --fg:#1b2128; --muted:#5b6672;
+  --accent:#1f6fb2; --accent-ink:#ffffff; --ok:#1f8a4c; --ko:#b8432f; --okbg:rgba(31,138,76,.1); --kobg:rgba(184,67,47,.1); color-scheme:light}
+[hidden]{display:none!important}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.55 var(--f-ui);-webkit-text-size-adjust:100%}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);border-bottom:1px solid var(--line);
+  padding-block:12px 0;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.wrap{max-width:720px;margin:0 auto}
+h1{font-size:18px;font-weight:600;margin:0;letter-spacing:.2px}
+h1 small{font-weight:400;color:var(--muted);font-size:13px;margin-left:6px}
+nav{display:flex;gap:4px;margin-top:10px;overflow-x:auto;scrollbar-width:none}
+nav button{flex:1 0 auto;font:500 14px var(--f-ui);background:none;border:0;color:var(--muted);padding:9px 12px;border-bottom:2px solid transparent;cursor:pointer}
+nav button[aria-selected="true"]{color:var(--fg);border-bottom-color:var(--accent)}
+main{padding-block:18px 40px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+section{display:flex;flex-direction:column;gap:14px}
+.bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:space-between}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{font:500 13px var(--f-ui);padding:6px 11px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--muted);cursor:pointer}
+.chip[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.score{font:12px var(--f-mono);color:var(--muted);font-variant-numeric:tabular-nums}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.eyebrow{font:600 11px var(--f-ui);text-transform:uppercase;letter-spacing:.9px;color:var(--muted)}
+.q{font-size:17px;font-weight:500;text-wrap:balance}
+.ip{font-family:var(--f-mono);font-weight:600;color:var(--accent);white-space:nowrap}
+.fields{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px}
+label{display:flex;flex-direction:column;gap:4px;font-size:13px;color:var(--muted);min-width:0}
+input[type=text]{font:15px var(--f-mono);width:100%;padding:10px 11px;border-radius:8px;border:1px solid var(--line);background:var(--sunk);color:var(--fg);outline:none}
+input[type=text]:focus-visible{border-color:var(--accent)}
+input.ok{border-color:var(--ok);background:var(--okbg)} input.ko{border-color:var(--ko);background:var(--kobg)}
+.hint{font:12px var(--f-mono);color:var(--ok)} .hint.ko{color:var(--ko)}
+.actions{display:flex;flex-wrap:wrap;gap:8px}
+.btn{font:500 15px var(--f-ui);padding:10px 16px;border-radius:8px;border:1px solid var(--line);background:var(--surface);color:var(--fg);cursor:pointer}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.console{display:flex;align-items:center;gap:8px;background:var(--sunk);border:1px solid var(--line);border-radius:8px;padding:4px 10px;font-family:var(--f-mono)}
+.console .ps{color:var(--accent);white-space:nowrap;font-size:14px}
+.console input{border:0;background:none;padding:8px 0}
+.console.ok{border-color:var(--ok);background:var(--okbg)} .console.ko{border-color:var(--ko);background:var(--kobg)}
+.fb{border-radius:8px;padding:12px 14px;border:1px solid var(--line);background:var(--sunk);display:flex;flex-direction:column;gap:6px}
+.fb.ok{border-color:var(--ok)} .fb.ko{border-color:var(--ko)}
+.fb strong{font-weight:600}
+.fb code,.steps code{font-family:var(--f-mono);font-size:14px;background:var(--surface);border:1px solid var(--line);border-radius:5px;padding:1px 6px;overflow-wrap:anywhere}
+.steps{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:4px}
+.verdict{font-weight:600} .verdict.ok{color:var(--ok)} .verdict.ko{color:var(--ko)}
+.opts{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:8px}
+.opt{font:500 15px var(--f-ui);padding:12px;border-radius:8px;border:1px solid var(--line);background:var(--sunk);color:var(--fg);cursor:pointer;text-align:left}
+.opt.ok{border-color:var(--ok);background:var(--okbg)} .opt.ko{border-color:var(--ko);background:var(--kobg)}
+.tiles{display:flex;flex-wrap:wrap;gap:8px;min-height:44px}
+.tile{font:500 14px var(--f-ui);padding:9px 12px;border-radius:8px;border:1px dashed var(--line);background:var(--sunk);color:var(--fg);cursor:pointer}
+.placed{display:flex;flex-direction:column;gap:6px;counter-reset:n}
+.placed div{display:flex;gap:10px;align-items:center;padding:9px 12px;border-radius:8px;border:1px solid var(--line);background:var(--sunk);font-size:14px}
+.placed div::before{counter-increment:n;content:counter(n);font:600 12px var(--f-mono);color:var(--muted);width:16px}
+.placed div.ok{border-color:var(--ok)} .placed div.ko{border-color:var(--ko)}
+.placed div small{margin-left:auto;color:var(--muted);font-size:12px}
+.empty{color:var(--muted);font-size:14px}
+.foot{color:var(--muted);font-size:12px;text-align:center}
+.link{background:none;border:0;color:var(--muted);text-decoration:underline;font:12px var(--f-ui);cursor:pointer}
+@media (prefers-reduced-motion:no-preference){.fb{animation:in .18s ease-out}@keyframes in{from{opacity:.4;transform:translateY(3px)}to{opacity:1;transform:none}}}
+</style>
+
+<header><div class="wrap">
+  <h1>Entraînement TSSR <small>exercices illimités</small></h1>
+  <nav role="tablist">
+    <button role="tab" data-tab="sr">Sous-réseaux</button>
+    <button role="tab" data-tab="cmd">Commandes</button>
+    <button role="tab" data-tab="ports">Ports</button>
+    <button role="tab" data-tab="ordre">Ordre</button>
+  </nav>
+</div></header>
+
+<main><div class="wrap">
+
+<section id="sr" hidden>
+  <div class="bar">
+    <div class="chips" id="srMode">
+      <button class="chip" data-v="calc">Calcul d'adresses</button>
+      <button class="chip" data-v="dec">Découpage</button>
+    </div>
+    <div class="chips" id="srLvl">
+      <button class="chip" data-v="1">Facile</button>
+      <button class="chip" data-v="2">Moyen</button>
+      <button class="chip" data-v="3">Difficile</button>
+    </div>
+  </div>
+  <div class="card">
+    <div class="bar"><span class="eyebrow" id="srEyebrow">Exercice</span><span class="score" data-score="sr"></span></div>
+    <div class="q" id="srQ"></div>
+    <div class="fields" id="srFields"></div>
+    <div class="actions">
+      <button class="btn primary" id="srCheck">Vérifier</button>
+      <button class="btn" id="srShow">Voir la correction</button>
+      <button class="btn" id="srNext">Nouvel exercice</button>
+    </div>
+    <div class="fb" id="srFb" hidden></div>
+  </div>
+</section>
+
+<section id="cmd" hidden>
+  <div class="bar">
+    <div class="chips" id="cmdCat"></div>
+    <span class="score" data-score="cmd"></span>
+  </div>
+  <div class="card">
+    <span class="eyebrow" id="cmdEyebrow"></span>
+    <div class="q" id="cmdQ"></div>
+    <div class="console" id="cmdConsole"><span class="ps" id="cmdPs"></span>
+      <input type="text" id="cmdIn" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" aria-label="Ta commande">
+    </div>
+    <div class="actions">
+      <button class="btn primary" id="cmdCheck">Vérifier</button>
+      <button class="btn" id="cmdGive">Je ne sais pas</button>
+      <button class="btn" id="cmdNext">Suivante</button>
+    </div>
+    <div class="fb" id="cmdFb" hidden></div>
+  </div>
+  <p class="foot">Les abréviations Cisco sont acceptées (<code>sh ip int br</code>, <code>conf t</code>, <code>copy run start</code>). Les commandes que tu rates reviennent plus souvent.</p>
+</section>
+
+<section id="ports" hidden>
+  <div class="bar"><span class="eyebrow">Ports et protocoles</span><span class="score" data-score="ports"></span></div>
+  <div class="card">
+    <div class="q" id="pQ"></div>
+    <div id="pBody"></div>
+    <div class="actions">
+      <button class="btn primary" id="pCheck">Vérifier</button>
+      <button class="btn" id="pNext">Suivante</button>
+    </div>
+    <div class="fb" id="pFb" hidden></div>
+  </div>
+</section>
+
+<section id="ordre" hidden>
+  <div class="bar"><div class="chips" id="oSeq"></div><span class="score" data-score="ordre"></span></div>
+  <div class="card">
+    <span class="eyebrow">Touche les étiquettes dans le bon ordre</span>
+    <div class="q" id="oQ"></div>
+    <div class="placed" id="oPlaced"></div>
+    <div class="tiles" id="oTiles"></div>
+    <div class="actions">
+      <button class="btn" id="oUndo">Annuler la dernière</button>
+      <button class="btn" id="oNext">Recommencer / autre</button>
+    </div>
+    <div class="fb" id="oFb" hidden></div>
+  </div>
+</section>
+
+<p class="foot">Ta progression est enregistrée sur cet appareil. <button class="link" id="reset">Remettre les scores à zéro</button> <span id="resetConfirm" hidden> · <button class="link" id="resetYes">Confirmer</button></span></p>
+</div></main>
+
+<script>
+(()=>{
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+const rnd=(a,b)=>a+Math.floor(Math.random()*(b-a+1));
+const pick=a=>a[Math.floor(Math.random()*a.length)];
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+/* ---------- stockage local (facultatif) ---------- */
+const KEY='tssr-entrainement';
+let S={};try{S=JSON.parse(localStorage.getItem(KEY)||'{}')||{}}catch(e){}
+S.score=S.score||{};S.miss=S.miss||{};S.pref=S.pref||{};
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}};
+function renderScore(m){const s=S.score[m];$$(`[data-score="${m}"]`).forEach(e=>e.textContent=s&&s.n?`${s.ok}/${s.n} justes · ${Math.round(100*s.ok/s.n)} %`:'')}
+function tally(m,ok){const s=S.score[m]||(S.score[m]={ok:0,n:0});s.n++;if(ok)s.ok++;save();renderScore(m)}
+['sr','cmd','ports','ordre'].forEach(renderScore);
+$('#reset').onclick=()=>{$('#resetConfirm').hidden=false};
+$('#resetYes').onclick=()=>{S.score={};S.miss={};save();['sr','cmd','ports','ordre'].forEach(renderScore);$('#resetConfirm').hidden=true};
+
+function chips(box,val,on){$$(`#${box} .chip`).forEach(b=>{b.setAttribute('aria-pressed',b.dataset.v===val);b.onclick=()=>{$$(`#${box} .chip`).forEach(x=>x.setAttribute('aria-pressed',x===b));on(b.dataset.v)}})}
+
+/* ---------- onglets ---------- */
+function tab(t){$$('nav button').forEach(b=>b.setAttribute('aria-selected',b.dataset.tab===t));$$('main section').forEach(s=>s.hidden=s.id!==t);S.pref.tab=t;save();
+  const f=$(`#${t} input[type=text]`);if(f&&matchMedia('(pointer:fine)').matches)f.focus()}
+$$('nav button').forEach(b=>b.onclick=()=>tab(b.dataset.tab));
+
+/* =========================================================
+   1. SOUS-RÉSEAUX
+   ========================================================= */
+const ipStr=n=>[n>>>24,(n>>>16)&255,(n>>>8)&255,n&255].join('.');
+const maskN=p=>p===0?0:(0xFFFFFFFF<<(32-p))>>>0;
+function parseIP(s){const m=String(s).trim().match(/^(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})$/);if(!m)return null;const o=m.slice(1).map(Number);if(o.some(x=>x>255))return null;return((o[0]*16777216)+(o[1]<<16)+(o[2]<<8)+o[3])>>>0}
+const parseInt2=s=>{const t=String(s).replace(/[\s .]/g,'');return /^\d+$/.test(t)?Number(t):null};
+const fmt=n=>n.toLocaleString('fr-FR');
+function parsePrefix(s){s=String(s).trim();if(s.includes('.')){const m=parseIP(s);if(m===null)return null;for(let p=0;p<=32;p++)if(maskN(p)===m)return p;return -1}const n=parseInt2(s.replace('/',''));return n}
+
+let srMode=S.pref.srMode||'calc', srLvl=S.pref.srLvl||'1', srEx=null, srDone=false;
+
+function randomIP(lvl){
+  if(lvl==='1')return parseIP(`192.168.${rnd(0,255)}.${rnd(1,254)}`);
+  if(lvl==='2')return parseIP(`172.${rnd(16,31)}.${rnd(0,255)}.${rnd(1,254)}`);
+  return parseIP(pick([`10.${rnd(0,255)}.${rnd(0,255)}.${rnd(1,254)}`,`${rnd(1,223)}.${rnd(0,255)}.${rnd(0,255)}.${rnd(1,254)}`]));
+}
+function exCalc(lvl){
+  const p=lvl==='1'?rnd(24,30):lvl==='2'?rnd(16,30):rnd(8,30);
+  const ip=randomIP(lvl), m=maskN(p), net=(ip&m)>>>0, bc=(net|(~m>>>0))>>>0;
+  const hosts=2**(32-p)-2;
+  const ipField=(id,label,v)=>({id,label,answer:ipStr(v),check:s=>parseIP(s)===v});
+  const oct=Math.floor(p/8), steps=[`/${p} = ${p} bits à 1 dans le masque, soit <code>${ipStr(m)}</code>.`];
+  if(p%8===0){steps.push(`Le masque tombe pile sur un octet : on recopie les ${oct} premiers octets, le reste passe à 0 pour le réseau et à 255 pour le broadcast.`)}
+  else{
+    const sh=24-8*oct, mv=(m>>>sh)&255, v=(ip>>>sh)&255, pas=256-mv, base=Math.floor(v/pas)*pas;
+    steps.push(`Octet intéressant : le ${oct+1}<sup>e</sup>, où le masque vaut ${mv}. Pas (nombre magique) = 256 − ${mv} = <strong>${pas}</strong>.`);
+    steps.push(`Dans l'IP, cet octet vaut ${v}. Le multiple de ${pas} juste en dessous est ${base} : réseau = ${base}, broadcast = ${base} + ${pas} − 1 = ${base+pas-1}.`);
+    if(oct>0)steps.push(`Les octets avant restent identiques à l'IP.`);
+    if(oct<3)steps.push(`Les octets après : 0 pour le réseau, 255 pour le broadcast.`);
+  }
+  steps.push(`Réseau <code>${ipStr(net)}</code> · broadcast <code>${ipStr(bc)}</code>.`);
+  steps.push(`1<sup>re</sup> adresse = réseau + 1 → <code>${ipStr(net+1)}</code> ; dernière = broadcast − 1 → <code>${ipStr(bc-1)}</code>.`);
+  steps.push(`Hôtes utilisables = 2<sup>${32-p}</sup> − 2 = <strong>${fmt(hosts)}</strong> (on retire le réseau et le broadcast).`);
+  return{eyebrow:'Calcul d\'adresses',q:`Pour l'adresse <span class="ip">${ipStr(ip)}/${p}</span>, trouve :`,steps,fields:[
+    {id:'mask',label:'Masque en décimal',answer:ipStr(m),check:s=>parseIP(s)===m||parsePrefix(s)===p&&s.includes('.')},
+    ipField('net','Adresse réseau',net),ipField('bc','Adresse de broadcast',bc),
+    ipField('first','1re adresse utilisable',net+1),ipField('last','Dernière adresse utilisable',bc-1),
+    {id:'hosts',label:'Nombre d\'hôtes utilisables',answer:fmt(hosts),check:s=>parseInt2(s)===hosts}]};
+}
+function exDec(lvl){
+  const bases=lvl==='1'?[[`192.168.${rnd(0,255)}.0`,24]]:lvl==='2'?[[`172.${rnd(16,31)}.0.0`,16],[`192.168.${rnd(0,255)}.0`,24]]:[[`10.0.0.0`,8],[`172.${rnd(16,31)}.0.0`,16]];
+  const [b,bp]=pick(bases);
+  if(Math.random()<.5){
+    const maxBits=Math.min(30-bp,lvl==='3'?14:lvl==='2'?8:6), bits=rnd(1,maxBits);
+    const n=bits===1?2:rnd(2**(bits-1)+1,2**bits), np=bp+bits, h=2**(32-np)-2;
+    return{eyebrow:'Découpage par nombre de sous-réseaux',q:`Tu dois découper <span class="ip">${b}/${bp}</span> en <strong>${n} sous-réseaux</strong> de même taille, aussi grands que possible.`,
+      steps:[`Il faut 2<sup>n</sup> ≥ ${n}. Avec n = ${bits} : 2<sup>${bits}</sup> = ${2**bits} ≥ ${n}${bits>1?` (alors que 2<sup>${bits-1}</sup> = ${2**(bits-1)} ne suffit pas)`:''}.`,
+        `On emprunte ${bits} bit(s) à la partie hôte : /${bp} + ${bits} = <strong>/${np}</strong>, masque <code>${ipStr(maskN(np))}</code>.`,
+        `Hôtes par sous-réseau = 2<sup>${32-np}</sup> − 2 = <strong>${fmt(h)}</strong>.`],
+      fields:[{id:'p',label:'Nouveau masque (/xx ou décimal)',answer:`/${np} (${ipStr(maskN(np))})`,check:s=>parsePrefix(s)===np},
+        {id:'h',label:'Hôtes utilisables par sous-réseau',answer:fmt(h),check:s=>parseInt2(s)===h}]};
+  }else{
+    const hb=rnd(2,Math.min(32-bp-1,lvl==='1'?7:lvl==='2'?12:20)), need=rnd(2**(hb-1)-1,2**hb-2), np=32-hb, count=2**(np-bp);
+    return{eyebrow:'Découpage par nombre d\'hôtes',q:`À partir de <span class="ip">${b}/${bp}</span>, chaque sous-réseau doit accueillir <strong>${fmt(need)} hôtes</strong>. Choisis le plus petit sous-réseau possible.`,
+      steps:[`Il faut 2<sup>h</sup> − 2 ≥ ${fmt(need)}. Avec h = ${hb} : 2<sup>${hb}</sup> − 2 = ${fmt(2**hb-2)} ≥ ${fmt(need)}${hb>2?`, alors que 2<sup>${hb-1}</sup> − 2 = ${fmt(2**(hb-1)-2)} ne suffit pas`:''}.`,
+        `On garde ${hb} bits d'hôte : 32 − ${hb} = <strong>/${np}</strong>, masque <code>${ipStr(maskN(np))}</code>.`,
+        `Nombre de sous-réseaux obtenus = 2<sup>${np} − ${bp}</sup> = <strong>${fmt(count)}</strong>.`],
+      fields:[{id:'p',label:'Masque (/xx ou décimal)',answer:`/${np} (${ipStr(maskN(np))})`,check:s=>parsePrefix(s)===np},
+        {id:'c',label:`Nombre de sous-réseaux dans le /${bp}`,answer:fmt(count),check:s=>parseInt2(s)===count}]};
+  }
+}
+function srNew(){
+  srEx=srMode==='calc'?exCalc(srLvl):exDec(srLvl);srDone=false;
+  $('#srEyebrow').textContent=srEx.eyebrow;$('#srQ').innerHTML=srEx.q;$('#srFb').hidden=true;
+  $('#srFields').innerHTML=srEx.fields.map(f=>`<label>${esc(f.label)}<input type="text" id="sr_${f.id}" inputmode="decimal" autocomplete="off" autocapitalize="off" spellcheck="false"><span class="hint" id="srh_${f.id}" hidden></span></label>`).join('');
+  $$('#srFields input').forEach((inp,i,all)=>inp.onkeydown=e=>{if(e.key==='Enter'){e.preventDefault();i<all.length-1&&!all[i+1].value?all[i+1].focus():srCheck()}});
+}
+function srReveal(){const fb=$('#srFb');fb.className='fb';fb.innerHTML=`<strong>Correction pas à pas</strong><ol class="steps">${srEx.steps.map(s=>`<li>${s}</li>`).join('')}</ol>`;fb.hidden=false}
+function srCheck(){
+  let all=true;
+  srEx.fields.forEach(f=>{const inp=$('#sr_'+f.id),h=$('#srh_'+f.id),ok=inp.value.trim()!==''&&f.check(inp.value);all=all&&ok;
+    inp.className=ok?'ok':'ko';h.hidden=ok;h.className='hint ko';h.textContent='→ '+f.answer});
+  if(!srDone){tally('sr',all);srDone=true}
+  srReveal();$('#srFb').classList.add(all?'ok':'ko');
+  $('#srFb').insertAdjacentHTML('afterbegin',`<span class="verdict ${all?'ok':'ko'}">${all?'Tout est juste.':'Il y a des erreurs, regarde la correction.'}</span>`);
+}
+$('#srCheck').onclick=srCheck;
+$('#srShow').onclick=()=>{if(!srDone){tally('sr',false);srDone=true}srEx.fields.forEach(f=>{const h=$('#srh_'+f.id);h.hidden=false;h.className='hint';h.textContent='→ '+f.answer});srReveal()};
+$('#srNext').onclick=srNew;
+chips('srMode',srMode,v=>{srMode=S.pref.srMode=v;save();srNew()});
+chips('srLvl',srLvl,v=>{srLvl=S.pref.srLvl=v;save();srNew()});
+srNew();
+
+/* =========================================================
+   2. COMMANDES
+   ========================================================= */
+const CATS={cisco:{n:'Cisco IOS',ps:'R1#'},cmd:{n:'Windows (cmd)',ps:'C:\\>'},ps:{n:'PowerShell',ps:'PS C:\\>'},linux:{n:'Linux',ps:'$'}};
+// [catégorie, question, réponses acceptées, explication, invite de commande éventuelle]
+const CMDS=[
+ ['cisco','Passer du mode utilisateur au mode privilégié.',['enable'],'Le prompt passe de R1> à R1#.','R1>'],
+ ['cisco','Entrer en mode de configuration globale.',['configure terminal'],'Abrégé en « conf t ». Le prompt devient R1(config)#.'],
+ ['cisco','Afficher la table de routage.',['show ip route'],'C = directement connecté, S = statique, R = RIP, O = OSPF, * = route par défaut.'],
+ ['cisco','Afficher un résumé des interfaces avec leur IP et leur état.',['show ip interface brief'],'Abrégé « sh ip int br ». Colonnes Status / Protocol : up/up = interface fonctionnelle.'],
+ ['cisco','Afficher la configuration en cours (en RAM).',['show running-config'],'Abrégé « sh run ».'],
+ ['cisco','Sauvegarder la configuration pour qu\'elle survive au redémarrage.',['copy running-config startup-config','write memory','write'],'running-config (RAM) → startup-config (NVRAM). « wr » marche aussi.'],
+ ['cisco','Nommer le routeur « R1 ».',['hostname R1'],'En mode configuration globale.','R1(config)#'],
+ ['cisco','Activer l\'interface sur laquelle tu es positionné.',['no shutdown'],'Les interfaces de routeur sont éteintes par défaut.','R1(config-if)#'],
+ ['cisco','Donner l\'adresse 192.168.1.1/24 à l\'interface.',['ip address 192.168.1.1 255.255.255.0'],'Cisco attend le masque en décimal, pas en /24.','R1(config-if)#'],
+ ['cisco','Créer une route statique vers 10.0.0.0/8 en passant par 192.168.1.254.',['ip route 10.0.0.0 255.0.0.0 192.168.1.254'],'Syntaxe : ip route <réseau> <masque> <passerelle suivante ou interface de sortie>.','R1(config)#'],
+ ['cisco','Créer une route par défaut vers 192.168.1.254.',['ip route 0.0.0.0 0.0.0.0 192.168.1.254'],'0.0.0.0/0 = « tout le reste ». Elle apparaît avec S* dans la table.','R1(config)#'],
+ ['cisco','Protéger le mode privilégié par le mot de passe chiffré « cisco ».',['enable secret cisco'],'« enable secret » est haché, contrairement à « enable password ».','R1(config)#'],
+ ['cisco','Chiffrer tous les mots de passe affichés en clair dans la configuration.',['service password-encryption'],'Chiffrement faible (type 7), mais évite la lecture par-dessus l\'épaule.','R1(config)#'],
+ ['cisco','Empêcher le routeur de chercher un serveur DNS quand tu tapes une commande inconnue.',['no ip domain-lookup'],'Évite l\'attente « Translating… » après une faute de frappe.','R1(config)#'],
+ ['cisco','Relayer les requêtes DHCP de ce réseau vers le serveur 192.168.10.5.',['ip helper-address 192.168.10.5'],'Sur l\'interface côté clients. Le broadcast DHCP ne traverse pas un routeur sans relais.','R1(config-if)#'],
+ ['cisco','Afficher la liste des VLAN du switch et leurs ports.',['show vlan brief'],'Abrégé « sh vlan br ».','SW1#'],
+ ['cisco','Créer le VLAN 10.',['vlan 10'],'Ensuite « name COMPTA » pour le nommer.','SW1(config)#'],
+ ['cisco','Mettre le port en mode accès.',['switchport mode access'],'Un port d\'accès appartient à un seul VLAN (poste, imprimante…).','SW1(config-if)#'],
+ ['cisco','Affecter le port au VLAN 10.',['switchport access vlan 10'],'Le port doit être en mode access.','SW1(config-if)#'],
+ ['cisco','Configurer le port en trunk.',['switchport mode trunk'],'Un trunk transporte plusieurs VLAN (étiquettes 802.1Q) entre switchs ou vers un routeur.','SW1(config-if)#'],
+ ['cisco','Afficher la table d\'adresses MAC du switch.',['show mac address-table'],'Associe chaque MAC apprise à un port et un VLAN.','SW1#'],
+ ['cisco','Voir les équipements Cisco voisins directement connectés.',['show cdp neighbors'],'CDP = protocole de découverte Cisco (couche 2).'],
+ ['cisco','Afficher la version d\'IOS et la durée de fonctionnement.',['show version'],'Abrégé « sh ver ».'],
+ ['cmd','Afficher la configuration IP complète (MAC, DNS, DHCP, bail…).',['ipconfig /all'],'Sans /all, on ne voit que IP, masque et passerelle.'],
+ ['cmd','Vider le cache DNS du poste.',['ipconfig /flushdns'],'Utile après une modification d\'enregistrement DNS.'],
+ ['cmd','Afficher le cache DNS du poste.',['ipconfig /displaydns'],''],
+ ['cmd','Libérer le bail DHCP.',['ipconfig /release'],'Le poste rend son adresse au serveur.'],
+ ['cmd','Demander un nouveau bail DHCP.',['ipconfig /renew'],'Déclenche un échange DHCP avec le serveur.'],
+ ['cmd','Interroger le DNS pour connaître l\'IP de www.exemple.fr.',['nslookup www.exemple.fr'],'Indique aussi quel serveur DNS a répondu.'],
+ ['cmd','Afficher le chemin (les routeurs traversés) jusqu\'à 8.8.8.8.',['tracert 8.8.8.8'],'Sous Linux : traceroute.'],
+ ['cmd','Pinguer 8.8.8.8 en continu jusqu\'à Ctrl+C.',['ping -t 8.8.8.8','ping 8.8.8.8 -t'],'Par défaut, Windows n\'envoie que 4 requêtes.'],
+ ['cmd','Afficher la table de routage du poste Windows.',['route print','netstat -r'],''],
+ ['cmd','Afficher la table ARP (correspondances IP ↔ MAC).',['arp -a'],''],
+ ['cmd','Lister les connexions et les ports en écoute en numérique, avec le PID.',['netstat -ano','netstat -an','netstat -aon'],'-a toutes, -n numérique, -o PID du processus.'],
+ ['cmd','Forcer l\'application immédiate des stratégies de groupe.',['gpupdate /force'],''],
+ ['cmd','Afficher les GPO appliquées à l\'utilisateur et à l\'ordinateur.',['gpresult /r'],'gpresult /h rapport.html pour un rapport détaillé.'],
+ ['cmd','Ouvrir la console « Utilisateurs et ordinateurs Active Directory ».',['dsa.msc'],'Dans Exécuter (Win+R) ou en ligne de commande.'],
+ ['cmd','Ouvrir la console de gestion des stratégies de groupe.',['gpmc.msc'],''],
+ ['cmd','Ouvrir la console DHCP.',['dhcpmgmt.msc'],''],
+ ['cmd','Ouvrir la console DNS.',['dnsmgmt.msc'],''],
+ ['cmd','Ouvrir l\'observateur d\'événements.',['eventvwr.msc','eventvwr'],'Journaux Système, Application, Sécurité.'],
+ ['cmd','Ouvrir la console des services.',['services.msc'],''],
+ ['ps','Afficher la configuration IP des cartes réseau.',['get-netipconfiguration','get-netipaddress','gip'],'Équivalent PowerShell de ipconfig.'],
+ ['ps','Tester si le port 443 répond sur le serveur SRV01.',['test-netconnection srv01 -port 443','tnc srv01 -port 443','test-netconnection -computername srv01 -port 443'],'Pratique pour vérifier qu\'un pare-feu laisse passer un service.'],
+ ['ps','Lister les services et leur état.',['get-service'],''],
+ ['ps','Redémarrer le service « Spooler ».',['restart-service spooler','restart-service -name spooler'],'Spooler = service d\'impression.'],
+ ['ps','Afficher le compte AD de l\'utilisateur jdupont.',['get-aduser jdupont','get-aduser -identity jdupont'],'Ajoute -Properties * pour tout voir.'],
+ ['ps','Créer l\'unité d\'organisation « Compta ».',['new-adorganizationalunit -name compta','new-adorganizationalunit compta'],''],
+ ['ps','Installer le rôle Services de domaine Active Directory.',['install-windowsfeature ad-domain-services','install-windowsfeature ad-domain-services -includemanagementtools','add-windowsfeature ad-domain-services'],'Ajoute -IncludeManagementTools pour les consoles.'],
+ ['ps','Renommer l\'ordinateur en SRV01.',['rename-computer -newname srv01','rename-computer srv01'],'Un redémarrage est nécessaire.'],
+ ['ps','Joindre l\'ordinateur au domaine tssr.local.',['add-computer -domainname tssr.local','add-computer tssr.local'],'Demande un compte autorisé à joindre le domaine.'],
+ ['ps','Redémarrer l\'ordinateur.',['restart-computer'],''],
+ ['ps','Obtenir l\'aide de la cmdlet Get-Service.',['get-help get-service','help get-service','get-service -?'],''],
+ ['linux','Afficher les adresses IP des interfaces.',['ip a','ip addr','ip address','ip addr show','ip address show','ifconfig'],'ifconfig est l\'ancienne commande (net-tools).'],
+ ['linux','Afficher la table de routage.',['ip route','ip r','ip route show','route -n'],''],
+ ['linux','Afficher le dossier courant.',['pwd'],'print working directory.'],
+ ['linux','Donner les droits 755 au fichier script.sh.',['chmod 755 script.sh','chmod u=rwx,go=rx script.sh'],'7 = rwx (propriétaire), 5 = r-x (groupe), 5 = r-x (autres).'],
+ ['linux','Donner le fichier rapport.txt à l\'utilisateur jdupont et au groupe compta.',['chown jdupont:compta rapport.txt','chown jdupont.compta rapport.txt'],''],
+ ['linux','Installer le paquet openssh-server sur Debian.',['apt install openssh-server','apt-get install openssh-server','sudo apt install openssh-server','sudo apt-get install openssh-server'],'Commence par apt update.'],
+ ['linux','Voir l\'état du service ssh.',['systemctl status ssh','sudo systemctl status ssh','service ssh status'],''],
+ ['linux','Redémarrer le service ssh.',['systemctl restart ssh','sudo systemctl restart ssh','service ssh restart'],''],
+ ['linux','Activer le service ssh au démarrage.',['systemctl enable ssh','sudo systemctl enable ssh'],'« enable --now » l\'active et le démarre.'],
+ ['linux','Lister les ports TCP en écoute avec le processus.',['ss -tlnp','ss -ltnp','ss -tulnp','ss -tuln','sudo ss -tlnp','netstat -tlnp'],'-t TCP, -u UDP, -l écoute, -n numérique, -p processus.'],
+ ['linux','Créer l\'utilisateur jdupont avec son dossier personnel.',['adduser jdupont','useradd -m jdupont','sudo adduser jdupont','sudo useradd -m jdupont'],'adduser (Debian) est interactif ; useradd -m crée le /home.'],
+ ['linux','Changer le mot de passe de jdupont.',['passwd jdupont','sudo passwd jdupont'],''],
+ ['linux','Interroger le DNS pour www.exemple.fr (outil détaillé).',['dig www.exemple.fr','nslookup www.exemple.fr','host www.exemple.fr'],''],
+ ['linux','Chercher « error » dans /var/log/syslog.',['grep error /var/log/syslog','grep "error" /var/log/syslog','grep -i error /var/log/syslog'],'-i pour ignorer la casse.'],
+ ['linux','Suivre en direct la fin du fichier /var/log/syslog.',['tail -f /var/log/syslog','journalctl -f'],''],
+];
+const norm=(s,cat)=>{s=s.trim().toLowerCase().replace(/["']/g,'').replace(/\s+/g,' ');if(cat==='cmd')s=s.replace(/\s*\/\s*/g,' /').replace(/^(\S+) \//,'$1 /');return s};
+function matches(input,ans,cat){
+  const a=norm(input,cat),b=norm(ans,cat);if(a===b)return true;
+  if(cat!=='cisco')return false;
+  const x=a.split(' '),y=b.split(' ');
+  if(x.length>y.length)return false;
+  if(x.length<y.length)return false;
+  return x.every((t,i)=>/^[a-z-]+$/.test(y[i])?y[i].startsWith(t):t===y[i]);
+}
+let cmdCat=S.pref.cmdCat||'all', cmdCur=-1, cmdDone=false;
+$('#cmdCat').innerHTML=[['all','Tout'],...Object.entries(CATS).map(([k,v])=>[k,v.n])].map(([k,n])=>`<button class="chip" data-v="${k}">${n}</button>`).join('');
+chips('cmdCat',cmdCat,v=>{cmdCat=S.pref.cmdCat=v;save();cmdNew()});
+function cmdNew(){
+  const pool=CMDS.map((c,i)=>i).filter(i=>(cmdCat==='all'||CMDS[i][0]===cmdCat)&&(i!==cmdCur||false));
+  const w=pool.map(i=>1+3*(S.miss[i]||0));let r=Math.random()*w.reduce((a,b)=>a+b,0),k=0;while(r>=w[k]){r-=w[k];k++}
+  cmdCur=pool[Math.min(k,pool.length-1)];cmdDone=false;
+  const [cat,q,,,ps]=CMDS[cmdCur];
+  $('#cmdEyebrow').textContent=CATS[cat].n+((S.miss[cmdCur]||0)>0?' · à retravailler':'');
+  $('#cmdQ').textContent=q;$('#cmdPs').textContent=ps||CATS[cat].ps;
+  const inp=$('#cmdIn');inp.value='';$('#cmdConsole').className='console';$('#cmdFb').hidden=true;
+  if(matchMedia('(pointer:fine)').matches)inp.focus();
+}
+function cmdShow(ok,given){
+  const [cat,,ans,why]=CMDS[cmdCur];
+  if(!cmdDone){cmdDone=true;tally('cmd',ok);S.miss[cmdCur]=ok?Math.max(0,(S.miss[cmdCur]||0)-1):(S.miss[cmdCur]||0)+1;save()}
+  $('#cmdConsole').className='console '+(ok?'ok':'ko');
+  const fb=$('#cmdFb');fb.className='fb '+(ok?'ok':'ko');fb.hidden=false;
+  fb.innerHTML=`<span class="verdict ${ok?'ok':'ko'}">${ok?'Correct.':given?'Réponse :':'Pas tout à fait.'}</span>
+    <div>Réponse attendue : <code>${esc(ans[0])}</code>${ans.length>1?`<br><span class="empty">Aussi accepté : ${ans.slice(1).map(a=>`<code>${esc(a)}</code>`).join(' ')}</span>`:''}</div>
+    ${why?`<div>${esc(why)}</div>`:''}`;
+}
+function cmdCheck(){const v=$('#cmdIn').value;if(!v.trim())return;const [cat,,ans]=CMDS[cmdCur];cmdShow(ans.some(a=>matches(v,a,cat)),false)}
+$('#cmdCheck').onclick=cmdCheck;$('#cmdGive').onclick=()=>cmdShow(false,true);$('#cmdNext').onclick=cmdNew;
+$('#cmdIn').onkeydown=e=>{if(e.key==='Enter'){e.preventDefault();cmdDone&&$('#cmdFb').hidden===false?cmdNew():cmdCheck()}};
+cmdNew();
+
+/* =========================================================
+   3. PORTS
+   ========================================================= */
+const PORTS=[
+ ['FTP',[20,21],'TCP','Transfert de fichiers (21 commandes, 20 données)'],['SSH',[22],'TCP','Administration à distance chiffrée, SCP/SFTP'],
+ ['Telnet',[23],'TCP','Administration à distance en clair (à éviter)'],['SMTP',[25],'TCP','Envoi de mails entre serveurs'],
+ ['DNS',[53],'UDP/TCP','Résolution de noms (TCP pour les transferts de zone)'],['DHCP',[67,68],'UDP','Attribution d\'adresses (67 serveur, 68 client)'],
+ ['TFTP',[69],'UDP','Transfert simple (sauvegarde de config Cisco, PXE)'],['HTTP',[80],'TCP','Web non chiffré'],
+ ['Kerberos',[88],'TCP/UDP','Authentification Active Directory'],['POP3',[110],'TCP','Relève de mails (téléchargement)'],
+ ['NTP',[123],'UDP','Synchronisation de l\'heure'],['IMAP',[143],'TCP','Consultation de mails sur le serveur'],
+ ['SNMP',[161,162],'UDP','Supervision (161 requêtes, 162 traps)'],['LDAP',[389],'TCP/UDP','Annuaire (Active Directory)'],
+ ['HTTPS',[443],'TCP','Web chiffré TLS'],['SMB',[445],'TCP','Partages de fichiers Windows'],
+ ['Syslog',[514],'UDP','Centralisation de journaux'],['LDAPS',[636],'TCP','LDAP chiffré TLS'],
+ ['IMAPS',[993],'TCP','IMAP chiffré'],['POP3S',[995],'TCP','POP3 chiffré'],
+ ['SQL Server',[1433],'TCP','Base de données Microsoft'],['MySQL / MariaDB',[3306],'TCP','Base de données'],
+ ['RDP',[3389],'TCP','Bureau à distance Windows'],['SMTP soumission',[587],'TCP','Envoi de mails par un client, avec authentification'],
+];
+let pCur=null,pDone=false;
+function pNew(){
+  pDone=false;$('#pFb').hidden=true;const e=pick(PORTS);
+  if(Math.random()<.5){
+    pCur={type:'num',e};$('#pQ').innerHTML=`Quel est le port de <strong>${esc(e[0])}</strong> ?`;
+    $('#pBody').innerHTML=`<div class="console" id="pCon"><span class="ps">port</span><input type="text" id="pIn" inputmode="numeric" autocomplete="off" aria-label="Numéro de port"></div>`;
+    $('#pIn').onkeydown=ev=>{if(ev.key==='Enter'){ev.preventDefault();pDone?pNew():pCheck()}};
+    if(matchMedia('(pointer:fine)').matches)$('#pIn').focus();$('#pCheck').hidden=false;
+  }else{
+    const p=pick(e[1]);const others=shuffle(PORTS.filter(x=>x!==e&&!x[1].includes(p))).slice(0,3);
+    pCur={type:'qcm',e,p};$('#pQ').innerHTML=`Quel service utilise le port <span class="ip">${p}</span> ?`;
+    $('#pBody').innerHTML=`<div class="opts">${shuffle([e,...others]).map(x=>`<button class="opt" data-n="${esc(x[0])}">${esc(x[0])}</button>`).join('')}</div>`;
+    $$('#pBody .opt').forEach(b=>b.onclick=()=>pCheck(b));$('#pCheck').hidden=true;
+  }
+}
+function pCheck(btn){
+  if(pDone)return;const e=pCur.e;let ok;
+  if(pCur.type==='num'){const v=$('#pIn').value;const nums=(v.match(/\d+/g)||[]).map(Number);if(!nums.length)return;ok=nums.every(n=>e[1].includes(n));$('#pCon').className='console '+(ok?'ok':'ko')}
+  else{ok=btn.dataset.n===e[0];$$('#pBody .opt').forEach(b=>{if(b.dataset.n===e[0])b.classList.add('ok');else if(b===btn)b.classList.add('ko')})}
+  pDone=true;tally('ports',ok);
+  const fb=$('#pFb');fb.className='fb '+(ok?'ok':'ko');fb.hidden=false;
+  fb.innerHTML=`<span class="verdict ${ok?'ok':'ko'}">${ok?'Correct.':'Raté.'}</span><div><strong>${esc(e[0])}</strong> : ${e[2]} <code>${e[1].join(' / ')}</code>. ${esc(e[3])}.</div>`;
+}
+$('#pCheck').onclick=()=>pCheck();$('#pNext').onclick=pNew;
+pNew();
+
+/* =========================================================
+   4. REMETTRE EN ORDRE
+   ========================================================= */
+const SEQS={
+ osi:['Modèle OSI, de la couche 1 à la couche 7',[['Physique','bits, câbles, hub'],['Liaison de données','trames, MAC, switch'],['Réseau','paquets, IP, routeur'],['Transport','segments, TCP/UDP, ports'],['Session',''],['Présentation','chiffrement, encodage'],['Application','HTTP, DNS, SMTP…']],'OSI'],
+ tcpip:['Modèle TCP/IP, de bas en haut',[['Accès réseau','Ethernet, Wi-Fi'],['Internet','IP, ICMP'],['Transport','TCP, UDP'],['Application','HTTP, DNS…']],'TCP/IP'],
+ dora:['Obtention d\'une adresse par DHCP',[['Discover','client → broadcast'],['Offer','serveur → client'],['Request','client → broadcast'],['Acknowledge','serveur → client']],'DHCP (DORA)'],
+ tcp:['Ouverture d\'une connexion TCP (3-way handshake)',[['SYN','client → serveur'],['SYN-ACK','serveur → client'],['ACK','client → serveur']],'TCP'],
+ gpo:['Ordre d\'application des GPO (la dernière l\'emporte)',[['Local',''],['Site',''],['Domaine',''],['Unité d\'organisation','OU']],'GPO (LSDOU)'],
+ dns:['Résolution DNS récursive de www.exemple.fr',[['Cache local du poste',''],['Serveur DNS du poste (résolveur)',''],['Serveur racine','« . »'],['Serveur du TLD .fr',''],['Serveur faisant autorité pour exemple.fr','renvoie l\'IP']],'DNS'],
+};
+let oKey=S.pref.oKey||'osi', oPlaced=[], oDone=false;
+$('#oSeq').innerHTML=Object.entries(SEQS).map(([k,v])=>`<button class="chip" data-v="${k}">${v[2]}</button>`).join('');
+chips('oSeq',oKey,v=>{oKey=S.pref.oKey=v;save();oNew()});
+function oNew(){oPlaced=[];oDone=false;$('#oQ').textContent=SEQS[oKey][0];oRender()}
+function oRender(){
+  const items=SEQS[oKey][1], rest=shuffle(items.map((x,i)=>i).filter(i=>!oPlaced.includes(i)));
+  $('#oPlaced').innerHTML=oPlaced.length?oPlaced.map((i,pos)=>`<div class="${oDone?(i===pos?'ok':'ko'):''}">${esc(items[i][0])}${oDone&&items[i][1]?`<small>${esc(items[i][1])}</small>`:''}</div>`).join(''):'<span class="empty">Commence par l\'élément qui vient en premier.</span>';
+  $('#oTiles').innerHTML=rest.map(i=>`<button class="tile" data-i="${i}">${esc(items[i][0])}</button>`).join('');
+  $$('#oTiles .tile').forEach(b=>b.onclick=()=>{oPlaced.push(+b.dataset.i);if(oPlaced.length===items.length)oFinish();else oRender()});
+  $('#oFb').hidden=!oDone;$('#oUndo').disabled=oDone||!oPlaced.length;
+}
+function oFinish(){
+  oDone=true;const items=SEQS[oKey][1];const ok=oPlaced.every((v,i)=>v===i);tally('ordre',ok);oRender();
+  const fb=$('#oFb');fb.className='fb '+(ok?'ok':'ko');
+  fb.innerHTML=`<span class="verdict ${ok?'ok':'ko'}">${ok?'Ordre correct.':'Pas dans le bon ordre.'}</span>${ok?'':`<div>Bon ordre : ${items.map(x=>esc(x[0])).join(' → ')}</div>`}`;
+}
+$('#oUndo').onclick=()=>{oPlaced.pop();oRender()};$('#oNext').onclick=oNew;
+oNew();
+
+tab(S.pref.tab||'sr');
+})();
+</script>
+
+</body>
+</html>
