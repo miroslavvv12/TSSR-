@@ -170,7 +170,7 @@ details summary{cursor:pointer;font-weight:500}
     <span class="eyebrow" id="qEyebrow"></span>
     <div class="q" id="qQ"></div>
     <div class="opts" id="qOpts"></div>
-    <div class="actions"><button class="btn" id="qNext">Question suivante</button></div>
+    <div class="actions"><button class="btn" id="qGive">Je ne sais pas</button><button class="btn" id="qNext">Question suivante</button></div>
     <div class="fb" id="qFb" hidden></div>
   </div>
   <p class="foot" id="qCount"></p>
@@ -254,6 +254,7 @@ details summary{cursor:pointer;font-weight:500}
     <div id="pBody"></div>
     <div class="actions">
       <button class="btn primary" id="pCheck">Vérifier</button>
+      <button class="btn" id="pGive">Je ne sais pas</button>
       <button class="btn" id="pNext">Suivante</button>
     </div>
     <div class="fb" id="pFb" hidden></div>
@@ -727,7 +728,7 @@ const PORTS=[
 ];
 let pCur=null,pDone=false;
 function pNew(){
-  pDone=false;$('#pFb').hidden=true;const e=pick(PORTS);
+  pDone=false;$('#pFb').hidden=true;$('#pGive').hidden=false;const e=pick(PORTS);
   if(Math.random()<.5){
     pCur={type:'num',e};$('#pQ').innerHTML=`Quel est le port de <strong>${esc(e[0])}</strong> ?`;
     $('#pBody').innerHTML=`<div class="console" id="pCon"><span class="ps">port</span><input type="text" id="pIn" inputmode="numeric" autocomplete="off" aria-label="Numéro de port"></div>`;
@@ -740,15 +741,16 @@ function pNew(){
     $$('#pBody .opt').forEach(b=>b.onclick=()=>pCheck(b));$('#pCheck').hidden=true;
   }
 }
-function pCheck(btn){
+function pCheck(btn,give){
   if(pDone)return;const e=pCur.e;let ok;
-  if(pCur.type==='num'){const v=$('#pIn').value;const nums=(v.match(/\d+/g)||[]).map(Number);if(!nums.length)return;ok=nums.every(n=>e[1].includes(n));$('#pCon').className='console '+(ok?'ok':'ko')}
+  if(give){ok=false;if(pCur.type==='num')$('#pIn').readOnly=true;else $$('#pBody .opt').forEach(b=>{if(b.dataset.n===e[0])b.classList.add('ok')})}
+  else if(pCur.type==='num'){const v=$('#pIn').value;const nums=(v.match(/\d+/g)||[]).map(Number);if(!nums.length)return;ok=nums.every(n=>e[1].includes(n));$('#pCon').className='console '+(ok?'ok':'ko')}
   else{ok=btn.dataset.n===e[0];$$('#pBody .opt').forEach(b=>{if(b.dataset.n===e[0])b.classList.add('ok');else if(b===btn)b.classList.add('ko')})}
-  pDone=true;tally('ports',ok);
-  const fb=$('#pFb');fb.className='fb '+(ok?'ok':'ko');fb.hidden=false;
-  fb.innerHTML=`<span class="verdict ${ok?'ok':'ko'}">${ok?'Correct.':'Raté.'}</span><div><strong>${esc(e[0])}</strong> : ${e[2]} <code>${e[1].join(' / ')}</code>. ${esc(e[3])}.</div>`;
+  pDone=true;tally('ports',ok);$('#pGive').hidden=true;
+  const fb=$('#pFb');fb.className='fb '+(ok?'ok':give?'':'ko');fb.hidden=false;
+  fb.innerHTML=`<span class="verdict ${ok?'ok':give?'':'ko'}">${ok?'Correct.':give?'Voici la réponse.':'Raté.'}</span><div><strong>${esc(e[0])}</strong> : ${e[2]} <code>${e[1].join(' / ')}</code>. ${esc(e[3])}.</div>`;
 }
-$('#pCheck').onclick=()=>pCheck();$('#pNext').onclick=pNew;
+$('#pCheck').onclick=()=>pCheck();$('#pGive').onclick=()=>pCheck(null,true);$('#pNext').onclick=pNew;
 pNew();
 
 /* =========================================================
@@ -1346,7 +1348,7 @@ function qNew(){
   const pool=QUIZ.filter(x=>(qTheme==='all'||x.t===qTheme)&&(x!==qLast));
   if(!pool.length){$('#qQ').textContent='Aucune question pour ce cours.';$('#qOpts').innerHTML='';return}
   const w=pool.map(x=>1+3*(S.miss[qKey(x)]||0));let r=Math.random()*w.reduce((a,b)=>a+b,0),k=0;while(k<pool.length-1&&r>=w[k]){r-=w[k];k++}
-  qCur=pool[k];qLast=qCur;qDone=false;$('#qFb').hidden=true;
+  qCur=pool[k];qLast=qCur;qDone=false;$('#qFb').hidden=true;$('#qGive').hidden=false;
   $('#qEyebrow').textContent=qCur.t+((S.miss[qKey(qCur)]||0)>0?' · à retravailler':'');
   $('#qQ').textContent=qCur.q;
   $('#qOpts').innerHTML=shuffle(qCur.o.map((o,i)=>[o,i])).map(([o,i])=>`<button class="opt" data-i="${i}">${esc(o)}</button>`).join('');
@@ -1354,14 +1356,15 @@ function qNew(){
   const n=QUIZ.filter(x=>qTheme==='all'||x.t===qTheme).length, todo=QUIZ.filter(x=>(qTheme==='all'||x.t===qTheme)&&(S.miss[qKey(x)]||0)>0).length;
   $('#qCount').textContent=`${n} questions dans ${qTheme==='all'?'tes cours':'ce cours'}${todo?` · ${todo} à retravailler`:''}. Les questions ratées reviennent plus souvent.`;
 }
+// btn = null : « Je ne sais pas » → on montre la réponse, et la question compte comme ratée (elle reviendra plus souvent).
 function qAnswer(btn){
-  if(qDone)return;qDone=true;const ok=btn.dataset.i==='0',k=qKey(qCur);
+  if(qDone)return;qDone=true;$('#qGive').hidden=true;const ok=!!btn&&btn.dataset.i==='0',k=qKey(qCur);
   S.miss[k]=ok?Math.max(0,(S.miss[k]||0)-1):(S.miss[k]||0)+1;tally('quiz',ok);
   $$('#qOpts .opt').forEach(b=>{if(b.dataset.i==='0')b.classList.add('ok');else if(b===btn)b.classList.add('ko')});
-  const fb=$('#qFb');fb.className='fb '+(ok?'ok':'ko');fb.hidden=false;
-  fb.innerHTML=`<span class="verdict ${ok?'ok':'ko'}">${ok?'Correct.':'Raté.'}</span>${ok?'':`<div>Bonne réponse : <strong>${esc(qCur.o[0])}</strong></div>`}<div>${esc(qCur.e)}</div><div class="empty">Source : ${esc(qCur.s)}</div>`;
+  const fb=$('#qFb');fb.className='fb '+(ok?'ok':btn?'ko':'');fb.hidden=false;
+  fb.innerHTML=`<span class="verdict ${ok?'ok':btn?'ko':''}">${ok?'Correct.':btn?'Raté.':'Voici la réponse.'}</span>${ok?'':`<div>Bonne réponse : <strong>${esc(qCur.o[0])}</strong></div>`}<div>${esc(qCur.e)}</div><div class="empty">Source : ${esc(qCur.s)}</div>`;
 }
-$('#qNext').onclick=qNew;
+$('#qNext').onclick=qNew;$('#qGive').onclick=()=>qAnswer(null);
 renderScore('quiz');
 qNew();
 
