@@ -25,7 +25,7 @@ import glob, json
 quiz = []
 for f in sorted(glob.glob(p('outils', 'quiz', '*.json'))):
     for x in json.load(open(f, encoding='utf-8')):
-        assert set(x) == {'t', 's', 'q', 'o', 'e'} and len(x['o']) == 4, (f, x.get('q'))
+        assert set(x) == {'t', 's', 'q', 'o', 'e', 'x'} and len(x['o']) == 4 and len(x['x']) == 3, (f, x.get('q'))
         quiz.append(x)
 data = json.dumps(quiz, ensure_ascii=False, separators=(',', ':')).replace('</', '<\\/')
 fp = p('outils', 'entrainement.frag.html')

@@ -9,7 +9,12 @@
 "Elle change à chaque redémarrage",
 "Elle n'a pas de masque"
 ],
-"e": "Une adresse privée n'est valable que sur un réseau privé."
+"e": "Une adresse privée n'est valable que sur un réseau privé.",
+"x": [
+"La longueur n'a rien à voir : privée ou publique, c'est 32 bits.",
+"Une adresse statique privée reste privée.",
+"Une adresse privée a bien un masque."
+]
 },
 {
 "t": "NAT / PAT",
@@ -21,7 +26,12 @@
 "Chiffrer les échanges",
 "Se passer de routeur"
 ],
-"e": "Le manque d'adresses publiques est le gros problème d'IPv4."
+"e": "Le manque d'adresses publiques est le gros problème d'IPv4.",
+"x": [
+"Elles ne rendent pas Internet plus rapide.",
+"Le chiffrement n'a rien à voir.",
+"Pour sortir du réseau, il faut toujours un routeur."
+]
 },
 {
 "t": "NAT / PAT",
@@ -33,7 +43,12 @@
 "Sur le serveur DNS",
 "Sur le switch d'étage"
 ],
-"e": "Le cours cite aussi le pare-feu ou le proxy comme emplacements possibles."
+"e": "Le cours cite aussi le pare-feu ou le proxy comme emplacements possibles.",
+"x": [
+"Les PC envoient avec leur adresse privée ; ils ne traduisent rien.",
+"Le DNS traduit des noms, pas des adresses.",
+"Un switch d'étage ne fait pas de NAT."
+]
 },
 {
 "t": "NAT / PAT",
@@ -45,7 +60,12 @@
 "Remplacer l'adresse MAC par l'adresse IP",
 "Chiffrer l'adresse IP du PC"
 ],
-"e": "Exemple du cours : un PC domestique qui surfe à travers sa box."
+"e": "Exemple du cours : un PC domestique qui surfe à travers sa box.",
+"x": [
+"L'adresse du serveur ne change pas à l'aller.",
+"La NAT ne touche pas aux adresses MAC.",
+"Rien n'est chiffré."
+]
 },
 {
 "t": "NAT / PAT",
@@ -57,7 +77,12 @@
 "Le contenu de la page web",
 "Le mot de passe Wi-Fi"
 ],
-"e": "Grâce à cette table, la réponse du serveur est renvoyée au bon PC."
+"e": "Grâce à cette table, la réponse du serveur est renvoyée au bon PC.",
+"x": [
+"L'adresse MAC seule ne permet pas de retrouver la connexion.",
+"La box ne garde pas le contenu des pages.",
+"Le mot de passe Wi-Fi n'a rien à voir."
+]
 },
 {
 "t": "NAT / PAT",
@@ -69,7 +94,12 @@
 "L'adresse MAC du PC",
 "L'adresse du serveur DNS"
 ],
-"e": "La box remplace ensuite son adresse publique par l'adresse privée du PC."
+"e": "La box remplace ensuite son adresse publique par l'adresse privée du PC.",
+"x": [
+"Le serveur ne connaît jamais l'adresse privée du PC.",
+"Les adresses MAC ne traversent pas Internet.",
+"Le DNS n'intervient pas dans la réponse."
+]
 },
 {
 "t": "NAT / PAT",
@@ -81,7 +111,12 @@
 "Deux au maximum",
 "Aucune sans NAT statique"
 ],
-"e": "C'est le cas de toutes les box : tous les appareils de la maison sortent avec la même IP publique."
+"e": "C'est le cas de toutes les box : tous les appareils de la maison sortent avec la même IP publique.",
+"x": [
+"Toute la maison sort avec la même IP.",
+"Il n'y a pas de limite à deux.",
+"La NAT dynamique de la box suffit."
+]
 },
 {
 "t": "NAT / PAT",
@@ -93,7 +128,12 @@
 "New Address Transfer",
 "Network Authentication Token"
 ],
-"e": "La NAT traduit des adresses entre les réseaux et isole le trafic local du trafic d'Internet."
+"e": "La NAT traduit des adresses entre les réseaux et isole le trafic local du trafic d'Internet.",
+"x": [
+"Ce n'est pas une table d'accès.",
+"Rien à voir avec un transfert.",
+"Rien à voir avec l'authentification."
+]
 },
 {
 "t": "NAT / PAT",
@@ -105,7 +145,12 @@
 "Privée → MAC, MAC → publique, publique → privée",
 "IPv4 → IPv6, IPv6 → IPv4, IPv4 → IPv4"
 ],
-"e": "1 privée vers 1 publique = traduction fixe ; n vers m = pool d'adresses ; n vers 1 = tout le monde derrière une seule adresse."
+"e": "1 privée vers 1 publique = traduction fixe ; n vers m = pool d'adresses ; n vers 1 = tout le monde derrière une seule adresse.",
+"x": [
+"Le cours ne cite pas ce sens-là.",
+"La NAT traduit des adresses IP, pas MAC.",
+"La NAT de ce cours reste en IPv4."
+]
 },
 {
 "t": "NAT / PAT",
@@ -117,7 +162,12 @@
 "Les adresses MAC",
 "Les règles du pare-feu"
 ],
-"e": "Les entrées sont ajoutées quand les paquets sortent."
+"e": "Les entrées sont ajoutées quand les paquets sortent.",
+"x": [
+"Elle se remplit au fil des connexions.",
+"Les adresses MAC ne sont pas dans cette table.",
+"Les règles de pare-feu sont ailleurs."
+]
 },
 {
 "t": "NAT / PAT",
@@ -129,7 +179,12 @@
 "Il la rejette toujours",
 "Il la transmet au serveur DNS"
 ],
-"e": "Les adresses et ports source et destination, internes et externes, sont inscrits dans la table."
+"e": "Les adresses et ports source et destination, internes et externes, sont inscrits dans la table.",
+"x": [
+"La réponse ne va qu'au poste concerné.",
+"Une réponse à une demande sortante est acceptée.",
+"Le DNS n'a rien à voir ici."
+]
 },
 {
 "t": "NAT / PAT",
@@ -141,7 +196,12 @@
 "Il prend l'adresse du serveur 170.1.1.1",
 "Il demande une adresse au DHCP"
 ],
-"e": "Dans la table : Inside Local = 10.1.1.1, Inside Global = 200.1.1.1."
+"e": "Dans la table : Inside Local = 10.1.1.1, Inside Global = 200.1.1.1.",
+"x": [
+"L'adresse privée ne doit pas sortir sur Internet.",
+"170.1.1.1 est l'adresse du serveur distant.",
+"Le DHCP ne fournit pas l'adresse globale NAT."
+]
 },
 {
 "t": "NAT / PAT",
@@ -153,7 +213,12 @@
 "L'adresse du serveur distant",
 "L'adresse du routeur côté Internet"
 ],
-"e": "Inside Global = l'adresse publique prise dans le pool pour représenter ce poste."
+"e": "Inside Global = l'adresse publique prise dans le pool pour représenter ce poste.",
+"x": [
+"Ça, c'est Inside Global.",
+"Le serveur distant est « outside ».",
+"Ce n'est pas une colonne de cette table."
+]
 },
 {
 "t": "NAT / PAT",
@@ -165,7 +230,12 @@
 "Changer l'adresse MAC",
 "Passer en IPv6"
 ],
-"e": "PAT = Port Address Translation : on distingue les connexions par le port."
+"e": "PAT = Port Address Translation : on distingue les connexions par le port.",
+"x": [
+"On ne coupe pas une connexion : on la distingue.",
+"Les adresses MAC ne vont pas sur Internet.",
+"IPv6 n'est pas la réponse du cours."
+]
 },
 {
 "t": "NAT / PAT",
@@ -177,7 +247,12 @@
 "Public Access Translation",
 "Packet Address Transfer"
 ],
-"e": "Avec la PAT, le routeur change le port source externe pour distinguer les connexions."
+"e": "Avec la PAT, le routeur change le port source externe pour distinguer les connexions.",
+"x": [
+"Ce n'est pas une table d'adresses privées.",
+"Rien à voir avec un accès public.",
+"Ce n'est pas un transfert de paquets."
+]
 },
 {
 "t": "NAT / PAT",
@@ -189,7 +264,12 @@
 "Oui, si le PC a une IP fixe",
 "Seulement en UDP"
 ],
-"e": "Pour ouvrir un service vers l'extérieur, il faut une redirection de port."
+"e": "Pour ouvrir un service vers l'extérieur, il faut une redirection de port.",
+"x": [
+"Sans entrée dans la table, la connexion entrante est rejetée.",
+"Une IP fixe sur le PC ne change rien.",
+"UDP n'est pas une exception."
+]
 },
 {
 "t": "NAT / PAT",
@@ -201,7 +281,12 @@
 "Une réservation DHCP seulement",
 "Rien, ça marche tout seul"
 ],
-"e": "La box remplace sa propre adresse publique (destination) par l'adresse privée du serveur."
+"e": "La box remplace sa propre adresse publique (destination) par l'adresse privée du serveur.",
+"x": [
+"Un VLAN segmente le réseau local, il n'ouvre rien vers Internet.",
+"Une réservation fixe l'IP du serveur, mais n'ouvre pas le port.",
+"Le NAT dynamique bloque les connexions entrantes."
+]
 },
 {
 "t": "NAT / PAT",
@@ -213,7 +298,12 @@
 "Par un broadcast sur Internet",
 "Par le DHCP de son FAI"
 ],
-"e": "Le client envoie sa requête HTTP vers l'adresse publique de la box."
+"e": "Le client envoie sa requête HTTP vers l'adresse publique de la box.",
+"x": [
+"Les adresses MAC ne voyagent pas sur Internet.",
+"Un broadcast ne traverse pas Internet.",
+"Le DHCP de son FAI lui donne sa propre adresse, pas celle du site."
+]
 },
 {
 "t": "NAT / PAT",
@@ -225,19 +315,12 @@
 "L'adresse du client",
 "L'adresse du DNS"
 ],
-"e": "La box remplace l'adresse privée du serveur par son adresse publique."
-},
-{
-"t": "NAT / PAT",
-"s": "Cours NAT/PAT (David Rodriguez)",
-"q": "Avec la redirection de port, qu'a l'impression de voir le client sur Internet ?",
-"o": [
-"Que le serveur web est hébergé par la box",
-"Qu'il parle directement à l'adresse privée du serveur",
-"Que le site est en panne",
-"Qu'il est dans le même réseau local"
-],
-"e": "Il ne voit jamais l'adresse privée du serveur."
+"e": "La box remplace l'adresse privée du serveur par son adresse publique.",
+"x": [
+"La box remplace l'adresse privée du serveur.",
+"Le client ne reçoit pas sa propre adresse en source.",
+"Le DNS n'est pas dans l'échange."
+]
 },
 {
 "t": "NAT / PAT",
@@ -249,7 +332,12 @@
 "Une translation réservée à IPv6",
 "Une translation sans table"
 ],
-"e": "Attention : ailleurs, DNAT désigne souvent la NAT de destination (redirection de port). Retiens le sens de ton formateur, mais sache que les deux existent."
+"e": "Attention : ailleurs, DNAT désigne souvent la NAT de destination (redirection de port). Retiens le sens de ton formateur, mais sache que les deux existent.",
+"x": [
+"C'est le sens habituel ailleurs, pas celui de ton cours.",
+"Rien à voir avec IPv6.",
+"La translation dynamique utilise bien une table."
+]
 },
 {
 "t": "NAT / PAT",
@@ -261,7 +349,12 @@
 "Un VLAN",
 "Un nouveau masque"
 ],
-"e": "La règle contient le protocole (TCP ou UDP), le port source, le port de destination et l'IP LAN de la caméra."
+"e": "La règle contient le protocole (TCP ou UDP), le port source, le port de destination et l'IP LAN de la caméra.",
+"x": [
+"Le DHCP donne des adresses, il n'ouvre pas l'accès depuis Internet.",
+"Un VLAN ne rend rien accessible depuis Internet.",
+"Le masque ne joue pas sur l'accès extérieur."
+]
 },
 {
 "t": "NAT / PAT",
@@ -273,7 +366,12 @@
 "ip nat enable sur toutes les interfaces",
 "Ce n'est pas nécessaire"
 ],
-"e": "Le routeur traduit les paquets qui passent d'une interface inside à une interface outside."
+"e": "Le routeur traduit les paquets qui passent d'une interface inside à une interface outside.",
+"x": [
+"C'est inversé.",
+"Cette commande n'existe pas.",
+"Sans inside/outside, le routeur ne sait pas quoi traduire."
+]
 },
 {
 "t": "NAT / PAT",
@@ -285,6 +383,96 @@
 "show nat table",
 "show ip interface brief"
 ],
-"e": "On y retrouve les colonnes Inside local et Inside global de l'exemple du cours."
+"e": "On y retrouve les colonnes Inside local et Inside global de l'exemple du cours.",
+"x": [
+"Elle affiche la table de routage.",
+"Cette commande n'existe pas.",
+"Elle affiche l'état des interfaces."
+]
+},
+{
+"t": "NAT / PAT",
+"s": "Cours NAT/PAT (David Rodriguez)",
+"q": "Selon le cours, où peut se trouver le NAT ?",
+"o": [
+"Sur le routeur, le pare-feu ou le proxy",
+"Uniquement sur les PC",
+"Sur le serveur DHCP",
+"Sur le switch d'accès"
+],
+"e": "Il faut un translateur d'adresses entre le réseau privé et Internet.",
+"x": [
+"Les PC ne traduisent pas leurs adresses.",
+"Le DHCP distribue des adresses, il ne les traduit pas.",
+"Le switch travaille en couche 2."
+]
+},
+{
+"t": "NAT / PAT",
+"s": "Cours NAT/PAT (David Rodriguez)",
+"q": "Quel type de translation utilise un pool de plusieurs adresses publiques pour de nombreux postes ?",
+"o": [
+"n adresses privées vers m adresses publiques",
+"1 adresse privée vers 1 adresse publique",
+"n adresses privées vers 1 adresse publique",
+"1 adresse publique vers n adresses MAC"
+],
+"e": "C'est l'exemple Cisco du cours : la liste d'adresses globales 200.1.1.1 à 200.1.1.5.",
+"x": [
+"Ça, c'est une traduction fixe pour un seul poste.",
+"Ça, c'est le cas de la box : une seule adresse.",
+"La NAT ne traduit pas vers des adresses MAC."
+]
+},
+{
+"t": "NAT / PAT",
+"s": "Cours NAT/PAT (David Rodriguez)",
+"q": "Quel type de NAT la box d'un particulier active-t-elle par défaut ?",
+"o": [
+"La NAT dynamique",
+"La NAT statique",
+"Aucune NAT",
+"La redirection de tous les ports"
+],
+"e": "C'est ce qui permet à tous les appareils de la maison d'aller sur Internet.",
+"x": [
+"La statique se configure à la main pour un poste précis.",
+"Sans NAT, les adresses privées ne sortiraient pas.",
+"Aucun port n'est redirigé par défaut."
+]
+},
+{
+"t": "NAT / PAT",
+"s": "Cours NAT/PAT (David Rodriguez)",
+"q": "En plus d'économiser les adresses, qu'apporte la NAT d'après le cours ?",
+"o": [
+"Elle isole le trafic local du trafic public d'Internet",
+"Elle accélère la connexion",
+"Elle chiffre les données",
+"Elle remplace le pare-feu"
+],
+"e": "Les adresses privées du réseau ne sont pas vues depuis Internet.",
+"x": [
+"Elle ne change pas le débit.",
+"Elle ne chiffre rien.",
+"Elle protège un peu, mais ne remplace pas un pare-feu."
+]
+},
+{
+"t": "NAT / PAT",
+"s": "Cours NAT/PAT (David Rodriguez)",
+"q": "Dans la table NAT Cisco, que désigne « Inside Global » ?",
+"o": [
+"L'adresse publique qui représente le poste sur Internet (ex. 200.1.1.1)",
+"L'adresse privée du poste (ex. 10.1.1.1)",
+"L'adresse du serveur distant",
+"L'adresse MAC du routeur"
+],
+"e": "Inside Local = l'adresse privée du même poste.",
+"x": [
+"Ça, c'est Inside Local.",
+"Le serveur distant est côté outside.",
+"Les adresses MAC ne sont pas dans cette table."
+]
 }
 ]
