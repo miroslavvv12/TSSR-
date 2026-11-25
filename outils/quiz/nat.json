@@ -1,0 +1,170 @@
+[
+{
+"t": "NAT / PAT",
+"s": "Cours Architecture d'un réseau (NAT)",
+"q": "À quoi sert la NAT sur un routeur ou une box ?",
+"o": [
+"Remplacer les adresses IP privées des postes par l'adresse IP publique quand ils vont sur Internet",
+"Attribuer automatiquement les adresses IP aux postes",
+"Traduire les noms de domaine en adresses IP",
+"Découper le réseau en VLAN"
+],
+"e": "NAT = Network Address Translation. Le routeur masque les adresses privées et présente son adresse publique."
+},
+{
+"t": "NAT / PAT",
+"s": "Cours Architecture d'un réseau (NAT)",
+"q": "Pourquoi un poste en 192.168.1.10 a-t-il besoin de la NAT pour aller sur Internet ?",
+"o": [
+"Une adresse privée n'est pas routable sur Internet",
+"Parce que son masque est trop petit",
+"Parce que le DNS ne connaît pas les adresses privées",
+"Il n'en a pas besoin"
+],
+"e": "Les plages 10/8, 172.16/12 et 192.168/16 sont privées : les routeurs d'Internet ne les acheminent pas."
+},
+{
+"t": "NAT / PAT",
+"s": "Cours Architecture d'un réseau (NAT)",
+"q": "Quelles informations la box garde-t-elle dans sa table de NAT pour renvoyer la réponse au bon poste ?",
+"o": [
+"L'IP privée du poste, l'IP de destination, la durée de vie et le port source",
+"Seulement l'adresse MAC du poste",
+"Le nom d'hôte et le mot de passe Wi-Fi",
+"Le bail DHCP du poste"
+],
+"e": "Le port source permet de distinguer plusieurs demandes venant du même ordinateur ou de postes différents."
+},
+{
+"t": "NAT / PAT",
+"s": "Cours Architecture d'un réseau (NAT)",
+"q": "Le poste 192.168.1.10 envoie une requête DNS à 8.8.8.8. Sur Internet, quelle adresse source voit Google ?",
+"o": [
+"L'adresse IP publique (WAN) de la box",
+"192.168.1.10",
+"L'adresse MAC du poste",
+"192.168.1.1, l'adresse LAN de la box"
+],
+"e": "Après le routeur, l'adresse source privée est remplacée par l'IP WAN. La réponse revient vers l'IP WAN, puis la box la renvoie au poste."
+},
+{
+"t": "NAT / PAT",
+"s": "Cours Architecture d'un réseau (PAT)",
+"q": "Dans ton cours, à quoi sert la table de PAT (redirection de port) ?",
+"o": [
+"Rendre un service du réseau local accessible depuis Internet",
+"Permettre aux postes d'aller sur Internet",
+"Bloquer les ports dangereux",
+"Donner une adresse IP aux postes"
+],
+"e": "Exemple du cours : accéder à sa caméra IP depuis Internet. On l'appelle aussi port forwarding."
+},
+{
+"t": "NAT / PAT",
+"s": "Cours Architecture d'un réseau (PAT)",
+"q": "Quelles informations contient une règle de redirection de port ?",
+"o": [
+"Le protocole (TCP ou UDP), le port source, le port de destination et l'IP LAN de l'équipement",
+"L'adresse MAC et le VLAN",
+"Le nom de domaine et le serveur DNS",
+"Le masque et la passerelle"
+],
+"e": "La box sait ainsi vers quel équipement du LAN envoyer ce qui arrive sur ce port."
+},
+{
+"t": "NAT / PAT",
+"s": "Notion générale (pas dans les cours que j'ai pu lire)",
+"q": "Sans redirection de port, peut-on joindre depuis Internet un PC du réseau local derrière une box ?",
+"o": [
+"Non, une connexion entrante ne correspond à aucune entrée de la table de NAT",
+"Oui, avec son adresse privée",
+"Oui, avec son adresse MAC",
+"Oui, toujours"
+],
+"e": "La NAT ne laisse revenir que les réponses à des demandes parties de l'intérieur."
+},
+{
+"t": "NAT / PAT",
+"s": "Notion générale (pas dans les cours que j'ai pu lire)",
+"q": "Chez Cisco, que veut dire PAT (ou NAT « overload ») ?",
+"o": [
+"Plusieurs postes partagent une seule adresse publique, distingués par leur numéro de port",
+"Une adresse privée toujours traduite par la même adresse publique",
+"Une redirection de port vers un serveur",
+"Un VLAN pour Internet"
+],
+"e": "Attention au vocabulaire : chez Cisco, PAT désigne cette surcharge. Ton cours appelle « PAT » la redirection de port. C'est le cas d'une box à la maison : tous les appareils sortent avec la même IP publique."
+},
+{
+"t": "NAT / PAT",
+"s": "Notion générale (pas dans les cours que j'ai pu lire)",
+"q": "Qu'est-ce que la NAT statique ?",
+"o": [
+"Une adresse privée toujours traduite par la même adresse publique",
+"Plusieurs postes qui partagent une seule adresse publique",
+"Une plage d'adresses publiques attribuées à la demande",
+"Une adresse IP fixe sur un poste"
+],
+"e": "Utile pour un serveur qui doit être joignable depuis Internet avec toujours la même adresse."
+},
+{
+"t": "NAT / PAT",
+"s": "Notion générale (pas dans les cours que j'ai pu lire)",
+"q": "Qu'est-ce que la NAT dynamique ?",
+"o": [
+"Les postes reçoivent une adresse publique prise dans un pool, tant qu'il en reste",
+"Chaque poste garde toujours la même adresse publique",
+"Tous les postes partagent une seule adresse grâce aux ports",
+"Le DHCP qui distribue des adresses"
+],
+"e": "Si le pool est vide, les postes suivants ne sortent pas. C'est pour ça que la PAT (overload) est la plus utilisée."
+},
+{
+"t": "NAT / PAT",
+"s": "Notion générale (pas dans les cours que j'ai pu lire)",
+"q": "Sur un routeur Cisco, comment déclare-t-on le rôle des interfaces pour la NAT ?",
+"o": [
+"ip nat inside côté LAN, ip nat outside côté Internet",
+"ip nat outside côté LAN, ip nat inside côté Internet",
+"ip nat enable sur toutes les interfaces",
+"Ce n'est pas nécessaire"
+],
+"e": "Le routeur traduit les paquets qui passent d'une interface inside à une interface outside."
+},
+{
+"t": "NAT / PAT",
+"s": "Notion générale (pas dans les cours que j'ai pu lire)",
+"q": "Dans le vocabulaire Cisco, qu'est-ce que l'adresse « inside local » ?",
+"o": [
+"L'adresse privée du poste dans le réseau local",
+"L'adresse publique qui représente le poste sur Internet",
+"L'adresse du serveur distant",
+"L'adresse de la passerelle"
+],
+"e": "Inside global = l'adresse publique qui représente ce poste vue d'Internet."
+},
+{
+"t": "NAT / PAT",
+"s": "Notion générale (pas dans les cours que j'ai pu lire)",
+"q": "Quelle commande Cisco affiche les traductions NAT en cours ?",
+"o": [
+"show ip nat translations",
+"show ip route",
+"show nat table",
+"show ip interface brief"
+],
+"e": "Pour les compteurs : show ip nat statistics."
+},
+{
+"t": "NAT / PAT",
+"s": "Notion générale (pas dans les cours que j'ai pu lire)",
+"q": "Pourquoi dit-on que la NAT a prolongé la vie d'IPv4 ?",
+"o": [
+"Tout un réseau privé sort avec une seule adresse publique, ce qui économise les adresses",
+"Elle chiffre les adresses IPv4",
+"Elle transforme les adresses IPv4 en IPv6",
+"Elle augmente la taille des adresses"
+],
+"e": "IPv4 n'a qu'environ 4,3 milliards d'adresses. IPv6 règle le problème à la source."
+}
+]
