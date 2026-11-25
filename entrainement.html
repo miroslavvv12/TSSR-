@@ -6,7 +6,7 @@
 <meta name="robots" content="noindex, nofollow">
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="theme-color" content="#111417">
+<meta name="theme-color" content="#121212">
 <style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}</style>
 </head>
 <body>
@@ -16,19 +16,32 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap">
 <style>
 /* Layout : une colonne d'exercice centrée, barre d'onglets collante en haut, une "console" par exercice. */
+/* Noir et blanc doux : pas de noir ni de blanc purs, pour limiter le contraste qui fatigue les yeux.
+   Juste / faux se distinguent par le trait (plein / pointillé) et par ✓ / ✗, pas par la couleur. */
 :root{
-  --bg:#111417; --surface:#181c21; --sunk:#0c0e10; --line:#2a3038; --fg:#dfe3e8; --muted:#8d96a1;
-  --accent:#6aa6e0; --accent-ink:#0d1620; --ok:#5fbf86; --ko:#e2806f; --okbg:rgba(95,191,134,.12); --kobg:rgba(226,128,111,.12);
+  --bg:#121212; --surface:#1c1c1c; --sunk:#171717; --line:#363636; --fg:#e2e2e2; --muted:#9a9a9a;
+  --accent:#d6d6d6; --accent-ink:#141414; --ok:#e2e2e2; --ko:#e2e2e2; --okbg:rgba(226,226,226,.08); --kobg:transparent;
   --f-ui:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
   --f-mono:"JetBrains Mono",ui-monospace,"SF Mono",Menlo,Consolas,monospace;
   color-scheme:dark;
 }
 @media (prefers-color-scheme: light){:root:not([data-theme="dark"]){
-  --bg:#f3f5f7; --surface:#ffffff; --sunk:#eef1f4; --line:#d5dbe1; --fg:#1b2128; --muted:#5b6672;
-  --accent:#1f6fb2; --accent-ink:#ffffff; --ok:#1f8a4c; --ko:#b8432f; --okbg:rgba(31,138,76,.1); --kobg:rgba(184,67,47,.1); color-scheme:light}}
+  --bg:#f2f2f2; --surface:#f9f9f9; --sunk:#e9e9e9; --line:#cfcfcf; --fg:#1e1e1e; --muted:#5e5e5e;
+  --accent:#2a2a2a; --accent-ink:#f2f2f2; --ok:#1e1e1e; --ko:#1e1e1e; --okbg:rgba(30,30,30,.06); --kobg:transparent; color-scheme:light}}
 :root[data-theme="light"]{
-  --bg:#f3f5f7; --surface:#ffffff; --sunk:#eef1f4; --line:#d5dbe1; --fg:#1b2128; --muted:#5b6672;
-  --accent:#1f6fb2; --accent-ink:#ffffff; --ok:#1f8a4c; --ko:#b8432f; --okbg:rgba(31,138,76,.1); --kobg:rgba(184,67,47,.1); color-scheme:light}
+  --bg:#f2f2f2; --surface:#f9f9f9; --sunk:#e9e9e9; --line:#cfcfcf; --fg:#1e1e1e; --muted:#5e5e5e;
+  --accent:#2a2a2a; --accent-ink:#f2f2f2; --ok:#1e1e1e; --ko:#1e1e1e; --okbg:rgba(30,30,30,.06); --kobg:transparent; color-scheme:light}
+:root[data-theme="dark"]{
+  --bg:#121212; --surface:#1c1c1c; --sunk:#171717; --line:#363636; --fg:#e2e2e2; --muted:#9a9a9a;
+  --accent:#d6d6d6; --accent-ink:#141414; --ok:#e2e2e2; --ko:#e2e2e2; --okbg:rgba(226,226,226,.08); --kobg:transparent; color-scheme:dark}
+/* Faux = bordure en pointillés ; juste = bordure pleine épaisse. */
+input.ko,.console.ko,.opt.ko,.fb.ko,.placed div.ko,.dchip.ko{border-style:dashed!important}
+input.ok,.console.ok,.opt.ok,.fb.ok,.placed div.ok,.dchip.ok{border-width:2px}
+.verdict.ok::before{content:"✓ "} .verdict.ko::before{content:"✗ "}
+.opt.ok::before{content:"✓ ";font-weight:600} .opt.ko::before{content:"✗ ";font-weight:600}
+.dchip.ko{text-decoration:line-through;text-decoration-thickness:1px}
+.dchip.ko small{text-decoration:none;display:block}
+.hint.ko{color:var(--muted)}
 [hidden]{display:none!important}
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.55 var(--f-ui);-webkit-text-size-adjust:100%}

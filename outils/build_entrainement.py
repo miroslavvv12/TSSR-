@@ -13,7 +13,7 @@ HEAD = """<!DOCTYPE html>
 <meta name="robots" content="noindex, nofollow">
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="theme-color" content="#111417">
+<meta name="theme-color" content="#121212">
 <style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}</style>
 </head>
 <body>
