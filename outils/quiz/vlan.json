@@ -14,7 +14,8 @@
 "Le cours insiste : un VLAN n'est pas un réseau virtualisé.",
 "Le Wi-Fi est un support, pas un VLAN.",
 "Un VPN relie des sites à travers Internet."
-]
+],
+"n": 0
 },
 {
 "t": "VLAN",
@@ -31,7 +32,8 @@
 "Le débit dépend des câbles et des équipements.",
 "La longueur d'un câble reste la même.",
 "Le nombre de ports ne change pas."
-]
+],
+"n": 2
 },
 {
 "t": "VLAN",
@@ -48,7 +50,8 @@
 "Pas de chiffrement ni de sauvegarde avec les VLAN.",
 "Ce ne sont pas les avantages cités.",
 "On garde les mêmes câbles, switchs et adresses."
-]
+],
+"n": 1
 },
 {
 "t": "VLAN",
@@ -65,7 +68,8 @@
 "Le niveau 2 se base sur l'adresse MAC.",
 "Le niveau 3 se base sur l'IP ou le protocole.",
 "Le VLAN natif est le VLAN par défaut du switch."
-]
+],
+"n": 1
 },
 {
 "t": "VLAN",
@@ -82,7 +86,8 @@
 "Le niveau 1 se base sur le port.",
 "Le niveau 3 se base sur le protocole ou l'IP.",
 "Le VLAN de management porte l'IP du switch."
-]
+],
+"n": 1
 },
 {
 "t": "VLAN",
@@ -99,7 +104,8 @@
 "Le port ne se désactive pas.",
 "Le switch accepte le nouvel appareil.",
 "Le VLAN existe toujours."
-]
+],
+"n": 3
 },
 {
 "t": "VLAN",
@@ -116,7 +122,8 @@
 "Ce sont les niveaux 1 et 2.",
 "Ce sont des VLAN particuliers, pas des types de niveau 3.",
 "Ce sont des types de ports."
-]
+],
+"n": 1
 },
 {
 "t": "VLAN",
@@ -133,7 +140,8 @@
 "Il marche avec IP.",
 "C'est l'inconvénient du VLAN par port.",
 "Il n'y a pas de limite à 2 VLAN."
-]
+],
+"n": 2
 },
 {
 "t": "VLAN",
@@ -150,7 +158,8 @@
 "802.3, c'est Ethernet.",
 "802.11, c'est le Wi-Fi.",
 "802.1X, c'est l'authentification sur un port."
-]
+],
+"n": 1
 },
 {
 "t": "VLAN",
@@ -167,7 +176,8 @@
 "Le PC envoie une trame sans étiquette.",
 "Le switch l'ajoute dès l'entrée.",
 "L'étiquette est un champ à part, pas dans la MAC."
-]
+],
+"n": 2
 },
 {
 "t": "VLAN",
@@ -184,7 +194,8 @@
 "C'est l'inverse.",
 "Les PC sont sur des ports d'accès.",
 "Ils traitent l'étiquette différemment."
-]
+],
+"n": 2
 },
 {
 "t": "VLAN",
@@ -201,7 +212,8 @@
 "Trop petit : le numéro de VLAN fait déjà 12 bits.",
 "Trop grand.",
 "12, c'est le nombre de bits du numéro de VLAN."
-]
+],
+"n": 1
 },
 {
 "t": "VLAN",
@@ -218,7 +230,8 @@
 "Le cours précise : pas en début de trame.",
 "Le FCS est le dernier champ.",
 "L'en-tête IP est à l'intérieur des données."
-]
+],
+"n": 2
 },
 {
 "t": "VLAN",
@@ -235,7 +248,8 @@
 "8 bits ne donneraient que 256 VLAN.",
 "16 bits, c'est le champ 8100 ou l'EtherType.",
 "48 bits, c'est une adresse MAC."
-]
+],
+"n": 1
 },
 {
 "t": "VLAN",
@@ -252,7 +266,8 @@
 "Le cours garde le mode access avec un VLAN voix.",
 "Le téléphone a son propre VLAN voix.",
 "Un seul câble suffit : le PC passe par le téléphone."
-]
+],
+"n": 3
 },
 {
 "t": "VLAN",
@@ -269,7 +284,8 @@
 "Le nom n'a rien à voir avec la direction.",
 "Le VLAN natif est le VLAN par défaut, non étiqueté.",
 "Rien à voir avec le Wi-Fi."
-]
+],
+"n": 1
 },
 {
 "t": "VLAN",
@@ -286,7 +302,8 @@
 "L'ordre de création ne compte pas.",
 "La voix a son propre VLAN.",
 "VTP passe par les trunks, pas par un VLAN dédié."
-]
+],
+"n": 4
 },
 {
 "t": "VLAN",
@@ -303,7 +320,8 @@
 "4094 est la fin des VLAN étendus.",
 "Ça, c'est la plage étendue.",
 "Pas de plage de 0 à 255."
-]
+],
+"n": 1
 },
 {
 "t": "VLAN",
@@ -320,7 +338,8 @@
 "Ça, c'est la plage normale.",
 "Ce sont les VLAN réservés Token Ring et FDDI.",
 "Les numéros s'arrêtent à 4094."
-]
+],
+"n": 1
 },
 {
 "t": "VLAN",
@@ -337,7 +356,8 @@
 "Le VLAN 10 se crée à la main.",
 "Le VLAN 99 se crée à la main.",
 "Les VLAN étendus ne sont pas créés par défaut."
-]
+],
+"n": 1
 },
 {
 "t": "VLAN",
@@ -354,7 +374,8 @@
 "La running-config ne garde pas les VLAN.",
 "Les VLAN ne sont pas dans la startup-config.",
 "Ce fichier n'existe pas."
-]
+],
+"n": 1
 },
 {
 "t": "VLAN",
@@ -371,7 +392,8 @@
 "4094 est le numéro maximum, pas le nombre supporté par ces switchs.",
 "1005 est la fin de la plage normale.",
 "Ce n'est pas le chiffre du cours."
-]
+],
+"n": 1
 },
 {
 "t": "VLAN",
@@ -388,7 +410,8 @@
 "Le DHCP donne des adresses IP, pas des VLAN.",
 "Le DNS résout des noms.",
 "VTP propage la liste des VLAN, pas l'affectation des ports."
-]
+],
+"n": 2
 },
 {
 "t": "VLAN",
@@ -405,7 +428,8 @@
 "STP évite les boucles.",
 "CDP découvre les voisins.",
 "DTP négocie le mode trunk."
-]
+],
+"n": 1
 },
 {
 "t": "VLAN",
@@ -422,7 +446,8 @@
 "VTP est propriétaire Cisco et passe par les trunks.",
 "Il fonctionne en couche 2.",
 "Ça, c'est le DHCP."
-]
+],
+"n": 3
 },
 {
 "t": "VLAN",
@@ -439,7 +464,8 @@
 "Le client ne peut rien créer.",
 "Le transparent ne propage pas.",
 "Ce mode n'est pas dans le cours."
-]
+],
+"n": 1
 },
 {
 "t": "VLAN",
@@ -456,7 +482,8 @@
 "Il les reçoit bien.",
 "Il les transmet bien.",
 "Il se synchronise bien."
-]
+],
+"n": 2
 },
 {
 "t": "VLAN",
@@ -473,7 +500,8 @@
 "Le serveur propage ses modifications.",
 "Le client ne peut rien modifier.",
 "Ce n'est pas un mode VTP."
-]
+],
+"n": 1
 },
 {
 "t": "VLAN",
@@ -490,7 +518,8 @@
 "Le switch ne redémarre pas.",
 "Le mot de passe ne change pas.",
 "Le VLAN natif ne change pas."
-]
+],
+"n": 2
 },
 {
 "t": "VLAN",
@@ -507,7 +536,8 @@
 "Un seul domaine par switch.",
 "Le nombre de VLAN n'a rien à voir.",
 "Il peut en rejoindre un."
-]
+],
+"n": 1
 },
 {
 "t": "VLAN",
@@ -524,7 +554,8 @@
 "Un sous-réseau par VLAN.",
 "Le cours demande d'éviter les masques variables.",
 "Les VLAN internes utilisent des adresses privées."
-]
+],
+"n": 2
 },
 {
 "t": "VLAN",
@@ -541,7 +572,8 @@
 "Les PC ne sont pas en trunk.",
 "Les liaisons entre switchs doivent être en trunk.",
 "C'est l'inverse."
-]
+],
+"n": 2
 },
 {
 "t": "VLAN",
@@ -558,7 +590,8 @@
 "Le Wi-Fi ne réduit pas les broadcasts.",
 "Un hub envoie tout à tout le monde : c'est pire.",
 "Un /8 ferait un réseau encore plus grand."
-]
+],
+"n": 3
 },
 {
 "t": "VLAN",
@@ -575,7 +608,8 @@
 "Le même switch ne suffit pas : les VLAN les séparent.",
 "Les IP ne suffisent pas sans routage.",
 "Les broadcasts restent dans leur VLAN."
-]
+],
+"n": 4
 },
 {
 "t": "VLAN",
@@ -592,7 +626,8 @@
 "Rien à voir avec le Wi-Fi.",
 "Rien à voir avec la route par défaut.",
 "Il faut au contraire des VLAN."
-]
+],
+"n": 5
 },
 {
 "t": "VLAN",
@@ -609,7 +644,8 @@
 "Le broadcast reste dans son VLAN.",
 "Un seul serveur suffit avec un relais.",
 "Le cours conseille un sous-réseau par VLAN."
-]
+],
+"n": 5
 },
 {
 "t": "VLAN",
@@ -626,7 +662,8 @@
 "Le trunk garde l'étiquette.",
 "Elle est retirée en sortie d'un port d'accès.",
 "C'est le switch qui la retire."
-]
+],
+"n": 2
 },
 {
 "t": "VLAN",
@@ -643,7 +680,8 @@
 "Un PC simple est en access.",
 "Une imprimante est en access.",
 "Rien à voir avec l'électricité."
-]
+],
+"n": 3
 },
 {
 "t": "VLAN",
@@ -660,7 +698,8 @@
 "Le plus courant est le VLAN par port.",
 "Rien ne l'impose.",
 "Le cours ne parle pas d'IPv6 ici."
-]
+],
+"n": 4
 },
 {
 "t": "VLAN",
@@ -677,7 +716,8 @@
 "La plage étendue n'est pas gérée par VTP v1 et v2.",
 "Pas avant la version 3.",
 "Il gère bien plus que le VLAN 1."
-]
+],
+"n": 2
 },
 {
 "t": "VLAN",
@@ -694,7 +734,8 @@
 "Ça, c'est le client.",
 "Il ne bloque pas les autres switchs.",
 "Il ne répond pas au serveur."
-]
+],
+"n": 3
 },
 {
 "t": "VLAN",
@@ -711,6 +752,7 @@
 "C'est l'inverse.",
 "Le cours dit le contraire.",
 "Le mode VTP ne change pas tout seul."
-]
+],
+"n": 2
 }
 ]

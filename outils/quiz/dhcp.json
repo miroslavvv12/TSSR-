@@ -14,7 +14,8 @@
 "Rien à voir avec un domaine.",
 "Rien à voir avec l'hypertexte (HTTP).",
 "Ce n'est pas un « process »."
-]
+],
+"n": 0
 },
 {
 "t": "DHCP",
@@ -31,7 +32,8 @@
 "Le DHCP ne chiffre rien.",
 "Ça, c'est le DNS.",
 "Il donne des adresses, il ne bloque pas."
-]
+],
+"n": 1
 },
 {
 "t": "DHCP",
@@ -48,7 +50,8 @@
 "Ils servent à sortir du réseau et à résoudre les noms.",
 "Sans IP, il ne peut pas envoyer de paquets IP.",
 "Le nom de domaine n'est pas indispensable."
-]
+],
+"n": 1
 },
 {
 "t": "DHCP",
@@ -65,7 +68,8 @@
 "Elles ne changent pas sans arrêt : elles durent le temps du bail.",
 "Elles sont souvent privées.",
 "Rien n'est chiffré."
-]
+],
+"n": 2
 },
 {
 "t": "DHCP",
@@ -82,7 +86,8 @@
 "Il ne répond qu'aux demandes.",
 "Les serveurs ont souvent une IP fixe.",
 "Tous les systèmes peuvent être clients DHCP."
-]
+],
+"n": 2
 },
 {
 "t": "DHCP",
@@ -99,7 +104,8 @@
 "Windows ne l'impose pas en soi : c'est une question de logique.",
 "Ce n'est pas une question de vitesse.",
 "Il sert le réseau local."
-]
+],
+"n": 2
 },
 {
 "t": "DHCP",
@@ -116,7 +122,8 @@
 "Rien à voir avec le contrat du FAI.",
 "Un bail a une fin de validité.",
 "Les DNS ne sont qu'une option du bail."
-]
+],
+"n": 0
 },
 {
 "t": "DHCP",
@@ -133,7 +140,8 @@
 "Le renouvellement est transparent pour l'utilisateur.",
 "Les mots de passe n'ont rien à voir.",
 "Aucun effet sur l'électricité."
-]
+],
+"n": 2
 },
 {
 "t": "DHCP",
@@ -150,7 +158,8 @@
 "Il ne connaît pas l'adresse IP du serveur.",
 "Sans IP, pas de DNS.",
 "Le serveur ne contacte pas les clients en premier."
-]
+],
+"n": 2
 },
 {
 "t": "DHCP",
@@ -167,7 +176,8 @@
 "Le ACK vient en dernier.",
 "Le Request vient du client.",
 "Ce message n'est pas dans le cours."
-]
+],
+"n": 1
 },
 {
 "t": "DHCP",
@@ -184,7 +194,8 @@
 "Le client ne compare pas les adresses.",
 "Il ne mesure pas la distance.",
 "Il en accepte une."
-]
+],
+"n": 3
 },
 {
 "t": "DHCP",
@@ -201,7 +212,8 @@
 "Le cours précise : en broadcast, pour prévenir tous les serveurs.",
 "Le routeur ne transmet pas les broadcasts.",
 "Le DNS n'intervient pas."
-]
+],
+"n": 2
 },
 {
 "t": "DHCP",
@@ -218,7 +230,8 @@
 "L'Offer n'est qu'une proposition.",
 "Le Discover est la recherche du serveur.",
 "Le Request est la demande du client."
-]
+],
+"n": 1
 },
 {
 "t": "DHCP",
@@ -235,7 +248,8 @@
 "Le client cherche d'abord un serveur.",
 "L'offre vient après la découverte.",
 "La demande vient après l'offre."
-]
+],
+"n": 1
 },
 {
 "t": "DHCP",
@@ -252,7 +266,8 @@
 "DHCP n'utilise pas TCP.",
 "ICMP sert au ping.",
 "ARP n'est pas un protocole de transport."
-]
+],
+"n": 1
 },
 {
 "t": "DHCP",
@@ -269,7 +284,8 @@
 "67, c'est le serveur.",
 "53, c'est le DNS.",
 "80, c'est HTTP."
-]
+],
+"n": 1
 },
 {
 "t": "DHCP",
@@ -286,7 +302,8 @@
 "La distance ne compte pas.",
 "Le DNS n'a rien à voir.",
 "Les switchs transmettent les broadcasts dans leur réseau."
-]
+],
+"n": 4
 },
 {
 "t": "DHCP",
@@ -303,7 +320,8 @@
 "Il ne distribue pas d'adresses lui-même.",
 "Ça, c'est la NAT.",
 "Ça, c'est le DNS."
-]
+],
+"n": 2
 },
 {
 "t": "DHCP",
@@ -320,7 +338,8 @@
 "Aucun logiciel tiers n'est nécessaire.",
 "On n'installe pas un rôle par le registre.",
 "Il faut l'installer."
-]
+],
+"n": 1
 },
 {
 "t": "DHCP",
@@ -337,7 +356,8 @@
 "La durée, c'est le bail.",
 "Rien à voir avec le Wi-Fi.",
 "Les DNS sont une option de l'étendue."
-]
+],
+"n": 0
 },
 {
 "t": "DHCP",
@@ -354,7 +374,8 @@
 "Ça, c'est une exclusion.",
 "Une réservation concerne un seul poste.",
 "Rien à voir avec le DNS."
-]
+],
+"n": 1
 },
 {
 "t": "DHCP",
@@ -371,7 +392,8 @@
 "Il peut envoyer d'autres informations.",
 "Il donne bien plus que le nom.",
 "L'heure n'est pas l'exemple du cours."
-]
+],
+"n": 1
 },
 {
 "t": "DHCP",
@@ -388,7 +410,8 @@
 "Le renouvellement est fait avant la fin.",
 "Aucun redémarrage n'est nécessaire.",
 "Un bail a toujours une fin."
-]
+],
+"n": 2
 },
 {
 "t": "DHCP",
@@ -405,7 +428,8 @@
 "La MAC sert à identifier le client, mais l'offre contient l'IP.",
 "Le serveur ne diffuse pas sa liste.",
 "Aucun mot de passe."
-]
+],
+"n": 2
 },
 {
 "t": "DHCP",
@@ -422,7 +446,8 @@
 "Ce n'est pas une question de vitesse.",
 "Il n'a pas encore d'IP.",
 "Le Discover reste dans le réseau local."
-]
+],
+"n": 2
 },
 {
 "t": "DHCP",
@@ -439,7 +464,8 @@
 "Le client ne prend qu'une adresse.",
 "Il ne coupe aucun serveur.",
 "Il leur sert : ils libèrent l'adresse proposée."
-]
+],
+"n": 4
 },
 {
 "t": "DHCP",
@@ -456,7 +482,8 @@
 "Le TTL est lié aux paquets et au DNS.",
 "RX et TX désignent la réception et l'émission.",
 "Ce sont des protocoles de transport."
-]
+],
+"n": 2
 },
 {
 "t": "DHCP",
@@ -473,6 +500,43 @@
 "Un serveur garde une IP fixe.",
 "Ses interfaces sont configurées à la main.",
 "Un contrôleur de domaine a une IP fixe."
-]
+],
+"n": 1
+},
+{
+"t": "DHCP",
+"s": "Cours DHCP (David Rodriguez)",
+"q": "Deux serveurs DHCP sur le même réseau distribuent des plages qui se chevauchent. Quel risque ?",
+"o": [
+"Ils peuvent donner la même adresse à deux postes : conflit d'adresses",
+"Aucun, le client prend la première offre",
+"Les postes reçoivent deux adresses chacun",
+"Le réseau devient plus rapide"
+],
+"e": "Chaque serveur ne connaît que ses propres baux : il ne sait pas ce que l'autre a déjà donné.",
+"x": [
+"Prendre la première offre n'empêche pas les doublons entre serveurs.",
+"Un client n'accepte qu'une offre.",
+"Rien à voir avec la vitesse."
+],
+"n": 5
+},
+{
+"t": "DHCP",
+"s": "Cours DHCP (David Rodriguez)",
+"q": "Un poste reçoit une adresse en 169.254.x.x. Que peux-tu en conclure ?",
+"o": [
+"Aucun serveur DHCP ne lui a répondu (adresse APIPA)",
+"Il a reçu une réservation",
+"Il est connecté à Internet",
+"Il a une adresse publique"
+],
+"e": "Vérifie le serveur DHCP, l'étendue, le câble, ou l'agent de relais si le serveur est sur un autre réseau.",
+"x": [
+"Une réservation donne une adresse de l'étendue.",
+"169.254 ne sort pas du réseau local.",
+"Ce n'est pas une adresse publique."
+],
+"n": 3
 }
 ]

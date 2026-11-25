@@ -14,7 +14,8 @@
 "Ça, c'est le DHCP.",
 "Ça, c'est la NAT.",
 "Ça, c'est le HTTPS."
-]
+],
+"n": 0
 },
 {
 "t": "DNS",
@@ -31,7 +32,8 @@
 "Il n'y a pas de serveur unique.",
 "Il y a une hiérarchie, avec la racine au sommet.",
 "Le DNS fonctionne aussi sur Internet."
-]
+],
+"n": 1
 },
 {
 "t": "DNS",
@@ -48,7 +50,8 @@
 "La barre sert aux chemins Linux et aux URL.",
 "www est un nom d'hôte courant.",
 "Ce n'est pas la notation du cours."
-]
+],
+"n": 1
 },
 {
 "t": "DNS",
@@ -65,7 +68,8 @@
 "Le nom de la machine est tout à gauche.",
 "Rien à voir avec un serveur secondaire.",
 "Ce n'est pas un type d'enregistrement."
-]
+],
+"n": 0
 },
 {
 "t": "DNS",
@@ -82,7 +86,8 @@
 "Ça, c'est le rôle d'un serveur secondaire.",
 "Rien à voir avec la vente de domaines.",
 "Ça, c'est un CNAME."
-]
+],
+"n": 1
 },
 {
 "t": "DNS",
@@ -99,7 +104,8 @@
 "Une plage d'adresses, c'est une étendue DHCP.",
 "Rien à voir avec la géographie.",
 "Rien à voir avec les VLAN."
-]
+],
+"n": 2
 },
 {
 "t": "DNS",
@@ -116,7 +122,8 @@
 "On part de la racine, à droite.",
 "L'ordre est fixé par la hiérarchie.",
 "La longueur ne compte pas."
-]
+],
+"n": 2
 },
 {
 "t": "DNS",
@@ -133,7 +140,8 @@
 "Il y en a 13.",
 "Les lettres vont de A à M.",
 "Ce sont 13 identités, réparties sur de nombreux sites."
-]
+],
+"n": 1
 },
 {
 "t": "DNS",
@@ -150,7 +158,8 @@
 "Les caches permettent de tenir un moment.",
 "Les noms disparaîtraient peu à peu.",
 "Tous les domaines dépendent de la racine."
-]
+],
+"n": 4
 },
 {
 "t": "DNS",
@@ -167,7 +176,8 @@
 "C'est le serveur récursif qui interroge la racine.",
 "Le DHCP ne résout pas les noms.",
 "Un switch ne connaît pas le DNS."
-]
+],
+"n": 1
 },
 {
 "t": "DNS",
@@ -184,7 +194,8 @@
 "Un serveur racine ne fait pas de récursion pour le public.",
 "La box sert d'abord au DHCP.",
 "Active Directory n'est pas un résolveur public."
-]
+],
+"n": 1
 },
 {
 "t": "DNS",
@@ -201,7 +212,8 @@
 "Il ne connaît pas encore le serveur de afpa.fr.",
 "Le DHCP ne connaît pas les domaines.",
 "Le poste est celui qui a posé la question."
-]
+],
+"n": 3
 },
 {
 "t": "DNS",
@@ -218,7 +230,8 @@
 "Le cache sert à aller plus vite.",
 "Ce n'est pas une sauvegarde.",
 "Aucune loi ne l'impose."
-]
+],
+"n": 2
 },
 {
 "t": "DNS",
@@ -235,7 +248,8 @@
 "On en prévoit au moins deux.",
 "13, ce sont les identités racine.",
 "Le registrar enregistre le nom, il ne répond pas aux requêtes."
-]
+],
+"n": 1
 },
 {
 "t": "DNS",
@@ -252,7 +266,8 @@
 "Rien à voir avec l'État.",
 "La vitesse n'a rien à voir.",
 "Le prix du domaine n'a rien à voir."
-]
+],
+"n": 2
 },
 {
 "t": "DNS",
@@ -269,7 +284,8 @@
 "S'il n'existait pas, il n'y aurait pas de réponse.",
 "Il a bien répondu.",
 "Rien à voir avec un piratage."
-]
+],
+"n": 4
 },
 {
 "t": "DNS",
@@ -286,7 +302,8 @@
 "Ça, c'est la résolution normale.",
 "Ça, c'est ARP.",
 "Rien à voir avec le cache."
-]
+],
+"n": 1
 },
 {
 "t": "DNS",
@@ -303,7 +320,8 @@
 "A fait l'inverse : nom vers IP.",
 "MX désigne les serveurs de mail.",
 "CNAME crée un alias."
-]
+],
+"n": 1
 },
 {
 "t": "DNS",
@@ -320,7 +338,8 @@
 "Il contient tous les domaines jusqu'au TLD.",
 "C'est un nom, pas une adresse.",
 "Rien à voir avec un serveur secondaire."
-]
+],
+"n": 0
 },
 {
 "t": "DNS",
@@ -337,7 +356,8 @@
 "AAAA, c'est pour IPv6.",
 "PTR fait l'inverse.",
 "MX désigne les serveurs de mail."
-]
+],
+"n": 1
 },
 {
 "t": "DNS",
@@ -354,7 +374,8 @@
 "A, c'est pour IPv4.",
 "CNAME crée un alias.",
 "PTR fait l'inverse."
-]
+],
+"n": 1
 },
 {
 "t": "DNS",
@@ -371,7 +392,8 @@
 "A pointe vers une IP.",
 "MX désigne les serveurs de mail.",
 "PTR sert à la résolution inverse."
-]
+],
+"n": 1
 },
 {
 "t": "DNS",
@@ -388,7 +410,8 @@
 "A pointe vers une IP.",
 "CNAME crée un alias.",
 "AAAA pointe vers une IPv6."
-]
+],
+"n": 1
 },
 {
 "t": "DNS",
@@ -405,7 +428,8 @@
 "Ça, c'est le TTL des paquets IP, une autre notion.",
 "Ça, c'est le DHCP.",
 "Le TTL ne règle pas l'affichage."
-]
+],
+"n": 1
 },
 {
 "t": "DNS",
@@ -422,7 +446,8 @@
 "Le cours dit qu'il ne le respecte pas toujours.",
 "Les navigateurs ont bien un cache.",
 "Il garde les réponses un temps limité."
-]
+],
+"n": 5
 },
 {
 "t": "DNS",
@@ -439,7 +464,8 @@
 "Les délégations peuvent s'enchaîner.",
 "Tout domaine peut déléguer.",
 "Rien à voir avec IPv6."
-]
+],
+"n": 2
 },
 {
 "t": "DNS",
@@ -456,7 +482,8 @@
 "Il y en a plusieurs.",
 "13, c'est le nombre d'identités de serveurs.",
 "Ce n'est pas un serveur par pays."
-]
+],
+"n": 1
 },
 {
 "t": "DNS",
@@ -473,7 +500,8 @@
 "Le DNS ne fonctionne pas par broadcast.",
 "La NAT traduit des adresses, elle n'en distribue pas.",
 "Le poste ne parle pas directement à la racine."
-]
+],
+"n": 3
 },
 {
 "t": "DNS",
@@ -490,7 +518,8 @@
 "Il a d'autres serveurs à interroger.",
 "Il ne redémarre pas.",
 "Il ne répond jamais au hasard."
-]
+],
+"n": 2
 },
 {
 "t": "DNS",
@@ -507,7 +536,8 @@
 "Le cours dit le contraire.",
 "Rien à voir avec IPv6.",
 "Le CNAME sert aux alias de noms."
-]
+],
+"n": 4
 },
 {
 "t": "DNS",
@@ -524,7 +554,8 @@
 "C'est l'inverse.",
 "Il reste sur le serveur qui fait autorité.",
 "Rien à voir avec IPv6."
-]
+],
+"n": 4
 },
 {
 "t": "DNS",
@@ -541,6 +572,7 @@
 "afpa est un domaine sous .fr.",
 "www est un nom d'hôte.",
 "defense.gouv est un sous-domaine sous gouv.fr."
-]
+],
+"n": 3
 }
 ]

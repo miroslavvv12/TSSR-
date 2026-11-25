@@ -14,7 +14,8 @@
 "La longueur n'a rien à voir : privée ou publique, c'est 32 bits.",
 "Une adresse statique privée reste privée.",
 "Une adresse privée a bien un masque."
-]
+],
+"n": 2
 },
 {
 "t": "NAT / PAT",
@@ -31,7 +32,8 @@
 "Elles ne rendent pas Internet plus rapide.",
 "Le chiffrement n'a rien à voir.",
 "Pour sortir du réseau, il faut toujours un routeur."
-]
+],
+"n": 1
 },
 {
 "t": "NAT / PAT",
@@ -48,7 +50,8 @@
 "Les PC envoient avec leur adresse privée ; ils ne traduisent rien.",
 "Le DNS traduit des noms, pas des adresses.",
 "Un switch d'étage ne fait pas de NAT."
-]
+],
+"n": 1
 },
 {
 "t": "NAT / PAT",
@@ -65,7 +68,8 @@
 "L'adresse du serveur ne change pas à l'aller.",
 "La NAT ne touche pas aux adresses MAC.",
 "Rien n'est chiffré."
-]
+],
+"n": 2
 },
 {
 "t": "NAT / PAT",
@@ -82,7 +86,8 @@
 "L'adresse MAC seule ne permet pas de retrouver la connexion.",
 "La box ne garde pas le contenu des pages.",
 "Le mot de passe Wi-Fi n'a rien à voir."
-]
+],
+"n": 2
 },
 {
 "t": "NAT / PAT",
@@ -99,7 +104,8 @@
 "Le serveur ne connaît jamais l'adresse privée du PC.",
 "Les adresses MAC ne traversent pas Internet.",
 "Le DNS n'intervient pas dans la réponse."
-]
+],
+"n": 3
 },
 {
 "t": "NAT / PAT",
@@ -116,7 +122,8 @@
 "Toute la maison sort avec la même IP.",
 "Il n'y a pas de limite à deux.",
 "La NAT dynamique de la box suffit."
-]
+],
+"n": 2
 },
 {
 "t": "NAT / PAT",
@@ -133,7 +140,8 @@
 "Ce n'est pas une table d'accès.",
 "Rien à voir avec un transfert.",
 "Rien à voir avec l'authentification."
-]
+],
+"n": 0
 },
 {
 "t": "NAT / PAT",
@@ -150,7 +158,8 @@
 "Le cours ne cite pas ce sens-là.",
 "La NAT traduit des adresses IP, pas MAC.",
 "La NAT de ce cours reste en IPv4."
-]
+],
+"n": 1
 },
 {
 "t": "NAT / PAT",
@@ -167,7 +176,8 @@
 "Elle se remplit au fil des connexions.",
 "Les adresses MAC ne sont pas dans cette table.",
 "Les règles de pare-feu sont ailleurs."
-]
+],
+"n": 1
 },
 {
 "t": "NAT / PAT",
@@ -184,7 +194,8 @@
 "La réponse ne va qu'au poste concerné.",
 "Une réponse à une demande sortante est acceptée.",
 "Le DNS n'a rien à voir ici."
-]
+],
+"n": 3
 },
 {
 "t": "NAT / PAT",
@@ -201,7 +212,8 @@
 "L'adresse privée ne doit pas sortir sur Internet.",
 "170.1.1.1 est l'adresse du serveur distant.",
 "Le DHCP ne fournit pas l'adresse globale NAT."
-]
+],
+"n": 3
 },
 {
 "t": "NAT / PAT",
@@ -218,7 +230,8 @@
 "Ça, c'est Inside Global.",
 "Le serveur distant est « outside ».",
 "Ce n'est pas une colonne de cette table."
-]
+],
+"n": 1
 },
 {
 "t": "NAT / PAT",
@@ -235,7 +248,8 @@
 "On ne coupe pas une connexion : on la distingue.",
 "Les adresses MAC ne vont pas sur Internet.",
 "IPv6 n'est pas la réponse du cours."
-]
+],
+"n": 4
 },
 {
 "t": "NAT / PAT",
@@ -252,7 +266,8 @@
 "Ce n'est pas une table d'adresses privées.",
 "Rien à voir avec un accès public.",
 "Ce n'est pas un transfert de paquets."
-]
+],
+"n": 0
 },
 {
 "t": "NAT / PAT",
@@ -269,7 +284,8 @@
 "Sans entrée dans la table, la connexion entrante est rejetée.",
 "Une IP fixe sur le PC ne change rien.",
 "UDP n'est pas une exception."
-]
+],
+"n": 2
 },
 {
 "t": "NAT / PAT",
@@ -286,7 +302,8 @@
 "Un VLAN segmente le réseau local, il n'ouvre rien vers Internet.",
 "Une réservation fixe l'IP du serveur, mais n'ouvre pas le port.",
 "Le NAT dynamique bloque les connexions entrantes."
-]
+],
+"n": 3
 },
 {
 "t": "NAT / PAT",
@@ -303,7 +320,8 @@
 "Les adresses MAC ne voyagent pas sur Internet.",
 "Un broadcast ne traverse pas Internet.",
 "Le DHCP de son FAI lui donne sa propre adresse, pas celle du site."
-]
+],
+"n": 3
 },
 {
 "t": "NAT / PAT",
@@ -320,7 +338,8 @@
 "La box remplace l'adresse privée du serveur.",
 "Le client ne reçoit pas sa propre adresse en source.",
 "Le DNS n'est pas dans l'échange."
-]
+],
+"n": 4
 },
 {
 "t": "NAT / PAT",
@@ -337,7 +356,8 @@
 "C'est le sens habituel ailleurs, pas celui de ton cours.",
 "Rien à voir avec IPv6.",
 "La translation dynamique utilise bien une table."
-]
+],
+"n": 5
 },
 {
 "t": "NAT / PAT",
@@ -354,7 +374,8 @@
 "Le DHCP donne des adresses, il n'ouvre pas l'accès depuis Internet.",
 "Un VLAN ne rend rien accessible depuis Internet.",
 "Le masque ne joue pas sur l'accès extérieur."
-]
+],
+"n": 3
 },
 {
 "t": "NAT / PAT",
@@ -371,7 +392,8 @@
 "C'est inversé.",
 "Cette commande n'existe pas.",
 "Sans inside/outside, le routeur ne sait pas quoi traduire."
-]
+],
+"n": 3
 },
 {
 "t": "NAT / PAT",
@@ -388,7 +410,8 @@
 "Elle affiche la table de routage.",
 "Cette commande n'existe pas.",
 "Elle affiche l'état des interfaces."
-]
+],
+"n": 1
 },
 {
 "t": "NAT / PAT",
@@ -405,7 +428,8 @@
 "Les PC ne traduisent pas leurs adresses.",
 "Le DHCP distribue des adresses, il ne les traduit pas.",
 "Le switch travaille en couche 2."
-]
+],
+"n": 1
 },
 {
 "t": "NAT / PAT",
@@ -422,7 +446,8 @@
 "Ça, c'est une traduction fixe pour un seul poste.",
 "Ça, c'est le cas de la box : une seule adresse.",
 "La NAT ne traduit pas vers des adresses MAC."
-]
+],
+"n": 2
 },
 {
 "t": "NAT / PAT",
@@ -439,7 +464,8 @@
 "La statique se configure à la main pour un poste précis.",
 "Sans NAT, les adresses privées ne sortiraient pas.",
 "Aucun port n'est redirigé par défaut."
-]
+],
+"n": 1
 },
 {
 "t": "NAT / PAT",
@@ -456,7 +482,8 @@
 "Elle ne change pas le débit.",
 "Elle ne chiffre rien.",
 "Elle protège un peu, mais ne remplace pas un pare-feu."
-]
+],
+"n": 1
 },
 {
 "t": "NAT / PAT",
@@ -473,6 +500,7 @@
 "Ça, c'est Inside Local.",
 "Le serveur distant est côté outside.",
 "Les adresses MAC ne sont pas dans cette table."
-]
+],
+"n": 1
 }
 ]

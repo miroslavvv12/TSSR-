@@ -14,7 +14,8 @@
 "Le partage en Lecture limite l'accès réseau : le contrôle total NTFS ne sert qu'en local.",
 "Il faudrait au moins Modification sur le partage ET en NTFS.",
 "Lecture reste accordée par les deux niveaux : il a donc un accès."
-]
+],
+"n": 3
 },
 {
 "t": "Droits NTFS et partage",
@@ -31,7 +32,8 @@
 "Les droits de partage ne jouent que par le réseau.",
 "La combinaison des deux ne vaut que pour un accès réseau.",
 "NTFS s'applique toujours, même en local."
-]
+],
+"n": 2
 },
 {
 "t": "Droits NTFS et partage",
@@ -48,7 +50,8 @@
 "6, c'est le nombre d'autorisations standard NTFS.",
 "« Écriture » n'existe pas en partage ; il y a Modification.",
 "Il n'y a que 3 niveaux : Écriture n'en fait pas partie."
-]
+],
+"n": 1
 },
 {
 "t": "Droits NTFS et partage",
@@ -65,7 +68,8 @@
 "Ça, c'est l'ACL : la liste complète.",
 "Le propriétaire est une autre notion (appropriation).",
 "Un partage administratif, c'est C$, D$…"
-]
+],
+"n": 0
 },
 {
 "t": "Droits NTFS et partage",
@@ -82,7 +86,8 @@
 "Pas d'ACE = pas d'accès, même en lecture.",
 "Tout le monde n'a pas de contrôle total par défaut en NTFS.",
 "Il n'est pas propriétaire, et sans ACE il n'a rien."
-]
+],
+"n": 2
 },
 {
 "t": "Droits NTFS et partage",
@@ -99,7 +104,8 @@
 "Les droits du groupe s'ajoutent, ils ne se perdent pas.",
 "Les droits du compte s'ajoutent aussi.",
 "Les droits ne s'annulent jamais : ils se cumulent, sauf Refuser."
-]
+],
+"n": 3
 },
 {
 "t": "Droits NTFS et partage",
@@ -116,7 +122,8 @@
 "Le cumul ne joue pas contre un Refuser.",
 "L'ordre de création ne compte pas.",
 "L'ordre des groupes ne change rien : Refuser gagne."
-]
+],
+"n": 4
 },
 {
 "t": "Droits NTFS et partage",
@@ -133,7 +140,8 @@
 "C'est l'inverse : le droit du fichier est prioritaire.",
 "La règle vaut aussi par le réseau (avec le partage en plus).",
 "Pas besoin d'être propriétaire : il a Modifier sur le fichier."
-]
+],
+"n": 4
 },
 {
 "t": "Droits NTFS et partage",
@@ -150,7 +158,8 @@
 "Ça, c'est le cas d'une copie.",
 "Les droits ne sont supprimés que vers une partition non NTFS.",
 "Aucune opération ne donne contrôle total à Tout le monde."
-]
+],
+"n": 2
 },
 {
 "t": "Droits NTFS et partage",
@@ -167,7 +176,8 @@
 "Seul un déplacement dans la même partition garde les droits.",
 "Il reçoit les droits hérités de la destination, pas zéro.",
 "Il n'y a pas de règle « créateur seul » à la copie."
-]
+],
+"n": 3
 },
 {
 "t": "Droits NTFS et partage",
@@ -184,7 +194,8 @@
 "FAT32 ne sait pas stocker de droits NTFS.",
 "FAT32 n'a pas de système de droits.",
 "Aucun fichier caché ne garde les droits."
-]
+],
+"n": 3
 },
 {
 "t": "Droits NTFS et partage",
@@ -201,7 +212,8 @@
 "Ses droits explicites sont conservés.",
 "Les administrateurs peuvent toujours le gérer.",
 "Le blocage ne déplace aucun fichier."
-]
+],
+"n": 2
 },
 {
 "t": "Droits NTFS et partage",
@@ -218,7 +230,8 @@
 "C'est l'inverse : l'explicite gagne.",
 "Hors Refuser, ce n'est pas « le plus permissif » qui décide.",
 "L'âge du droit ne compte pas."
-]
+],
+"n": 2
 },
 {
 "t": "Droits NTFS et partage",
@@ -235,7 +248,8 @@
 "Ça ne touche pas aux performances.",
 "Le partage existe toujours, mais plus personne n'y entre.",
 "L'héritage n'est pas modifié."
-]
+],
+"n": 2
 },
 {
 "t": "Droits NTFS et partage",
@@ -252,7 +266,8 @@
 "Utilisateur par utilisateur, c'est vite ingérable.",
 "Contraire au moindre privilège.",
 "Les refus compliquent le diagnostic : à éviter."
-]
+],
+"n": 1
 },
 {
 "t": "Droits NTFS et partage",
@@ -269,7 +284,8 @@
 "Il parle de droits, pas de taille de groupe.",
 "On garde des administrateurs, avec juste les droits utiles.",
 "C'est une bonne pratique, pas la définition."
-]
+],
+"n": 1
 },
 {
 "t": "Droits NTFS et partage",
@@ -286,7 +302,8 @@
 "C'est un partage, pas un simple dossier protégé.",
 "Il est caché et réservé aux administrateurs.",
 "Ce n'est pas un compte."
-]
+],
+"n": 1
 },
 {
 "t": "Droits NTFS et partage",
@@ -303,7 +320,8 @@
 "C:\\ est un chemin local.",
 "Ce format ressemble à une URL, pas à un chemin UNC.",
 "@ sert aux adresses mail."
-]
+],
+"n": 1
 },
 {
 "t": "Droits NTFS et partage",
@@ -320,7 +338,8 @@
 "Modification se donne à la main, pour ceux qui alimentent le partage.",
 "Contrôle total est pour les Administrateurs.",
 "Tout le monde a bien un droit par défaut : Lecture."
-]
+],
+"n": 1
 },
 {
 "t": "Droits NTFS et partage",
@@ -337,7 +356,8 @@
 "Modifier ne permet pas de changer les autorisations.",
 "Écriture permet de créer et modifier, pas de gérer les droits.",
 "Lecture et exécution ne modifie rien."
-]
+],
+"n": 1
 },
 {
 "t": "Droits NTFS et partage",
@@ -354,7 +374,8 @@
 "Ils se ressemblent mais ne s'appliquent pas au même endroit.",
 "Afficher le contenu n'exécute rien.",
 "Lecture et exécution s'applique aussi au dossier."
-]
+],
+"n": 5
 },
 {
 "t": "Droits NTFS et partage",
@@ -371,7 +392,8 @@
 "La FAT, c'est le système FAT.",
 "Le MBR est la zone d'amorçage du disque.",
 "La BCD sert au démarrage de Windows."
-]
+],
+"n": 1
 },
 {
 "t": "Droits NTFS et partage",
@@ -388,7 +410,8 @@
 "Redémarrer ne dit pas d'où vient le blocage.",
 "Recréer le partage ne trouve pas la cause.",
 "Ouvrir à Tout le monde est dangereux et ne diagnostique rien."
-]
+],
+"n": 4
 },
 {
 "t": "Systèmes Windows",
@@ -405,7 +428,8 @@
 "Winlogon arrive bien plus tard.",
 "L'explorateur est la dernière étape.",
 "Le Session Manager démarre après le noyau."
-]
+],
+"n": 1
 },
 {
 "t": "Systèmes Windows",
@@ -422,7 +446,8 @@
 "Les applications tournent en mode utilisateur.",
 "Le navigateur est une application : mode utilisateur.",
 "Les documents ne s'exécutent pas."
-]
+],
+"n": 1
 },
 {
 "t": "Systèmes Windows",
@@ -439,7 +464,8 @@
 "Monolithique pur : non, Windows mélange les deux.",
 "Micro-noyau pur : non plus.",
 "Ce type n'est pas cité dans le cours."
-]
+],
+"n": 1
 },
 {
 "t": "Systèmes Windows",
@@ -456,7 +482,8 @@
 "Ça, c'est BitLocker.",
 "Les comptes sont gérés par la SAM ou l'AD.",
 "Ça, c'est le planificateur de tâches."
-]
+],
+"n": 2
 },
 {
 "t": "Systèmes Windows",
@@ -473,7 +500,8 @@
 "Ce nom n'existe pas.",
 "hiberfil.sys sert à l'hibernation, et pas en .ini.",
 ".bcd n'est pas un fichier d'échange."
-]
+],
+"n": 1
 },
 {
 "t": "Systèmes Windows",
@@ -490,7 +518,8 @@
 "Un pilote communique avec le matériel.",
 "Les journaux sont dans l'Observateur d'événements.",
 "La configuration de démarrage est la BCD."
-]
+],
+"n": 0
 },
 {
 "t": "Systèmes Windows",
@@ -507,7 +536,8 @@
 "L'isolation ne fait pas gagner de RAM.",
 "Ce n'est pas une question de vitesse.",
 "L'isolation n'est pas du chiffrement."
-]
+],
+"n": 2
 },
 {
 "t": "Systèmes Windows",
@@ -524,7 +554,8 @@
 "Winlogon gère la connexion.",
 "Le Session Manager vient après le noyau.",
 "L'UAC limite les privilèges."
-]
+],
+"n": 1
 },
 {
 "t": "Systèmes Windows",
@@ -541,7 +572,8 @@
 "Le Boot Manager agit avant le noyau.",
 "La HAL fait le lien avec le matériel.",
 "L'ordonnanceur répartit les threads."
-]
+],
+"n": 1
 },
 {
 "t": "Systèmes Windows",
@@ -558,7 +590,8 @@
 "Ce sont des commandes de GPO.",
 "Ce sont des outils réseau.",
 "chkdsk répare le disque, pas la configuration de démarrage."
-]
+],
+"n": 1
 },
 {
 "t": "Systèmes Windows",
@@ -575,7 +608,8 @@
 "Il automatise des tâches.",
 "Il gère les pilotes.",
 "RAMMap analyse la mémoire."
-]
+],
+"n": 1
 },
 {
 "t": "Systèmes Windows",
@@ -592,7 +626,8 @@
 "C'est le rôle du pare-feu.",
 "C'est l'UAC.",
 "Process Explorer analyse les processus."
-]
+],
+"n": 1
 },
 {
 "t": "Systèmes Windows",
@@ -609,7 +644,8 @@
 "NTLM sert pour les systèmes indépendants.",
 "LDAP interroge l'annuaire, il n'authentifie pas.",
 "RADIUS n'est pas cité dans le cours."
-]
+],
+"n": 1
 },
 {
 "t": "Systèmes Windows",
@@ -626,7 +662,8 @@
 "Ça, c'est BitLocker.",
 "Ça, c'est Windows Update.",
 "Les comptes AD se créent dans l'annuaire."
-]
+],
+"n": 1
 },
 {
 "t": "Systèmes Windows",
@@ -643,7 +680,8 @@
 "Il n'organise pas le disque.",
 "Il ne s'occupe pas des journaux.",
 "Il ne touche pas au réseau."
-]
+],
+"n": 2
 },
 {
 "t": "Systèmes Windows",
@@ -660,7 +698,8 @@
 "L'explorateur n'est pas un service.",
 "Un service n'est pas un compte.",
 "Un pilote communique avec le matériel."
-]
+],
+"n": 1
 },
 {
 "t": "Machines virtuelles",
@@ -677,7 +716,8 @@
 "Ce n'est pas une partition réelle.",
 "Un dossier partagé sert aux échanges.",
 "La clé USB est un autre périphérique."
-]
+],
+"n": 1
 },
 {
 "t": "Machines virtuelles",
@@ -694,7 +734,8 @@
 "Ça, c'est la taille dynamique.",
 "Un disque virtuel n'est lisible que par son logiciel.",
 "Il prend toute sa place dès le départ."
-]
+],
+"n": 2
 },
 {
 "t": "Machines virtuelles",
@@ -711,7 +752,8 @@
 "C'est le mode sans NAT (pont).",
 "L'IPv6 n'a rien à voir.",
 "Le pare-feu ne change pas le mode réseau."
-]
+],
+"n": 2
 },
 {
 "t": "Machines virtuelles",
@@ -728,7 +770,8 @@
 "En NAT, la VM est invisible : bon pour la veille.",
 "Elle ne verrait que l'hôte.",
 "Sans carte réseau, elle ne sert à rien en production."
-]
+],
+"n": 3
 },
 {
 "t": "Machines virtuelles",
@@ -745,7 +788,8 @@
 "Le nom du disque ne pose pas de conflit.",
 "La RAM n'a pas besoin de changer.",
 "On garde le même système."
-]
+],
+"n": 3
 },
 {
 "t": "Machines virtuelles",
@@ -762,7 +806,8 @@
 "Pas une capture d'écran.",
 "La copie, c'est copier le répertoire de la VM.",
 "Il ne change pas la taille du disque."
-]
+],
+"n": 1
 },
 {
 "t": "Machines virtuelles",
@@ -779,7 +824,8 @@
 "Ctrl+Alt+Entrée passe en plein écran.",
 "AltGr+Suppr, c'est pour Virtual PC.",
 "Ctrl+Maj+Échap ouvre le gestionnaire des tâches de l'hôte."
-]
+],
+"n": 1
 },
 {
 "t": "Machines virtuelles",
@@ -796,7 +842,8 @@
 "Copier des fichiers n'installe pas un système.",
 "On installe directement dans la VM.",
 "Windows Update met à jour un système déjà installé."
-]
+],
+"n": 2
 },
 {
 "t": "Machines virtuelles",
@@ -813,7 +860,8 @@
 "Ça, c'est du stockage en ligne.",
 "Ça, c'est la prise en main à distance.",
 "Rien à voir avec les jeux."
-]
+],
+"n": 0
 },
 {
 "t": "Partitionnement",
@@ -830,7 +878,8 @@
 "Le système n'est pas dans le MBR.",
 "Les pilotes ne sont pas dans le MBR.",
 "La FAT est dans la partition, pas dans le MBR."
-]
+],
+"n": 1
 },
 {
 "t": "Partitionnement",
@@ -847,7 +896,8 @@
 "128, c'est le GPT.",
 "On peut en avoir plus que 2.",
 "C'est limité : 4 primaires."
-]
+],
+"n": 1
 },
 {
 "t": "Partitionnement",
@@ -864,7 +914,8 @@
 "Une partition primaire est directement sur le disque.",
 "La partition active contient le système de démarrage.",
 "Un volume dynamique est une autre technologie."
-]
+],
+"n": 1
 },
 {
 "t": "Partitionnement",
@@ -881,7 +932,8 @@
 "4, c'est la limite du MBR.",
 "Les lettres ne limitent pas le nombre de partitions GPT.",
 "La limite Windows est 128."
-]
+],
+"n": 1
 },
 {
 "t": "Partitionnement",
@@ -898,7 +950,8 @@
 "Non : il faut l'UEFI.",
 "La taille du disque ne change rien.",
 "Le système installé ne change rien."
-]
+],
+"n": 2
 },
 {
 "t": "Partitionnement",
@@ -915,7 +968,8 @@
 "Ça n'accélère pas Windows.",
 "Windows ne l'impose pas.",
 "L'espace total reste le même."
-]
+],
+"n": 2
 },
 {
 "t": "Partitionnement",
@@ -932,7 +986,8 @@
 "Le secteur de démarrage est un autre élément.",
 "Les inodes existent sous Linux.",
 "Les ACE sont des droits NTFS."
-]
+],
+"n": 1
 },
 {
 "t": "Partitionnement",
@@ -949,7 +1004,8 @@
 "16 To, c'est l'ordre de grandeur de NTFS.",
 "2 Go, c'est HFS dans le cours.",
 "FAT32 a bien une limite."
-]
+],
+"n": 1
 },
 {
 "t": "Partitionnement",
@@ -966,7 +1022,8 @@
 "La table de partitions est créée avant, au partitionnement.",
 "Le BIOS est sur la carte mère.",
 "Le chiffrement, c'est BitLocker."
-]
+],
+"n": 1
 },
 {
 "t": "Partitionnement",
@@ -983,7 +1040,8 @@
 "L'usage ne la définit pas.",
 "Les données vont plutôt sur D:.",
 "La récupération est une partition à part."
-]
+],
+"n": 1
 },
 {
 "t": "Partitionnement",
@@ -1000,7 +1058,8 @@
 "Il ne chiffre rien.",
 "Il ne protège pas contre les virus.",
 "Il en a un : réplication et CRC."
-]
+],
+"n": 2
 },
 {
 "t": "Veille technologique",
@@ -1017,7 +1076,8 @@
 "L'ordre est faux : on définit d'abord.",
 "Ce ne sont pas les étapes du cours.",
 "On teste, mais ce n'est pas le cycle."
-]
+],
+"n": 1
 },
 {
 "t": "Veille technologique",
@@ -1034,7 +1094,8 @@
 "La juridique suit les lois (RGPD, NIS 2).",
 "La concurrentielle suit les offres et les prix.",
 "Le cycle de vie suit les fins de support."
-]
+],
+"n": 2
 },
 {
 "t": "Veille technologique",
@@ -1051,7 +1112,8 @@
 "La technique suit les outils et méthodes.",
 "La sécurité suit les failles.",
 "La technologique suit les innovations."
-]
+],
+"n": 2
 },
 {
 "t": "Veille technologique",
@@ -1068,7 +1130,8 @@
 "La technologique suit les innovations.",
 "La concurrentielle suit les offres.",
 "La technique suit les méthodes et outils."
-]
+],
+"n": 2
 },
 {
 "t": "Veille technologique",
@@ -1085,7 +1148,8 @@
 "Un moteur de recherche cherche, il n'agrège pas les flux.",
 "Rien à voir avec la sécurité.",
 "Un serveur de fichiers stocke des documents."
-]
+],
+"n": 0
 },
 {
 "t": "Veille technologique",
@@ -1102,7 +1166,8 @@
 "Le cours ne demande pas autant.",
 "Le cours conseille un peu chaque jour.",
 "Il donne un conseil : même 10 minutes."
-]
+],
+"n": 1
 },
 {
 "t": "Veille technologique",
@@ -1119,7 +1184,8 @@
 "Ce n'est pas un logiciel.",
 "Le salon de cybersécurité, c'est le FIC.",
 "Ce n'est pas une norme."
-]
+],
+"n": 0
 },
 {
 "t": "Droits NTFS et partage",
@@ -1136,7 +1202,8 @@
 "Ça, c'est Lecture.",
 "Ça, c'est Contrôle total.",
 "Il ajoute bien la création et la suppression."
-]
+],
+"n": 1
 },
 {
 "t": "Droits NTFS et partage",
@@ -1153,7 +1220,8 @@
 "Contrôle total est réservé à ceux qui gèrent les droits.",
 "Lecture empêcherait d'enregistrer.",
 "Sans droit, personne n'entre."
-]
+],
+"n": 1
 },
 {
 "t": "Droits NTFS et partage",
@@ -1170,7 +1238,8 @@
 "Tout le monde n'est pas propriétaire.",
 "Ouvrir un fichier ne donne aucun droit.",
 "Les autorisations restent modifiables."
-]
+],
+"n": 2
 },
 {
 "t": "Droits NTFS et partage",
@@ -1187,7 +1256,8 @@
 "Ça n'existe pas.",
 "C'est l'ancienne règle 8.3 du DOS.",
 "NTFS ne chiffre pas les noms."
-]
+],
+"n": 5
 },
 {
 "t": "Droits NTFS et partage",
@@ -1204,7 +1274,8 @@
 "Tout le monde en contrôle total : n'importe qui ferait n'importe quoi.",
 "Les invités ont des droits très limités.",
 "Les utilisateurs n'administrent pas les droits."
-]
+],
+"n": 1
 },
 {
 "t": "Droits NTFS et partage",
@@ -1221,7 +1292,8 @@
 "Il montre les processus, pas les accès.",
 "Il gère les partitions.",
 "Les propriétés montrent les droits, pas l'historique."
-]
+],
+"n": 1
 },
 {
 "t": "Droits NTFS et partage",
@@ -1238,7 +1310,8 @@
 "Ce sont des tests réseau de base, pas de droits.",
 "Le propriétaire ne suffit pas à expliquer un refus.",
 "Le DNS et le DHCP n'ont rien à voir avec les droits."
-]
+],
+"n": 3
 },
 {
 "t": "Droits NTFS et partage",
@@ -1255,7 +1328,8 @@
 "Il montre les droits du partage seulement.",
 "Il montre la taille et les attributs.",
 "Il montre les anciennes versions du fichier."
-]
+],
+"n": 2
 },
 {
 "t": "Droits NTFS et partage",
@@ -1272,7 +1346,8 @@
 "Ça, c'est un droit explicite.",
 "Le partage est un autre niveau.",
 "Les droits n'expirent pas."
-]
+],
+"n": 0
 },
 {
 "t": "Droits NTFS et partage",
@@ -1289,7 +1364,8 @@
 "Ce sont des droits, pas des groupes.",
 "Le partage n'a que 3 niveaux.",
 "Les attributs (caché, lecture seule…) sont autre chose."
-]
+],
+"n": 5
 },
 {
 "t": "Systèmes Windows",
@@ -1306,7 +1382,8 @@
 "La HAL fait le lien avec le matériel.",
 "Il ne sert qu'au démarrage.",
 "Une DLL contient du code, mais ce sont les threads qui l'exécutent."
-]
+],
+"n": 1
 },
 {
 "t": "Systèmes Windows",
@@ -1323,7 +1400,8 @@
 "Ils servent au démarrage.",
 "Ils servent aux GPO.",
 "Ce sont des outils réseau."
-]
+],
+"n": 1
 },
 {
 "t": "Systèmes Windows",
@@ -1340,7 +1418,8 @@
 "Elles ne compressent rien.",
 "Le fichier d'échange reste pagefile.sys.",
 "Elles ne ferment rien."
-]
+],
+"n": 2
 },
 {
 "t": "Systèmes Windows",
@@ -1357,7 +1436,8 @@
 "Il lit les journaux.",
 "Il contrôle l'état des services.",
 "Il chiffre les disques."
-]
+],
+"n": 1
 },
 {
 "t": "Systèmes Windows",
@@ -1374,7 +1454,8 @@
 "Elle gère les services.",
 "Elle gère les disques.",
 "Elle affiche les journaux."
-]
+],
+"n": 1
 },
 {
 "t": "Systèmes Windows",
@@ -1391,7 +1472,8 @@
 "Le BIOS/UEFI est toujours le premier.",
 "L'ouverture de session (Winlogon) vient après lui.",
 "Il démarre à chaque démarrage."
-]
+],
+"n": 2
 },
 {
 "t": "Systèmes Windows",
@@ -1408,7 +1490,8 @@
 "La session s'ouvre bien plus tard.",
 "Les DLL sont chargées par les applications.",
 "L'explorateur est la dernière étape."
-]
+],
+"n": 1
 },
 {
 "t": "Systèmes Windows",
@@ -1425,7 +1508,8 @@
 "Ça, c'est BitLocker.",
 "Le partage se fait dans les propriétés du dossier.",
 "Ça, c'est WinRE et bootrec."
-]
+],
+"n": 1
 },
 {
 "t": "Systèmes Windows",
@@ -1442,7 +1526,8 @@
 "BitLocker chiffre.",
 "L'UAC limite les privilèges.",
 "Kerberos authentifie."
-]
+],
+"n": 0
 },
 {
 "t": "Machines virtuelles",
@@ -1459,7 +1544,8 @@
 "Le format du fichier compte, pas le système de fichiers à l'intérieur.",
 "La taille ne change rien.",
 "Il ne peut pas l'ouvrir du tout."
-]
+],
+"n": 2
 },
 {
 "t": "Machines virtuelles",
@@ -1476,7 +1562,8 @@
 "Il ne grossit qu'avec les données.",
 "Ça, c'est la taille fixe.",
 "Les données sont conservées."
-]
+],
+"n": 2
 },
 {
 "t": "Machines virtuelles",
@@ -1493,7 +1580,8 @@
 "Ce n'est pas un programme.",
 "Elle ne crée pas de partition.",
 "Elle peut être lancée comme service, mais ce n'est pas sa nature."
-]
+],
+"n": 2
 },
 {
 "t": "Machines virtuelles",
@@ -1510,7 +1598,8 @@
 "Rien n'est supprimé.",
 "Un snapshot se fait à part.",
 "La RAM ne change pas."
-]
+],
+"n": 2
 },
 {
 "t": "Machines virtuelles",
@@ -1527,7 +1616,8 @@
 "La VM ne voit pas le disque de l'hôte.",
 "On ne modifie jamais le .vmdk à la main.",
 "C'est possible par le réseau."
-]
+],
+"n": 3
 },
 {
 "t": "Machines virtuelles",
@@ -1544,7 +1634,8 @@
 "Pas l'usage professionnel.",
 "La sauvegarde n'est qu'un avantage annexe.",
 "Ça n'a rien à voir avec les switchs."
-]
+],
+"n": 1
 },
 {
 "t": "Machines virtuelles",
@@ -1561,7 +1652,8 @@
 "Ctrl+Alt+Inser remplace Ctrl+Alt+Suppr.",
 "F11 est le plein écran du navigateur.",
 "Alt+Tab change de fenêtre."
-]
+],
+"n": 1
 },
 {
 "t": "Partitionnement",
@@ -1578,7 +1670,8 @@
 "Les fichiers sont dans les partitions.",
 "Les pilotes sont dans Windows.",
 "Aucun mot de passe n'y est stocké."
-]
+],
+"n": 1
 },
 {
 "t": "Partitionnement",
@@ -1595,7 +1688,8 @@
 "Ce sont deux notions différentes.",
 "On ne peut pas toucher une partition.",
 "Le disque se prend dans la main."
-]
+],
+"n": 0
 },
 {
 "t": "Partitionnement",
@@ -1612,7 +1706,8 @@
 "Ce sont des firmwares.",
 "Ce sont des tables de partitions.",
 "Ce sont des systèmes de fichiers."
-]
+],
+"n": 1
 },
 {
 "t": "Partitionnement",
@@ -1629,7 +1724,8 @@
 "8 caractères, c'est la règle 8.3 du DOS.",
 "31 caractères, c'est HFS dans le cours.",
 "Il y a une limite."
-]
+],
+"n": 1
 },
 {
 "t": "Partitionnement",
@@ -1646,7 +1742,8 @@
 "Ils ne valent pas pareil.",
 "C'est l'inverse : le Gio est un peu plus grand.",
 "Les deux s'utilisent pour tous les supports."
-]
+],
+"n": 5
 },
 {
 "t": "Partitionnement",
@@ -1663,7 +1760,8 @@
 "Un octet est bien trop petit.",
 "1 Mo est bien trop grand.",
 "Ce n'est pas la taille d'un secteur."
-]
+],
+"n": 1
 },
 {
 "t": "Partitionnement",
@@ -1680,7 +1778,8 @@
 "Les répertoires s'imbriquent.",
 "Ce n'est pas un critère d'organisation.",
 "La date n'organise pas l'arborescence."
-]
+],
+"n": 0
 },
 {
 "t": "Partitionnement",
@@ -1697,7 +1796,8 @@
 "Toutes sont sur le même disque.",
 "Rien ne se déplace tout seul.",
 "Leur séparation n'est que logique."
-]
+],
+"n": 2
 },
 {
 "t": "Veille technologique",
@@ -1714,7 +1814,8 @@
 "Ça, c'est la veille juridique.",
 "Ça, c'est la veille concurrentielle.",
 "Ça, c'est la veille cycle de vie."
-]
+],
+"n": 1
 },
 {
 "t": "Veille technologique",
@@ -1731,7 +1832,8 @@
 "Ça, c'est la veille sécurité.",
 "Ça, c'est la veille technologique.",
 "Ça, c'est la veille juridique."
-]
+],
+"n": 1
 },
 {
 "t": "Veille technologique",
@@ -1748,7 +1850,8 @@
 "Ça, c'est « Définir ».",
 "Ça, c'est « Diffuser ».",
 "Ça, c'est « Capitaliser »."
-]
+],
+"n": 2
 },
 {
 "t": "Veille technologique",
@@ -1765,7 +1868,8 @@
 "Les sources françaises existent mais sont minoritaires.",
 "Pas la majorité.",
 "Pas la majorité."
-]
+],
+"n": 1
 },
 {
 "t": "Veille technologique",
@@ -1782,7 +1886,8 @@
 "Un agrégateur suffit pour les flux.",
 "Le lab' ne remplace pas les sources.",
 "Ce n'est pas son rôle."
-]
+],
+"n": 2
 },
 {
 "t": "Veille technologique",
@@ -1799,6 +1904,187 @@
 "Ce n'est pas un réseau social.",
 "Ça n'a rien à voir avec la sécurité.",
 "Ce n'est pas un protocole de mail."
-]
+],
+"n": 0
+},
+{
+"t": "Systèmes Windows",
+"s": "Fiche Les systèmes d'exploitation Windows",
+"q": "Après une coupure de courant, un PC Windows ne démarre plus et affiche une erreur de démarrage. Que vas-tu utiliser ?",
+"o": [
+"WinRE, puis les commandes bootrec ou bcdedit",
+"L'Observateur d'événements",
+"Le Planificateur de tâches",
+"Le Gestionnaire des tâches"
+],
+"e": "Le cours cite bcdedit, WinRE et bootrec pour diagnostiquer et réparer le démarrage.",
+"x": [
+"Il lit les journaux, mais il faut que Windows démarre.",
+"Il automatise des tâches : rien à voir.",
+"Il faut que Windows soit démarré pour l'ouvrir."
+],
+"n": 3
+},
+{
+"t": "Systèmes Windows",
+"s": "Fiche Les systèmes d'exploitation Windows",
+"q": "Une application plante, mais le reste de Windows continue de fonctionner. Pourquoi ?",
+"o": [
+"Elle tourne en mode utilisateur, dans son propre espace mémoire isolé",
+"Le fichier d'échange la redémarre",
+"BitLocker la protège",
+"L'UAC la ferme avant le plantage"
+],
+"e": "Il faut combiner deux notions du cours : le mode utilisateur et l'isolation des processus.",
+"x": [
+"pagefile.sys étend la RAM, il ne relance rien.",
+"BitLocker chiffre le disque.",
+"L'UAC limite les privilèges, elle n'empêche pas un plantage."
+],
+"n": 4
+},
+{
+"t": "Systèmes Windows",
+"s": "Fiche Les systèmes d'exploitation Windows",
+"q": "Pourquoi un pilote défectueux peut-il faire planter tout Windows, alors qu'une application défectueuse non ?",
+"o": [
+"Les pilotes tournent en mode noyau, avec les fonctions critiques du système",
+"Les pilotes sont plus gros que les applications",
+"Les pilotes n'ont pas de DLL",
+"Les applications sont toujours signées"
+],
+"e": "En mode noyau, une erreur touche le cœur du système. En mode utilisateur, elle reste dans son processus.",
+"x": [
+"La taille n'a rien à voir.",
+"Rien à voir avec les DLL.",
+"La signature n'est pas la raison."
+],
+"n": 5
+},
+{
+"t": "Machines virtuelles",
+"s": "Fiche Les machines virtuelles",
+"q": "Tu copies une VM et tu démarres les deux sur le même réseau, en mode pont, sans changer le SID ni l'adresse MAC. Que risques-tu ?",
+"o": [
+"Des conflits : deux machines avec la même adresse MAC et le même SID",
+"Rien, c'est le principe d'une copie",
+"La VM d'origine est supprimée",
+"Le disque virtuel devient illisible"
+],
+"e": "C'est pour ça que le logiciel demande s'il s'agit d'une copie ou d'un déplacement.",
+"x": [
+"Deux identités en double sur le même réseau posent problème.",
+"La copie ne supprime rien.",
+"Le disque reste lisible."
+],
+"n": 4
+},
+{
+"t": "Machines virtuelles",
+"s": "Fiche Les machines virtuelles",
+"q": "Pourquoi ne faut-il pas mettre le répertoire d'une VM à disque dynamique sur la partition système de l'hôte ?",
+"o": [
+"Le disque virtuel peut grossir et remplir la partition système, ce qui bloque l'hôte",
+"Parce que la VM serait visible sur le réseau",
+"Parce que la VM ne démarrerait plus en NAT",
+"Parce que Windows interdit les fichiers .vmdk sur C:"
+],
+"e": "Le cours le conseille, surtout avec des disques dynamiques.",
+"x": [
+"Le mode réseau n'a rien à voir avec l'emplacement.",
+"Le mode réseau n'a rien à voir.",
+"Windows ne l'interdit pas."
+],
+"n": 5
+},
+{
+"t": "Partitionnement",
+"s": "Fiche Le partitionnement",
+"q": "Tu veux copier une image ISO de 6 Go sur une clé USB formatée en FAT32. Que se passe-t-il ?",
+"o": [
+"La copie échoue : FAT32 limite les fichiers à 4 Go, il faut formater autrement (NTFS par exemple)",
+"Ça marche, mais plus lentement",
+"Le fichier est découpé tout seul en deux",
+"La clé passe toute seule en NTFS"
+],
+"e": "La limite de 4 Go par fichier est dans le tableau FAT/NTFS du cours.",
+"x": [
+"La limite empêche la copie, elle ne ralentit pas.",
+"Windows ne découpe pas le fichier.",
+"Le formatage ne change jamais tout seul."
+],
+"n": 3
+},
+{
+"t": "Partitionnement",
+"s": "Fiche Le partitionnement",
+"q": "Un PC avec un BIOS traditionnel reçoit un disque neuf de 3 To. Quel est le problème ?",
+"o": [
+"Avec le MBR, il ne pourra pas utiliser plus de 2,2 To ; le GPT lèverait la limite, mais un BIOS ne démarre pas dessus",
+"Aucun problème",
+"Il faut 4 partitions primaires de 750 Go",
+"Le disque ne sera pas détecté du tout"
+],
+"e": "Il faut croiser deux règles : limite du MBR et lien GPT/UEFI.",
+"x": [
+"La limite du MBR pose problème.",
+"Le MBR limite la taille du disque, pas seulement le nombre de partitions.",
+"Le disque est détecté, c'est l'espace utilisable qui pose problème."
+],
+"n": 4
+},
+{
+"t": "Veille technologique",
+"s": "Fiche La veille technologique",
+"q": "Le CERT-FR publie une alerte sur une faille de ton pare-feu. À quelle étape du cycle de veille l'envoies-tu à ton responsable ?",
+"o": [
+"Diffuser",
+"Définir",
+"Collecter",
+"Capitaliser"
+],
+"e": "Diffuser = transmettre à la bonne personne (fiche, mail, ticket, réunion).",
+"x": [
+"Définir = fixer les besoins au départ.",
+"Collecter = rassembler les informations.",
+"Capitaliser = archiver et améliorer la veille."
+],
+"n": 3
+},
+{
+"t": "Veille technologique",
+"s": "Fiche La veille technologique",
+"q": "Ton serveur utilise une version qui arrive en fin de support dans 3 mois. Quels types de veille sont concernés ?",
+"o": [
+"Cycle de vie et sécurité (plus de correctifs après la fin de support)",
+"Juridique seulement",
+"Concurrentielle seulement",
+"Aucun"
+],
+"e": "Une fin de support signifie aussi qu'aucune faille ne sera plus corrigée.",
+"x": [
+"Ce n'est pas d'abord une question de loi.",
+"Comparer les offres peut aider, mais ce n'est pas l'essentiel.",
+"C'est exactement le rôle de la veille."
+],
+"n": 4
+},
+{
+"t": "Veille technologique",
+"s": "Fiche La veille technologique",
+"q": "Un blog annonce une faille critique, sans source officielle. Que fais-tu ?",
+"o": [
+"Croiser les sources (CVE, CERT-FR, éditeur) et vérifier la fiabilité avant d'agir",
+"Couper tout de suite le serveur",
+"Ignorer l'information",
+"La partager à toute l'entreprise immédiatement"
+],
+"e": "C'est l'étape « Traiter » : trier, vérifier la fiabilité, analyser l'impact et l'urgence.",
+"x": [
+"On ne coupe pas sans avoir vérifié.",
+"On ne l'ignore pas : on la vérifie.",
+"Diffuser une info non vérifiée peut créer la panique."
+],
+"n": 5
 }
 ]
