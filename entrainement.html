@@ -54,7 +54,7 @@ section{display:flex;flex-direction:column;gap:14px}
 .ip{font-family:var(--f-mono);font-weight:600;color:var(--accent);white-space:nowrap}
 .fields{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px}
 label{display:flex;flex-direction:column;gap:4px;font-size:13px;color:var(--muted);min-width:0}
-input[type=text]{font:15px var(--f-mono);width:100%;padding:10px 11px;border-radius:8px;border:1px solid var(--line);background:var(--sunk);color:var(--fg);outline:none}
+input[type=text]{font:16px var(--f-mono);width:100%;padding:10px 11px;border-radius:8px;border:1px solid var(--line);background:var(--sunk);color:var(--fg);outline:none}
 input[type=text]:focus-visible{border-color:var(--accent)}
 input.ok{border-color:var(--ok);background:var(--okbg)} input.ko{border-color:var(--ko);background:var(--kobg)}
 .hint{font:12px var(--f-mono);color:var(--ok)} .hint.ko{color:var(--ko)}
@@ -85,17 +85,76 @@ button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 .empty{color:var(--muted);font-size:14px}
 .foot{color:var(--muted);font-size:12px;text-align:center}
 .link{background:none;border:0;color:var(--muted);text-decoration:underline;font:12px var(--f-ui);cursor:pointer}
+/* Défi chrono */
+.hud{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+.clock{font-size:30px;font-weight:600;line-height:1}
+.clock.low{color:var(--ko)} .clock.paused{color:var(--muted)}
+.pts{font-size:18px;font-weight:600}
+.streak{font-size:13px;color:var(--ok)}
+.tbar{height:4px;background:var(--line);border-radius:2px;overflow:hidden}
+.tbar i{display:block;height:100%;width:100%;background:var(--accent);transition:width .2s linear}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:8px}
+.stat{background:var(--sunk);border:1px solid var(--line);border-radius:8px;padding:10px 12px}
+.stat b{display:block;font:600 22px var(--f-mono);font-variant-numeric:tabular-nums}
+.stat span{font-size:12px;color:var(--muted)}
+.record{font-weight:600;color:var(--ok)}
+details summary{cursor:pointer;font-weight:500}
+.missed{margin:8px 0 0;padding-left:18px;display:flex;flex-direction:column;gap:6px;font-size:14px}
+.missed code{font-family:var(--f-mono);font-size:13px}
+/* Dépannage */
+.sclist{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:8px}
+.sc{display:flex;flex-direction:column;gap:4px;text-align:left;font:inherit;color:var(--fg);background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:12px;cursor:pointer}
+.sc b{font-weight:600;font-size:15px}
+.sc small{color:var(--muted);font-size:12px}
+.tag{align-self:flex-start;font:600 11px var(--f-ui);text-transform:uppercase;letter-spacing:.6px;color:var(--accent)}
+.ticket{margin:0;padding:10px 14px;border-left:3px solid var(--accent);background:var(--sunk);border-radius:0 8px 8px 0;font-size:15px}
+.ticket small{display:block;color:var(--muted);font-size:12px;margin-top:4px}
+.ctx{margin:0;padding-left:20px;font-size:14px;display:flex;flex-direction:column;gap:2px}
+.tests{display:flex;flex-wrap:wrap;gap:8px}
+.btn.test{font-size:14px;padding:8px 12px;text-align:left}
+.btn.test:disabled{opacity:.5;cursor:default}
+.log{display:flex;flex-direction:column;gap:10px}
+.log:empty{display:none}
+.cmdline{font:600 13px var(--f-mono);color:var(--accent);overflow-wrap:anywhere}
+.out{margin:4px 0 0;font:12.5px/1.5 var(--f-mono);background:var(--sunk);border:1px solid var(--line);border-radius:8px;padding:10px;white-space:pre-wrap;overflow-wrap:anywhere}
+.opts.col{grid-template-columns:1fr}
+.opt:disabled{cursor:default}
+.why{font-size:14px}
+.review{margin:6px 0 0;padding:0;list-style:none;display:flex;flex-direction:column;gap:6px;font-size:14px}
+.review li::before{content:attr(data-m);font-weight:600;margin-right:6px;color:var(--muted)}
+.review li.ok::before{color:var(--ok)} .review li.ko::before{color:var(--ko)}
+.big{font:600 30px var(--f-mono)}
+#dep .card{scroll-margin-top:120px}
+/* OSI glisser-déposer */
+.pool{display:flex;flex-wrap:wrap;gap:8px;min-height:50px;padding:10px;border:1px dashed var(--line);border-radius:8px;background:var(--sunk)}
+.pool:empty::before{content:"Toutes les étiquettes sont placées.";color:var(--muted);font-size:13px;align-self:center}
+.dchip{font:500 14px var(--f-ui);padding:8px 11px;border-radius:8px;border:1px solid var(--line);background:var(--surface);color:var(--fg);cursor:grab;touch-action:none;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none}
+.dchip.sel{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
+.dchip.dragging{opacity:.3}
+.dchip.ok{border-color:var(--ok);background:var(--okbg);cursor:default} .dchip.ko{border-color:var(--ko);background:var(--kobg);cursor:default}
+.dchip small{display:block;font-size:11px;color:var(--ko)}
+.ghost{position:fixed;z-index:50;pointer-events:none;margin:0;transform:translate(-50%,-60%) rotate(-2deg);box-shadow:0 8px 20px rgba(0,0,0,.35);cursor:grabbing}
+.layers{display:flex;flex-direction:column;gap:6px}
+.layer{display:grid;grid-template-columns:150px 1fr;gap:10px;align-items:center;border:1px solid var(--line);border-radius:8px;padding:6px 10px;min-height:50px;background:var(--sunk)}
+.layers.armed .layer{border-style:dashed;border-color:var(--accent);cursor:pointer}
+.layer.hot{border-style:solid;border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
+.lh{display:flex;gap:8px;align-items:baseline;font-size:13px;color:var(--muted);min-width:0}
+.lh b{font:600 17px var(--f-mono);color:var(--accent)}
+.lz{display:flex;flex-wrap:wrap;gap:6px;min-width:0}
+@media (max-width:480px){.layer{grid-template-columns:96px 1fr;padding:6px 8px}.lh{font-size:12px}}
+@media (max-width:480px){nav{gap:0}nav button{padding:9px 5px;font-size:13px}h1 small{display:none}.out{font-size:11.5px}}
 @media (prefers-reduced-motion:no-preference){.fb{animation:in .18s ease-out}@keyframes in{from{opacity:.4;transform:translateY(3px)}to{opacity:1;transform:none}}}
 </style>
 
 <header><div class="wrap">
   <h1>Entraînement TSSR <small>exercices illimités</small></h1>
   <nav role="tablist">
-    <button role="tab" data-tab="quiz">Quiz cours</button>
+    <button role="tab" data-tab="quiz">Cours</button>
     <button role="tab" data-tab="sr">Sous-réseaux</button>
     <button role="tab" data-tab="cmd">Commandes</button>
     <button role="tab" data-tab="ports">Ports</button>
-    <button role="tab" data-tab="ordre">Ordre</button>
+    <button role="tab" data-tab="ordre">OSI</button>
+    <button role="tab" data-tab="dep">Dépannage</button>
   </nav>
 </div></header>
 
@@ -119,6 +178,7 @@ button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 <section id="sr" hidden>
   <div class="bar">
     <div class="chips" id="srMode">
+      <button class="chip" data-v="chrono">Défi chrono</button>
       <button class="chip" data-v="calc">Calcul d'adresses</button>
       <button class="chip" data-v="dec">Découpage</button>
     </div>
@@ -128,7 +188,7 @@ button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
       <button class="chip" data-v="3">Difficile</button>
     </div>
   </div>
-  <div class="card">
+  <div class="card" id="srCard">
     <div class="bar"><span class="eyebrow" id="srEyebrow">Exercice</span><span class="score" data-score="sr"></span></div>
     <div class="q" id="srQ"></div>
     <div class="fields" id="srFields"></div>
@@ -138,6 +198,30 @@ button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
       <button class="btn" id="srNext">Nouvel exercice</button>
     </div>
     <div class="fb" id="srFb" hidden></div>
+  </div>
+
+  <div class="card" id="crCard" hidden>
+    <div class="bar"><span class="eyebrow">Défi chrono · <span id="crLvlName"></span></span><span class="score" id="crBest"></span></div>
+    <div id="crStart" style="display:flex;flex-direction:column;gap:12px">
+      <div class="q">Calcule le plus d'adresses possible avant la fin du chrono.</div>
+      <p class="empty" style="margin:0">Pour chaque adresse : adresse réseau, broadcast, plage d'hôtes (1<sup>re</sup> et dernière) et nombre d'hôtes. Tout juste = 10 points, + 2 par adresse de suite réussie (jusqu'à +10). Une case juste rapporte quand même 2 points. Après une erreur, le chrono se met en pause pendant que tu lis la correction.</p>
+      <div class="bar"><span class="empty">Durée</span><div class="chips" id="crDur"></div></div>
+      <div class="actions"><button class="btn primary" id="crGo">Lancer le défi</button></div>
+    </div>
+    <div id="crPlay" hidden style="display:flex;flex-direction:column;gap:12px">
+      <div class="hud"><span class="clock" id="crClock">2:00</span><span class="pts" id="crPts">0 pt</span><span class="streak" id="crStreak"></span></div>
+      <div class="tbar"><i id="crBar"></i></div>
+      <div class="q" id="crQ"></div>
+      <div class="fields" id="crFields"></div>
+      <div class="actions">
+        <button class="btn primary" id="crCheck">Valider</button>
+        <button class="btn primary" id="crNext" hidden>Suivante</button>
+        <button class="btn" id="crSkip">Passer</button>
+        <button class="btn" id="crStop">Arrêter</button>
+      </div>
+      <div class="fb" id="crFb" hidden></div>
+    </div>
+    <div id="crEnd" hidden style="display:flex;flex-direction:column;gap:12px"></div>
   </div>
 </section>
 
@@ -176,6 +260,25 @@ button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 </section>
 
 <section id="ordre" hidden>
+  <div class="chips" id="oMode">
+    <button class="chip" data-v="osi">Ranger dans les couches</button>
+    <button class="chip" data-v="seq">Remettre en ordre</button>
+  </div>
+  <div id="osiWrap" style="display:flex;flex-direction:column;gap:14px">
+  <div class="bar">
+    <div class="chips" id="osiModel"><button class="chip" data-v="7">OSI · 7 couches</button><button class="chip" data-v="4">TCP/IP · 4 couches</button></div>
+    <div class="chips" id="osiLvl"><button class="chip" data-v="noms">Avec les noms</button><button class="chip" data-v="num">Numéros seuls</button></div>
+  </div>
+  <div class="card">
+    <div class="bar"><span class="eyebrow">Glisse chaque étiquette dans sa couche</span><span class="score" id="osiInfo"></span></div>
+    <div class="pool" id="osiPool"></div>
+    <div class="layers" id="osiLayers"></div>
+    <div class="actions"><button class="btn primary" id="osiCheck" disabled>Vérifier</button><button class="btn" id="osiNew">Nouvelle série</button></div>
+    <div class="fb" id="osiFb" hidden></div>
+  </div>
+  <p class="foot">Sur téléphone, tu peux aussi toucher une étiquette puis toucher la couche. Touche une étiquette déjà placée pour la remettre dans la réserve.</p>
+  </div>
+  <div id="seqWrap" style="display:flex;flex-direction:column;gap:14px">
   <div class="bar"><div class="chips" id="oSeq"></div><span class="score" data-score="ordre"></span></div>
   <div class="card">
     <span class="eyebrow">Touche les étiquettes dans le bon ordre</span>
@@ -188,6 +291,12 @@ button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
     </div>
     <div class="fb" id="oFb" hidden></div>
   </div>
+  </div>
+</section>
+
+<section id="dep" hidden>
+  <div class="bar"><span class="eyebrow">Dépannage par scénario</span><span class="score" data-score="dep"></span></div>
+  <div id="depBox" style="display:flex;flex-direction:column;gap:14px"></div>
 </section>
 
 <p class="foot">Ta progression est enregistrée sur cet appareil. <button class="link" id="reset">Remettre les scores à zéro</button> <span id="resetConfirm" hidden> · <button class="link" id="resetYes">Confirmer</button></span></p>
@@ -204,19 +313,19 @@ const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',
 /* ---------- stockage local (facultatif) ---------- */
 const KEY='tssr-entrainement';
 let S={};try{S=JSON.parse(localStorage.getItem(KEY)||'{}')||{}}catch(e){}
-S.score=S.score||{};S.miss=S.miss||{};S.pref=S.pref||{};
+S.score=S.score||{};S.miss=S.miss||{};S.pref=S.pref||{};S.chrono=S.chrono||{};
 const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}};
 function renderScore(m){const s=S.score[m];$$(`[data-score="${m}"]`).forEach(e=>e.textContent=s&&s.n?`${s.ok}/${s.n} justes · ${Math.round(100*s.ok/s.n)} %`:'')}
 function tally(m,ok){const s=S.score[m]||(S.score[m]={ok:0,n:0});s.n++;if(ok)s.ok++;save();renderScore(m)}
-['quiz','sr','cmd','ports','ordre'].forEach(renderScore);
+['quiz','sr','cmd','ports','ordre','dep'].forEach(renderScore);
 $('#reset').onclick=()=>{$('#resetConfirm').hidden=false};
-$('#resetYes').onclick=()=>{S.score={};S.miss={};save();['quiz','sr','cmd','ports','ordre'].forEach(renderScore);$('#resetConfirm').hidden=true};
+$('#resetYes').onclick=()=>{S.score={};S.miss={};S.chrono={};save();['quiz','sr','cmd','ports','ordre','dep'].forEach(renderScore);$('#resetConfirm').hidden=true;if(srMode==='chrono')crReset();S.depBest={};S.osiBest={};save();depList();osiNew()};
 
 function chips(box,val,on){$$(`#${box} .chip`).forEach(b=>{b.setAttribute('aria-pressed',b.dataset.v===val);b.onclick=()=>{$$(`#${box} .chip`).forEach(x=>x.setAttribute('aria-pressed',x===b));on(b.dataset.v)}})}
 
 /* ---------- onglets ---------- */
 function tab(t){$$('nav button').forEach(b=>b.setAttribute('aria-selected',b.dataset.tab===t));$$('main section').forEach(s=>s.hidden=s.id!==t);S.pref.tab=t;save();
-  const f=$(`#${t} input[type=text]`);if(f&&matchMedia('(pointer:fine)').matches)f.focus()}
+  const f=$(`#${t} input[type=text]:not([readonly])`);if(f&&f.offsetParent&&matchMedia('(pointer:fine)').matches)f.focus()}
 $$('nav button').forEach(b=>b.onclick=()=>tab(b.dataset.tab));
 
 /* =========================================================
@@ -224,12 +333,13 @@ $$('nav button').forEach(b=>b.onclick=()=>tab(b.dataset.tab));
    ========================================================= */
 const ipStr=n=>[n>>>24,(n>>>16)&255,(n>>>8)&255,n&255].join('.');
 const maskN=p=>p===0?0:(0xFFFFFFFF<<(32-p))>>>0;
-function parseIP(s){const m=String(s).trim().match(/^(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})$/);if(!m)return null;const o=m.slice(1).map(Number);if(o.some(x=>x>255))return null;return((o[0]*16777216)+(o[1]<<16)+(o[2]<<8)+o[3])>>>0}
-const parseInt2=s=>{const t=String(s).replace(/[\s .]/g,'');return /^\d+$/.test(t)?Number(t):null};
+// La virgule est acceptée comme point : le pavé numérique de l'iPhone en français n'a que la virgule.
+function parseIP(s){const m=String(s).trim().replace(/,/g,'.').match(/^(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})$/);if(!m)return null;const o=m.slice(1).map(Number);if(o.some(x=>x>255))return null;return((o[0]*16777216)+(o[1]<<16)+(o[2]<<8)+o[3])>>>0}
+const parseInt2=s=>{const t=String(s).replace(/[\s.,]/g,'');return /^\d+$/.test(t)?Number(t):null};
 const fmt=n=>n.toLocaleString('fr-FR');
-function parsePrefix(s){s=String(s).trim();if(s.includes('.')){const m=parseIP(s);if(m===null)return null;for(let p=0;p<=32;p++)if(maskN(p)===m)return p;return -1}const n=parseInt2(s.replace('/',''));return n}
+function parsePrefix(s){s=String(s).trim().replace(/,/g,'.');if(s.includes('.')){const m=parseIP(s);if(m===null)return null;for(let p=0;p<=32;p++)if(maskN(p)===m)return p;return -1}const n=parseInt2(s.replace('/',''));return n}
 
-let srMode=S.pref.srMode||'calc', srLvl=S.pref.srLvl||'1', srEx=null, srDone=false;
+let srMode=S.pref.srMode||'chrono', srLvl=S.pref.srLvl||'1', srEx=null, srDone=false;
 
 function randomIP(lvl){
   if(lvl==='1')return parseIP(`192.168.${rnd(0,255)}.${rnd(1,254)}`);
@@ -253,7 +363,7 @@ function exCalc(lvl){
   steps.push(`Réseau <code>${ipStr(net)}</code> · broadcast <code>${ipStr(bc)}</code>.`);
   steps.push(`1<sup>re</sup> adresse = réseau + 1 → <code>${ipStr(net+1)}</code> ; dernière = broadcast − 1 → <code>${ipStr(bc-1)}</code>.`);
   steps.push(`Hôtes utilisables = 2<sup>${32-p}</sup> − 2 = <strong>${fmt(hosts)}</strong> (on retire le réseau et le broadcast).`);
-  return{eyebrow:'Calcul d\'adresses',q:`Pour l'adresse <span class="ip">${ipStr(ip)}/${p}</span>, trouve :`,steps,fields:[
+  return{eyebrow:'Calcul d\'adresses',ip:ipStr(ip),p,maskS:ipStr(m),q:`Pour l'adresse <span class="ip">${ipStr(ip)}/${p}</span>, trouve :`,steps,fields:[
     {id:'mask',label:'Masque en décimal',answer:ipStr(m),check:s=>parseIP(s)===m||parsePrefix(s)===p&&s.includes('.')},
     ipField('net','Adresse réseau',net),ipField('bc','Adresse de broadcast',bc),
     ipField('first','1re adresse utilisable',net+1),ipField('last','Dernière adresse utilisable',bc-1),
@@ -282,7 +392,7 @@ function exDec(lvl){
   }
 }
 function srNew(){
-  srEx=srMode==='calc'?exCalc(srLvl):exDec(srLvl);srDone=false;
+  srEx=srMode==='dec'?exDec(srLvl):exCalc(srLvl);srDone=false;
   $('#srEyebrow').textContent=srEx.eyebrow;$('#srQ').innerHTML=srEx.q;$('#srFb').hidden=true;
   $('#srFields').innerHTML=srEx.fields.map(f=>`<label>${esc(f.label)}<input type="text" id="sr_${f.id}" inputmode="decimal" autocomplete="off" autocapitalize="off" spellcheck="false"><span class="hint" id="srh_${f.id}" hidden></span></label>`).join('');
   $$('#srFields input').forEach((inp,i,all)=>inp.onkeydown=e=>{if(e.key==='Enter'){e.preventDefault();i<all.length-1&&!all[i+1].value?all[i+1].focus():srCheck()}});
@@ -299,15 +409,130 @@ function srCheck(){
 $('#srCheck').onclick=srCheck;
 $('#srShow').onclick=()=>{if(!srDone){tally('sr',false);srDone=true}srEx.fields.forEach(f=>{const h=$('#srh_'+f.id);h.hidden=false;h.className='hint';h.textContent='→ '+f.answer});srReveal()};
 $('#srNext').onclick=srNew;
-chips('srMode',srMode,v=>{srMode=S.pref.srMode=v;save();srNew()});
-chips('srLvl',srLvl,v=>{srLvl=S.pref.srLvl=v;save();srNew()});
-srNew();
+
+/* ---------- Défi chrono ---------- */
+const CR_DUR=[['60','1 min'],['120','2 min'],['300','5 min']];
+const LVL={'1':'Facile','2':'Moyen','3':'Difficile'};
+let crDur=S.pref.crDur||'120', cr=null, crTimer=null;
+$('#crDur').innerHTML=CR_DUR.map(([k,v])=>`<button class="chip" data-v="${k}">${v}</button>`).join('');
+chips('crDur',crDur,v=>{crDur=S.pref.crDur=v;save();crReset()});
+const crKey=()=>srLvl+'-'+crDur;
+const mmss=ms=>{const s=Math.max(0,Math.ceil(ms/1000));return Math.floor(s/60)+':'+String(s%60).padStart(2,'0')};
+function crStopTimer(){if(crTimer){clearInterval(crTimer);crTimer=null}}
+function crReset(){
+  crStopTimer();cr=null;
+  $('#crStart').hidden=false;$('#crPlay').hidden=true;$('#crEnd').hidden=true;
+  $('#crLvlName').textContent=LVL[srLvl]+' · '+CR_DUR.find(d=>d[0]===crDur)[1];
+  const b=S.chrono[crKey()];$('#crBest').textContent=b!=null?`Record : ${b} pts`:'Pas encore de record';
+}
+function crTick(){
+  if(!cr||!cr.running)return;
+  const now=performance.now();cr.left-=now-cr.last;cr.last=now;
+  if(cr.left<=0){cr.left=0;crHud();crEnd(false);return}
+  crHud();
+}
+function crPause(){crTick();if(cr)cr.running=false;crHud()}
+function crResume(){cr.last=performance.now();cr.running=true;crHud()}
+function crHud(){
+  const c=$('#crClock');c.textContent=mmss(cr.left);
+  c.classList.toggle('low',cr.left<10000);c.classList.toggle('paused',!cr.running&&!cr.over);
+  $('#crBar').style.width=Math.max(0,100*cr.left/cr.total)+'%';
+  $('#crPts').textContent=cr.pts+(cr.pts>1?' pts':' pt');
+  $('#crStreak').textContent=cr.over?'':!cr.running?'chrono en pause':cr.streak>1?`série de ${cr.streak}`:'';
+}
+function crStart(){
+  const t=+crDur*1000;
+  cr={total:t,left:t,last:0,running:false,over:false,pts:0,streak:0,bestStreak:0,n:0,perfect:0,fOk:0,fN:0,missed:[]};
+  $('#crStart').hidden=true;$('#crEnd').hidden=true;$('#crPlay').hidden=false;$('#crFb').hidden=true;
+  crQuestion();crResume();crStopTimer();crTimer=setInterval(crTick,200);
+}
+function crQuestion(){
+  const ex=exCalc(srLvl), dec=Math.random()<.5;
+  cr.ex=ex;cr.done=false;cr.fields=ex.fields.filter(f=>f.id!=='mask');
+  cr.label=dec?`${ex.ip} masque ${ex.maskS}`:`${ex.ip}/${ex.p}`;
+  $('#crQ').innerHTML=dec?`<span class="ip">${ex.ip}</span> masque <span class="ip">${ex.maskS}</span>`:`<span class="ip">${ex.ip}/${ex.p}</span>`;
+  $('#crFields').innerHTML=cr.fields.map(f=>`<label>${esc(f.label)}<input type="text" id="cr_${f.id}" inputmode="decimal" enterkeyhint="next" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false"><span class="hint" id="crh_${f.id}" hidden></span></label>`).join('');
+  const ins=$$('#crFields input');
+  ins.forEach((inp,i)=>inp.onkeydown=e=>{if(e.key!=='Enter')return;e.preventDefault();
+    if(cr.done){crNext();return}
+    const nxt=ins.slice(i+1).find(x=>!x.value.trim())||ins.find(x=>!x.value.trim());
+    nxt?nxt.focus():crCheck(false)});
+  ins[ins.length-1].setAttribute('enterkeyhint','done');
+  $('#crCheck').hidden=false;$('#crSkip').hidden=false;$('#crNext').hidden=true;
+  ins[0].focus();
+}
+function crCheck(skip){
+  if(!cr||cr.over||cr.done)return;
+  const vals=cr.fields.map(f=>$('#cr_'+f.id).value.trim());
+  if(!skip&&vals.every(v=>!v)){$('#cr_net').focus();return}
+  crTick();if(cr.over)return;
+  cr.done=true;cr.n++;let good=0;
+  cr.fields.forEach((f,i)=>{const ok=!skip&&vals[i]!==''&&f.check(vals[i]);if(ok)good++;
+    const inp=$('#cr_'+f.id);inp.className=ok?'ok':'ko';inp.readOnly=true;
+    const h=$('#crh_'+f.id);h.hidden=ok;h.className='hint ko';h.textContent='→ '+f.answer});
+  cr.fOk+=good;cr.fN+=cr.fields.length;
+  const all=good===cr.fields.length;tally('sr',all);
+  const fb=$('#crFb');
+  if(all){
+    cr.streak++;cr.bestStreak=Math.max(cr.bestStreak,cr.streak);cr.perfect++;
+    const gain=10+2*Math.min(cr.streak-1,5);cr.pts+=gain;
+    fb.className='fb ok';fb.innerHTML=`<span class="verdict ok">Parfait, +${gain} pts</span><div class="empty">${esc(cr.label)} → réseau <code>${cr.fields[0].answer}</code>, broadcast <code>${cr.fields[1].answer}</code></div>`;fb.hidden=false;
+    crQuestion();crHud();return;
+  }
+  cr.streak=0;const gain=2*good;cr.pts+=gain;
+  const a=Object.fromEntries(cr.fields.map(f=>[f.id,f.answer]));
+  cr.missed.push({q:cr.label,...a});
+  crPause();
+  fb.className='fb ko';
+  fb.innerHTML=`<span class="verdict ko">${skip?'Adresse passée.':`${good} case${good>1?'s':''} juste${good>1?'s':''} sur ${cr.fields.length} · +${gain} pts`}</span>
+    <div class="empty">Chrono en pause : prends le temps de lire la correction.</div>
+    <ol class="steps">${cr.ex.steps.map(s=>`<li>${s}</li>`).join('')}</ol>`;
+  fb.hidden=false;
+  $('#crCheck').hidden=true;$('#crSkip').hidden=true;$('#crNext').hidden=false;
+  if(matchMedia('(pointer:fine)').matches)$('#crNext').focus();
+}
+function crNext(){if(!cr||cr.over)return;$('#crFb').hidden=true;crQuestion();crResume()}
+function crEnd(stopped){
+  if(!cr||cr.over)return;
+  crStopTimer();cr.running=false;cr.over=true;crHud();
+  const k=crKey(), prev=S.chrono[k];
+  const rec=!stopped&&cr.pts>0&&(prev==null||cr.pts>prev);
+  if(rec){S.chrono[k]=cr.pts;save()}
+  const acc=cr.fN?Math.round(100*cr.fOk/cr.fN):0;
+  $('#crPlay').hidden=true;const end=$('#crEnd');end.hidden=false;
+  end.innerHTML=`<div class="q">${stopped?'Défi arrêté.':'Temps écoulé !'}</div>
+    <div class="stats">
+      <div class="stat"><b>${cr.pts}</b><span>points</span></div>
+      <div class="stat"><b>${cr.perfect}/${cr.n}</b><span>adresses parfaites</span></div>
+      <div class="stat"><b>${acc} %</b><span>cases justes</span></div>
+      <div class="stat"><b>${cr.bestStreak}</b><span>meilleure série</span></div>
+    </div>
+    <div>${rec?`<span class="record">Nouveau record en ${LVL[srLvl]}, ${CR_DUR.find(d=>d[0]===crDur)[1]} !</span>${prev!=null?` <span class="empty">(ancien : ${prev} pts)</span>`:''}`:stopped?'<span class="empty">Un défi arrêté avant la fin ne compte pas pour le record.</span>':`<span class="empty">Record : ${prev??0} pts</span>`}</div>
+    ${cr.missed.length?`<details${cr.missed.length<=3?' open':''}><summary>À revoir (${cr.missed.length})</summary><ul class="missed">${cr.missed.map(m=>`<li><code>${esc(m.q)}</code><br>réseau <code>${m.net}</code> · broadcast <code>${m.bc}</code> · hôtes <code>${m.first}</code> à <code>${m.last}</code> · <code>${m.hosts}</code> hôtes</li>`).join('')}</ul></details>`:cr.n?'<div class="empty">Aucune erreur. Essaie le niveau au-dessus.</div>':''}
+    <div class="actions"><button class="btn primary" id="crAgain">Rejouer</button><button class="btn" id="crBack">Changer de durée</button></div>`;
+  $('#crBest').textContent=`Record : ${S.chrono[k]??0} pts`;
+  $('#crAgain').onclick=crStart;$('#crBack').onclick=crReset;
+}
+$('#crGo').onclick=crStart;
+$('#crCheck').onclick=()=>crCheck(false);
+$('#crSkip').onclick=()=>crCheck(true);
+$('#crNext').onclick=crNext;
+$('#crStop').onclick=()=>crEnd(true);
+
+function srApply(){
+  const c=srMode==='chrono';
+  $('#srCard').hidden=c;$('#crCard').hidden=!c;
+  if(c)crReset();else{crStopTimer();cr=null;srNew()}
+}
+chips('srMode',srMode,v=>{srMode=S.pref.srMode=v;save();srApply()});
+chips('srLvl',srLvl,v=>{srLvl=S.pref.srLvl=v;save();srApply()});
+srNew();srApply();
 
 /* =========================================================
    2. COMMANDES
    ========================================================= */
-const CATS={cisco:{n:'Cisco IOS',ps:'R1#'},cmd:{n:'Windows (cmd)',ps:'C:\\>'},ps:{n:'PowerShell',ps:'PS C:\\>'},linux:{n:'Linux',ps:'$'}};
-// [catégorie, question, réponses acceptées, explication, invite de commande éventuelle]
+const CATS={cisco:{n:'Cisco IOS',ps:'R1#'},cmd:{n:'Windows (cmd)',ps:'C:\\>'},ps:{n:'PowerShell',ps:'PS C:\\>'},ad:{n:'Comptes & AD',ps:'PS C:\\>'},linux:{n:'Linux',ps:'$'}};
+// [catégorie, question, réponses acceptées, explication, invite de commande éventuelle, 1 = hors cours (vérifié sur learn.microsoft.com)]
 const CMDS=[
  ['cisco','Passer du mode utilisateur au mode privilégié.',['enable'],'Le prompt passe de R1> à R1#.','R1>'],
  ['cisco','Entrer en mode de configuration globale.',['configure terminal'],'Abrégé en « conf t ». Le prompt devient R1(config)#.'],
@@ -343,10 +568,10 @@ const CMDS=[
  ['cmd','Afficher la table de routage du poste Windows.',['route print','netstat -r'],''],
  ['cmd','Afficher la table ARP (correspondances IP ↔ MAC).',['arp -a'],''],
  ['cmd','Lister les connexions et les ports en écoute en numérique, avec le PID.',['netstat -ano','netstat -an','netstat -aon'],'-a toutes, -n numérique, -o PID du processus.'],
- ['cmd','Forcer l\'application immédiate des stratégies de groupe.',['gpupdate /force'],''],
- ['cmd','Afficher les GPO appliquées à l\'utilisateur et à l\'ordinateur.',['gpresult /r'],'gpresult /h rapport.html pour un rapport détaillé.'],
- ['cmd','Ouvrir la console « Utilisateurs et ordinateurs Active Directory ».',['dsa.msc'],'Dans Exécuter (Win+R) ou en ligne de commande.'],
- ['cmd','Ouvrir la console de gestion des stratégies de groupe.',['gpmc.msc'],''],
+ ['ad','Forcer l\'application immédiate des stratégies de groupe (GPO) sur le poste.',['gpupdate /force'],'Sinon, les GPO se rafraîchissent toutes les 90 minutes environ.','C:\\>',1],
+ ['ad','Afficher les GPO appliquées à l\'utilisateur et à l\'ordinateur.',['gpresult /r'],'gpresult /h rapport.html pour un rapport détaillé.','C:\\>',1],
+ ['ad','Ouvrir la console « Utilisateurs et ordinateurs Active Directory ».',['dsa.msc'],'Dans Exécuter (Win+R) ou en ligne de commande.','C:\\>',1],
+ ['ad','Ouvrir la console de gestion des stratégies de groupe.',['gpmc.msc'],'','C:\\>',1],
  ['cmd','Ouvrir la console DHCP.',['dhcpmgmt.msc'],''],
  ['cmd','Ouvrir la console DNS.',['dnsmgmt.msc'],''],
  ['cmd','Ouvrir l\'observateur d\'événements.',['eventvwr.msc','eventvwr'],'Journaux Système, Application, Sécurité.'],
@@ -355,11 +580,11 @@ const CMDS=[
  ['ps','Tester si le port 443 répond sur le serveur SRV01.',['test-netconnection srv01 -port 443','tnc srv01 -port 443','test-netconnection -computername srv01 -port 443'],'Pratique pour vérifier qu\'un pare-feu laisse passer un service.'],
  ['ps','Lister les services et leur état.',['get-service'],''],
  ['ps','Redémarrer le service « Spooler ».',['restart-service spooler','restart-service -name spooler'],'Spooler = service d\'impression.'],
- ['ps','Afficher le compte AD de l\'utilisateur jdupont.',['get-aduser jdupont','get-aduser -identity jdupont'],'Ajoute -Properties * pour tout voir.'],
- ['ps','Créer l\'unité d\'organisation « Compta ».',['new-adorganizationalunit -name compta','new-adorganizationalunit compta'],''],
- ['ps','Installer le rôle Services de domaine Active Directory.',['install-windowsfeature ad-domain-services','install-windowsfeature ad-domain-services -includemanagementtools','add-windowsfeature ad-domain-services'],'Ajoute -IncludeManagementTools pour les consoles.'],
+ ['ad','Afficher le compte AD de l\'utilisateur jdupont.',['get-aduser jdupont'],'Ajoute -Properties * pour voir toutes ses propriétés.','',1],
+ ['ad','Créer l\'unité d\'organisation (OU) « Compta ».',['new-adorganizationalunit -name compta'],'Une OU sert à ranger les objets et à leur appliquer des GPO.','',1],
+ ['ad','Installer le rôle AD DS (Services de domaine Active Directory), avec ses consoles.',['install-windowsfeature ad-domain-services -includemanagementtools'],'Sans -IncludeManagementTools, les consoles (dsa.msc…) ne sont pas installées. Le serveur n\'est pas encore contrôleur de domaine : il faut ensuite le promouvoir.','',1],
  ['ps','Renommer l\'ordinateur en SRV01.',['rename-computer -newname srv01','rename-computer srv01'],'Un redémarrage est nécessaire.'],
- ['ps','Joindre l\'ordinateur au domaine tssr.local.',['add-computer -domainname tssr.local','add-computer tssr.local'],'Demande un compte autorisé à joindre le domaine.'],
+ ['ad','Joindre l\'ordinateur au domaine tssr.local.',['add-computer -domainname tssr.local'],'Demande un compte autorisé à joindre le domaine, puis un redémarrage.','',1],
  ['ps','Redémarrer l\'ordinateur.',['restart-computer'],''],
  ['ps','Obtenir l\'aide de la cmdlet Get-Service.',['get-help get-service','help get-service','get-service -?'],''],
  ['linux','Afficher les adresses IP des interfaces.',['ip a','ip addr','ip address','ip addr show','ip address show','ifconfig'],'ifconfig est l\'ancienne commande (net-tools).'],
@@ -377,9 +602,53 @@ const CMDS=[
  ['linux','Interroger le DNS pour www.exemple.fr (outil détaillé).',['dig www.exemple.fr','nslookup www.exemple.fr','host www.exemple.fr'],''],
  ['linux','Chercher « error » dans /var/log/syslog.',['grep error /var/log/syslog','grep "error" /var/log/syslog','grep -i error /var/log/syslog'],'-i pour ignorer la casse.'],
  ['linux','Suivre en direct la fin du fichier /var/log/syslog.',['tail -f /var/log/syslog','journalctl -f'],''],
+ // Comptes locaux : TP « Commandes MS-DOS » et « Utilisateurs et groupes locaux »
+ ['ad','Créer l\'utilisateur local Alice avec le mot de passe P@ss2026.',['net user alice P@ss2026 /add'],'Vu dans ton TP MS-DOS. net user gère les comptes de la base locale (SAM).','C:\\>'],
+ ['ad','Ajouter Alice au groupe local Administrateurs.',['net localgroup administrateurs alice /add'],'Sur un Windows en anglais, le groupe s\'appelle Administrators.','C:\\>'],
+ ['ad','Désactiver le compte local Alice.',['net user alice /active:no'],'/active:yes pour le réactiver.','C:\\>'],
+ ['ad','Supprimer le compte local Alice.',['net user alice /delete'],'','C:\\>'],
+ ['ad','Créer le groupe local TSSR.',['net localgroup tssr /add'],'','C:\\>'],
+ ['ad','Afficher le nom de l\'utilisateur connecté (domaine\\utilisateur).',['whoami'],'','C:\\>'],
+ ['ad','Afficher les groupes dont fait partie l\'utilisateur connecté.',['whoami /groups'],'Pratique pour vérifier un problème de droits (groupe manquant).','C:\\>',1],
+ ['ad','Ouvrir la console « Utilisateurs et groupes locaux ».',['lusrmgr.msc'],'Aussi dans Gestion de l\'ordinateur. N\'existe pas sur un contrôleur de domaine.','C:\\>',1],
+ // Active Directory : hors cours, syntaxe vérifiée sur learn.microsoft.com
+ ['ad','Promouvoir le serveur en créant une nouvelle forêt nommée tssr.local.',['install-addsforest -domainname tssr.local'],'Le serveur devient le premier contrôleur de domaine. Il demande le mot de passe DSRM (mode restauration) et installe le DNS par défaut.','',1],
+ ['ad','Créer l\'utilisateur AD jdupont.',['new-aduser -name jdupont','new-aduser -name jdupont -samaccountname jdupont'],'Le compte est créé désactivé s\'il n\'a pas de mot de passe : ajoute -AccountPassword et -Enabled $true.','',1],
+ ['ad','Afficher toutes les propriétés du compte AD jdupont.',['get-aduser jdupont -properties *'],'Sans -Properties, on ne voit qu\'une dizaine de propriétés de base.','',1],
+ ['ad','Lister tous les utilisateurs du domaine.',['get-aduser -filter *'],'-Filter est obligatoire quand on ne donne pas d\'identité.','',1],
+ ['ad','Lister tous les ordinateurs du domaine.',['get-adcomputer -filter *'],'','',1],
+ ['ad','Créer le groupe global GG_Compta.',['new-adgroup -name gg_compta -groupscope global'],'-GroupScope est obligatoire : DomainLocal, Global ou Universal.','',1],
+ ['ad','Ajouter jdupont au groupe GG_Compta.',['add-adgroupmember -identity gg_compta -members jdupont'],'-Identity = le groupe, -Members = qui on ajoute.','',1],
+ ['ad','Lister les membres du groupe GG_Compta.',['get-adgroupmember gg_compta'],'','',1],
+ ['ad','Désactiver le compte AD jdupont.',['disable-adaccount jdupont'],'Enable-ADAccount pour le réactiver.','',1],
+ ['ad','Déverrouiller le compte AD jdupont (trop d\'essais de mot de passe).',['unlock-adaccount jdupont'],'Un compte verrouillé n\'est pas désactivé : il a dépassé le nombre d\'essais autorisé par la stratégie de mot de passe.','',1],
+ ['ad','Trouver tous les comptes verrouillés du domaine.',['search-adaccount -lockedout'],'Ajoute -UsersOnly pour ne voir que les utilisateurs.','',1],
+ ['ad','Réinitialiser le mot de passe de jdupont (il te sera demandé).',['set-adaccountpassword jdupont -reset'],'-Reset réinitialise sans connaître l\'ancien mot de passe.','',1],
+ ['ad','Obliger jdupont à changer son mot de passe à la prochaine connexion.',['set-aduser jdupont -changepasswordatlogon $true'],'Bonne pratique après une réinitialisation par le support.','',1],
 ];
 const norm=(s,cat)=>{s=s.trim().toLowerCase().replace(/["']/g,'').replace(/\s+/g,' ');if(cat==='cmd')s=s.replace(/\s*\/\s*/g,' /').replace(/^(\S+) \//,'$1 /');return s};
+// PowerShell : l'ordre des paramètres ne compte pas, et « Cmdlet x » vaut « Cmdlet -Identity x ».
+const PS_POS={'new-aduser':['-name'],'new-adgroup':['-name'],'new-adorganizationalunit':['-name'],'get-aduser':['-identity'],'set-aduser':['-identity'],
+ 'disable-adaccount':['-identity'],'enable-adaccount':['-identity'],'unlock-adaccount':['-identity'],'set-adaccountpassword':['-identity'],'get-adcomputer':['-identity'],
+ 'get-adgroupmember':['-identity'],'add-adgroupmember':['-identity','-members'],'add-computer':['-domainname'],'install-windowsfeature':['-name'],
+ 'restart-service':['-name'],'get-service':['-name'],'test-netconnection':['-computername'],'get-help':['-name'],'rename-computer':['-newname']};
+const PS_ALIAS={'add-windowsfeature':'install-windowsfeature','tnc':'test-netconnection','help':'get-help'};
+const PS_SWITCH=new Set(['-reset','-lockedout','-includemanagementtools','-usersonly','-force','-installdns']);
+function psCanon(s){
+  const t=s.trim().toLowerCase().replace(/["']/g,'').replace(/\s+/g,' ').split(' ');
+  const cmd=PS_ALIAS[t[0]]||t[0],named={},pos=[];
+  for(let k=1;k<t.length;k++){
+    if(t[k].startsWith('-')&&t[k].length>1){const m=t[k].match(/^(-[^:]+):(.+)$/);
+      if(m)named[m[1]]=m[2];else if(PS_SWITCH.has(t[k])||k+1>=t.length||t[k+1].startsWith('-'))named[t[k]]='$true';else{named[t[k]]=t[k+1];k++}}
+    else pos.push(t[k]);
+  }
+  (PS_POS[cmd]||[]).forEach((p,k)=>{if(pos[0]!==undefined&&named[p]===undefined)named[p]=pos.shift()});
+  return cmd+' '+pos.join(' ')+' '+Object.keys(named).sort().map(k=>k+'='+named[k]).join(' ');
+}
+const isPs=s=>/^[a-z]+-[a-z]+/i.test(s.trim());
 function matches(input,ans,cat){
+  if((cat==='ps'||cat==='ad')&&isPs(ans))return psCanon(input)===psCanon(ans);
+  if(cat==='ad')cat='cmd';
   const a=norm(input,cat),b=norm(ans,cat);if(a===b)return true;
   if(cat!=='cisco')return false;
   const x=a.split(' '),y=b.split(' ');
@@ -394,20 +663,21 @@ function cmdNew(){
   const pool=CMDS.map((c,i)=>i).filter(i=>(cmdCat==='all'||CMDS[i][0]===cmdCat)&&(i!==cmdCur||false));
   const w=pool.map(i=>1+3*(S.miss[i]||0));let r=Math.random()*w.reduce((a,b)=>a+b,0),k=0;while(r>=w[k]){r-=w[k];k++}
   cmdCur=pool[Math.min(k,pool.length-1)];cmdDone=false;
-  const [cat,q,,,ps]=CMDS[cmdCur];
-  $('#cmdEyebrow').textContent=CATS[cat].n+((S.miss[cmdCur]||0)>0?' · à retravailler':'');
+  const [cat,q,,,ps,hc]=CMDS[cmdCur];
+  $('#cmdEyebrow').textContent=CATS[cat].n+(hc?' · hors cours':'')+((S.miss[cmdCur]||0)>0?' · à retravailler':'');
   $('#cmdQ').textContent=q;$('#cmdPs').textContent=ps||CATS[cat].ps;
   const inp=$('#cmdIn');inp.value='';$('#cmdConsole').className='console';$('#cmdFb').hidden=true;
-  if(matchMedia('(pointer:fine)').matches)inp.focus();
+  if(matchMedia('(pointer:fine)').matches&&inp.offsetParent)inp.focus();
 }
 function cmdShow(ok,given){
-  const [cat,,ans,why]=CMDS[cmdCur];
+  const [cat,,ans,why,,hc]=CMDS[cmdCur];
   if(!cmdDone){cmdDone=true;tally('cmd',ok);S.miss[cmdCur]=ok?Math.max(0,(S.miss[cmdCur]||0)-1):(S.miss[cmdCur]||0)+1;save()}
   $('#cmdConsole').className='console '+(ok?'ok':'ko');
   const fb=$('#cmdFb');fb.className='fb '+(ok?'ok':'ko');fb.hidden=false;
   fb.innerHTML=`<span class="verdict ${ok?'ok':'ko'}">${ok?'Correct.':given?'Réponse :':'Pas tout à fait.'}</span>
     <div>Réponse attendue : <code>${esc(ans[0])}</code>${ans.length>1?`<br><span class="empty">Aussi accepté : ${ans.slice(1).map(a=>`<code>${esc(a)}</code>`).join(' ')}</span>`:''}</div>
-    ${why?`<div>${esc(why)}</div>`:''}`;
+    ${why?`<div>${esc(why)}</div>`:''}
+    ${hc?'<div class="empty">Hors cours : cette commande n\'est pas encore dans tes cours. Sa syntaxe a été vérifiée sur la documentation Microsoft (learn.microsoft.com).</div>':''}`;
 }
 function cmdCheck(){const v=$('#cmdIn').value;if(!v.trim())return;const [cat,,ans]=CMDS[cmdCur];cmdShow(ans.some(a=>matches(v,a,cat)),false)}
 $('#cmdCheck').onclick=cmdCheck;$('#cmdGive').onclick=()=>cmdShow(false,true);$('#cmdNext').onclick=cmdNew;
@@ -438,7 +708,7 @@ function pNew(){
     pCur={type:'num',e};$('#pQ').innerHTML=`Quel est le port de <strong>${esc(e[0])}</strong> ?`;
     $('#pBody').innerHTML=`<div class="console" id="pCon"><span class="ps">port</span><input type="text" id="pIn" inputmode="numeric" autocomplete="off" aria-label="Numéro de port"></div>`;
     $('#pIn').onkeydown=ev=>{if(ev.key==='Enter'){ev.preventDefault();pDone?pNew():pCheck()}};
-    if(matchMedia('(pointer:fine)').matches)$('#pIn').focus();$('#pCheck').hidden=false;
+    if(matchMedia('(pointer:fine)').matches&&$('#pIn').offsetParent)$('#pIn').focus();$('#pCheck').hidden=false;
   }else{
     const p=pick(e[1]);const others=shuffle(PORTS.filter(x=>x!==e&&!x[1].includes(p))).slice(0,3);
     pCur={type:'qcm',e,p};$('#pQ').innerHTML=`Quel service utilise le port <span class="ip">${p}</span> ?`;
@@ -487,14 +757,566 @@ function oFinish(){
 $('#oUndo').onclick=()=>{oPlaced.pop();oRender()};$('#oNext').onclick=oNew;
 oNew();
 
+/* ---------- OSI : ranger dans les couches (glisser-déposer) ----------
+   [étiquette, couche OSI, explication tirée du cours « Le modèle OSI »] */
+const OSI_L={7:'Application',6:'Présentation',5:'Session',4:'Transport',3:'Réseau',2:'Liaison de données',1:'Physique'};
+const TCP_L={4:'Application',3:'Transport',2:'Internet',1:'Accès réseau'};
+const toTcp=l=>l<=2?1:l===3?2:l===4?3:4;
+const OSI_ITEMS=[
+ ['Bit',1,"Unité de données de la couche physique : la couche 1 transmet les bits sur le support."],
+ ['Câble à paires torsadées',1,"Support de transmission en cuivre : couche physique."],
+ ['Fibre optique',1,"Support de transmission optique : couche physique."],
+ ['Concentrateur (hub)',1,"Il régénère le signal et le diffuse sur tous ses ports sans analyser les données : couche 1."],
+ ['Répéteur',1,"Il régénère le signal pour qu'il aille plus loin : couche 1. Le hub est un répéteur multiports."],
+ ['Modem',1,"Ton cours le range avec les équipements de niveau 1, qui transmettent le signal sans l'analyser."],
+ ['Multiplexage',1,"Faire passer plusieurs informations sur un seul support : un service de la couche physique dans ton cours."],
+ ['Trame',2,"Unité de données de la couche liaison de données (frames de 100 à 1000 octets)."],
+ ['Adresse MAC',2,"Adresse de 6 octets de la carte réseau, gérée par la sous-couche MAC de la couche 2."],
+ ['Commutateur (switch)',2,"Il envoie les trames seulement vers le bon destinataire grâce aux adresses MAC : couche 2."],
+ ['Ethernet',2,"Protocole de la couche liaison de données (norme 802.3)."],
+ ['Wi-Fi (802.11)',2,"Variante sans fil d'Ethernet : couche 2."],
+ ['CSMA/CD',2,"Contrôle l'accès au support partagé, dans la sous-couche MAC de la couche 2."],
+ ['PPP / HDLC',2,"Protocoles de la couche liaison de données cités dans ton cours (liaisons série entre routeurs)."],
+ ['Paquet',3,"Unité de données de la couche réseau ; il contient les adresses IP."],
+ ['Adresse IP',3,"Adresse utilisée par la couche réseau pour le routage."],
+ ['Routeur',3,"Il fait passer les paquets d'un réseau à l'autre grâce à sa table de routage : couche 3."],
+ ['ICMP (ping)',3,"Protocole de couche 3 qui aide IP avec des messages de contrôle et d'erreur."],
+ ['Routage',3,"Choisir le chemin des paquets de la source à la destination : rôle de la couche 3."],
+ ['QoS',3,"Ton cours range la qualité de service (trafic, congestion) dans la couche réseau."],
+ ['Segment',4,"Unité de données de la couche transport quand on utilise TCP."],
+ ['TCP',4,"Protocole de transport orienté connexion, avec accusés de réception."],
+ ['UDP',4,"Protocole de transport sans connexion, sans accusé de réception."],
+ ['Numéro de port',4,"Il distingue les programmes qui communiquent sur une machine : couche transport."],
+ ['Communication de bout en bout',4,"La couche transport de la source parle directement avec celle de la destination ; les couches 1 à 3 ne parlent qu'aux voisins."],
+ ['Ouverture des sessions',5,"La couche session établit les sessions entre utilisateurs de machines différentes."],
+ ['Synchronisation après un crash',5,"La couche session permet de reprendre là où l'échange s'était arrêté."],
+ ['Jetons (tokens)',5,"Leur gestion est un rôle de la couche session dans ton cours."],
+ ['ASCII',6,"Exemple de représentation des données donné par ton cours pour la couche présentation."],
+ ['JPEG',6,"Exemple de format de données donné par ton cours pour la couche présentation."],
+ ['Syntaxe et sens des données',6,"C'est la définition de la couche présentation : on manipule des représentations, plus des bits."],
+ ['HTTP',7,"Protocole de couche 7 pour les pages web."],
+ ['DNS',7,"Protocole de couche 7 pour la résolution de noms."],
+ ['FTP',7,"Protocole de couche 7 pour le transfert de fichiers."],
+ ['SMTP',7,"Protocole de couche 7 pour l'envoi de mails."],
+ ['POP',7,"Protocole de couche 7 pour récupérer ses mails."],
+ ['SSH',7,"Protocole de couche 7 pour ouvrir une session à distance."],
+ ['Telnet',7,"Protocole de couche 7 de session à distance (non chiffré)."],
+ ['SNMP',7,"Protocole de couche 7 pour superviser le réseau."],
+];
+S.osiBest=S.osiBest||{};
+let oMode=S.pref.oMode||'osi', osiModel=S.pref.osiModel||'7', osiLvl=S.pref.osiLvl||'noms', osi=null, osiSel=null, osiSkipClick=false, drag=null;
+const osiT=i=>osiModel==='7'?OSI_ITEMS[i][1]:toTcp(OSI_ITEMS[i][1]);
+const osiNames=()=>osiModel==='7'?OSI_L:TCP_L;
+const osiKey=()=>osiModel+'-'+osiLvl;
+function osiNew(){
+  const cnt={},chosen=[],max=osiModel==='7'?2:3;
+  for(const i of shuffle(OSI_ITEMS.map((x,k)=>k))){const l=osiT(i);if((cnt[l]||0)>=max)continue;cnt[l]=(cnt[l]||0)+1;chosen.push(i);if(chosen.length===8)break}
+  osi={items:chosen,place:{},done:false,t0:Date.now(),t1:0};osiSel=null;$('#osiFb').hidden=true;osiRender();osiClock();
+}
+function osiClock(){if(!osi)return;const b=S.osiBest[osiKey()],s=Math.round(((osi.done?osi.t1:Date.now())-osi.t0)/1000);
+  $('#osiInfo').textContent=mmss(s*1000)+(b!=null?` · record ${mmss(b*1000)}`:'')}
+setInterval(()=>{if(osi&&!osi.done&&!$('#ordre').hidden&&oMode==='osi')osiClock()},1000);
+function osiChip(i){
+  const right=osi.place[i]===osiT(i),c=osi.done?(right?'ok':'ko'):(osiSel===i?'sel':'');
+  return `<button class="dchip ${c}" data-i="${i}">${esc(OSI_ITEMS[i][0])}${osi.done&&!right?`<small>→ couche ${osiT(i)}</small>`:''}</button>`;
+}
+function osiRender(){
+  const L=osiNames(),nums=Object.keys(L).map(Number).sort((a,b)=>b-a);
+  $('#osiPool').innerHTML=osi.items.filter(i=>osi.place[i]==null).map(osiChip).join('');
+  $('#osiLayers').innerHTML=nums.map(n=>`<div class="layer" data-l="${n}"><div class="lh"><b>${n}</b><span>${osiLvl==='noms'?L[n]:''}</span></div><div class="lz">${osi.items.filter(i=>osi.place[i]===n).map(osiChip).join('')}</div></div>`).join('');
+  $('#osiLayers').classList.toggle('armed',osiSel!=null&&!osi.done);
+  $('#osiCheck').disabled=osi.done||osi.items.some(i=>osi.place[i]==null);
+  $$('#osiWrap .dchip').forEach(el=>el.addEventListener('pointerdown',osiDown));
+}
+function osiOff(){document.removeEventListener('pointermove',osiMove);document.removeEventListener('pointerup',osiUp);document.removeEventListener('pointercancel',osiCancel)}
+function osiDown(e){
+  if(!osi||osi.done||e.button>0)return;
+  e.preventDefault();
+  drag={i:+e.currentTarget.dataset.i,el:e.currentTarget,x:e.clientX,y:e.clientY,ghost:null,hot:null};
+  document.addEventListener('pointermove',osiMove);document.addEventListener('pointerup',osiUp);document.addEventListener('pointercancel',osiCancel);
+}
+function osiMove(e){
+  if(!drag)return;
+  if(!drag.ghost){
+    if(Math.hypot(e.clientX-drag.x,e.clientY-drag.y)<6)return;
+    const g=drag.el.cloneNode(true);g.classList.remove('sel');g.classList.add('ghost');document.body.appendChild(g);
+    drag.ghost=g;drag.el.classList.add('dragging');osiSel=null;$('#osiLayers').classList.remove('armed');
+  }
+  drag.ghost.style.left=e.clientX+'px';drag.ghost.style.top=e.clientY+'px';
+  const t=document.elementFromPoint(e.clientX,e.clientY),z=t&&t.closest('.layer');
+  if(z!==drag.hot){if(drag.hot)drag.hot.classList.remove('hot');if(z)z.classList.add('hot');drag.hot=z}
+  if(e.clientY<150)window.scrollBy(0,-10);else if(e.clientY>innerHeight-60)window.scrollBy(0,10);
+}
+function osiCancel(){osiOff();if(drag&&drag.ghost)drag.ghost.remove();drag=null;osiRender()}
+function osiUp(e){
+  osiOff();const d=drag;drag=null;if(!d)return;
+  osiSkipClick=true;setTimeout(()=>{osiSkipClick=false},0);
+  if(d.ghost){
+    d.ghost.remove();
+    const t=document.elementFromPoint(e.clientX,e.clientY),z=t&&t.closest('.layer');
+    if(z)osi.place[d.i]=+z.dataset.l;else if(t&&t.closest('#osiPool'))delete osi.place[d.i];
+  }else if(osi.place[d.i]!=null){delete osi.place[d.i];osiSel=null}
+  else osiSel=osiSel===d.i?null:d.i;
+  osiRender();
+}
+$('#osiLayers').addEventListener('click',e=>{
+  if(osiSkipClick||!osi||osi.done||osiSel==null||e.target.closest('.dchip'))return;
+  const z=e.target.closest('.layer');if(!z)return;
+  osi.place[osiSel]=+z.dataset.l;osiSel=null;osiRender();
+});
+function osiCheck(){
+  if(!osi||osi.done)return;
+  osi.done=true;osi.t1=Date.now();osiSel=null;
+  const L=osiNames(),bad=osi.items.filter(i=>osi.place[i]!==osiT(i)),ok=!bad.length;
+  tally('ordre',ok);
+  const sec=Math.round((osi.t1-osi.t0)/1000),k=osiKey(),prev=S.osiBest[k];let rec=false;
+  if(ok&&(prev==null||sec<prev)){S.osiBest[k]=sec;rec=true;save()}
+  osiRender();osiClock();
+  const osiNote=i=>osiModel==='4'?` (couche ${OSI_ITEMS[i][1]} ${OSI_L[OSI_ITEMS[i][1]]} du modèle OSI)`:'';
+  const fb=$('#osiFb');fb.hidden=false;fb.className='fb '+(ok?'ok':'ko');
+  fb.innerHTML=`<span class="verdict ${ok?'ok':'ko'}">${ok?`Tout est bien rangé, en ${mmss(sec*1000)}.`:`${osi.items.length-bad.length}/${osi.items.length} étiquettes bien placées.`}</span>
+   ${rec?`<div class="record">Nouveau record${prev!=null?` (ancien : ${mmss(prev*1000)})`:''}.</div>`:''}
+   ${bad.length?`<ul class="review">${bad.map(i=>`<li class="ko" data-m="✘"><b>${esc(OSI_ITEMS[i][0])}</b> → couche ${osiT(i)}, ${L[osiT(i)]}${osiNote(i)}. ${esc(OSI_ITEMS[i][2])}</li>`).join('')}</ul>`:''}
+   ${osiModel==='7'?'<div class="empty">Astuce hors cours pour retenir l\'ordre de 1 à 7 : « Pour Le Réseau, Tout Se Passe Automatiquement » (Physique, Liaison, Réseau, Transport, Session, Présentation, Application).</div>':'<div class="empty">TCP/IP regroupe les couches OSI : 1 et 2 → Accès réseau, 3 → Internet, 4 → Transport, 5 à 7 → Application.</div>'}`;
+}
+function oApply(){$('#osiWrap').hidden=oMode!=='osi';$('#seqWrap').hidden=oMode!=='seq'}
+chips('oMode',oMode,v=>{oMode=S.pref.oMode=v;save();oApply()});
+chips('osiModel',osiModel,v=>{osiModel=S.pref.osiModel=v;save();osiNew()});
+chips('osiLvl',osiLvl,v=>{osiLvl=S.pref.osiLvl=v;save();osiNew()});
+$('#osiCheck').onclick=osiCheck;$('#osiNew').onclick=osiNew;
+oApply();osiNew();
+
+/* =========================================================
+   5. DÉPANNAGE PAR SCÉNARIO
+   tests : [libellé, invite, résultat affiché, utile ?, ce que le test apprend]
+   cause / fix : [texte, bonne réponse ?, explication]
+   ========================================================= */
+S.depBest=S.depBest||{};
+const THEMES={dhcp:'DHCP',ip:'Adressage IP',dns:'DNS',cablage:'Câblage',cisco:'Cisco',droits:'Droits NTFS',linux:'Linux'};
+const DEP=[
+{id:'dhcp-arret',theme:'dhcp',t:"Plus de réseau pour tout le service Compta",
+ user:"Depuis ce matin je n'ai plus Internet ni le serveur de fichiers. Mes collègues non plus.",who:"Marc, poste PC-COMPTA-03",
+ ctx:["Réseau 192.168.10.0/24, passerelle 192.168.10.254.","Le serveur SRV-DC01 (192.168.10.5) fait AD, DNS et DHCP. Étendue : .50 à .200.","Les postes sont en DHCP. Le serveur a redémarré cette nuit pour des mises à jour."],
+ tests:[
+  ["ipconfig sur le poste","C:\\> ipconfig",`Carte Ethernet Ethernet :
+
+   Suffixe DNS propre à la connexion. . . :
+   Adresse d'autoconfiguration IPv4 . . . : 169.254.37.12(préféré)
+   Masque de sous-réseau. . . . . . . . . : 255.255.0.0
+   Passerelle par défaut. . . . . . . . . :`,true,"169.254.x.x = APIPA : le poste n'a reçu aucune réponse d'un serveur DHCP. C'est l'indice principal."],
+  ["Voyants de la carte et du switch","(vérification physique)",`Voyant vert allumé sur la carte et sur le port 12 du switch.
+Le câble est bien clipsé des deux côtés.`,true,"Couche 1 vérifiée : câble et port fonctionnent. On peut monter d'un cran."],
+  ["État du service DHCP sur SRV-DC01","PS C:\\> Get-Service DHCPServer",`Status   Name         DisplayName
+------   ----         -----------
+Stopped  DHCPServer   Serveur DHCP`,true,"Le service est arrêté : il n'est pas reparti après le redémarrage de cette nuit."],
+  ["nslookup www.google.fr","C:\\> nslookup www.google.fr",`DNS request timed out.
+    timeout was 2 seconds.
+*** Le délai de la requête a expiré.`,false,"Sans adresse IP valide, aucun test DNS ne peut marcher : le DNS est une conséquence, pas la cause."],
+  ["ipconfig /flushdns","C:\\> ipconfig /flushdns",`Configuration IP de Windows
+
+Cache de résolution DNS vidé.`,false,"Vider le cache DNS ne sert à rien quand le poste n'a même pas d'adresse IP."]],
+ cause:[["Le service DHCP du serveur est arrêté.",true,"Oui : les postes en DHCP sont en APIPA, le câble est bon, et Get-Service affiche « Stopped »."],
+  ["Le câble réseau du poste est défectueux.",false,"Non : les voyants sont allumés, et tout le service est touché en même temps, pas un seul poste."],
+  ["Le serveur DNS est mal configuré.",false,"Non : le DNS ne distribue pas d'adresses IP. Une adresse 169.254 montre que c'est le DHCP qui ne répond pas."],
+  ["La carte réseau du poste est en panne.",false,"Non : plusieurs postes ont le même problème au même moment. Une panne commune vient du centre du réseau."]],
+ fix:[["Démarrer le service (Start-Service DHCPServer), le laisser en démarrage automatique, puis ipconfig /renew sur les postes.",true,"Le serveur distribue de nouveau les baux ; /renew évite d'attendre que les postes redemandent seuls."],
+  ["Mettre une adresse IP fixe sur chaque poste de la Compta.",false,"Ça contourne le problème et crée un risque de conflits d'adresses avec la plage DHCP (vu dans ton TP DHCP)."],
+  ["Changer le câble du poste de Marc.",false,"Le câble n'est pas en cause, et ça ne réparerait pas les autres postes."],
+  ["Redémarrer tous les PC.",false,"Tant que le service DHCP est arrêté, les PC repartiront en 169.254."]],
+ lesson:"On part du poste (ipconfig), on vérifie la couche 1 (câble, voyants), puis on remonte vers le service. Plusieurs postes touchés en même temps = cause commune, au centre du réseau. 169.254.x.x (APIPA) = « aucun serveur DHCP ne m'a répondu ». Après le redémarrage d'un serveur, on vérifie que ses services sont repartis.",
+ src:"Exercices DHCP – corrigés (APIPA) · TP DHCP sous Windows Server"},
+
+{id:'dhcp-relais',theme:'dhcp',t:"Le nouvel étage n'obtient pas d'adresse",
+ user:"On vient d'installer les PC du 2e étage : aucun n'a de réseau. Au 1er étage, tout marche.",who:"Responsable des services généraux",
+ ctx:["1er étage : 192.168.10.0/24, serveur DHCP SRV-DC01 en 192.168.10.5.","2e étage : 192.168.20.0/24, relié au 1er par le routeur R1 (G0/1 côté 2e étage, en 192.168.20.254).","Hier, tu as créé l'étendue 192.168.20.0 sur le serveur."],
+ tests:[
+  ["ipconfig sur un PC du 2e étage","C:\\> ipconfig",`   Adresse d'autoconfiguration IPv4 . . . : 169.254.112.7(préféré)
+   Masque de sous-réseau. . . . . . . . . : 255.255.0.0
+   Passerelle par défaut. . . . . . . . . :`,true,"APIPA : la demande DHCP du poste n'a reçu aucune réponse."],
+  ["Étendues dans la console DHCP","dhcpmgmt.msc → SRV-DC01 → IPv4",`Étendue [192.168.10.0] 1er étage    Active
+   Plage : 192.168.10.50 – 192.168.10.200
+   003 Routeur : 192.168.10.254
+Étendue [192.168.20.0] 2e étage     Active
+   Plage : 192.168.20.50 – 192.168.20.200
+   003 Routeur : 192.168.20.254
+   Baux d'adresses : (aucun)`,true,"L'étendue du 2e étage existe et est active, mais n'a aucun bail : le serveur ne reçoit jamais les demandes du 2e étage."],
+  ["Configuration de l'interface G0/1 de R1","R1# show running-config interface g0/1",`interface GigabitEthernet0/1
+ description 2e etage
+ ip address 192.168.20.254 255.255.255.0
+ duplex auto
+ speed auto
+!`,true,"Il manque la ligne ip helper-address : R1 n'est pas configuré en agent de relais DHCP."],
+  ["ping 192.168.20.254 depuis le 1er étage","C:\\> ping 192.168.20.254",`Réponse de 192.168.20.254 : octets=32 temps<1ms TTL=255
+Réponse de 192.168.20.254 : octets=32 temps<1ms TTL=255
+(4 envoyés, 4 reçus, 0 perdu)`,false,"Le routeur répond, mais ça ne dit rien sur le DHCP du 2e étage."],
+  ["Get-Service DHCPServer","PS C:\\> Get-Service DHCPServer",`Status   Name         DisplayName
+------   ----         -----------
+Running  DHCPServer   Serveur DHCP`,false,"Le 1er étage reçoit déjà ses adresses : on savait que le service tournait."]],
+ cause:[["Le routeur R1 ne relaie pas les demandes DHCP du 2e étage.",true,"Oui : le Discover est un broadcast, et un routeur ne laisse pas passer les broadcasts. Sans agent de relais, la demande n'arrive jamais au serveur."],
+  ["Il manque l'étendue du 2e étage sur le serveur.",false,"Non : la console montre l'étendue 192.168.20.0, active."],
+  ["Le service DHCP est arrêté.",false,"Non : le 1er étage reçoit ses adresses, donc le service tourne."],
+  ["Les câbles du 2e étage sont mal branchés.",false,"Les PC prennent une adresse APIPA : le lien physique marche, c'est le DHCP qui ne répond pas."]],
+ fix:[["Sur R1, interface G0/1 : ip helper-address 192.168.10.5",true,"R1 devient agent de relais : il transmet les demandes au serveur, qui répond avec l'étendue 192.168.20.0."],
+  ["Ajouter un 2e serveur DHCP avec la même étendue que le premier.",false,"Deux serveurs avec des plages qui se chevauchent créent des conflits d'adresses (exercice DHCP, question 3)."],
+  ["Sur R1 : ip route 192.168.20.0 255.255.255.0 192.168.10.5",false,"Ce réseau est déjà directement connecté à R1. Et une route ne fait pas passer un broadcast."],
+  ["Mettre le helper-address sur G0/0 (côté 1er étage).",false,"Le relais se configure sur l'interface qui reçoit les broadcasts des clients, donc côté 2e étage (G0/1)."]],
+ lesson:"Un routeur est une frontière pour les broadcasts. Un seul serveur DHCP pour plusieurs sous-réseaux = une étendue par sous-réseau + un agent de relais (ip helper-address) sur l'interface du routeur côté clients.",
+ src:"Exercices DHCP – corrigés, question 4 (agent de relais)"},
+
+{id:'passerelle',theme:'ip',t:"Le serveur de fichiers marche, Internet non",
+ user:"J'ai bien mes dossiers partagés, mais aucun site web ne s'ouvre.",who:"Julie, nouvelle arrivée, poste PC-ACCUEIL-02",
+ ctx:["Réseau 192.168.1.0/24. Le routeur (accès Internet) est en 192.168.1.254.","Serveur SRV01 (fichiers + DNS) : 192.168.1.10.","Le poste de Julie a été configuré à la main par un stagiaire."],
+ tests:[
+  ["ipconfig /all","C:\\> ipconfig /all",`   DHCP activé. . . . . . . . . . . . . . : Non
+   Adresse IPv4. . . . . . . . . . . . . .: 192.168.1.37(préféré)
+   Masque de sous-réseau. . . . . . . . . : 255.255.255.0
+   Passerelle par défaut. . . . . . . . . : 192.168.1.1
+   Serveurs DNS. . . . . . . . . . . . . .: 192.168.1.10`,true,"La passerelle est en .1, alors que le routeur est en .254."],
+  ["ping 192.168.1.10 (serveur)","C:\\> ping 192.168.1.10",`Réponse de 192.168.1.10 : octets=32 temps<1ms TTL=128
+(4 envoyés, 4 reçus, 0 perdu)`,true,"Le réseau local marche : câble, adresse et masque sont bons."],
+  ["ping 192.168.1.1","C:\\> ping 192.168.1.1",`Réponse de 192.168.1.37 : Impossible de joindre l'hôte de destination.
+(4 envoyés, 4 reçus, 0 perdu)`,true,"Personne n'a l'adresse .1 : la passerelle configurée n'existe pas. (Les « 4 reçus » sont les messages d'erreur, pas de vraies réponses.)"],
+  ["ping 192.168.1.254","C:\\> ping 192.168.1.254",`Réponse de 192.168.1.254 : octets=32 temps=1 ms TTL=64
+(4 envoyés, 4 reçus, 0 perdu)`,true,"Le vrai routeur répond très bien."],
+  ["ipconfig /flushdns","C:\\> ipconfig /flushdns","Cache de résolution DNS vidé.",false,"Le DNS n'est pas en cause : le poste n'a même pas de chemin vers Internet."],
+  ["Redémarrer le poste","(redémarrage)","Après redémarrage : les partages marchent, Internet toujours pas.",false,"Une IP fixe mal tapée reste mal tapée après un redémarrage."]],
+ cause:[["La passerelle par défaut est fausse (.1 au lieu de .254).",true,"Oui : pour sortir de son réseau, le PC envoie tout à sa passerelle. Ici, elle n'existe pas."],
+  ["Le serveur DNS est mauvais.",false,"Non : SRV01 est bien le DNS du réseau. Sans passerelle, même un bon DNS ne donne pas Internet."],
+  ["Le masque est faux.",false,"Non : 255.255.255.0 correspond au /24 du réseau, et le serveur local répond."],
+  ["Le routeur Internet est en panne.",false,"Non : 192.168.1.254 répond, et les autres postes ont Internet."]],
+ fix:[["Mettre la passerelle 192.168.1.254 (ou repasser le poste en DHCP).",true,"Le PC enverra le trafic Internet au vrai routeur. Repasser en DHCP évite aussi les fautes de frappe."],
+  ["Mettre le DNS 8.8.8.8.",false,"Le DNS n'est pas le problème, et le poste ne résoudrait plus les noms internes."],
+  ["Changer le masque en 255.255.0.0.",false,"La configuration deviendrait fausse, et la passerelle resterait mauvaise."],
+  ["Redémarrer le routeur.",false,"Le routeur marche pour tout le monde : le problème est sur le poste."]],
+ lesson:"« Je joins le réseau local mais pas l'extérieur » pointe vers la passerelle. Ordre des tests : ping 127.0.0.1, ping un voisin, ping la passerelle, ping une IP Internet, puis un nom.",
+ src:"Initiation aux réseaux (passerelle par défaut) · Exercices DHCP (option 003)"},
+
+{id:'dns',theme:'dns',t:"« Internet ne marche plus »… à moitié",
+ user:"Aucun site ne s'ouvre : le navigateur dit qu'il ne trouve pas l'adresse.",who:"Paul, service commercial",
+ ctx:["Réseau 192.168.1.0/24, postes en DHCP, passerelle 192.168.1.254.","L'ancien serveur SRV-OLD (192.168.1.53) a été éteint vendredi. Le nouveau DNS est SRV01 (192.168.1.10)."],
+ tests:[
+  ["ping 8.8.8.8","C:\\> ping 8.8.8.8",`Réponse de 8.8.8.8 : octets=32 temps=14 ms TTL=117
+(4 envoyés, 4 reçus, 0 perdu)`,true,"La connexion vers Internet marche : IP, passerelle et routeur sont bons."],
+  ["ping www.google.fr","C:\\> ping www.google.fr","La requête Ping n'a pas pu trouver l'hôte www.google.fr. Vérifiez le nom et essayez à nouveau.",true,"Avec une IP ça marche, avec un nom ça échoue : c'est la résolution de noms (DNS)."],
+  ["nslookup www.google.fr","C:\\> nslookup www.google.fr",`DNS request timed out.
+    timeout was 2 seconds.
+Serveur :   UnKnown
+Address:  192.168.1.53
+
+*** Le délai de la requête sur UnKnown a expiré.`,true,"Le poste interroge 192.168.1.53 : l'ancien serveur, éteint."],
+  ["Options de l'étendue DHCP","dhcpmgmt.msc → Étendue → Options d'étendue",`003 Routeur          192.168.1.254
+006 Serveurs DNS     192.168.1.53
+015 Nom de domaine   entreprise.local`,true,"L'option 006 donne encore l'ancien DNS à tous les postes."],
+  ["tracert 8.8.8.8","C:\\> tracert 8.8.8.8",`  1    <1 ms    <1 ms    <1 ms  192.168.1.254
+  2     3 ms     3 ms     3 ms  80.10.x.x
+  …
+  9    14 ms    14 ms    14 ms  dns.google [8.8.8.8]
+
+Itinéraire déterminé.`,false,"On savait déjà que 8.8.8.8 répondait : le chemin n'apporte rien de plus."],
+  ["Changer le câble","(remplacement du câble)","Même problème avec un câble neuf.",false,"Le ping vers 8.8.8.8 marchait : la couche 1 n'était pas en cause."]],
+ cause:[["Les postes reçoivent par DHCP l'adresse d'un serveur DNS éteint.",true,"Oui : l'option 006 pointe toujours vers SRV-OLD. Les IP marchent, les noms non."],
+  ["La passerelle est fausse.",false,"Non : ping 8.8.8.8 passe, donc la passerelle fait son travail."],
+  ["Le cache DNS du poste est abîmé.",false,"Non : nslookup interroge directement le serveur, qui ne répond pas. Le cache n'y est pour rien."],
+  ["Le site www.google.fr est en panne.",false,"Non : aucun site ne marche, et c'est le serveur DNS qui ne répond pas."]],
+ fix:[["Mettre 192.168.1.10 dans l'option 006 de l'étendue, puis ipconfig /renew sur les postes.",true,"Tous les postes recevront le bon DNS à leur prochain bail ; /renew l'applique tout de suite."],
+  ["ipconfig /flushdns sur chaque poste.",false,"Le poste continuerait d'interroger un serveur éteint."],
+  ["Rallumer SRV-OLD pour toujours.",false,"Ça cache l'erreur de configuration et garde en service un serveur censé être retiré."],
+  ["Taper 192.168.1.10 à la main sur chaque poste.",false,"Ça marcherait, mais poste par poste. La bonne correction se fait une seule fois, dans le DHCP."]],
+ lesson:"IP qui répond + nom qui échoue = DNS. nslookup montre quel serveur DNS le poste interroge. Quand on retire un serveur DNS, on met à jour l'option 006 de l'étendue DHCP.",
+ src:"Fiches DNS et DHCP · Exercices DHCP (options)"},
+
+{id:'masque',theme:'ip',t:"Impossible d'imprimer à l'atelier",
+ user:"Depuis qu'on a refait mon PC, je n'arrive plus à imprimer sur l'imprimante de l'atelier.",who:"Karim, atelier (réseau isolé, sans routeur)",
+ ctx:["Réseau de l'atelier : 192.168.50.0/24, sans routeur ni passerelle.","Imprimante : 192.168.50.200. Les autres PC de l'atelier impriment normalement.","Le PC de Karim a été réinstallé hier, avec une IP fixe."],
+ tests:[
+  ["ipconfig","C:\\> ipconfig",`   Adresse IPv4. . . . . . . . . . . . . .: 192.168.50.20
+   Masque de sous-réseau. . . . . . . . . : 255.255.255.128
+   Passerelle par défaut. . . . . . . . . :`,true,"Masque /25 au lieu de /24 : pour ce PC, le réseau va seulement de 192.168.50.0 à 192.168.50.127."],
+  ["ping 192.168.50.200","C:\\> ping 192.168.50.200",`PING : échec de la transmission. Défaillance générale.
+(4 envoyés, 0 reçus, 100 % perte)`,true,"Le PC croit que .200 est dans un autre réseau ; sans passerelle, il ne sait pas où l'envoyer."],
+  ["ping 192.168.50.200 depuis un autre PC","C:\\> ping 192.168.50.200   (sur PC-ATELIER-02)","Réponse de 192.168.50.200 : octets=32 temps=2 ms TTL=64",true,"L'imprimante va bien : le problème vient du PC de Karim."],
+  ["ping 192.168.50.30 (voisin)","C:\\> ping 192.168.50.30","Réponse de 192.168.50.30 : octets=32 temps<1ms TTL=128",true,".30 est dans la moitié basse (.0 à .127) : il reste joignable. Le câble est bon."],
+  ["Réinstaller le pilote de l'imprimante","(réinstallation du pilote)","Pilote réinstallé. L'impression échoue toujours : « Imprimante hors connexion ».",false,"Le pilote n'y peut rien : le PC n'arrive même pas à pinguer l'imprimante."],
+  ["nslookup imp-atelier","C:\\> nslookup imp-atelier","*** UnKnown ne parvient pas à trouver imp-atelier : No response from server",false,"L'atelier n'a pas de DNS et on utilise l'adresse IP : le DNS n'est pas la piste."]],
+ cause:[["Le masque du PC est faux : /25 au lieu de /24.",true,"Oui : avec 255.255.255.128, le réseau du PC s'arrête à .127. L'imprimante (.200) est « ailleurs » pour lui."],
+  ["L'imprimante est en panne.",false,"Non : un autre PC la pingue sans problème."],
+  ["Il manque une passerelle.",false,"L'atelier n'a pas de routeur. Avec le bon masque, le PC et l'imprimante sont dans le même réseau et n'en ont pas besoin."],
+  ["Le câble est défectueux.",false,"Non : le voisin en .30 répond."]],
+ fix:[["Remettre le masque 255.255.255.0 sur le PC.",true,"Le PC retrouve le réseau 192.168.50.0/24 et parle directement à l'imprimante."],
+  ["Mettre 192.168.50.200 comme passerelle.",false,"Une imprimante n'est pas un routeur : il faut corriger le masque."],
+  ["Changer l'adresse de l'imprimante en 192.168.50.100.",false,"Ça marcherait pour Karim, mais tous les autres postes perdraient l'imprimante."],
+  ["Réinstaller Windows.",false,"Démesuré : une seule valeur est fausse."]],
+ lesson:"Pour savoir si deux machines sont dans le même réseau, on calcule l'adresse réseau de chacune avec son masque. 192.168.50.20/25 → réseau .0 (de .0 à .127) ; .200 tombe dans le réseau .128. C'est exactement le calcul du Défi chrono.",
+ src:"Initiation aux réseaux – adresses IP et masques · TP sous-réseaux (« même réseau ? »)"},
+
+{id:'cable',theme:'cablage',t:"Plus de réseau après un changement de bureau",
+ user:"J'ai changé de bureau, j'ai tout rebranché, et je n'ai plus de réseau du tout.",who:"Nadia, service RH",
+ ctx:["Les postes sont en DHCP. Les prises murales arrivent à la baie de brassage de l'étage.","Les autres postes du bureau fonctionnent."],
+ tests:[
+  ["ipconfig","C:\\> ipconfig",`Carte Ethernet Ethernet :
+
+   Statut du média. . . . . . . . . . . . : Média déconnecté
+   Suffixe DNS propre à la connexion. . . :`,true,"« Média déconnecté » : Windows ne voit aucun signal sur la carte. Problème de couche 1."],
+  ["Voyants de la carte réseau","(vérification physique)","Aucun voyant allumé sur la carte réseau du PC.",true,"Pas de lien physique : câble, prise murale ou port du switch."],
+  ["ping 127.0.0.1","C:\\> ping 127.0.0.1","Réponse de 127.0.0.1 : octets=32 temps<1ms TTL=128",true,"La pile TCP/IP du PC fonctionne : le problème est en dehors du PC."],
+  ["Autre câble, sur la prise d'à côté","(test par remplacement)","Voyant vert, et ipconfig donne 192.168.1.64 au bout de quelques secondes.",true,"Le test qui tranche : avec un autre câble et une autre prise, tout marche."],
+  ["État du service DHCP","PS C:\\> Get-Service DHCPServer",`Status   Name         DisplayName
+------   ----         -----------
+Running  DHCPServer   Serveur DHCP`,false,"Sans lien physique, le PC ne peut même pas envoyer sa demande DHCP."],
+  ["nslookup www.google.fr","C:\\> nslookup www.google.fr","*** Aucun serveur DNS disponible.",false,"On teste la couche 7 alors que la couche 1 ne passe pas : on commence toujours par le bas."]],
+ cause:[["Problème physique (couche 1) : câble abîmé ou prise murale non brassée.",true,"Oui : « Média déconnecté », aucun voyant, et tout repart avec un autre câble sur une autre prise."],
+  ["Le serveur DHCP ne répond pas.",false,"Non : on aurait une adresse 169.254, pas « Média déconnecté »."],
+  ["Le pilote de la carte réseau est abîmé.",false,"Non : la pile réseau marche (127.0.0.1) et la carte fonctionne sur l'autre prise."],
+  ["Le DNS est en panne.",false,"Non : le DNS est en couche 7 ; ici, même la couche 1 ne passe pas."]],
+ fix:[["Tester le câble et la prise au testeur, faire brasser la prise dans la baie ou changer le câble.",true,"On répare la couche 1 : la prise n'est sans doute pas reliée au switch dans la baie de brassage."],
+  ["Mettre une IP fixe au PC.",false,"Sans lien physique, aucune configuration IP ne peut marcher."],
+  ["Réinstaller le pilote réseau.",false,"La carte fonctionne sur l'autre prise."],
+  ["Redémarrer le serveur DHCP.",false,"Le serveur fonctionne pour les autres postes."]],
+ lesson:"Méthode du modèle OSI : on commence par la couche 1. « Média déconnecté » = pas de lien physique. Adresse 169.254 = lien OK mais pas de réponse DHCP. Les deux messages ne disent pas du tout la même chose.",
+ src:"Le câblage réseau (baie de brassage, recette) · Le modèle OSI"},
+
+{id:'shutdown',theme:'cisco',t:"Un LAN coupé après une maintenance du routeur",
+ user:"Depuis l'intervention sur le routeur hier soir, notre étage ne sort plus du réseau.",who:"Équipe du LAN 192.168.2.0/24",
+ ctx:["Les PC du LAN 192.168.2.0/24 ont comme passerelle 192.168.2.254, l'interface G0/0 du routeur R2.","Hier soir, un technicien a modifié la configuration de R2."],
+ tests:[
+  ["ipconfig sur un PC","C:\\> ipconfig",`   Adresse IPv4. . . . . . . . . . . . . .: 192.168.2.13
+   Masque de sous-réseau. . . . . . . . . : 255.255.255.0
+   Passerelle par défaut. . . . . . . . . : 192.168.2.254`,true,"La configuration du PC est correcte."],
+  ["ping 192.168.2.254","C:\\> ping 192.168.2.254",`Délai d'attente de la demande dépassé.
+Délai d'attente de la demande dépassé.
+(4 envoyés, 0 reçus, 100 % perte)`,true,"La passerelle ne répond pas : on va voir côté routeur."],
+  ["show ip interface brief","R2# show ip interface brief",`Interface           IP-Address     OK? Method Status                Protocol
+GigabitEthernet0/0  192.168.2.254  YES manual administratively down down
+Serial0/3/0         12.0.0.1       YES manual up                    up
+Serial0/3/1         11.0.0.2       YES manual up                    up`,true,"« administratively down » : l'interface a été éteinte par une commande shutdown."],
+  ["show ip route","R2# show ip route",`Gateway of last resort is 12.0.0.2 to network 0.0.0.0
+
+C    11.0.0.0/30 is directly connected, Serial0/3/1
+C    12.0.0.0/30 is directly connected, Serial0/3/0
+S*   0.0.0.0/0 [1/0] via 12.0.0.2`,true,"Le réseau 192.168.2.0 n'apparaît plus en « C » : son interface est éteinte."],
+  ["show vlan brief","R2# show vlan brief","% Invalid input detected at '^' marker.",false,"show vlan est une commande de switch : elle n'existe pas sur ce routeur."],
+  ["ipconfig /renew","C:\\> ipconfig /renew","Une erreur s'est produite lors du renouvellement de l'interface Ethernet : impossible de contacter votre serveur DHCP.",false,"La configuration du PC était bonne ; renouveler ne rallume pas le routeur."]],
+ cause:[["L'interface G0/0 de R2 est éteinte (shutdown).",true,"Oui : « administratively down » = un administrateur a désactivé l'interface."],
+  ["Le câble entre le switch et R2 est débranché.",false,"Un câble débranché donnerait « down / down », pas « administratively down »."],
+  ["La route par défaut de R2 est fausse.",false,"Elle n'y est pour rien : les PC ne joignent même pas leur passerelle."],
+  ["Les PC ont une mauvaise passerelle.",false,"Non : 192.168.2.254 est bien l'adresse de G0/0."]],
+ fix:[["R2(config)# interface g0/0 puis no shutdown, et sauvegarder (copy run start).",true,"L'interface repasse up/up, le réseau revient en « C » dans la table, et la sauvegarde garde la correction après un redémarrage."],
+  ["Redémarrer R2.",false,"Si le shutdown a été sauvegardé dans la startup-config, l'interface restera éteinte."],
+  ["ip route 192.168.2.0 255.255.255.0 g0/0",false,"Un réseau directement connecté n'a pas besoin de route statique : il faut allumer l'interface."],
+  ["Changer la passerelle des PC.",false,"Les PC sont bien configurés."]],
+ lesson:"Sur un routeur, le premier réflexe est show ip interface brief. up/up = OK ; down/down = problème physique ; administratively down = shutdown. Après une correction : copy running-config startup-config.",
+ src:"TP Initiation réseau (Cisco) · Routage"},
+
+{id:'doublon-serie',theme:'cisco',t:"Le LAN de R4 ne sort plus",
+ user:"Depuis le TP d'hier, le réseau 192.168.4.0 n'arrive à joindre aucun autre réseau.",who:"Binôme de TP, topologie R1 à R4",
+ ctx:["Quatre routeurs reliés par des liaisons série en /30 (11.0.0.0, 12.0.0.0, 13.0.0.0, 14.0.0.0).","La liaison 14.0.0.0/30 relie R1 (S0/3/1) et R4 (S0/3/0). R4 a une route par défaut vers 14.0.0.2.","Configuration reprise de ton fichier « Sans titre.md »."],
+ tests:[
+  ["show ip interface brief sur R4","R4# show ip interface brief",`Interface           IP-Address     OK? Method Status   Protocol
+GigabitEthernet0/0  192.168.4.254  YES manual up       up
+Serial0/3/0         14.0.0.1       YES manual up       up
+Serial0/3/1         13.0.0.2       YES manual up       up`,true,"Tout est up/up. Mais R4 a 14.0.0.1 sur S0/3/0…"],
+  ["show ip interface brief sur R1","R1# show ip interface brief",`Interface           IP-Address     OK? Method Status   Protocol
+GigabitEthernet0/0  192.168.1.254  YES manual up       up
+Serial0/3/0         11.0.0.1       YES manual up       up
+Serial0/3/1         14.0.0.1       YES manual up       up`,true,"… et R1 aussi a 14.0.0.1 en face : les deux bouts de la liaison ont la même adresse."],
+  ["show ip route sur R4","R4# show ip route",`Gateway of last resort is 14.0.0.2 to network 0.0.0.0
+
+C    13.0.0.0/30 is directly connected, Serial0/3/1
+C    14.0.0.0/30 is directly connected, Serial0/3/0
+C    192.168.4.0/25 is directly connected, GigabitEthernet0/0
+S*   0.0.0.0/0 [1/0] via 14.0.0.2`,true,"La route par défaut envoie tout vers 14.0.0.2… une adresse que personne n'a."],
+  ["ping 14.0.0.2 depuis R4","R4# ping 14.0.0.2",`Type escape sequence to abort.
+Sending 5, 100-byte ICMP Echos to 14.0.0.2, timeout is 2 seconds:
+.....
+Success rate is 0 percent (0/5)`,true,"Le prochain saut de la route par défaut ne répond pas."],
+  ["show vlan brief sur R4","R4# show vlan brief","% Invalid input detected at '^' marker.",false,"Commande de switch, inutile sur un routeur."],
+  ["Recâbler la liaison série","(recâblage)","Même résultat après recâblage.",false,"up/up montrait déjà que les couches 1 et 2 allaient bien."]],
+ cause:[["R1 et R4 ont la même adresse 14.0.0.1, et la route par défaut de R4 vise une adresse qui n'existe pas.",true,"Oui : erreur de copier-coller dans la config de R4. Personne n'a 14.0.0.2, donc R4 envoie tout dans le vide."],
+  ["La liaison série est coupée.",false,"Non : les interfaces sont up/up des deux côtés."],
+  ["Il manque une route statique sur R1.",false,"Le problème est sur R4 : son prochain saut n'existe pas."],
+  ["Le masque /25 du LAN de R4 est faux.",false,"Le /25 limite le LAN à 126 hôtes, mais n'empêche pas d'en sortir."]],
+ fix:[["Sur R4 : S0/3/0 en 14.0.0.2 255.255.255.252, et route par défaut vers 14.0.0.1 (R1). Puis sauvegarder.",true,"Chaque bout du /30 a sa propre adresse, et R4 envoie son trafic vers R1, qui existe."],
+  ["Sur R4 : seulement changer S0/3/0 en 14.0.0.2.",false,"Presque ! Mais la route par défaut « via 14.0.0.2 » viserait alors R4 lui-même. Il faut aussi la refaire vers 14.0.0.1."],
+  ["Sur R1 : ajouter ip route 192.168.4.0 255.255.255.128 14.0.0.2.",false,"14.0.0.2 n'existe pas, et le problème de sortie est sur R4."],
+  ["Changer la liaison en /24.",false,"Un /30 suffit pour une liaison point à point ; le problème est l'adresse en double."]],
+ lesson:"Sur une liaison /30, il n'y a que 2 adresses utilisables : une pour chaque routeur. Une route par défaut doit viser l'adresse du routeur d'en face. Bonus dans ton fichier : R3 porte le nom « R2 » (ligne HOSTNAME).",
+ src:"Ton fichier « Sans titre.md » (config R1 à R4) · Routage · Sous-réseaux /30"},
+
+{id:'partage',theme:'droits',t:"Lecture possible, enregistrement impossible",
+ user:"J'ouvre les fichiers du dossier Compta, mais quand j'enregistre, Windows dit que l'accès est refusé.",who:"Sophie, membre du groupe GG_Compta",
+ ctx:["Dossier D:\\Compta sur SRV01, partagé sous le nom \\\\SRV01\\Compta.","Le groupe GG_Compta doit pouvoir lire et modifier les fichiers."],
+ tests:[
+  ["Autorisations du partage","Propriétés de D:\\Compta → Partage → Partage avancé → Autorisations",`Tout le monde
+   Contrôle total   ☐ Autoriser
+   Modifier         ☐ Autoriser
+   Lecture          ☑ Autoriser`,true,"Le partage ne donne que la Lecture, à tout le monde."],
+  ["Onglet Sécurité (NTFS)","Propriétés de D:\\Compta → Sécurité",`Administrateurs    Contrôle total
+SYSTEM             Contrôle total
+GG_Compta          Modification`,true,"En NTFS, le groupe a bien Modification."],
+  ["whoami /groups sur le poste de Sophie","C:\\> whoami /groups",`ENTREPRISE\\GG_Compta                 Groupe   Groupe obligatoire, Activé
+ENTREPRISE\\Utilisateurs du domaine  Groupe   Groupe obligatoire, Activé`,true,"Sophie est bien dans GG_Compta : le problème n'est pas l'appartenance au groupe."],
+  ["ping SRV01","C:\\> ping srv01","Réponse de 192.168.1.10 : octets=32 temps<1ms TTL=128",false,"Elle ouvre déjà les fichiers : on savait que le réseau marchait."],
+  ["gpupdate /force","C:\\> gpupdate /force",`La mise à jour de la stratégie d'ordinateur s'est terminée sans erreur.
+La mise à jour de la stratégie utilisateur s'est terminée sans erreur.`,false,"Les GPO ne changent pas les autorisations de ce dossier."]],
+ cause:[["Le partage ne donne que la Lecture : par le réseau, c'est le droit le plus restrictif qui s'applique.",true,"Oui : partage = Lecture, NTFS = Modification. Par le réseau, Sophie a le plus restrictif des deux : Lecture."],
+  ["Sophie n'est pas dans le groupe GG_Compta.",false,"Non : whoami /groups montre qu'elle en fait partie."],
+  ["Il y a un « Refuser » en NTFS.",false,"Non : l'onglet Sécurité ne contient aucun refus."],
+  ["Le fichier est ouvert par quelqu'un d'autre.",false,"Ça toucherait un seul fichier, pas tout le dossier."]],
+ fix:[["Mettre le partage en Modifier pour le groupe (ou Contrôle total) et laisser le NTFS gérer finement.",true,"C'est la bonne pratique de ton cours : partage large, droits fins en NTFS. Sophie aura alors Modification."],
+  ["Donner Contrôle total NTFS à Sophie.",false,"Le partage en Lecture limiterait toujours l'accès. Et on donne les droits à des groupes, pas à une personne."],
+  ["Ajouter « Refuser » à Tout le monde.",false,"Refuser l'emporte sur tout : plus personne n'aurait accès, administrateurs compris."],
+  ["Copier le dossier sur le poste de Sophie.",false,"Ça crée des copies différentes des mêmes fichiers : ce n'est pas une correction."]],
+ lesson:"Par le réseau, les droits effectifs = le plus restrictif entre partage et NTFS : le partage agit comme un limiteur. On donne les droits à des groupes, jamais personne par personne. Refuser l'emporte sur tout.",
+ src:"Droits NTFS et partage · TP Partage et droits NTFS"},
+
+{id:'ssh',theme:'linux',t:"Connexion SSH refusée vers le serveur Debian",
+ user:"PuTTY m'affiche « Connection refused » quand je me connecte à srv-web.",who:"Toi, technicien",
+ ctx:["Serveur Debian srv-web : 192.168.1.40, avec openssh-server installé.","Hier, un collègue a fait une maintenance sur le serveur, qui a redémarré cette nuit."],
+ tests:[
+  ["ping 192.168.1.40","C:\\> ping 192.168.1.40","Réponse de 192.168.1.40 : octets=32 temps<1ms TTL=64",true,"Le serveur est allumé et joignable : le réseau va bien."],
+  ["Tester le port 22","PS C:\\> Test-NetConnection 192.168.1.40 -Port 22",`ComputerName     : 192.168.1.40
+RemotePort       : 22
+PingSucceeded    : True
+TcpTestSucceeded : False`,true,"Le serveur répond au ping, mais rien n'écoute sur le port 22."],
+  ["systemctl status ssh (console du serveur)","root@srv-web:~# systemctl status ssh",`○ ssh.service - OpenBSD Secure Shell server
+     Loaded: loaded (/lib/systemd/system/ssh.service; disabled; preset: enabled)
+     Active: inactive (dead)`,true,"Le service est arrêté (inactive) et désactivé au démarrage (disabled)."],
+  ["ss -tlnp (console du serveur)","root@srv-web:~# ss -tlnp",`State   Recv-Q  Send-Q  Local Address:Port  Peer Address:Port  Process
+LISTEN  0       511     0.0.0.0:80          0.0.0.0:*          users:(("apache2",pid=612))`,true,"Seul le port 80 (Apache) est en écoute : pas de port 22."],
+  ["Retaper le mot de passe","(nouvelle tentative)","Network error: Connection refused (avant même la demande d'identifiant).",false,"Le refus arrive avant l'authentification : le mot de passe n'est pas en cause."],
+  ["ipconfig /flushdns","C:\\> ipconfig /flushdns","Cache de résolution DNS vidé.",false,"On se connecte par l'adresse IP : le DNS n'intervient pas."]],
+ cause:[["Le service ssh est arrêté, et désactivé au démarrage.",true,"Oui : inactive (dead) + disabled. Après le redémarrage, il n'est pas reparti."],
+  ["Le mot de passe est faux.",false,"Non : « Connection refused » arrive avant toute demande d'identifiant."],
+  ["Le serveur est éteint.",false,"Non : il répond au ping."],
+  ["Le câble du serveur est débranché.",false,"Non : le ping passe et le port 80 répond."]],
+ fix:[["systemctl enable --now ssh (activer au démarrage et démarrer tout de suite).",true,"Le service démarre maintenant et repartira à chaque redémarrage."],
+  ["systemctl start ssh, seulement.",false,"Ça marche jusqu'au prochain redémarrage : le service reste « disabled »."],
+  ["apt install openssh-server",false,"Le paquet est déjà installé (« loaded ») : il faut démarrer et activer le service."],
+  ["Redémarrer le serveur.",false,"Le service est désactivé : il ne repartira pas tout seul."]],
+ lesson:"« Connection refused » = la machine répond, mais aucun programme n'écoute sur ce port. Sous Linux : systemctl status pour l'état d'un service, ss -tlnp pour les ports en écoute. start = maintenant ; enable = à chaque démarrage.",
+ src:"Initiation à Linux · TP Linux en ligne de commande"},
+
+{id:'conflit',theme:'dhcp',t:"Message « conflit d'adresse IP »",
+ user:"Windows m'affiche un conflit d'adresse IP, et le réseau coupe sans arrêt.",who:"Léa, poste PC-ACCUEIL",
+ ctx:["Réseau 192.168.0.0/24, étendue DHCP de .10 à .100, serveur DHCP en 192.168.0.1.","Le mois dernier, Léa a mis elle-même une adresse fixe « pour aller plus vite »."],
+ tests:[
+  ["ipconfig /all","C:\\> ipconfig /all",`   DHCP activé. . . . . . . . . . . . . . : Non
+   Adresse IPv4. . . . . . . . . . . . . .: 192.168.0.20(Dupliquée)
+   Masque de sous-réseau. . . . . . . . . : 255.255.255.0
+   Passerelle par défaut. . . . . . . . . : 192.168.0.254`,true,"Adresse fixe .20, marquée en double. Or .20 est dans la plage DHCP (.10 à .100)."],
+  ["Baux d'adresses dans la console DHCP","dhcpmgmt.msc → Étendue → Baux d'adresses",`192.168.0.18   PC-COMPTA-01   expire le 24/11/2026
+192.168.0.20   PC-DIRECTION   expire le 25/11/2026
+192.168.0.21   IMP-ACCUEIL    Réservation`,true,"Le serveur a prêté .20 à PC-DIRECTION : il ne savait pas que Léa l'utilisait."],
+  ["Observateur d'événements (Système)","eventvwr.msc → Journaux Windows → Système",`Avertissement · Tcpip · ID 4199
+Le système a détecté un conflit pour l'adresse IP 192.168.0.20 avec le système dont l'adresse matérielle est 00-1A-2B-3C-4D-5E.`,true,"Windows confirme : une autre machine (une autre adresse MAC) utilise la même IP."],
+  ["arp -a","C:\\> arp -a",`Interface : 192.168.0.20 --- 0xc
+  Adresse Internet      Adresse physique      Type
+  192.168.0.1           00-15-5d-01-0a-01     dynamique
+  192.168.0.254         a4-3e-51-22-90-10     dynamique`,false,"La table ARP ne montre pas le conflit : le journal système et la console DHCP sont plus parlants."],
+  ["tracert 8.8.8.8","C:\\> tracert 8.8.8.8",`  1    <1 ms    <1 ms    <1 ms  192.168.0.254
+  2     *        *        *     Délai d'attente de la demande dépassé.`,false,"Le chemin vers Internet ne dit rien d'un conflit dans le réseau local."]],
+ cause:[["Léa a mis à la main une adresse de la plage DHCP, et le serveur l'a prêtée à un autre poste.",true,"Oui : c'est le cas 2 de ton exercice DHCP. Ça marche… jusqu'au jour où le serveur prête la même adresse."],
+  ["Le serveur DHCP a deux étendues qui se chevauchent.",false,"Non : il n'y a qu'une étendue, et le poste de Léa n'est même pas en DHCP."],
+  ["La carte réseau de Léa a une adresse MAC en double.",false,"Non : le journal montre une adresse MAC différente pour l'autre machine."],
+  ["Le routeur est mal configuré.",false,"Non : le conflit est entre deux postes du réseau local."]],
+ fix:[["Repasser le poste de Léa en DHCP (ou lui faire une réservation).",true,"Le serveur gère toutes les adresses de la plage : plus de doublon. Une réservation lui donne toujours la même adresse si besoin."],
+  ["Changer l'adresse fixe de Léa en 192.168.0.50.",false,"Toujours dans la plage .10–.100 : le conflit reviendra. Une IP fixe se met hors de la plage."],
+  ["Supprimer le bail de PC-DIRECTION.",false,"PC-DIRECTION redemandera une adresse et le problème reviendra."],
+  ["Redémarrer le serveur DHCP.",false,"Le serveur a fait son travail correctement."]],
+ lesson:"Une adresse fixe se met toujours hors de la plage DHCP. Sinon, on utilise une réservation (adresse MAC → toujours la même IP).",
+ src:"Exercices DHCP – corrigés (conflit d'adresses, réservation)"}
+];
+let dep=null;
+const stars=n=>n>=90?'★★★':n>=60?'★★☆':'★☆☆';
+function depList(){
+  dep=null;
+  const done=DEP.filter(s=>S.depBest[s.id]!=null).length;
+  $('#depBox').innerHTML=`<div class="bar"><span class="empty">${done}/${DEP.length} scénarios terminés</span><button class="btn primary" id="depRnd">Scénario au hasard</button></div>
+   <p class="empty" style="margin:0">Un utilisateur t'appelle. Lance les tests qui t'aident vraiment, trouve la cause, puis choisis la bonne correction. Tu pars de 100 points : un test inutile coûte 10, une mauvaise cause 25, une mauvaise correction 15.</p>
+   <div class="sclist">${DEP.map((s,i)=>{const b=S.depBest[s.id];return `<button class="sc" data-i="${i}"><span class="tag">${THEMES[s.theme]}</span><b>${esc(s.t)}</b><small>${b!=null?`${stars(b)} · meilleur score ${b}/100`:'Pas encore fait'}</small></button>`}).join('')}</div>`;
+  $$('#depBox .sc').forEach(b=>b.onclick=()=>depStart(+b.dataset.i));
+  $('#depRnd').onclick=()=>{const all=DEP.map((s,i)=>i),todo=all.filter(i=>S.depBest[DEP[i].id]==null);depStart(pick(todo.length?todo:all))};
+}
+function depStart(i){
+  const s=DEP[i];
+  dep={i,s,pts:100,used:new Set(),errC:0,errF:0};
+  $('#depBox').innerHTML=`<div class="bar"><button class="link" id="depBack">← Tous les scénarios</button><span class="score">Scénario ${i+1}/${DEP.length}</span></div>
+  <div class="card"><span class="eyebrow">${THEMES[s.theme]} · ticket</span><div class="q">${esc(s.t)}</div>
+   <blockquote class="ticket">« ${esc(s.user)} »<small>${esc(s.who)}</small></blockquote>
+   <ul class="ctx">${s.ctx.map(c=>`<li>${esc(c)}</li>`).join('')}</ul></div>
+  <div class="card"><span class="eyebrow">1 · Enquête</span>
+   <div class="empty">Choisis tes tests un par un. Les résultats s'affichent en dessous.</div>
+   <div class="tests">${s.tests.map((t,k)=>`<button class="btn test" data-k="${k}">${esc(t[0])}</button>`).join('')}</div>
+   <div class="log" id="depLog"></div>
+   <div class="actions"><button class="btn primary" id="depGo" disabled>J'ai une idée de la cause</button></div></div>
+  <div class="card" id="depC" hidden></div>
+  <div class="card" id="depF" hidden></div>
+  <div class="card" id="depE" hidden></div>`;
+  $('#depBack').onclick=depList;
+  $$('#depBox .test').forEach(b=>b.onclick=()=>depTest(+b.dataset.k,b));
+  $('#depGo').onclick=()=>depAsk('C');
+  window.scrollTo(0,0);
+}
+function depTest(k,b){
+  if(!dep||dep.used.has(k))return;
+  dep.used.add(k);b.disabled=true;
+  const t=dep.s.tests[k];if(!t[3])dep.pts-=10;
+  $('#depLog').insertAdjacentHTML('beforeend',`<div><div class="cmdline">${esc(t[1])}</div><pre class="out">${esc(t[2])}</pre></div>`);
+  $('#depGo').disabled=false;
+}
+function depAsk(w){
+  const s=dep.s,list=w==='C'?s.cause:s.fix,box=$('#dep'+w);
+  if(w==='C'){$$('#depBox .test').forEach(b=>b.disabled=true);$('#depGo').hidden=true}
+  box.hidden=false;
+  box.innerHTML=`<span class="eyebrow">${w==='C'?'2 · Diagnostic : quelle est la cause ?':'3 · Correction : que fais-tu ?'}</span>
+   <div class="opts col">${shuffle(list.map((o,k)=>k)).map(k=>`<button class="opt" data-k="${k}">${esc(list[k][0])}</button>`).join('')}</div>
+   <div class="fb" hidden></div>`;
+  const fb=box.querySelector('.fb');
+  box.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{
+    if(box.dataset.done)return;
+    const o=list[+b.dataset.k];fb.hidden=false;
+    if(o[1]){
+      b.classList.add('ok');box.dataset.done='1';box.querySelectorAll('.opt').forEach(x=>x.disabled=true);
+      fb.className='fb ok';fb.innerHTML=`<span class="verdict ok">Bien vu.</span><div class="why">${esc(o[2])}</div>`;
+      w==='C'?depAsk('F'):depEnd();
+    }else{
+      b.classList.add('ko');b.disabled=true;
+      const cost=w==='C'?25:15;dep.pts-=cost;w==='C'?dep.errC++:dep.errF++;
+      fb.className='fb ko';fb.innerHTML=`<span class="verdict ko">Pas ça (−${cost} pts). Essaie encore.</span><div class="why">${esc(o[2])}</div>`;
+    }
+  });
+  box.scrollIntoView({behavior:'smooth',block:'start'});
+}
+function depEnd(){
+  const s=dep.s,pts=Math.max(0,dep.pts),prev=S.depBest[s.id],rec=prev==null||pts>prev;
+  if(rec)S.depBest[s.id]=pts;save();
+  tally('dep',dep.errC===0&&dep.errF===0);
+  const useless=[...dep.used].filter(k=>!s.tests[k][3]).length;
+  const e=$('#depE');e.hidden=false;
+  e.innerHTML=`<span class="eyebrow">Bilan</span>
+   <div class="hud"><span class="big">${pts}/100</span><span class="streak">${stars(pts)}</span></div>
+   <div class="empty">${useless} test${useless>1?'s':''} inutile${useless>1?'s':''} · ${dep.errC} mauvaise${dep.errC>1?'s':''} cause${dep.errC>1?'s':''} · ${dep.errF} mauvaise${dep.errF>1?'s':''} correction${dep.errF>1?'s':''}${prev!=null?(rec&&pts>prev?` · nouveau record (ancien : ${prev})`:` · record : ${Math.max(prev,pts)}`):''}</div>
+   <div class="fb"><strong>À retenir</strong><div>${esc(s.lesson)}</div></div>
+   <div><strong>Tes tests, un par un</strong>
+    <ul class="review">${s.tests.map((t,k)=>{const u=dep.used.has(k);if(!u&&!t[3])return'';return `<li class="${u?(t[3]?'ok':'ko'):''}" data-m="${u?(t[3]?'✔':'✘'):'○'}"><b>${esc(t[0])}</b>${u?'':' <span class="empty">(pas lancé, mais utile)</span>'} : ${esc(t[4])}</li>`}).join('')}</ul></div>
+   <div class="empty">Source : ${esc(s.src)}</div>
+   <div class="actions"><button class="btn primary" id="depNext">Scénario suivant</button><button class="btn" id="depAgain">Recommencer</button><button class="btn" id="depAll">Tous les scénarios</button></div>`;
+  const i=dep.i;
+  $('#depNext').onclick=()=>{let n=DEP.findIndex((x,j)=>j>i&&S.depBest[x.id]==null);if(n<0)n=DEP.findIndex(x=>S.depBest[x.id]==null);depStart(n<0?(i+1)%DEP.length:n)};
+  $('#depAgain').onclick=()=>depStart(i);
+  $('#depAll').onclick=depList;
+  setTimeout(()=>e.scrollIntoView({behavior:'smooth',block:'start'}),50);
+}
+depList();
+
 /* =========================================================
    0. QUIZ DES COURS (questions tirées des cours TSSR, voir outils/quiz/)
    ========================================================= */
 const QUIZ=/*QUIZ_DEBUT*/[{"t":"Droits NTFS et partage","s":"Fiche Droits NTFS et partage","q":"Un utilisateur a Contrôle total en NTFS et Lecture sur le partage. Que peut-il faire en passant par le réseau ?","o":["Seulement lire","Tout faire (contrôle total)","Lire et modifier","Rien du tout"],"e":"Par le réseau, c'est le droit le plus restrictif entre partage et NTFS qui s'applique : ici Lecture."},{"t":"Droits NTFS et partage","s":"Fiche Droits NTFS et partage","q":"Partage = Contrôle total, NTFS = Lecture. Peut-il supprimer un fichier par le réseau ?","o":["Non, NTFS le limite à la lecture","Oui, le partage l'emporte","Oui, car il est sur le réseau","Seulement s'il est administrateur du partage"],"e":"Le droit de partage ne remplace jamais un droit NTFS. Le plus restrictif gagne : Lecture."},{"t":"Droits NTFS et partage","s":"Fiche Droits NTFS et partage","q":"Un utilisateur ouvre un dossier directement sur le serveur (accès local). Quelles permissions s'appliquent ?","o":["Uniquement les permissions NTFS","Uniquement les permissions de partage","Partage + NTFS, le plus restrictif","Aucune, il est en local"],"e":"Les permissions de partage ne s'appliquent qu'aux accès réseau. En local, seul NTFS compte."},{"t":"Droits NTFS et partage","s":"Fiche Droits NTFS et partage","q":"Combien de niveaux de permissions de partage existe-t-il ?","o":["3 : Lecture, Modification, Contrôle total","6 : comme NTFS","2 : Lecture et Écriture","4 : Lecture, Écriture, Modification, Contrôle total"],"e":"Le partage a 3 niveaux. NTFS a 6 autorisations standard."},{"t":"Droits NTFS et partage","s":"Fiche Droits NTFS et partage","q":"Qu'est-ce qu'une ACE ?","o":["Une ligne de l'ACL, pour un utilisateur, un groupe ou un ordinateur","La liste complète des droits d'un fichier","Le propriétaire d'un fichier","Un partage administratif"],"e":"L'ACL est la liste des accès d'un objet ; chaque ACE en est une entrée. Sans ACE pour l'utilisateur, Windows refuse l'accès."},{"t":"Droits NTFS et partage","s":"Fiche Droits NTFS et partage","q":"Il n'existe aucune ACE pour un utilisateur sur un dossier. Que se passe-t-il ?","o":["Windows refuse l'accès","Il a la lecture par défaut","Il hérite du groupe Tout le monde en contrôle total","Il a les droits du propriétaire"],"e":"Il faut une autorisation explicite pour accéder à une ressource. Absence de droit = interdiction."},{"t":"Droits NTFS et partage","s":"Fiche Droits NTFS et partage","q":"Lecture pour l'utilisateur + Écriture pour son groupe. Quel est son droit effectif ?","o":["Lecture et Écriture","Lecture seulement","Écriture seulement","Aucun, les droits s'annulent"],"e":"Règle du cumul : droits du compte + droits de ses groupes."},{"t":"Droits NTFS et partage","s":"Fiche Droits NTFS et partage","q":"Un groupe de l'utilisateur a « Refuser l'écriture » sur un fichier, un autre groupe a « Autoriser l'écriture ». Résultat ?","o":["Il ne peut pas écrire : le refus l'emporte","Il peut écrire : le cumul l'emporte","Il peut écrire car l'autorisation est plus récente","Ça dépend de l'ordre des groupes"],"e":"Refuser annule toutes les autres autorisations : c'est l'exception à la règle du cumul."},{"t":"Droits NTFS et partage","s":"Fiche Droits NTFS et partage","q":"Modifier sur le fichier, mais seulement Lecture sur le dossier qui le contient. Peut-il modifier le fichier ?","o":["Oui, le droit sur le fichier est prioritaire","Non, le dossier limite le fichier","Seulement en local","Seulement s'il est propriétaire"],"e":"Les autorisations NTFS sur un fichier sont prioritaires sur celles du dossier."},{"t":"Droits NTFS et partage","s":"Fiche Droits NTFS et partage","q":"Que deviennent les droits d'un fichier déplacé dans la même partition NTFS ?","o":["Ils sont conservés","Il prend ceux du dossier de destination","Ils sont supprimés","Il devient en contrôle total pour Tout le monde"],"e":"Seul le déplacement dans la même partition conserve les droits. Toute copie hérite de la destination."},{"t":"Droits NTFS et partage","s":"Fiche Droits NTFS et partage","q":"Je copie un fichier vers une autre partition NTFS. Quels droits a-t-il ?","o":["Ceux du dossier de destination","Ses droits d'origine","Aucun droit","Contrôle total pour le créateur uniquement"],"e":"Copie ou déplacement vers une autre partition NTFS : le fichier hérite des autorisations du nouvel emplacement."},{"t":"Droits NTFS et partage","s":"Fiche Droits NTFS et partage","q":"Je copie un fichier NTFS sur une clé USB en FAT32. Que deviennent ses autorisations NTFS ?","o":["Elles sont supprimées","Elles sont conservées","Elles sont converties en droits FAT32","Elles sont stockées dans un fichier caché"],"e":"Vers une partition non NTFS, les autorisations NTFS sont supprimées."},{"t":"Droits NTFS et partage","s":"Fiche Droits NTFS et partage","q":"Que se passe-t-il quand on bloque l'héritage sur un sous-dossier ?","o":["Il ne reçoit plus les droits du parent et ne garde que ses droits explicites (on peut copier les anciens)","Il perd tous ses droits, même explicites","Il devient inaccessible aux administrateurs","Ses fichiers sont déplacés à la racine"],"e":"Le sous-dossier devient le nouveau parent : son contenu hérite de lui."},{"t":"Droits NTFS et partage","s":"Fiche Droits NTFS et partage","q":"Entre un droit explicite et un droit hérité, lequel l'emporte ?","o":["Le droit explicite","Le droit hérité","Le plus permissif","Le plus ancien"],"e":"L'interdiction l'emporte sur l'autorisation, et l'explicite l'emporte sur l'hérité."},{"t":"Droits NTFS et partage","s":"Fiche Droits NTFS et partage","q":"Pourquoi ne faut-il jamais mettre « Refuser » au groupe Tout le monde ?","o":["Tout le monde serait bloqué, administrateurs compris","Ça ralentit le serveur","Ça supprime le partage","Ça désactive l'héritage"],"e":"Tout le monde contient aussi les administrateurs : le refus les bloquerait."},{"t":"Droits NTFS et partage","s":"Fiche Droits NTFS et partage","q":"Quelle bonne pratique pour attribuer des droits NTFS ?","o":["Donner les droits à des groupes, puis gérer leurs membres","Donner les droits utilisateur par utilisateur","Mettre tout le monde en Contrôle total","Utiliser surtout des refus explicites"],"e":"Groupes + moindre privilège + peu de refus explicites. Exemple de nommage : GRP_Compta_Lecture."},{"t":"Droits NTFS et partage","s":"Fiche Droits NTFS et partage","q":"Qu'est-ce que le principe du moindre privilège ?","o":["Ne donner que les droits strictement nécessaires au travail","Donner le moins d'utilisateurs possible par groupe","Supprimer les comptes administrateurs","Refuser par défaut le contrôle total à Tout le monde"],"e":"Si quelqu'un n'a pas besoin de modifier, il a seulement la lecture."},{"t":"Droits NTFS et partage","s":"Fiche Droits NTFS et partage","q":"Qu'est-ce que C$ sur un serveur ?","o":["Un partage administratif caché de la racine du lecteur C:","Un dossier système protégé","Un partage public en lecture","Le nom du compte administrateur"],"e":"Créé automatiquement par Windows, le $ le cache. Il demande des droits d'administrateur."},{"t":"Droits NTFS et partage","s":"Fiche Droits NTFS et partage","q":"Comment s'écrit un chemin UNC ?","o":["\\\\SERVEUR\\PARTAGE","C:\\SERVEUR\\PARTAGE","//SERVEUR:PARTAGE","SERVEUR@PARTAGE"],"e":"UNC = Universal Naming Convention : \\\\ puis le nom du serveur, puis le partage."},{"t":"Droits NTFS et partage","s":"Fiche Droits NTFS et partage","q":"Par défaut, quel droit de partage a le groupe Tout le monde ?","o":["Lecture","Modification","Contrôle total","Aucun"],"e":"Par défaut : Administrateurs en contrôle total, Tout le monde en lecture."},{"t":"Droits NTFS et partage","s":"Fiche Droits NTFS et partage","q":"Quelle autorisation NTFS permet de modifier les autorisations et de prendre possession ?","o":["Contrôle total","Modifier","Écriture","Lecture et exécution"],"e":"Contrôle total = Modifier + changer les autorisations + prendre possession."},{"t":"Droits NTFS et partage","s":"Fiche Droits NTFS et partage","q":"Quelle différence entre « Afficher le contenu du dossier » et « Lecture et exécution » ?","o":["La première ne s'applique qu'au dossier, la seconde au dossier et aux fichiers","Aucune, ce sont des synonymes","La première permet d'exécuter des programmes","La seconde ne s'applique qu'aux fichiers"],"e":"Les deux se ressemblent, mais « Afficher le contenu » ne s'applique qu'au dossier."},{"t":"Droits NTFS et partage","s":"Fiche Droits NTFS et partage","q":"Sur quelle structure repose NTFS ?","o":["La MFT (Master File Table)","La FAT (File Allocation Table)","Le MBR","La BCD"],"e":"La table de fichiers maître contient des informations détaillées sur chaque fichier."},{"t":"Droits NTFS et partage","s":"Fiche Droits NTFS et partage","q":"Un utilisateur n'arrive pas à écrire dans un partage. Quelle astuce du formateur pour trouver si c'est le partage ou NTFS ?","o":["Passer par \\\\SERVEUR\\C$\\Dossier et faire un test d'écriture","Redémarrer le serveur","Recréer le partage","Mettre Tout le monde en contrôle total"],"e":"Par le partage administratif, on contourne les droits du partage : si l'écriture marche, le problème vient du partage."},{"t":"Systèmes Windows","s":"Fiche Les systèmes d'exploitation Windows","q":"Quel est le premier programme chargé après le chargeur d'amorçage ?","o":["Le noyau Windows","Winlogon","L'explorateur Windows","Le Session Manager"],"e":"Le noyau coordonne ensuite tous les autres programmes et fait le lien avec le matériel."},{"t":"Systèmes Windows","s":"Fiche Les systèmes d'exploitation Windows","q":"Qu'est-ce qui s'exécute en mode noyau ?","o":["Les pilotes, le gestionnaire de mémoire et les fonctions critiques","Les applications de l'utilisateur","Le navigateur web","Les documents Office"],"e":"Mode utilisateur : applications et certains services. Mode noyau : pilotes, mémoire, fonctions critiques."},{"t":"Systèmes Windows","s":"Fiche Les systèmes d'exploitation Windows","q":"Le noyau Windows est de quel type ?","o":["Hybride","Monolithique","Micro-noyau","Exo-noyau"],"e":"Il combine les performances du monolithique et la stabilité du micro-noyau."},{"t":"Systèmes Windows","s":"Fiche Les systèmes d'exploitation Windows","q":"À quoi sert la HAL (Hardware Abstraction Layer) ?","o":["Communiquer avec le matériel sans dépendre de chaque constructeur","Chiffrer les disques","Gérer les comptes utilisateurs","Planifier les tâches"],"e":"Applications → noyau → HAL → matériel."},{"t":"Systèmes Windows","s":"Fiche Les systèmes d'exploitation Windows","q":"Comment s'appelle le fichier d'échange de Windows ?","o":["pagefile.sys","swapfile.dll","hiberfil.ini","memory.bcd"],"e":"Il complète la RAM : c'est la mémoire virtuelle."},{"t":"Systèmes Windows","s":"Fiche Les systèmes d'exploitation Windows","q":"Qu'est-ce qu'une DLL ?","o":["Une bibliothèque de code et de données partagée par plusieurs applications","Un pilote de carte réseau","Un journal d'événements","Un fichier de configuration du démarrage"],"e":"Dynamic-Link Library : chargée dynamiquement, elle évite de dupliquer le code."},{"t":"Systèmes Windows","s":"Fiche Les systèmes d'exploitation Windows","q":"Pourquoi chaque processus a-t-il son propre espace mémoire isolé ?","o":["Pour la stabilité : si une application plante, le reste n'est pas forcément touché","Pour économiser la RAM","Pour aller plus vite","Pour chiffrer les données"],"e":"L'isolation des processus garantit la stabilité du système."},{"t":"Systèmes Windows","s":"Fiche Les systèmes d'exploitation Windows","q":"Quel élément lit la BCD et choisit le système à lancer ?","o":["Le Boot Manager","Winlogon","Le Session Manager","L'UAC"],"e":"Ordre : Boot Manager (BCD) → noyau → Session Manager → Winlogon → explorateur."},{"t":"Systèmes Windows","s":"Fiche Les systèmes d'exploitation Windows","q":"Quel composant gère la connexion de l'utilisateur ?","o":["Winlogon","Le Boot Manager","La HAL","L'ordonnanceur"],"e":"Après le Session Manager vient Winlogon, puis l'explorateur Windows."},{"t":"Systèmes Windows","s":"Fiche Les systèmes d'exploitation Windows","q":"Quels outils servent à réparer un démarrage de Windows ?","o":["bcdedit, WinRE et bootrec","gpupdate et gpresult","ipconfig et ping","chkdsk et defrag uniquement"],"e":"WinRE = environnement de récupération de Windows."},{"t":"Systèmes Windows","s":"Fiche Les systèmes d'exploitation Windows","q":"Quel outil permet d'analyser les journaux système, applicatifs et de sécurité ?","o":["L'Observateur d'événements","Le Planificateur de tâches","Le Gestionnaire de périphériques","RAMMap"],"e":"eventvwr.msc."},{"t":"Systèmes Windows","s":"Fiche Les systèmes d'exploitation Windows","q":"À quoi sert BitLocker ?","o":["Chiffrer un disque entier","Bloquer les ports réseau","Limiter les privilèges des utilisateurs","Analyser les processus"],"e":"Il protège les données si l'ordinateur ou le disque est perdu ou volé."},{"t":"Systèmes Windows","s":"Fiche Les systèmes d'exploitation Windows","q":"Quel protocole d'authentification est utilisé dans un environnement Active Directory ?","o":["Kerberos","NTLM","LDAP","RADIUS"],"e":"Kerberos pour Active Directory, NTLM pour les systèmes indépendants."},{"t":"Systèmes Windows","s":"Fiche Les systèmes d'exploitation Windows","q":"Que fait l'UAC (User Account Control) ?","o":["Limiter les privilèges des utilisateurs pour éviter les manipulations non désirées","Chiffrer les disques","Gérer les mises à jour","Créer des comptes dans l'AD"],"e":"C'est la fenêtre qui demande une élévation de droits."},{"t":"Systèmes Windows","s":"Fiche Les systèmes d'exploitation Windows","q":"Quel est le rôle de l'ordonnanceur ?","o":["Gérer l'ordre d'exécution des tâches et la commutation de contexte","Ordonner les fichiers sur le disque","Classer les journaux","Trier les adresses IP"],"e":"Windows utilise un ordonnanceur préemptif qui répartit les threads entre les cœurs."},{"t":"Systèmes Windows","s":"Fiche Les systèmes d'exploitation Windows","q":"Qu'est-ce qu'un service Windows ?","o":["Un programme qui tourne en arrière-plan, souvent sans interface","Une fenêtre de l'explorateur","Un compte utilisateur spécial","Un pilote matériel"],"e":"Ils démarrent souvent avec le système : réseau, sécurité, impression, mises à jour."},{"t":"Machines virtuelles","s":"Fiche Les machines virtuelles","q":"Pour le système hôte, qu'est-ce qu'un disque dur virtuel ?","o":["Un fichier (.vmdk chez VMware, .vhd chez Virtual PC)","Une partition du disque physique","Un dossier partagé","Une clé USB émulée"],"e":"Tout est « traduit » par le logiciel de virtualisation."},{"t":"Machines virtuelles","s":"Fiche Les machines virtuelles","q":"Avantage et inconvénient d'un disque virtuel de taille fixe ?","o":["Plus performant, mais impossible à agrandir","Il grossit tout seul, mais il est lent","Il est chiffré, mais lisible par tous les logiciels","Il ne prend pas de place, mais il est limité à 2 Go"],"e":"La taille dynamique démarre petite et grossit jusqu'à un maximum."},{"t":"Machines virtuelles","s":"Fiche Les machines virtuelles","q":"En mode NAT, la VM est-elle visible des autres postes du réseau ?","o":["Non, son IP est donnée par le logiciel de virtualisation","Oui, comme un poste physique","Oui, mais seulement en IPv6","Seulement si le pare-feu est coupé"],"e":"Le réseau virtuel est « natté » vers le LAN avec l'IP de l'hôte. Usage : veille et tests."},{"t":"Machines virtuelles","s":"Fiche Les machines virtuelles","q":"Quel mode réseau choisir pour une VM en production ?","o":["Sans NAT (pont), avec une IP compatible avec le LAN et un nom unique","NAT","Réseau privé hôte seul","Aucune carte réseau"],"e":"La VM doit être visible des autres postes."},{"t":"Machines virtuelles","s":"Fiche Les machines virtuelles","q":"Quand on copie une VM, que doit changer le logiciel de virtualisation ?","o":["Le SID et l'adresse MAC","Le nom du disque virtuel uniquement","La quantité de RAM","Le système d'exploitation"],"e":"Copie → nouveau SID et nouvelle MAC. Déplacement → il peut les garder."},{"t":"Machines virtuelles","s":"Fiche Les machines virtuelles","q":"À quoi sert un snapshot ?","o":["Mémoriser l'état de la VM pour y revenir plus tard","Faire une capture d'écran","Copier la VM sur un autre hôte","Augmenter la taille du disque"],"e":"Très utile avant une mise à jour en production."},{"t":"Machines virtuelles","s":"Fiche Les machines virtuelles","q":"Dans une VM VMware, quelle combinaison remplace Ctrl+Alt+Suppr ?","o":["Ctrl+Alt+Inser","Ctrl+Alt+Entrée","AltGr+Suppr","Ctrl+Maj+Échap"],"e":"Ctrl+Alt+Suppr est capté par l'hôte. Ctrl+Alt+Entrée = plein écran."},{"t":"Machines virtuelles","s":"Fiche Les machines virtuelles","q":"Comment installer un système dans une VM ?","o":["Mettre une image ISO dans le lecteur CD virtuel et démarrer dessus","Copier les fichiers de Windows dans le dossier de la VM","Installer d'abord sur l'hôte puis déplacer","Passer par Windows Update"],"e":"Si l'installation échoue, vérifier que la VM a été créée pour le bon système."},{"t":"Machines virtuelles","s":"Fiche Les machines virtuelles","q":"Qu'est-ce que la virtualisation ?","o":["Faire fonctionner plusieurs systèmes sur un seul ordinateur comme s'ils étaient sur des machines distinctes","Stocker ses fichiers dans le cloud","Prendre le contrôle d'un PC à distance","Émuler un jeu vidéo"],"e":"Elle permet de mutualiser les ressources (RAM, disques)."},{"t":"Partitionnement","s":"Fiche Le partitionnement","q":"Quelle est la taille du MBR et que contient-il ?","o":["512 octets : la table des partitions et une routine d'amorçage","4 Ko : le système d'exploitation","1 Mo : les pilotes","512 Ko : la table d'allocation des fichiers"],"e":"Le MBR est le premier secteur du disque. Il gère des disques jusqu'à 2,2 To."},{"t":"Partitionnement","s":"Fiche Le partitionnement","q":"Combien de partitions primaires au maximum sur un disque MBR ?","o":["4 (ou 3 primaires + 1 étendue)","128","2","Illimité"],"e":"La partition étendue permet de créer des lecteurs logiques au-delà de cette limite."},{"t":"Partitionnement","s":"Fiche Le partitionnement","q":"Comment appelle-t-on une partition créée dans une partition étendue ?","o":["Un lecteur logique (partition secondaire)","Une partition primaire","Une partition active","Un volume dynamique"],"e":"Le nombre de partitions logiques n'est pas limité."},{"t":"Partitionnement","s":"Fiche Le partitionnement","q":"Combien de partitions un disque GPT peut-il avoir sous Windows ?","o":["128","4","26, une par lettre","64"],"e":"GPT : jusqu'à 128 partitions, plus de 2 To, protection par CRC."},{"t":"Partitionnement","s":"Fiche Le partitionnement","q":"Un BIOS traditionnel peut-il démarrer sur un disque GPT ?","o":["Non, le GPT fait partie du standard UEFI","Oui, toujours","Oui, si le disque fait moins de 2 To","Oui, mais seulement Linux"],"e":"Un système UEFI ne démarre que sur un disque GPT."},{"t":"Partitionnement","s":"Fiche Le partitionnement","q":"Pourquoi séparer le système (C:) et les données (D:) ?","o":["Les logiciels se réinstallent, alors que les données perdues le sont à jamais","Pour aller plus vite","Parce que Windows l'impose","Pour avoir plus d'espace disque"],"e":"Mieux encore : des disques physiques distincts, car une panne de disque fait perdre toutes ses partitions."},{"t":"Partitionnement","s":"Fiche Le partitionnement","q":"Comment s'appellent les emplacements notés dans la FAT ?","o":["Des clusters (unités d'allocation)","Des secteurs de démarrage","Des inodes","Des ACE"],"e":"Un cluster contient un nombre fixe de secteurs, fixé au formatage."},{"t":"Partitionnement","s":"Fiche Le partitionnement","q":"Quelle est la taille maximale d'un fichier en FAT32 ?","o":["4 Go","16 To","2 Go","Illimitée"],"e":"C'est pour ça qu'on ne peut pas copier une image ISO de 5 Go sur une clé FAT32."},{"t":"Partitionnement","s":"Fiche Le partitionnement","q":"À quoi sert le formatage d'un disque ?","o":["Créer un système de fichiers sur le disque","Créer la table de partitions","Effacer le BIOS","Chiffrer les données"],"e":"Le système de fichiers organise les données en fichiers et répertoires."},{"t":"Partitionnement","s":"Fiche Le partitionnement","q":"Qu'est-ce que la partition active ?","o":["Celle qui contient le système chargé par défaut au démarrage","La partition la plus utilisée","La partition des données","La partition de récupération"],"e":"Un disque ne peut contenir qu'une seule partition active."},{"t":"Partitionnement","s":"Fiche Le partitionnement","q":"Quel avantage de sécurité le GPT a-t-il sur le MBR ?","o":["La table est répliquée et protégée par un contrôle CRC","Il chiffre automatiquement les données","Il empêche les virus","Il n'en a aucun"],"e":"Avec le MBR, si la table de partitions est corrompue, rien ne peut être fait."},{"t":"Veille technologique","s":"Fiche La veille technologique","q":"Quelles sont les 5 étapes du cycle de veille, dans l'ordre ?","o":["Définir, collecter, traiter, diffuser, capitaliser","Collecter, définir, diffuser, traiter, archiver","Chercher, lire, oublier, relire, partager","Définir, tester, acheter, installer, former"],"e":"La veille ne vaut que si elle débouche sur une décision ou une action."},{"t":"Veille technologique","s":"Fiche La veille technologique","q":"Dans quel type de veille surveille-t-on les CVE et les alertes du CERT-FR ?","o":["La veille sécurité","La veille juridique","La veille concurrentielle","La veille cycle de vie"],"e":"CVE = liste publique des failles connues, chacune avec un identifiant."},{"t":"Veille technologique","s":"Fiche La veille technologique","q":"Dans quel type de veille suit-on les fins de support et les versions LTS ?","o":["La veille cycle de vie","La veille technique","La veille sécurité","La veille technologique"],"e":"LTS = Long-Term Support : version maintenue plus longtemps."},{"t":"Veille technologique","s":"Fiche La veille technologique","q":"Le RGPD et NIS 2 relèvent de quel type de veille ?","o":["Juridique","Technologique","Concurrentielle","Technique"],"e":"RGPD = données personnelles ; NIS 2 = directive européenne de cybersécurité."},{"t":"Veille technologique","s":"Fiche La veille technologique","q":"Qu'est-ce qu'un agrégateur ?","o":["Un outil qui regroupe plusieurs flux RSS au même endroit","Un moteur de recherche","Un antivirus","Un serveur de fichiers"],"e":"On s'abonne aux flux RSS des sites et on lit tout au même endroit."},{"t":"Veille technologique","s":"Fiche La veille technologique","q":"Combien de temps par jour le cours conseille-t-il au minimum pour la veille ?","o":["Même dix minutes par jour font la différence","Au moins deux heures","Une heure le vendredi","Aucune règle"],"e":"Et disposer d'un lab' pour tester."},{"t":"Veille technologique","s":"Fiche La veille technologique","q":"Qui est le CERT-FR ?","o":["L'équipe gouvernementale de veille et de réponse aux attaques, rattachée à l'ANSSI","Un antivirus français","Un salon de cybersécurité","Une norme de chiffrement"],"e":"Il publie des alertes et des avis de sécurité."}]/*QUIZ_FIN*/;
 const qKey=x=>x.t+'|'+x.q;
-const THEMES=[...new Set(QUIZ.map(x=>x.t))];
-let qTheme=THEMES.includes(S.pref.qTheme)?S.pref.qTheme:'all', qCur=null, qLast=null, qDone=false;
-$('#qTheme').innerHTML=[['all','Tous les cours'],...THEMES.map(t=>[t,t])].map(([k,n])=>`<button class="chip" data-v="${esc(k)}">${esc(n)}</button>`).join('');
+const QTHEMES=[...new Set(QUIZ.map(x=>x.t))];
+let qTheme=QTHEMES.includes(S.pref.qTheme)?S.pref.qTheme:'all', qCur=null, qLast=null, qDone=false;
+$('#qTheme').innerHTML=[['all','Tous les cours'],...QTHEMES.map(t=>[t,t])].map(([k,n])=>`<button class="chip" data-v="${esc(k)}">${esc(n)}</button>`).join('');
 chips('qTheme',qTheme,v=>{qTheme=S.pref.qTheme=v;save();qNew()});
 function qNew(){
   const pool=QUIZ.filter(x=>(qTheme==='all'||x.t===qTheme)&&(x!==qLast));
