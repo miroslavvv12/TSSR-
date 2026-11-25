@@ -19,7 +19,20 @@ HEAD = """<!DOCTYPE html>
 <body>
 """
 
-frag = open(p('outils', 'entrainement.frag.html'), encoding='utf-8').read()
+# Questions des cours : tous les fichiers outils/quiz/*.json, injectés dans le fragment
+# entre /*QUIZ_DEBUT*/ et /*QUIZ_FIN*/ (le fragment reste publiable tel quel).
+import glob, json
+quiz = []
+for f in sorted(glob.glob(p('outils', 'quiz', '*.json'))):
+    for x in json.load(open(f, encoding='utf-8')):
+        assert set(x) == {'t', 's', 'q', 'o', 'e'} and len(x['o']) == 4, (f, x.get('q'))
+        quiz.append(x)
+data = json.dumps(quiz, ensure_ascii=False, separators=(',', ':')).replace('</', '<\\/')
+fp = p('outils', 'entrainement.frag.html')
+frag = open(fp, encoding='utf-8').read()
+frag = re.sub(r'/\*QUIZ_DEBUT\*/.*?/\*QUIZ_FIN\*/', lambda m: '/*QUIZ_DEBUT*/' + data + '/*QUIZ_FIN*/', frag, count=1, flags=re.S)
+open(fp, 'w', encoding='utf-8').write(frag)
+print(len(quiz), 'questions de cours')
 open(p('entrainement.html'), 'w', encoding='utf-8').write(HEAD + frag + '\n</body>\n</html>\n')
 
 sw = open(p('sw.js'), encoding='utf-8').read()
