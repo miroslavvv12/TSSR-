@@ -42,6 +42,11 @@ for f in sorted(glob.glob(p('outils', 'ouvertes', '*.json'))):
         ouv.append(x)
 data_ouv = json.dumps(ouv, ensure_ascii=False, separators=(',', ':')).replace('</', '<\\/')
 frag = re.sub(r'/\*OUV_DEBUT\*/.*?/\*OUV_FIN\*/', lambda m: '/*OUV_DEBUT*/' + data_ouv + '/*OUV_FIN*/', frag, count=1, flags=re.S)
+
+# Simulateur Cisco (terminal + labs) : outils/cisco_sim.js, injecté entre /*CISCO_DEBUT*/ et /*CISCO_FIN*/.
+sim = open(p('outils', 'cisco_sim.js'), encoding='utf-8').read().replace('</', '<\\/')
+assert '/*CISCO_DEBUT*/' in frag and '/*CISCO_FIN*/' in frag
+frag = re.sub(r'/\*CISCO_DEBUT\*/.*?/\*CISCO_FIN\*/', lambda m: '/*CISCO_DEBUT*/\n' + sim + '\n/*CISCO_FIN*/', frag, count=1, flags=re.S)
 open(fp, 'w', encoding='utf-8').write(frag)
 print(len(quiz), 'questions de cours,', len(ouv), 'questions ouvertes')
 open(p('entrainement.html'), 'w', encoding='utf-8').write(HEAD + frag + '\n</body>\n</html>\n')
