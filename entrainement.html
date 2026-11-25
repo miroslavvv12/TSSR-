@@ -79,15 +79,19 @@ button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 .console .ps{color:var(--accent);white-space:nowrap;font-size:14px}
 .console input{border:0;background:none;padding:8px 0}
 .console.ok{border-color:var(--ok);background:var(--okbg)} .console.ko{border-color:var(--ko);background:var(--kobg)}
-.fb{border-radius:8px;padding:12px 14px;border:1px solid var(--line);background:var(--sunk);display:flex;flex-direction:column;gap:6px}
+.fb{border-radius:10px;padding:14px 16px;border:2px solid var(--fg);background:var(--bg);display:flex;flex-direction:column;gap:8px;font-size:16px;line-height:1.5}
 .fb.ok{border-color:var(--ok)} .fb.ko{border-color:var(--ko)}
 .fb strong{font-weight:600}
 .fb code,.steps code{font-family:var(--f-mono);font-size:14px;background:var(--surface);border:1px solid var(--line);border-radius:5px;padding:1px 6px;overflow-wrap:anywhere}
 .steps{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:4px}
-.verdict{font-weight:600} .verdict.ok{color:var(--ok)} .verdict.ko{color:var(--ko)}
+.verdict{font-weight:700;font-size:18px} .verdict.ok{color:var(--ok)} .verdict.ko{color:var(--ko)}
 .opts{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:8px}
 .opt{font:500 15px var(--f-ui);padding:12px;border-radius:8px;border:1px solid var(--line);background:var(--sunk);color:var(--fg);cursor:pointer;text-align:left}
 .opt.ok{border-color:var(--ok);background:var(--okbg)}
+/* Une fois la réponse affichée : seul le bouton « Suivante » reste, en gros et en plein. */
+.card:has(> .fb:not([hidden])) > .actions .btn:not(.next){display:none}
+.btn.next{scroll-margin-bottom:20px}
+.card:has(> .fb:not([hidden])) > .actions .btn.next{flex:1 1 100%;background:var(--accent);border-color:var(--accent);color:var(--accent-ink);font:600 17px var(--f-ui);padding:15px 18px;border-radius:10px}
 .opt .ox{display:block;margin-top:5px;font:400 13px/1.4 var(--f-ui);color:var(--muted)} .opt.ko{border-color:var(--ko);background:var(--kobg)}
 .tiles{display:flex;flex-wrap:wrap;gap:8px;min-height:44px}
 .tile{font:500 14px var(--f-ui);padding:9px 12px;border-radius:8px;border:1px dashed var(--line);background:var(--sunk);color:var(--fg);cursor:pointer}
@@ -183,8 +187,8 @@ details summary{cursor:pointer;font-weight:500}
     <span class="eyebrow" id="qEyebrow"></span>
     <div class="q" id="qQ"></div>
     <div class="opts" id="qOpts"></div>
-    <div class="actions"><button class="btn" id="qGive">Je ne sais pas</button><button class="btn" id="qNext">Question suivante</button></div>
     <div class="fb" id="qFb" hidden></div>
+    <div class="actions"><button class="btn" id="qGive">Je ne sais pas</button><button class="btn next" id="qNext">Question suivante →</button></div>
   </div>
   <p class="foot" id="qCount"></p>
 </section>
@@ -250,12 +254,12 @@ details summary{cursor:pointer;font-weight:500}
     <div class="console" id="cmdConsole"><span class="ps" id="cmdPs"></span>
       <input type="text" id="cmdIn" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" aria-label="Ta commande">
     </div>
+    <div class="fb" id="cmdFb" hidden></div>
     <div class="actions">
       <button class="btn primary" id="cmdCheck">Vérifier</button>
       <button class="btn" id="cmdGive">Je ne sais pas</button>
-      <button class="btn" id="cmdNext">Suivante</button>
+      <button class="btn next" id="cmdNext">Commande suivante →</button>
     </div>
-    <div class="fb" id="cmdFb" hidden></div>
   </div>
   <p class="foot">Les abréviations Cisco sont acceptées (<code>sh ip int br</code>, <code>conf t</code>, <code>copy run start</code>). Les commandes que tu rates reviennent plus souvent.</p>
 </section>
@@ -265,12 +269,12 @@ details summary{cursor:pointer;font-weight:500}
   <div class="card">
     <div class="q" id="pQ"></div>
     <div id="pBody"></div>
+    <div class="fb" id="pFb" hidden></div>
     <div class="actions">
       <button class="btn primary" id="pCheck">Vérifier</button>
       <button class="btn" id="pGive">Je ne sais pas</button>
-      <button class="btn" id="pNext">Suivante</button>
+      <button class="btn next" id="pNext">Question suivante →</button>
     </div>
-    <div class="fb" id="pFb" hidden></div>
   </div>
 </section>
 
@@ -1397,6 +1401,12 @@ function qAnswer(btn){
 $('#qNext').onclick=qNew;$('#qGive').onclick=()=>qAnswer(null);
 renderScore('quiz');
 qNew();
+
+[['qFb','qNext'],['cmdFb','cmdNext'],['pFb','pNext']].forEach(([f,n])=>{const fb=$('#'+f);
+  new MutationObserver(()=>{if(fb.hidden||!matchMedia('(max-width:700px)').matches)return;
+    const smooth=!matchMedia('(prefers-reduced-motion: reduce)').matches;
+    requestAnimationFrame(()=>$('#'+n).scrollIntoView({block:'nearest',behavior:smooth?'smooth':'auto'}))})
+  .observe(fb,{attributes:true,attributeFilter:['hidden']})});
 
 tab(S.pref.tab||'quiz');
 })();
