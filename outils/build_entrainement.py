@@ -31,8 +31,19 @@ data = json.dumps(quiz, ensure_ascii=False, separators=(',', ':')).replace('</',
 fp = p('outils', 'entrainement.frag.html')
 frag = open(fp, encoding='utf-8').read()
 frag = re.sub(r'/\*QUIZ_DEBUT\*/.*?/\*QUIZ_FIN\*/', lambda m: '/*QUIZ_DEBUT*/' + data + '/*QUIZ_FIN*/', frag, count=1, flags=re.S)
+
+# Questions ouvertes : outils/ouvertes/*.json, injectées entre /*OUV_DEBUT*/ et /*OUV_FIN*/.
+# Chaque question : t (cours), s (source), q, r (réponse modèle), p (points attendus : [libellé, [mots-clés]]).
+ouv = []
+for f in sorted(glob.glob(p('outils', 'ouvertes', '*.json'))):
+    for x in json.load(open(f, encoding='utf-8')):
+        assert set(x) == {'t', 's', 'q', 'r', 'p'} and x['p'], (f, x.get('q'))
+        assert all(len(pt) == 2 and isinstance(pt[0], str) and pt[1] for pt in x['p']), (f, x['q'])
+        ouv.append(x)
+data_ouv = json.dumps(ouv, ensure_ascii=False, separators=(',', ':')).replace('</', '<\\/')
+frag = re.sub(r'/\*OUV_DEBUT\*/.*?/\*OUV_FIN\*/', lambda m: '/*OUV_DEBUT*/' + data_ouv + '/*OUV_FIN*/', frag, count=1, flags=re.S)
 open(fp, 'w', encoding='utf-8').write(frag)
-print(len(quiz), 'questions de cours')
+print(len(quiz), 'questions de cours,', len(ouv), 'questions ouvertes')
 open(p('entrainement.html'), 'w', encoding='utf-8').write(HEAD + frag + '\n</body>\n</html>\n')
 
 sw = open(p('sw.js'), encoding='utf-8').read()
