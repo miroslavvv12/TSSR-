@@ -377,7 +377,7 @@ details summary{cursor:pointer;font-weight:500}
       <div class="term-keys"><button class="btn" id="ciTab">Tab</button><button class="btn" id="ciHelp">?</button><button class="btn" id="ciUp">↑</button><button class="btn" id="ciCtz">Ctrl+Z</button><button class="btn" id="ciClr">Effacer l'écran</button></div>
     </div>
   </div>
-  <p class="foot">Terminal simulé d'un routeur Cisco 1941 et d'un switch 2960 : abréviations (conf t, int g0/0, sh run), « ? » pour l'aide, Tab pour compléter, ↑ ↓ pour l'historique. Clique sur un PC pour tester avec ping. Ta progression est enregistrée sur cet appareil.</p>
+  <p class="foot">Terminal simulé d'un routeur Cisco 1941 et d'un switch 2960 (VLAN, trunk, routage statique, RIP, OSPF, ACL, NAT/PAT) : abréviations (conf t, int g0/0, sh run), « ? » pour l'aide, Tab pour compléter, ↑ ↓ pour l'historique. Clique sur un PC pour tester avec ping. Ta progression est enregistrée sur cet appareil.</p>
 </section>
 
 <section id="ports" hidden>
@@ -1632,18 +1632,18 @@ function parseIf(s) {
   return { base: f[0][1] + m[2], sub: m[3] != null ? +m[3] : null, type: f[0][1] };
 }
 const shortIf = n => { for (const [, l, s] of IFT) if (n.startsWith(l)) return s + n.slice(l.length); return n; };
-function blankIf(router) { return { ip: null, mask: null, shut: router, desc: '', mode: 'access', vlan: 1, native: 1, allowed: null, encap: null, voice: null, helper: null, clock: null, nonego: false, tenc: false, portfast: false }; }
+function blankIf(router) { return { ip: null, mask: null, shut: router, desc: '', mode: 'access', vlan: 1, native: 1, allowed: null, encap: null, voice: null, helper: null, clock: null, nonego: false, tenc: false, portfast: false, acin: null, acout: null, nat: null, cost: null }; }
 const ifSort = (a, b) => { const k = s => s.replace(/\d+/g, d => d.padStart(4, '0')); return k(a) < k(b) ? -1 : 1; };
 
 /* ---------- Appareils ---------- */
-const CFG = ['hostname', 'secret', 'enpw', 'dl', 'pwenc', 'banner', 'con', 'vty', 'ifs', 'routes', 'rip', 'vlans', 'gw'];
+const CFG = ['hostname', 'secret', 'enpw', 'dl', 'pwenc', 'banner', 'con', 'vty', 'ifs', 'routes', 'rip', 'vlans', 'gw', 'ospf', 'acls', 'nat'];
 function newDev(kind, id) {
   const d = { id, kind, mode: 'user', cur: null, pend: null, seen: {}, startup: null };
   Object.assign(d, defaults(kind));
   return d;
 }
 function defaults(kind) {
-  const d = { hostname: kind === 'router' ? 'Router' : 'Switch', secret: null, enpw: null, dl: true, pwenc: false, banner: null, con: { pw: null, login: false }, vty: { pw: null, login: false }, ifs: {}, routes: [], rip: null, vlans: null, gw: null };
+  const d = { hostname: kind === 'router' ? 'Router' : 'Switch', secret: null, enpw: null, dl: true, pwenc: false, banner: null, con: { pw: null, login: false }, vty: { pw: null, login: false }, ifs: {}, routes: [], rip: null, vlans: null, gw: null, ospf: null, acls: {}, nat: { statics: [], dyn: [], pools: {} } };
   if (kind === 'router') { for (const n of ['GigabitEthernet0/0', 'GigabitEthernet0/1', 'Serial0/0/0', 'Serial0/0/1']) d.ifs[n] = blankIf(true); }
   else {
     for (let i = 1; i <= 24; i++) d.ifs['FastEthernet0/' + i] = blankIf(false);
@@ -1654,9 +1654,12 @@ function defaults(kind) {
   return d;
 }
 const snap = d => JSON.stringify(CFG.map(k => d[k]));
-function loadSnap(d, s) { const dd = s ? JSON.parse(s) : null; const def = defaults(d.kind); CFG.forEach((k, i) => { d[k] = dd ? dd[i] : def[k]; }); }
+function loadSnap(d, s) { const dd = s ? JSON.parse(s) : null; const def = defaults(d.kind); CFG.forEach((k, i) => { d[k] = dd && dd[i] !== undefined ? dd[i] : def[k]; }); fixDev(d); d.natx = []; }
+// Complète un appareil enregistré avec une version plus ancienne du simulateur.
+function fixDev(d) { if (d.kind === 'pc') return; const def = defaults(d.kind); for (const k of CFG) if (d[k] === undefined) d[k] = def[k]; const b = blankIf(false); for (const i of Object.values(d.ifs)) for (const k in b) if (i[k] === undefined) i[k] = b[k]; if (!d.natx) d.natx = []; }
+function fixup(N) { for (const d of Object.values(N.devs)) fixDev(d); return N; }
 const saved = d => d.startup != null && d.startup === snap(d);
-function newPC(id, ip, mask, gw) { return { id, kind: 'pc', ip: ip2n(ip), mask: ip2n(mask), gw: gw ? ip2n(gw) : null, seen: {} }; }
+function newPC(id, ip, mask, gw, web) { return { id, kind: 'pc', ip: ip2n(ip), mask: ip2n(mask), gw: gw ? ip2n(gw) : null, web: !!web, seen: {} }; }
 const isSwPort = (d, n) => d.kind === 'switch' && !n.startsWith('Vlan');
 const allowedHas = (al, v) => al == null || al.includes(v);
 function parseVlist(s) { const out = []; for (const p of String(s).split(',')) { const m = /^(\d+)(?:-(\d+))?$/.exec(p.trim()); if (!m) return null; const a = +m[1], b = m[2] ? +m[2] : a; if (a < 1 || b > 4094 || b < a) return null; for (let v = a; v <= b; v++) out.push(v); } return out; }
@@ -1696,7 +1699,13 @@ function build(N) {
       owners.push({ dev: d.id, ifn: n, ip: i.ip, mask: i.mask, key: n.startsWith('Vlan') ? d.id + ':v' + n.slice(4) : d.id + ':' + n });
     }
   }
-  const C = { find: f, owners, N }; C.rip = ripAll(C); C.rt = {};
+  // Adresses globales de NAT statique et de pool : le routeur répond pour elles sur son interface outside (comme un proxy ARP)
+  for (const d of Object.values(N.devs)) {
+    if (d.kind !== 'router' || !d.nat) continue; const outs = owners.filter(o => o.dev === d.id && d.ifs[o.ifn].nat === 'outside');
+    const glob = [...d.nat.statics.map(x => x.global), ...Object.values(d.nat.pools).flatMap(p => { const r = []; for (let a = p.start; a <= p.end && r.length < 64; a++) r.push(a); return r; })];
+    for (const g of glob) { const o = outs.find(x => netOf(g, x.mask) === netOf(x.ip, x.mask)); if (o && !owners.some(x => x.ip === g && x.dev === d.id)) owners.push({ dev: d.id, ifn: o.ifn, ip: g, mask: o.mask, key: o.key, virt: true }); }
+  }
+  const C = { find: f, owners, N }; C.rip = ripAll(C); C.ospf = ospfAll(C); C.rt = {};
   for (const d of Object.values(N.devs)) if (d.kind === 'router') C.rt[d.id] = rtable(C, d);
   return C;
 }
@@ -1709,7 +1718,9 @@ function rtable(C, d) {
     if (s.nh != null) { const c = conn.find(r => netOf(s.nh, pmask(r.len)) === r.net); if (!c) continue; R.push({ code: 'S', net: s.net, len, nh: s.nh, ifn: c.ifn, ad: 1 }); }
     else if (s.ifn) { const st = d.ifs[s.ifn] && ifStatus(C.N, d.id, s.ifn); if (!st || st[1] !== 'up') continue; R.push({ code: 'S', net: s.net, len, ifn: s.ifn, ad: 1 }); }
   }
-  for (const r of (C.rip[d.id] || [])) if (!R.some(x => (x.code === 'C' || x.code === 'S') && x.net === r.net && x.len === r.len)) R.push(r);
+  // Routes dynamiques : on garde, pour chaque réseau, la distance administrative la plus faible (S 1 < O 110 < R 120)
+  const dyn = [...(C.ospf.routes[d.id] || []), ...(C.rip[d.id] || [])];
+  for (const r of dyn) { const ex = R.find(x => x.net === r.net && x.len === r.len); if (ex && (ex.code === 'C' || ex.code === 'L' || (ex.ad || 0) <= r.ad)) continue; if (ex) R.splice(R.indexOf(ex), 1); R.push(r); }
   return R;
 }
 function lookup(R, dst) { let best = null; for (const r of R) if (netOf(dst, pmask(r.len)) === r.net && (!best || r.len > best.len || (r.len === best.len && (r.ad || 0) < (best.ad || 0)))) best = r; return best; }
@@ -1730,34 +1741,121 @@ function ripAll(C) {
   for (const r of routers) res[r.id] = Object.values(tbl[r.id]).filter(e => e.learned).map(e => ({ code: 'R', net: e.net, len: e.len, nh: e.nh, ifn: e.ifn, metric: e.metric, ad: 120 }));
   return res;
 }
-function owns(C, dev, ip) { return C.owners.some(o => o.dev === dev && o.ip === ip); }
+function ospfCost(d, n) { const i = d.ifs[n]; if (i && i.cost) return i.cost; return n.startsWith('Serial') ? 64 : 1; }
+function ospfRid(C, d) { if (d.ospf.rid != null) return d.ospf.rid; const lo = C.owners.filter(o => o.dev === d.id && !o.virt && o.ifn.startsWith('Loopback')).map(o => o.ip); const all = C.owners.filter(o => o.dev === d.id && !o.virt).map(o => o.ip); const l = lo.length ? lo : all; return l.length ? Math.max(...l) : 0; }
+function ospfAll(C) {
+  const N = C.N, res = { routes: {}, nb: {} }; const rs = Object.values(N.devs).filter(d => d.kind === 'router' && d.ospf);
+  const en = {};
+  for (const r of rs) { en[r.id] = []; for (const o of C.owners.filter(x => x.dev === r.id && !x.virt)) { const st = r.ospf.nets.find(n => ((o.ip & ~n.w) >>> 0) === ((n.a & ~n.w) >>> 0)); if (st) en[r.id].push({ o, area: st.area, passive: r.ospf.passive.includes(o.ifn) }); } }
+  const adj = {}; for (const r of rs) { adj[r.id] = []; res.nb[r.id] = []; }
+  for (const r of rs) for (const n of rs) { if (r === n) continue; for (const a of en[r.id]) for (const b of en[n.id]) { if (a.passive || b.passive || a.area !== b.area) continue; if (C.find(a.o.key) === C.find(b.o.key) && netOf(a.o.ip, a.o.mask) === netOf(b.o.ip, b.o.mask)) { adj[r.id].push({ n: n.id, cost: ospfCost(r, a.o.ifn), via: b.o.ip, ifn: a.o.ifn }); res.nb[r.id].push({ rid: ospfRid(C, n), ip: b.o.ip, ifn: a.o.ifn, area: a.area, dr: ospfRid(C, n) > ospfRid(C, r) }); } } }
+  for (const r of rs) {
+    const dist = { [r.id]: 0 }, first = {}, todo = new Set(rs.map(x => x.id));
+    while (todo.size) { let u = null; for (const x of todo) if (dist[x] != null && (u == null || dist[x] < dist[u])) u = x; if (u == null) break; todo.delete(u); for (const e of adj[u]) { const nd = dist[u] + e.cost; if (dist[e.n] == null || nd < dist[e.n]) { dist[e.n] = nd; first[e.n] = u === r.id ? { nh: e.via, ifn: e.ifn } : first[u]; } } }
+    const mine = C.owners.filter(o => o.dev === r.id).map(o => netOf(o.ip, o.mask) + '/' + plen(o.mask)); const best = {};
+    for (const x of rs) { if (x === r || dist[x.id] == null) continue; for (const e of en[x.id]) { const l = plen(e.o.mask), k = netOf(e.o.ip, e.o.mask) + '/' + l; if (mine.includes(k)) continue; const m = dist[x.id] + ospfCost(x, e.o.ifn); if (!best[k] || best[k].metric > m) best[k] = { code: 'O', net: netOf(e.o.ip, e.o.mask), len: l, nh: first[x.id].nh, ifn: first[x.id].ifn, metric: m, ad: 110 }; }
+      if (x.ospf.dio && x.routes.some(rt => rt.net === 0 && rt.mask === 0) && (!best.def || best.def.dist > dist[x.id])) best.def = { code: 'O*E2', net: 0, len: 0, nh: first[x.id].nh, ifn: first[x.id].ifn, metric: 1, ad: 110, dist: dist[x.id] }; }
+    res.routes[r.id] = Object.values(best);
+  }
+  return res;
+}
+/* ---------- ACL ---------- */
+const PORTS = { www: 80, http: 80, telnet: 23, ftp: 21, ssh: 22, domain: 53, smtp: 25, pop3: 110 };
+function parseAddr(t, i) { // any | host A | A W | A (standard)
+  const w = (t[i] || '').toLowerCase();
+  if (w === 'any') return { a: { any: true }, n: 1 };
+  if (w === 'host') { const ip = ip2n(t[i + 1]); return ip == null ? null : { a: { ip, w: 0 }, n: 2 }; }
+  const ip = ip2n(t[i]); if (ip == null) return null; const wl = ip2n(t[i + 1]);
+  if (wl != null) return { a: { ip: (ip & ~wl) >>> 0, w: wl }, n: 2 }; return { a: { ip, w: 0 }, n: 1 };
+}
+function parseRule(ext, line) {
+  const t = line.trim().split(/\s+/); const act = (t[0] || '').toLowerCase();
+  if (act === 'remark') return { remark: line.trim().slice(6).trim() };
+  if (act !== 'permit' && act !== 'deny') return { err: '% Invalid input detected at \'^\' marker.' };
+  if (!ext) { const s = parseAddr(t, 1); if (!s || t.length !== 1 + s.n) return { err: '% Invalid input detected at \'^\' marker.' }; return { r: { act, src: s.a } }; }
+  const proto = (t[1] || '').toLowerCase(); if (!['ip', 'icmp', 'tcp', 'udp'].includes(proto)) return { err: '% Invalid input detected at \'^\' marker.' };
+  const s = parseAddr(t, 2); if (!s) return { err: '% Incomplete command.' }; const d = parseAddr(t, 2 + s.n); if (!d) return { err: '% Incomplete command.' };
+  let k = 2 + s.n + d.n, port = null;
+  if (t[k] && t[k].toLowerCase() === 'eq') { if (proto !== 'tcp' && proto !== 'udp') return { err: '% Invalid input detected at \'^\' marker.' }; const v = t[k + 1] && t[k + 1].toLowerCase(); port = /^\d+$/.test(v || '') ? +v : PORTS[v]; if (!port) return { err: '% Incomplete command.' }; k += 2; }
+  if (k !== t.length) return { err: '% Invalid input detected at \'^\' marker.' };
+  return { r: { act, proto, src: s.a, dst: d.a, port } };
+}
+const addrOk = (a, ip) => a.any || ((ip & ~a.w) >>> 0) === ((a.ip & ~a.w) >>> 0);
+function aclPermit(d, name, pkt) {
+  const acl = d.acls[name]; if (!acl) return true; // une ACL appliquée mais inexistante laisse tout passer
+  for (const r of acl.rules) {
+    if (r.remark != null) continue;
+    if (!acl.ext) { if (addrOk(r.src, pkt.src)) return r.act === 'permit'; continue; }
+    if (r.proto !== 'ip' && r.proto !== pkt.proto) continue;
+    if (!addrOk(r.src, pkt.src) || !addrOk(r.dst, pkt.dst)) continue;
+    if (r.port != null && pkt.dport !== r.port) continue;
+    return r.act === 'permit';
+  }
+  return false; // deny any implicite
+}
+const isStdNum = n => /^\d+$/.test(n) && ((+n >= 1 && +n <= 99) || (+n >= 1300 && +n <= 1999));
+const isExtNum = n => /^\d+$/.test(n) && ((+n >= 100 && +n <= 199) || (+n >= 2000 && +n <= 2699));
+/* ---------- NAT ---------- */
+function natTrans(C, d, pkt) {
+  for (const st of d.nat.statics) { if (st.local !== pkt.src) continue; if (st.proto) { if (pkt.proto === st.proto && pkt.sport === st.lport) { C.natLog.push({ dev: d.id, pro: st.proto, ig: n2ip(st.global) + ':' + st.gport, il: n2ip(st.local) + ':' + st.lport, og: n2ip(pkt.dst) }); return { src: st.global, sport: st.gport }; } continue; } C.natLog.push({ dev: d.id, pro: pkt.proto, ig: n2ip(st.global), il: n2ip(st.local), og: n2ip(pkt.dst), stat: true }); return { src: st.global }; }
+  for (const r of d.nat.dyn) {
+    if (!aclPermit(d, r.acl, { src: pkt.src, dst: pkt.dst, proto: pkt.proto, dport: pkt.dport })) continue;
+    let g = null; if (r.ifn) { const o = C.owners.find(x => x.dev === d.id && x.ifn === r.ifn && !x.virt); if (!o) return { fail: true }; g = o.ip; } else { const p = d.nat.pools[r.pool]; if (!p) return { fail: true }; g = p.start; }
+    C.natFlow.push({ dev: d.id, global: g, local: pkt.src }); C.natLog.push({ dev: d.id, pro: pkt.proto, ig: n2ip(g) + ':1', il: n2ip(pkt.src) + ':1', og: n2ip(pkt.dst) + ':1' });
+    return { src: g };
+  }
+  return null;
+}
+function natUntrans(C, d, pkt) {
+  for (const st of d.nat.statics) { if (st.global !== pkt.dst) continue; if (st.proto) { if (pkt.proto === st.proto && pkt.dport === st.gport) return { dst: st.local, dport: st.lport }; continue; } return { dst: st.local }; }
+  const fl = C.natFlow.slice().reverse().find(x => x.dev === d.id && x.global === pkt.dst); if (fl) return { dst: fl.local };
+  return null;
+}
+function owns(C, dev, ip) { return C.owners.some(o => o.dev === dev && o.ip === ip && !o.virt); }
 function hop(C, dev, dst) {
   const d = C.N.devs[dev];
   if (d.kind === 'pc') { if (d.ip == null) return null; if (netOf(dst, d.mask) === netOf(d.ip, d.mask)) return { key: dev + ':nic', target: dst, src: d.ip }; if (d.gw == null) return null; return { key: dev + ':nic', target: d.gw, src: d.ip }; }
   if (d.kind === 'switch') { const sv = C.owners.filter(o => o.dev === dev); for (const o of sv) if (netOf(dst, o.mask) === netOf(o.ip, o.mask)) return { key: o.key, target: dst, src: o.ip }; if (d.gw != null) for (const o of sv) if (netOf(d.gw, o.mask) === netOf(o.ip, o.mask)) return { key: o.key, target: d.gw, src: o.ip }; return null; }
   const e = lookup(C.rt[dev], dst); if (!e) return null;
   const o = C.owners.find(x => x.dev === dev && x.ifn === e.ifn); if (!o) return null;
-  if (e.code === 'C') return { key: o.key, target: dst, src: o.ip };
-  if (e.nh != null) return { key: o.key, target: e.nh, src: o.ip };
-  return { key: o.key, target: dst, src: o.ip };
+  if (e.code === 'C') return { key: o.key, target: dst, src: o.ip, ifn: o.ifn };
+  if (e.nh != null) return { key: o.key, target: e.nh, src: o.ip, ifn: o.ifn };
+  return { key: o.key, target: dst, src: o.ip, ifn: o.ifn };
 }
-function deliver(C, from, dst) {
-  let dev = from, src = null, hops = 0;
-  for (let i = 0; i < 20; i++) {
-    if (owns(C, dev, dst)) return { ok: true, dev, src, hops };
-    const h = hop(C, dev, dst); if (!h) return { ok: false, why: i === 0 ? 'noroute' : 'drop' };
-    if (i === 0) src = h.src; const seg = C.find(h.key);
-    const nx = C.owners.find(o => o.ip === h.target && C.find(o.key) === seg); if (!nx) return { ok: false, why: 'arp' };
-    if (nx.dev !== dev && C.N.devs[nx.dev].kind === 'router' && nx.ip !== dst) hops++;
-    dev = nx.dev;
+function deliver(C, from, pkt) {
+  let dev = from, inIf = null, hops = 0, origin = true;
+  for (let i = 0; i < 24; i++) {
+    const d = C.N.devs[dev];
+    if (d.kind === 'router' && inIf) {
+      const ii = d.ifs[inIf];
+      if (ii && ii.acin && !aclPermit(d, ii.acin, pkt)) return { ok: false, why: 'acl', dev };
+      if (ii && ii.nat === 'outside') { const t = natUntrans(C, d, pkt); if (t) Object.assign(pkt, t); }
+    }
+    if (owns(C, dev, pkt.dst)) return { ok: true, dev, pkt, hops };
+    const h = hop(C, dev, pkt.dst); if (!h) return { ok: false, why: i === 0 ? 'noroute' : 'drop', dev };
+    if (pkt.src == null) pkt.src = h.src;
+    if (d.kind === 'router' && !origin) {
+      if (inIf && d.ifs[inIf] && d.ifs[inIf].nat === 'inside' && d.ifs[h.ifn].nat === 'outside') { const t = natTrans(C, d, pkt); if (t && t.fail) return { ok: false, why: 'nat', dev }; if (t) Object.assign(pkt, t); }
+      const oi = d.ifs[h.ifn]; if (oi && oi.acout && !aclPermit(d, oi.acout, pkt)) return { ok: false, why: 'acl', dev };
+    }
+    const seg = C.find(h.key);
+    const nx = C.owners.find(o => o.ip === h.target && C.find(o.key) === seg && o.dev !== dev); if (!nx) return { ok: false, why: 'arp', dev };
+    if (C.N.devs[nx.dev].kind === 'router' && !owns(C, nx.dev, pkt.dst)) hops++;
+    dev = nx.dev; inIf = nx.ifn; origin = false;
   }
   return { ok: false, why: 'loop' };
 }
-function ping(N, from, dstIp) {
+// opt : { proto: 'icmp' | 'tcp', dport, record (garde les traductions NAT pour show ip nat translations) }
+function ping(N, from, dstIp, opt = {}) {
   const dst = typeof dstIp === 'number' ? dstIp : ip2n(dstIp); if (dst == null) return { ok: false };
-  const C = build(N); const a = deliver(C, from, dst); if (!a.ok) return a;
-  if (a.src == null) return { ok: true, hops: 0 };
-  const b = deliver(C, a.dev, a.src); return b.ok ? { ok: true, hops: a.hops } : { ok: false, why: 'retour' };
+  const C = build(N); C.natLog = []; C.natFlow = [];
+  const proto = opt.proto || 'icmp';
+  const fd = N.devs[from]; const pkt = { src: fd.kind === 'pc' ? fd.ip : null, dst, proto, dport: opt.dport || null, sport: proto === 'tcp' ? 49152 : null };
+  const a = deliver(C, from, pkt); let ok = a.ok;
+  if (ok && proto === 'tcp') { const t = N.devs[a.dev]; if (!(t.kind === 'pc' && t.web && opt.dport === 80)) ok = false; }
+  if (ok && a.pkt.src != null && !(a.dev === from)) { const back = deliver(C, a.dev, { src: a.pkt.dst, dst: a.pkt.src, proto, sport: a.pkt.dport, dport: a.pkt.sport }); ok = back.ok; }
+  if (opt.record) for (const l of C.natLog) { const r = N.devs[l.dev]; if (!r.natx) r.natx = []; if (!l.stat) { r.natx.push(l); r.natx = r.natx.slice(-12); } }
+  return { ok, hops: a.hops || 0, why: a.why };
 }
 
 /* ---------- Analyse des commandes ---------- */
@@ -1781,11 +1879,11 @@ const HELP = {
   'voice': 'Voice appliance attributes', 'spanning-tree': 'Spanning Tree Subsystem', 'portfast': 'Enable an interface to move directly to forwarding on link up',
   'network': 'Enable routing on an IP network', 'auto-summary': 'Enable automatic network number summarization', 'passive-interface': 'Suppress routing updates on an interface',
   'name': 'Ascii name of the VLAN', 'login': 'Enable password checking', 'logging': 'Modify message logging facilities', 'synchronous': 'Synchronized message output',
-  'exec-timeout': 'Set the EXEC timeout', 'history': 'Display the session command history', 'clock rate': '', 'A.B.C.D': 'IP address', 'MASK': 'IP subnet mask', 'WORD': 'Text',
+  'exec-timeout': 'Set the EXEC timeout', 'ospf': 'Open Shortest Path First (OSPF)', 'area': 'Set the OSPF area ID', 'router-id': 'router-id for this OSPF process', 'default-information': 'Control distribution of default information', 'originate': 'Distribute a default route', 'cost': 'Interface cost', 'neighbor': 'Neighbor list', 'access-list': 'Add an access list entry', 'access-lists': 'List access lists', 'access-group': 'Specify access control for packets', 'standard': 'Standard Access List', 'extended': 'Extended Access List', 'in': 'inbound packets', 'out': 'outbound packets', 'nat': 'NAT configuration commands', 'inside': 'Inside interface for address translation', 'outside': 'Outside interface for address translation', 'source': 'Source address translation', 'translations': 'Translation entries', 'pool': 'Define pool of addresses', 'permit': 'Specify packets to forward', 'deny': 'Specify packets to reject', 'remark': 'Access list entry comment', 'reference-bandwidth': 'Use reference bandwidth method to assign OSPF cost', 'auto-cost': 'Calculate OSPF interface cost according to bandwidth', 'history': 'Display the session command history', 'clock rate': '', 'A.B.C.D': 'IP address', 'MASK': 'IP subnet mask', 'WORD': 'Text',
   'LINE': 'Text', 'N': 'Number', 'VLIST': 'VLAN IDs of the allowed VLANs', 'IF': 'Interface name (ex. g0/0)', 'IFR': 'Interface range (ex. f0/1-5)', 'NH': 'Forwarding router\'s address or interface',
 };
 const CMD = {}; const add = (modes, pat, fn, kind) => { for (const m of modes.split(' ')) (CMD[m] = CMD[m] || []).push({ p: pat.split(' '), fn, kind }); };
-const CFGM = 'conf if subif swport svi ifr router vlan line';
+const CFGM = 'conf if subif swport svi ifr router ospf vlan line acl';
 const IFM = { if: 1, subif: 1, swport: 1, svi: 1, ifr: 1 };
 
 function tokenize(raw) {
@@ -1860,8 +1958,8 @@ function complete(d, raw) {
 }
 
 /* ---------- Exécution ---------- */
-const PROMPT = { user: '>', priv: '#', conf: '(config)#', if: '(config-if)#', swport: '(config-if)#', svi: '(config-if)#', subif: '(config-subif)#', ifr: '(config-if-range)#', router: '(config-router)#', vlan: '(config-vlan)#', line: '(config-line)#' };
-function prompt(d) { if (d.kind === 'pc') return 'C:\\>'; if (d.pend && d.pend.prompt != null) return d.pend.prompt; return d.hostname + PROMPT[d.mode]; }
+const PROMPT = { user: '>', priv: '#', conf: '(config)#', if: '(config-if)#', swport: '(config-if)#', svi: '(config-if)#', subif: '(config-subif)#', ifr: '(config-if-range)#', router: '(config-router)#', ospf: '(config-router)#', vlan: '(config-vlan)#', line: '(config-line)#', acl: '(config-std-nacl)#' };
+function prompt(d) { if (d.kind === 'pc') return 'C:\\>'; if (d.pend && d.pend.prompt != null) return d.pend.prompt; if (d.mode === 'acl' && d.acls[d.cur] && d.acls[d.cur].ext) return d.hostname + '(config-ext-nacl)#'; return d.hostname + PROMPT[d.mode]; }
 function setMode(d, m) { d.mode = m; d.seen[m] = true; }
 function exec(N, devId, raw) {
   const d = N.devs[devId]; if (d.kind === 'pc') return pcExec(N, d, raw);
@@ -1914,6 +2012,9 @@ const SHOWS = [
   ['show ip protocols', (N, d) => sip(N, d), 'router'],
   ['show version', (N, d) => d.kind === 'router' ? `Cisco IOS Software, C1900 Software (C1900-UNIVERSALK9-M), Version 15.1(4)M4, RELEASE SOFTWARE (fc2)\nTechnical Support: http://www.cisco.com/techsupport\n\nROM: System Bootstrap, Version 15.1(4)M4, RELEASE SOFTWARE (fc1)\n\n${d.hostname} uptime is 1 hour, 12 minutes\nSystem image file is "flash0:c1900-universalk9-mz.SPA.151-4.M4.bin"\n\nCisco CISCO1941/K9 (revision 1.0) with 491520K/32768K bytes of memory.\n2 Gigabit Ethernet interfaces\n2 Low-speed serial(sync/async) network interface(s)\n255K bytes of non-volatile configuration memory.\n249856K bytes of ATA System CompactFlash 0 (Read/Write)\n\nConfiguration register is 0x2102` : `Cisco IOS Software, C2960 Software (C2960-LANBASEK9-M), Version 15.0(2)SE4, RELEASE SOFTWARE (fc1)\n\nROM: Bootstrap program is C2960 boot loader\n\n${d.hostname} uptime is 1 hour, 12 minutes\nSystem image file is "flash:c2960-lanbasek9-mz.150-2.SE4.bin"\n\ncisco WS-C2960-24TT-L (PowerPC405) processor with 65536K bytes of memory.\n24 FastEthernet interfaces\n2 Gigabit Ethernet interfaces\n64K bytes of flash-simulated non-volatile configuration memory.\n\nConfiguration register is 0xF`],
   ['show history', (N, d) => (d.hist || []).slice(-10).map(h => '  ' + h).join('\n')],
+  ['show ip ospf neighbor', (N, d) => soN(N, d), 'router'],
+  ['show access-lists', (N, d) => sAcl(N, d), 'router'],
+  ['show ip nat translations', (N, d) => sNat(N, d), 'router'],
 ];
 for (const [p, f, k] of SHOWS) { add('priv', p, (N, d) => { d.seen[p] = true; return f(N, d); }, k); }
 for (const [p, f, k] of SHOWS.filter(s => /ip interface brief|version|history/.test(s[0]))) add('user', p, (N, d) => { d.seen[p] = true; return f(N, d); }, k);
@@ -1927,7 +2028,7 @@ add('priv', 'reload', (N, d) => {
   return proceed();
 });
 const pingOut = (dst, ok) => `Type escape sequence to abort.\nSending 5, 100-byte ICMP Echos to ${dst}, timeout is 2 seconds:\n${ok ? '!!!!!' : '.....'}\nSuccess rate is ${ok ? '100 percent (5/5), round-trip min/avg/max = 1/1/2 ms' : '0 percent (0/5)'}`;
-add('user priv', 'ping A.B.C.D', (N, d, [ip]) => { const r = ping(N, d.id, ip); d.seen['ping ' + ip] = r.ok; d.seen.ping = true; return pingOut(ip, r.ok); });
+add('user priv', 'ping A.B.C.D', (N, d, [ip]) => { const r = ping(N, d.id, ip, { record: true }); d.seen['ping ' + ip] = r.ok; d.seen.ping = true; return pingOut(ip, r.ok); });
 
 /* --- Configuration globale --- */
 add(CFGM, 'exit', (N, d) => { if (d.mode === 'conf') setMode(d, 'priv'); else { setMode(d, 'conf'); d.cur = null; } return ''; });
@@ -1987,6 +2088,59 @@ add('line', 'no login', (N, d) => { d[d.cur].login = false; return ''; });
 add('line', 'logging synchronous', () => '');
 add('line', 'exec-timeout N N', () => '');
 
+/* --- OSPF --- */
+add('conf', 'router ospf N', (N, d, [p]) => { if (!d.ospf || d.ospf.pid !== +p) d.ospf = { pid: +p, rid: null, nets: [], passive: [], dio: false }; setMode(d, 'ospf'); return ''; }, 'router');
+add('conf', 'no router ospf N', (N, d) => { d.ospf = null; return ''; }, 'router');
+add('ospf', 'network A.B.C.D A.B.C.D area N', (N, d, [a, w, ar]) => { const n = { a: (ip2n(a) & ~ip2n(w)) >>> 0, w: ip2n(w), area: +ar }; if (!d.ospf.nets.some(x => x.a === n.a && x.w === n.w)) d.ospf.nets.push(n); return ''; });
+add('ospf', 'no network A.B.C.D A.B.C.D area N', (N, d, [a, w]) => { const na = (ip2n(a) & ~ip2n(w)) >>> 0; d.ospf.nets = d.ospf.nets.filter(x => !(x.a === na && x.w === ip2n(w))); return ''; });
+add('ospf', 'router-id A.B.C.D', (N, d, [r]) => { d.ospf.rid = ip2n(r); return 'Reload or use "clear ip ospf process" command, for this to take effect'; });
+add('ospf', 'passive-interface IF', (N, d, [n]) => { const p = parseIf(n); const nm = p && (p.sub != null ? p.base + '.' + p.sub : p.base); if (!nm || !d.ifs[nm]) return '% Invalid input detected at \'^\' marker.'; if (!d.ospf.passive.includes(nm)) d.ospf.passive.push(nm); return ''; });
+add('ospf', 'no passive-interface IF', (N, d, [n]) => { const p = parseIf(n); const nm = p && (p.sub != null ? p.base + '.' + p.sub : p.base); d.ospf.passive = d.ospf.passive.filter(x => x !== nm); return ''; });
+add('ospf', 'default-information originate', (N, d) => { d.ospf.dio = true; return ''; });
+add('ospf', 'no default-information originate', (N, d) => { d.ospf.dio = false; return ''; });
+add('ospf', 'auto-cost reference-bandwidth N', () => '% OSPF: Reference bandwidth is changed.\n        Please ensure reference bandwidth is consistent across all routers.');
+add('if subif', 'ip ospf cost N', (N, d, [c]) => { d.ifs[d.cur].cost = +c; return ''; });
+add('if subif', 'no ip ospf cost', (N, d) => { d.ifs[d.cur].cost = null; return ''; });
+/* --- ACL --- */
+add('conf', 'access-list N LINE', (N, d, [n, line]) => { if (!isStdNum(n) && !isExtNum(n)) return '% Invalid input detected at \'^\' marker.'; const ext = isExtNum(n); const p = parseRule(ext, line); if (p.err) return p.err; if (!d.acls[n]) d.acls[n] = { ext, rules: [] }; d.acls[n].rules.push(p.remark != null ? { remark: p.remark } : p.r); return ''; }, 'router');
+add('conf', 'no access-list N', (N, d, [n]) => { delete d.acls[n]; return ''; }, 'router');
+add('conf', 'ip access-list standard WORD', (N, d, [n]) => { if (isExtNum(n)) return '% Invalid input detected at \'^\' marker.'; if (!d.acls[n]) d.acls[n] = { ext: false, rules: [], named: !/^\d+$/.test(n) }; d.cur = n; setMode(d, 'acl'); return ''; }, 'router');
+add('conf', 'ip access-list extended WORD', (N, d, [n]) => { if (isStdNum(n)) return '% Invalid input detected at \'^\' marker.'; if (!d.acls[n]) d.acls[n] = { ext: true, rules: [], named: !/^\d+$/.test(n) }; d.cur = n; setMode(d, 'acl'); return ''; }, 'router');
+add('conf', 'no ip access-list standard WORD', (N, d, [n]) => { delete d.acls[n]; return ''; }, 'router');
+add('conf', 'no ip access-list extended WORD', (N, d, [n]) => { delete d.acls[n]; return ''; }, 'router');
+for (const w of ['permit', 'deny', 'remark']) add('acl', w + ' LINE', (N, d, [line]) => { const acl = d.acls[d.cur]; const p = parseRule(acl.ext, w + ' ' + line); if (p.err) return p.err; acl.rules.push(p.remark != null ? { remark: p.remark } : p.r); return ''; });
+add('if subif', 'ip access-group WORD in', (N, d, [n]) => { d.ifs[d.cur].acin = n; return ''; });
+add('if subif', 'ip access-group WORD out', (N, d, [n]) => { d.ifs[d.cur].acout = n; return ''; });
+add('if subif', 'no ip access-group WORD in', (N, d) => { d.ifs[d.cur].acin = null; return ''; });
+add('if subif', 'no ip access-group WORD out', (N, d) => { d.ifs[d.cur].acout = null; return ''; });
+/* --- NAT --- */
+add('if subif', 'ip nat inside', (N, d) => { d.ifs[d.cur].nat = 'inside'; return ''; });
+add('if subif', 'ip nat outside', (N, d) => { d.ifs[d.cur].nat = 'outside'; return ''; });
+add('if subif', 'no ip nat inside', (N, d) => { d.ifs[d.cur].nat = null; return ''; });
+add('if subif', 'no ip nat outside', (N, d) => { d.ifs[d.cur].nat = null; return ''; });
+function natSource(d, line, del) {
+  const t = line.trim().split(/\s+/); const lw = t.map(x => x.toLowerCase()); const bad = '% Invalid input detected at \'^\' marker.';
+  if (lw[0] === 'static') {
+    let st;
+    if (lw[1] === 'tcp' || lw[1] === 'udp') { const l = ip2n(t[2]), g = ip2n(t[4]); if (l == null || g == null || !/^\d+$/.test(t[3] || '') || !/^\d+$/.test(t[5] || '') || t.length !== 6) return bad; st = { proto: lw[1], local: l, lport: +t[3], global: g, gport: +t[5] }; }
+    else { const l = ip2n(t[1]), g = ip2n(t[2]); if (l == null || g == null || t.length !== 3) return bad; st = { local: l, global: g }; }
+    const same = x => x.local === st.local && x.global === st.global && x.proto === st.proto && x.lport === st.lport;
+    d.nat.statics = d.nat.statics.filter(x => !same(x)); if (!del) d.nat.statics.push(st); return '';
+  }
+  if (lw[0] === 'list') {
+    const acl = t[1]; if (!acl) return '% Incomplete command.'; let r;
+    if (lw[2] === 'interface') { const p = parseIf(t[3] || ''); const nm = p && (p.sub != null ? p.base + '.' + p.sub : p.base); if (!nm || !d.ifs[nm]) return bad; r = { acl, ifn: nm, overload: lw[4] === 'overload' }; if (t.length > (r.overload ? 5 : 4)) return bad; }
+    else if (lw[2] === 'pool') { if (!t[3]) return '% Incomplete command.'; r = { acl, pool: t[3], overload: lw[4] === 'overload' }; if (t.length > (r.overload ? 5 : 4)) return bad; }
+    else return t.length < 3 ? '% Incomplete command.' : bad;
+    d.nat.dyn = d.nat.dyn.filter(x => x.acl !== acl); if (!del) d.nat.dyn.push(r); return '';
+  }
+  return bad;
+}
+add('conf', 'ip nat inside source LINE', (N, d, [l]) => natSource(d, l, false), 'router');
+add('conf', 'no ip nat inside source LINE', (N, d, [l]) => natSource(d, l, true), 'router');
+add('conf', 'ip nat pool WORD A.B.C.D A.B.C.D netmask MASK', (N, d, [n, a, b, m]) => { d.nat.pools[n] = { start: ip2n(a), end: ip2n(b), mask: ip2n(m) }; return ''; }, 'router');
+add('conf', 'no ip nat pool WORD', (N, d, [n]) => { delete d.nat.pools[n]; return ''; }, 'router');
+
 /* --- Interfaces --- */
 function setIp(N, d, n, a, m) {
   const i = d.ifs[n]; const ip = ip2n(a), mask = ip2n(m); const l = plen(mask);
@@ -2039,14 +2193,19 @@ function runCfg(N, d, startup) {
       if (i.encap != null) p(' encapsulation dot1Q ' + i.encap);
       p(i.ip != null ? ' ip address ' + n2ip(i.ip) + ' ' + n2ip(i.mask) : ' no ip address');
       if (i.helper != null) p(' ip helper-address ' + n2ip(i.helper));
+      if (i.acin) p(' ip access-group ' + i.acin + ' in'); if (i.acout) p(' ip access-group ' + i.acout + ' out');
+      if (i.nat) p(' ip nat ' + i.nat); if (i.cost) p(' ip ospf cost ' + i.cost);
       if (!n.includes('.') && !n.startsWith('Vlan') && !n.startsWith('Loopback') && d.kind === 'router') p(' duplex auto\n speed auto');
       if (i.clock) p(' clock rate ' + i.clock);
     }
     if (i.shut) p(' shutdown'); p('!');
   }
   if (d.rip) { p('router rip'); if (d.rip.v) p(' version ' + d.rip.v); for (const pi of d.rip.passive) p(' passive-interface ' + pi); for (const n of d.rip.nets) p(' network ' + n2ip(n)); if (d.rip.noauto) p(' no auto-summary'); p('!'); }
+  if (d.ospf) { p('router ospf ' + d.ospf.pid); if (d.ospf.rid != null) p(' router-id ' + n2ip(d.ospf.rid)); p(' log-adjacency-changes'); for (const pi of d.ospf.passive) p(' passive-interface ' + pi); for (const n of d.ospf.nets) p(' network ' + n2ip(n.a) + ' ' + n2ip(n.w) + ' area ' + n.area); if (d.ospf.dio) p(' default-information originate'); p('!'); }
   if (d.gw != null) { p('ip default-gateway ' + n2ip(d.gw)); p('!'); }
+  if (d.kind === 'router' && d.nat) { for (const [n, pl] of Object.entries(d.nat.pools)) p('ip nat pool ' + n + ' ' + n2ip(pl.start) + ' ' + n2ip(pl.end) + ' netmask ' + n2ip(pl.mask)); for (const r of d.nat.dyn) p('ip nat inside source list ' + r.acl + ' ' + (r.ifn ? 'interface ' + r.ifn : 'pool ' + r.pool) + (r.overload ? ' overload' : '')); for (const st of d.nat.statics) p('ip nat inside source static ' + (st.proto ? st.proto + ' ' + n2ip(st.local) + ' ' + st.lport + ' ' + n2ip(st.global) + ' ' + st.gport : n2ip(st.local) + ' ' + n2ip(st.global))); }
   if (d.kind === 'router') { p('ip classless'); for (const r of d.routes) p('ip route ' + n2ip(r.net) + ' ' + n2ip(r.mask) + ' ' + (r.nh != null ? n2ip(r.nh) : r.ifn)); p('!'); }
+  if (d.kind === 'router' && d.acls) { for (const [n, a] of Object.entries(d.acls)) { const rl = r => r.remark != null ? 'remark ' + r.remark : r.act + ' ' + (a.ext ? r.proto + ' ' + fmtAddr(r.src) + ' ' + fmtAddr(r.dst) + (r.port != null ? ' eq ' + (PNAME[r.port] || r.port) : '') : (r.src.any ? 'any' : r.src.w === 0 ? 'host ' + n2ip(r.src.ip) : n2ip(r.src.ip) + ' ' + n2ip(r.src.w))); if (/^\d+$/.test(n) && !a.named) { for (const r of a.rules) p('access-list ' + n + ' ' + rl(r)); } else { p('ip access-list ' + (a.ext ? 'extended ' : 'standard ') + n); for (const r of a.rules) p(' ' + rl(r)); } } p('!'); }
   if (d.banner) { p('banner motd ^C' + d.banner + '^C'); p('!'); }
   const line = (name, l) => { p(name); if (l.pw) p(' password ' + (d.pwenc ? '7 ' + encPw(l.pw) : l.pw)); if (l.login) p(' login'); };
   line('line con 0', d.con); p('!'); line('line vty 0 4', d.vty); p('!'); p('end');
@@ -2060,12 +2219,12 @@ function sipib(N, d) {
 function sir(N, d) {
   const C = build(N); const R = C.rt[d.id].slice().sort((a, b) => a.net - b.net || a.len - b.len);
   const def = R.find(r => r.len === 0);
-  const L = ['Codes: L - local, C - connected, S - static, R - RIP, M - mobile, B - BGP', '       D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area', '       * - candidate default, U - per-user static route', '', 'Gateway of last resort is ' + (def ? (def.nh != null ? n2ip(def.nh) : 'reached via ' + def.ifn) + ' to network 0.0.0.0' : 'not set'), ''];
+  const L = ['Codes: L - local, C - connected, S - static, R - RIP, M - mobile, B - BGP', '       D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area', '       E1 - OSPF external type 1, E2 - OSPF external type 2', '       * - candidate default, U - per-user static route', '', 'Gateway of last resort is ' + (def ? (def.nh != null ? n2ip(def.nh) : 'reached via ' + def.ifn) + ' to network 0.0.0.0' : 'not set'), ''];
   for (const r of R) {
-    const code = (r.code + (r.len === 0 ? '*' : '')).padEnd(5); const dst = n2ip(r.net) + '/' + r.len;
+    const code = (r.code.length > 1 ? r.code : r.code + (r.len === 0 ? '*' : '')).padEnd(5); const dst = n2ip(r.net) + '/' + r.len;
     if (r.code === 'C' || r.code === 'L') L.push(code + '   ' + dst + ' is directly connected, ' + r.ifn);
-    else if (r.code === 'S') L.push(code + dst + (r.nh != null ? ' [1/0] via ' + n2ip(r.nh) : ' is directly connected, ' + r.ifn));
-    else L.push(code + dst + ' [120/' + r.metric + '] via ' + n2ip(r.nh) + ', 00:00:' + String(10 + r.metric * 7).padStart(2, '0') + ', ' + r.ifn);
+    else if (r.code === 'S') L.push(code + '   ' + dst + (r.nh != null ? ' [1/0] via ' + n2ip(r.nh) : ' is directly connected, ' + r.ifn));
+    else L.push(code + '   ' + dst + ' [' + r.ad + '/' + r.metric + '] via ' + n2ip(r.nh) + ', ' + (r.code === 'R' ? '00:00:' + String(10 + (r.metric * 7) % 40).padStart(2, '0') : '00:02:' + String(10 + r.metric % 40).padStart(2, '0')) + ', ' + r.ifn);
   }
   return L.join('\n');
 }
@@ -2088,8 +2247,31 @@ function sit(N, d) {
   L.push('', 'Port        Vlans allowed and active in management domain'); for (const n of T) L.push(shortIf(n).padEnd(12) + fmtVlist(Object.keys(d.vlans).map(Number).filter(v => v < 1002 && allowedHas(d.ifs[n].allowed, v))));
   return L.join('\n');
 }
+function soN(N, d) {
+  if (!d.ospf) return '';
+  const C = build(N); const L = ['Neighbor ID     Pri   State           Dead Time   Address         Interface'];
+  for (const n of C.ospf.nb[d.id] || []) L.push(n2ip(n.rid).padEnd(16) + '1'.padEnd(6) + (n.ifn.startsWith('Serial') ? 'FULL/  -' : n.dr ? 'FULL/DR' : 'FULL/BDR').padEnd(16) + '00:00:3' + (n.rid % 9) + '    ' + n2ip(n.ip).padEnd(16) + n.ifn);
+  return L.join('\n');
+}
+function fmtAddr(a, std) { if (a.any) return 'any'; if (a.w === 0) return std ? n2ip(a.ip) : 'host ' + n2ip(a.ip); return std ? n2ip(a.ip) + ', wildcard bits ' + n2ip(a.w) : n2ip(a.ip) + ' ' + n2ip(a.w); }
+const PNAME = { 80: 'www', 23: 'telnet', 21: 'ftp', 22: '22', 53: 'domain', 25: 'smtp', 110: 'pop3' };
+function sAcl(N, d) {
+  const L = [];
+  for (const [n, a] of Object.entries(d.acls)) { L.push((a.ext ? 'Extended' : 'Standard') + ' IP access list ' + n); let k = 0; for (const r of a.rules) { if (r.remark != null) continue; k += 10; L.push('    ' + k + ' ' + r.act + ' ' + (a.ext ? r.proto + ' ' + fmtAddr(r.src) + ' ' + fmtAddr(r.dst) + (r.port != null ? ' eq ' + (PNAME[r.port] || r.port) : '') : fmtAddr(r.src, true))); } }
+  return L.join('\n');
+}
+function sNat(N, d) {
+  const L = ['Pro  Inside global         Inside local          Outside local         Outside global'];
+  for (const x of (d.natx || [])) L.push((x.pro || 'icmp').padEnd(5) + x.ig.padEnd(22) + x.il.padEnd(22) + x.og.padEnd(22) + x.og);
+  for (const st of d.nat.statics) L.push((st.proto || '---').padEnd(5) + (n2ip(st.global) + (st.proto ? ':' + st.gport : '')).padEnd(22) + (n2ip(st.local) + (st.proto ? ':' + st.lport : '')).padEnd(22) + '---'.padEnd(22) + '---');
+  return L.join('\n');
+}
 function sip(N, d) {
-  if (!d.rip) return '';
+  const o = d.ospf ? `Routing Protocol is "ospf ${d.ospf.pid}"\nOutgoing update filter list for all interfaces is not set\nIncoming update filter list for all interfaces is not set\nRouter ID ${n2ip(ospfRid(build(N), d))}\nNumber of areas in this router is 1. 1 normal 0 stub 0 nssa\nMaximum path: 4\nRouting for Networks:\n${d.ospf.nets.map(n => '    ' + n2ip(n.a) + ' ' + n2ip(n.w) + ' area ' + n.area).join('\n')}\nPassive Interface(s):\n${d.ospf.passive.map(p => '    ' + p).join('\n')}\nDistance: (default is 110)\n\n` : '';
+  if (!d.rip) return o.trim();
+  return o + sipRip(N, d);
+}
+function sipRip(N, d) {
   const nets = d.rip.nets.map(n => '    ' + n2ip(n)).join('\n');
   return `Routing Protocol is "rip"\nSending updates every 30 seconds, next due in 12 seconds\nInvalid after 180 seconds, hold down 180, flushed after 240\nDefault version control: send version ${d.rip.v || 1}, receive ${d.rip.v ? 'version ' + d.rip.v : 'any version'}\nAutomatic network summarization is ${d.rip.noauto ? 'not ' : ''}in effect\nMaximum path: 4\nRouting for Networks:\n${nets}\nPassive Interface(s):\n${d.rip.passive.map(p => '    ' + p).join('\n')}\nRouting Information Sources:\n  Gateway         Distance      Last Update\nDistance: (default is 120)`;
 }
@@ -2102,12 +2284,14 @@ function pcExec(N, d, raw) {
   const m = /^ping\s+(\S+)$/.exec(tl);
   if (m) {
     if (ip2n(m[1]) == null) return { out: `La requête Ping n'a pas pu trouver l'hôte ${m[1]}. Vérifiez le nom et essayez à nouveau.` };
-    const r = ping(N, d.id, m[1]); d.seen['ping ' + m[1]] = r.ok;
+    const r = ping(N, d.id, m[1], { record: true }); d.seen['ping ' + m[1]] = r.ok;
     const ttl = 255 - (r.hops || 0);
     const lines = r.ok ? Array(4).fill(`Réponse de ${m[1]} : octets=32 temps<1ms TTL=${ttl}`) : Array(4).fill('Délai d\'attente de la demande dépassé.');
     return { out: `\nEnvoi d'une requête 'Ping'  ${m[1]} avec 32 octets de données :\n${lines.join('\n')}\n\nStatistiques Ping pour ${m[1]}:\n    Paquets : envoyés = 4, reçus = ${r.ok ? 4 : 0}, perdus = ${r.ok ? 0 : 4} (perte ${r.ok ? 0 : 100}%),` };
   }
-  if (tl === 'help' || tl === '?') return { out: 'Commandes disponibles sur ce PC : ipconfig, ping <adresse IP>' };
+  const c = /^curl\s+(?:https?:\/\/)?([0-9.]+)\/?$/.exec(tl);
+  if (c) { if (ip2n(c[1]) == null) return { out: 'curl: (6) Could not resolve host: ' + c[1] }; const r = ping(N, d.id, c[1], { proto: 'tcp', dport: 80, record: true }); d.seen['curl ' + c[1]] = r.ok; return { out: r.ok ? '<html><body><h1>Serveur web TSSR<\/h1><p>La page s\'affiche : HTTP (TCP 80) passe.<\/p><\/body><\/html>' : 'curl: (28) Failed to connect to ' + c[1] + ' port 80: Timed out' }; }
+  if (tl === 'help' || tl === '?') return { out: 'Commandes disponibles sur ce PC : ipconfig, ping <adresse IP>, curl http://<adresse IP>' };
   return { out: `'${t.split(/\s+/)[0]}' n'est pas reconnu en tant que commande interne\nou externe, un programme exécutable ou un fichier de commandes.` };
 }
 
@@ -2117,7 +2301,7 @@ function canon(N, dev, i) { if (N.devs[dev].kind === 'pc') return 'nic'; const p
 function preset(N, dev, lines, save = true) { const d = N.devs[dev]; d.mode = 'priv'; for (const l of lines) { exec(N, dev, l); d.pend = null; } d.mode = 'user'; d.cur = null; d.seen = {}; if (save) d.startup = snap(d); }
 const R = id => newDev('router', id), SW = id => newDev('switch', id);
 
-return { ip2n, n2ip, parseIf, newDev, newPC, mkNet, preset, exec, prompt, helpFor, complete, ping, build, snap, saved, ifStatus, R, SW, CMD, match };
+return { ip2n, n2ip, parseIf, newDev, newPC, mkNet, preset, exec, prompt, helpFor, complete, ping, build, snap, saved, ifStatus, R, SW, CMD, match, fixup };
 })();
 if (typeof module !== 'undefined') module.exports = CiscoSim;
 
@@ -2138,6 +2322,11 @@ const vlanName = (N, id, v, name) => norm(dv(N, id).vlans && dv(N, id).vlans[v])
 const access = (N, id, n, v) => I(N, id, n).mode === 'access' && I(N, id, n).vlan === v;
 const trunk = (N, id, n) => I(N, id, n).mode === 'trunk';
 const allSaved = (N, ids) => ids.every(id => S.saved(dv(N, id)));
+const ospfNet = (N, id, a, w, area) => { const o = dv(N, id).ospf; return !!o && o.nets.some(n => n.a === ip(a) && n.w === ip(w) && n.area === area); };
+const rid = (N, id, r) => !!dv(N, id).ospf && dv(N, id).ospf.rid === ip(r);
+const rules = (N, id, n) => (dv(N, id).acls[n] || { rules: [] }).rules.filter(r => r.remark == null);
+const isHost = (a, x) => a && !a.any && a.w === 0 && a.ip === ip(x);
+const curlOk = (N, from, to) => S.ping(N, from, to, { proto: 'tcp', dport: 80 }).ok;
 
 const LABS = [
 {
@@ -2265,7 +2454,68 @@ const LABS = [
  ],
 },
 {
- id: 'libre', n: 8, niv: 0, titre: 'Bac à sable',
+ id: 'ospf', n: 8, niv: 4, titre: 'OSPF (une seule zone)',
+ intro: "Les adresses sont déjà en place. Remplace le routage manuel par OSPF dans la zone 0, puis donne l'accès à Internet à tout le réseau.",
+ topo: '   PC1 192.168.1.1 ─ [R1] ── 10.0.0.0/30 ── [R2] ── 10.0.0.4/30 ── [R3] ── 203.0.113.0/30 ── [FAI] Lo0 8.8.8.8\n              G0/0 .254  G0/1 .1          .2 G0/1  S0/0/0 .5    .6 S0/0/0  G0/1 .2           .1\n                                   R2 G0/0 : 192.168.2.254/24       R3 G0/0 : 192.168.3.254/24 ─ PC3 192.168.3.1\n   R3 a déjà une route par défaut vers le FAI (203.0.113.1).',
+ devs: ['R1', 'R2', 'R3', 'FAI', 'PC1', 'PC3'],
+ make: () => { const N = S.mkNet([S.R('R1'), S.R('R2'), S.R('R3'), S.R('FAI'), S.newPC('PC1', '192.168.1.1', '255.255.255.0', '192.168.1.254'), S.newPC('PC3', '192.168.3.1', '255.255.255.0', '192.168.3.254')], [['PC1', '', 'R1', 'g0/0'], ['R1', 'g0/1', 'R2', 'g0/1'], ['R2', 's0/0/0', 'R3', 's0/0/0'], ['PC3', '', 'R3', 'g0/0'], ['R3', 'g0/1', 'FAI', 'g0/1']]);
+  S.preset(N, 'R1', ['conf t', 'hostname R1', 'int g0/0', 'ip address 192.168.1.254 255.255.255.0', 'no shut', 'int g0/1', 'ip address 10.0.0.1 255.255.255.252', 'no shut', 'end']);
+  S.preset(N, 'R2', ['conf t', 'hostname R2', 'int g0/1', 'ip address 10.0.0.2 255.255.255.252', 'no shut', 'int s0/0/0', 'ip address 10.0.0.5 255.255.255.252', 'clock rate 64000', 'no shut', 'int g0/0', 'ip address 192.168.2.254 255.255.255.0', 'no shut', 'end']);
+  S.preset(N, 'R3', ['conf t', 'hostname R3', 'int s0/0/0', 'ip address 10.0.0.6 255.255.255.252', 'no shut', 'int g0/0', 'ip address 192.168.3.254 255.255.255.0', 'no shut', 'int g0/1', 'ip address 203.0.113.2 255.255.255.252', 'no shut', 'exit', 'ip route 0.0.0.0 0.0.0.0 203.0.113.1', 'end']);
+  S.preset(N, 'FAI', ['conf t', 'hostname FAI', 'int g0/1', 'ip address 203.0.113.1 255.255.255.252', 'no shut', 'int loopback0', 'ip address 8.8.8.8 255.255.255.255', 'exit', 'ip route 192.168.0.0 255.255.0.0 203.0.113.2', 'ip route 10.0.0.0 255.0.0.0 203.0.113.2', 'end']); return N; },
+ tasks: [
+  ['Sur R1 : OSPF processus 1, router-id 1.1.1.1, annonce ses deux réseaux dans la zone 0.', 'router ospf 1\nrouter-id 1.1.1.1\nnetwork 192.168.1.0 0.0.0.255 area 0\nnetwork 10.0.0.0 0.0.0.3 area 0\n(le 2e nombre est un masque inversé : 255.255.255.252 → 0.0.0.3)', N => rid(N, 'R1', '1.1.1.1') && ospfNet(N, 'R1', '192.168.1.0', '0.0.0.255', 0) && ospfNet(N, 'R1', '10.0.0.0', '0.0.0.3', 0)],
+  ['Sur R2 : router-id 2.2.2.2 et ses trois réseaux dans la zone 0.', 'router ospf 1\nrouter-id 2.2.2.2\nnetwork 10.0.0.0 0.0.0.3 area 0\nnetwork 10.0.0.4 0.0.0.3 area 0\nnetwork 192.168.2.0 0.0.0.255 area 0', N => rid(N, 'R2', '2.2.2.2') && ospfNet(N, 'R2', '10.0.0.0', '0.0.0.3', 0) && ospfNet(N, 'R2', '10.0.0.4', '0.0.0.3', 0) && ospfNet(N, 'R2', '192.168.2.0', '0.0.0.255', 0)],
+  ['Sur R3 : router-id 3.3.3.3, annonce 10.0.0.4/30 et 192.168.3.0/24 (pas le lien vers le FAI).', 'router ospf 1\nrouter-id 3.3.3.3\nnetwork 10.0.0.4 0.0.0.3 area 0\nnetwork 192.168.3.0 0.0.0.255 area 0', N => rid(N, 'R3', '3.3.3.3') && ospfNet(N, 'R3', '10.0.0.4', '0.0.0.3', 0) && ospfNet(N, 'R3', '192.168.3.0', '0.0.0.255', 0)],
+  ['Sur R2, vérifie qu\'il a deux voisins OSPF (état FULL).', 'do show ip ospf neighbor', N => !!dv(N, 'R2').seen['show ip ospf neighbor'] && (S.build(N).ospf.nb.R2 || []).length === 2],
+  ['Sur R1, vérifie que 192.168.3.0 est appris par OSPF (lettre O).', 'do show ip route', N => !!dv(N, 'R1').seen['show ip route'] && S.build(N).rt.R1.some(r => r.code === 'O' && r.net === ip('192.168.3.0'))],
+  ['Depuis PC1, pingue PC3.', 'Clique sur PC1 : ping 192.168.3.1', N => dv(N, 'PC1').seen['ping 192.168.3.1'] === true],
+  ['Sur R1 et R3, rends l\'interface LAN (G0/0) passive : pas de voisin OSPF à chercher côté PC.', 'router ospf 1\npassive-interface g0/0', N => dv(N, 'R1').ospf && dv(N, 'R1').ospf.passive.includes('GigabitEthernet0/0') && dv(N, 'R3').ospf && dv(N, 'R3').ospf.passive.includes('GigabitEthernet0/0')],
+  ['Sur R3, fais annoncer sa route par défaut par OSPF, puis pingue 8.8.8.8 depuis PC1.', 'Sur R3 : router ospf 1\ndefault-information originate\nPuis sur PC1 : ping 8.8.8.8\n(sur R1, la route apparaît en O*E2)', N => dv(N, 'R3').ospf && dv(N, 'R3').ospf.dio && dv(N, 'PC1').seen['ping 8.8.8.8'] === true],
+  ['Sauvegarde R1, R2 et R3.', 'copy run start  (sur les trois)', N => allSaved(N, ['R1', 'R2', 'R3'])],
+ ],
+},
+{
+ id: 'acl', n: 9, niv: 4, titre: 'Listes de contrôle d\'accès (ACL)',
+ intro: "PC2 ne doit plus joindre le serveur. PC1 doit garder le ping vers le serveur, mais plus son site web. Règle d'or : ACL standard près de la destination, ACL étendue près de la source.",
+ topo: '   PC1 192.168.1.10 ─ Fa0/1 ┐\n                           ├ [SW1] G0/1 ── G0/0 [ R1 ] G0/1 ── SRV 192.168.2.100 (serveur web)\n   PC2 192.168.1.20 ─ Fa0/2 ┘          192.168.1.254    192.168.2.254',
+ devs: ['R1', 'PC1', 'PC2', 'SRV'],
+ make: () => { const N = S.mkNet([S.R('R1'), S.SW('SW1'), S.newPC('PC1', '192.168.1.10', '255.255.255.0', '192.168.1.254'), S.newPC('PC2', '192.168.1.20', '255.255.255.0', '192.168.1.254'), S.newPC('SRV', '192.168.2.100', '255.255.255.0', '192.168.2.254', true)], [['PC1', '', 'SW1', 'f0/1'], ['PC2', '', 'SW1', 'f0/2'], ['SW1', 'g0/1', 'R1', 'g0/0'], ['SRV', '', 'R1', 'g0/1']]);
+  S.preset(N, 'R1', ['conf t', 'hostname R1', 'int g0/0', 'ip address 192.168.1.254 255.255.255.0', 'no shut', 'int g0/1', 'ip address 192.168.2.254 255.255.255.0', 'no shut', 'end']); S.preset(N, 'SW1', ['conf t', 'hostname SW1', 'end']); return N; },
+ tasks: [
+  ['Depuis PC2, pingue le serveur : pour l\'instant, tout passe.', 'Clique sur PC2 : ping 192.168.2.100', N => dv(N, 'PC2').seen['ping 192.168.2.100'] !== undefined],
+  ['Sur R1, crée l\'ACL standard 10 : refuse l\'hôte 192.168.1.20, autorise tout le reste.', 'access-list 10 deny host 192.168.1.20\naccess-list 10 permit any\n(sans « permit any », le deny implicite bloquerait tout le monde)', N => { const r = rules(N, 'R1', '10'); return r.length >= 2 && r[0].act === 'deny' && isHost(r[0].src, '192.168.1.20') && r.some(x => x.act === 'permit' && x.src.any); }],
+  ['Applique l\'ACL 10 en sortie de G0/1, près de la destination.', 'interface g0/1\nip access-group 10 out', N => I(N, 'R1', 'GigabitEthernet0/1').acout === '10'],
+  ['Vérifie : PC2 ne joint plus le serveur, PC1 oui.', 'Sur PC2 : ping 192.168.2.100 (échec)\nSur PC1 : ping 192.168.2.100 (réussite)', N => dv(N, 'PC2').seen['ping 192.168.2.100'] === false && pingOk(N, 'PC1', '192.168.2.100')],
+  ['Crée l\'ACL étendue 110 : refuse le web (TCP 80) de PC1 vers le serveur, autorise tout le reste.', 'access-list 110 deny tcp host 192.168.1.10 host 192.168.2.100 eq 80\naccess-list 110 permit ip any any', N => { const r = rules(N, 'R1', '110'); return r.some(x => x.act === 'deny' && x.proto === 'tcp' && isHost(x.src, '192.168.1.10') && isHost(x.dst, '192.168.2.100') && x.port === 80) && r.some(x => x.act === 'permit' && x.proto === 'ip' && x.src.any && x.dst.any); }],
+  ['Applique l\'ACL 110 en entrée de G0/0, près de la source.', 'interface g0/0\nip access-group 110 in', N => I(N, 'R1', 'GigabitEthernet0/0').acin === '110'],
+  ['Vérifie depuis PC1 : le site web est bloqué, le ping passe toujours.', 'Sur PC1 : curl http://192.168.2.100 (échec)\nping 192.168.2.100 (réussite)', N => dv(N, 'PC1').seen['curl 192.168.2.100'] === false && pingOk(N, 'PC1', '192.168.2.100') && !curlOk(N, 'PC1', '192.168.2.100')],
+  ['Affiche tes ACL.', 'do show access-lists', N => !!dv(N, 'R1').seen['show access-lists']],
+  ['Sauvegarde R1.', 'copy run start', N => S.saved(dv(N, 'R1'))],
+ ],
+},
+{
+ id: 'nat', n: 10, niv: 5, titre: 'NAT et PAT',
+ intro: "Le LAN utilise des adresses privées : le FAI ne sait pas lui répondre. Mets en place la PAT pour les postes, puis une NAT statique pour publier le serveur web sur Internet.",
+ topo: '   PC1 192.168.1.10  ─ Fa0/1 ┐\n   PC2 192.168.1.20  ─ Fa0/2 ├ [SW1] G0/1 ── G0/0 [ R1 ] G0/1 ──── G0/1 [ FAI ] G0/0 ── NET 198.51.100.10\n   SRV 192.168.1.100 ─ Fa0/3 ┘ (web)     inside .254   outside 203.0.113.2/24   .1   Lo0 8.8.8.8   .1  (PC sur Internet)\n   R1 a déjà une route par défaut vers le FAI. Le FAI ne connaît pas 192.168.1.0.',
+ devs: ['R1', 'PC1', 'NET', 'FAI'],
+ make: () => { const N = S.mkNet([S.R('R1'), S.R('FAI'), S.SW('SW1'), S.newPC('PC1', '192.168.1.10', '255.255.255.0', '192.168.1.254'), S.newPC('PC2', '192.168.1.20', '255.255.255.0', '192.168.1.254'), S.newPC('SRV', '192.168.1.100', '255.255.255.0', '192.168.1.254', true), S.newPC('NET', '198.51.100.10', '255.255.255.0', '198.51.100.1')], [['PC1', '', 'SW1', 'f0/1'], ['PC2', '', 'SW1', 'f0/2'], ['SRV', '', 'SW1', 'f0/3'], ['SW1', 'g0/1', 'R1', 'g0/0'], ['R1', 'g0/1', 'FAI', 'g0/1'], ['NET', '', 'FAI', 'g0/0']]);
+  S.preset(N, 'R1', ['conf t', 'hostname R1', 'int g0/0', 'ip address 192.168.1.254 255.255.255.0', 'no shut', 'int g0/1', 'ip address 203.0.113.2 255.255.255.0', 'no shut', 'exit', 'ip route 0.0.0.0 0.0.0.0 203.0.113.1', 'end']);
+  S.preset(N, 'FAI', ['conf t', 'hostname FAI', 'int g0/1', 'ip address 203.0.113.1 255.255.255.0', 'no shut', 'int g0/0', 'ip address 198.51.100.1 255.255.255.0', 'no shut', 'int loopback0', 'ip address 8.8.8.8 255.255.255.255', 'end']); S.preset(N, 'SW1', ['conf t', 'hostname SW1', 'end']); return N; },
+ tasks: [
+  ['Depuis PC1, pingue 8.8.8.8 : ça échoue. Le FAI ne sait pas répondre à une adresse privée.', 'Clique sur PC1 : ping 8.8.8.8', N => dv(N, 'PC1').seen['ping 8.8.8.8'] !== undefined],
+  ['Sur R1, déclare G0/0 côté réseau local (inside) et G0/1 côté Internet (outside).', 'interface g0/0\nip nat inside\ninterface g0/1\nip nat outside', N => I(N, 'R1', 'GigabitEthernet0/0').nat === 'inside' && I(N, 'R1', 'GigabitEthernet0/1').nat === 'outside'],
+  ['Crée l\'ACL 1 qui désigne les adresses à traduire : 192.168.1.0/24.', 'access-list 1 permit 192.168.1.0 0.0.0.255', N => rules(N, 'R1', '1').some(r => r.act === 'permit' && !r.src.any && r.src.ip === ip('192.168.1.0') && r.src.w === ip('0.0.0.255'))],
+  ['Active la PAT : tous les postes sortent avec l\'adresse de G0/1.', 'ip nat inside source list 1 interface g0/1 overload', N => dv(N, 'R1').nat.dyn.some(r => r.acl === '1' && r.ifn === 'GigabitEthernet0/1' && r.overload)],
+  ['Depuis PC1, pingue 8.8.8.8 : cette fois, ça marche.', 'Clique sur PC1 : ping 8.8.8.8', N => dv(N, 'PC1').seen['ping 8.8.8.8'] === true],
+  ['Sur R1, regarde la table des traductions.', 'show ip nat translations\n(Inside local = 192.168.1.10, Inside global = 203.0.113.2)', N => !!dv(N, 'R1').seen['show ip nat translations']],
+  ['Publie le serveur web : NAT statique de 192.168.1.100 vers 203.0.113.10.', 'ip nat inside source static 192.168.1.100 203.0.113.10', N => dv(N, 'R1').nat.statics.some(x => !x.proto && x.local === ip('192.168.1.100') && x.global === ip('203.0.113.10'))],
+  ['Depuis le PC sur Internet (NET), ouvre le site : curl http://203.0.113.10', 'Clique sur NET : curl http://203.0.113.10', N => dv(N, 'NET').seen['curl 203.0.113.10'] === true],
+  ['Sauvegarde R1.', 'copy run start', N => S.saved(dv(N, 'R1'))],
+ ],
+},
+{
+ id: 'libre', n: 11, niv: 0, titre: 'Bac à sable',
  intro: "Aucune consigne : entraîne-toi librement. Tout est vierge.",
  topo: '   PC1 192.168.1.1/24 (passerelle .254) ─ Fa0/1 [ SW1 ] G0/1 ─ G0/0 [ R1 ] G0/1 ─ G0/1 [ R2 ] G0/0 ─ PC2 192.168.2.1/24 (passerelle .254)',
  devs: ['R1', 'R2', 'SW1', 'PC1', 'PC2'],
@@ -2301,7 +2551,7 @@ if (typeof document !== 'undefined') (function () {
     lab = LABS.find(l => l.id === id) || LABS[0]; ST.cur = lab.id;
     const s = !fresh && ST.labs[lab.id] && ST.labs[lab.id].net;
     N = null; if (s) { try { N = JSON.parse(s); } catch (e) { N = null; } }
-    if (!N) N = lab.make();
+    if (!N) N = lab.make(); else { try { S.fixup(N); } catch (e) { N = lab.make(); } }
     for (const d of Object.values(N.devs)) d.pend = null;
     outs = {}; hpos = {}; showAll = false; armReset = false;
     dev = lab.devs[0]; renderLabs(); renderBrief(); renderDevs(); showDev(dev); check(); save();
