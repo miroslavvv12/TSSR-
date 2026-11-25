@@ -1,0 +1,2594 @@
+[
+ {
+  "t": "Active Directory et GPO",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire)",
+  "q": "Qu'est-ce qu'Active Directory ?",
+  "o": [
+   "L'annuaire de Microsoft qui centralise les comptes, les ordinateurs et les droits d'un domaine",
+   "Un antivirus intégré à Windows",
+   "Le pare-feu de Windows Server",
+   "Un logiciel de sauvegarde"
+  ],
+  "e": "AD DS (Active Directory Domain Services) stocke les objets du domaine (utilisateurs, groupes, ordinateurs) et gère l'authentification.",
+  "x": [
+   "L'antivirus de Windows est Microsoft Defender.",
+   "Le pare-feu est un autre composant.",
+   "La sauvegarde Windows Server est « Windows Server Backup »."
+  ],
+  "n": 0
+ },
+ {
+  "t": "Active Directory et GPO",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire)",
+  "q": "Comment appelle-t-on un serveur qui héberge Active Directory ?",
+  "o": [
+   "Un contrôleur de domaine",
+   "Un serveur DHCP",
+   "Une passerelle",
+   "Un serveur de fichiers"
+  ],
+  "e": "Le contrôleur de domaine (DC) contient une copie de l'annuaire et authentifie les utilisateurs.",
+  "x": [
+   "Le DHCP distribue des adresses IP.",
+   "Une passerelle route vers d'autres réseaux.",
+   "Un serveur de fichiers partage des dossiers."
+  ],
+  "n": 0
+ },
+ {
+  "t": "Active Directory et GPO",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire)",
+  "q": "Quel protocole d'authentification Active Directory utilise-t-il par défaut ?",
+  "o": [
+   "Kerberos",
+   "FTP",
+   "SNMP",
+   "SMTP"
+  ],
+  "e": "Kerberos fonctionne par tickets ; NTLM reste en secours. Kerberos exige que les horloges soient synchronisées (5 min d'écart maximum par défaut).",
+  "x": [
+   "FTP transfère des fichiers.",
+   "SNMP sert à la supervision.",
+   "SMTP envoie des mails."
+  ],
+  "n": 1
+ },
+ {
+  "t": "Active Directory et GPO",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire)",
+  "q": "À quoi sert une unité d'organisation (OU) ?",
+  "o": [
+   "À ranger les objets de l'annuaire pour leur appliquer des GPO et déléguer leur gestion",
+   "À donner des droits sur un dossier partagé",
+   "À regrouper des utilisateurs pour un droit NTFS",
+   "À créer un nouveau domaine"
+  ],
+  "e": "On lie les GPO aux OU et on peut déléguer l'administration d'une OU à quelqu'un.",
+  "x": [
+   "Les droits sur les dossiers se donnent à des groupes, pas à des OU.",
+   "C'est le rôle d'un groupe de sécurité.",
+   "Une OU vit à l'intérieur d'un domaine existant."
+  ],
+  "n": 1
+ },
+ {
+  "t": "Active Directory et GPO",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire)",
+  "q": "Quel service est indispensable pour qu'un poste trouve son contrôleur de domaine ?",
+  "o": [
+   "DNS",
+   "DHCP",
+   "WINS",
+   "FTP"
+  ],
+  "e": "Les postes cherchent le DC grâce aux enregistrements SRV dans le DNS (_ldap._tcp.dc._msdcs.<domaine>). Un client doit donc avoir le DC comme serveur DNS.",
+  "x": [
+   "Le DHCP donne une adresse, il ne localise pas le DC.",
+   "WINS est un ancien service de noms NetBIOS, il n'est plus nécessaire.",
+   "FTP ne joue aucun rôle dans AD."
+  ],
+  "n": 1
+ },
+ {
+  "t": "Active Directory et GPO",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire)",
+  "q": "Quelle est la bonne méthode « AGDLP » pour donner des droits ?",
+  "o": [
+   "Comptes → groupes globaux → groupes de domaine local → permissions",
+   "Comptes → permissions directement",
+   "Groupes de domaine local → comptes → permissions",
+   "Permissions → OU → comptes"
+  ],
+  "e": "On met les utilisateurs dans des groupes globaux (par métier), ces groupes dans des groupes de domaine local (par ressource), et on donne les droits aux groupes de domaine local.",
+  "x": [
+   "Donner des droits à chaque compte devient vite ingérable.",
+   "L'ordre est inversé.",
+   "On ne donne pas de permissions NTFS à une OU."
+  ],
+  "n": 2
+ },
+ {
+  "t": "Active Directory et GPO",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire)",
+  "q": "Dans quel ordre les GPO s'appliquent-elles ?",
+  "o": [
+   "Local, Site, Domaine, OU (LSDOU) : la dernière appliquée l'emporte",
+   "OU, Domaine, Site, Local",
+   "Domaine seulement",
+   "Dans l'ordre alphabétique"
+  ],
+  "e": "En cas de conflit, la GPO la plus proche de l'objet (l'OU) gagne, sauf blocage d'héritage ou lien « appliqué » (enforced).",
+  "x": [
+   "C'est l'ordre inverse.",
+   "Les GPO peuvent être liées à un site, au domaine ou à une OU.",
+   "Le nom ne compte pas."
+  ],
+  "n": 2
+ },
+ {
+  "t": "Active Directory et GPO",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire)",
+  "q": "Quelle commande force l'application immédiate des GPO sur un poste ?",
+  "o": [
+   "gpupdate /force",
+   "gpresult /r",
+   "ipconfig /renew",
+   "dcdiag"
+  ],
+  "e": "gpupdate /force réapplique toutes les stratégies. gpresult /r affiche celles qui sont appliquées.",
+  "x": [
+   "gpresult affiche le résultat, il n'applique rien.",
+   "ipconfig /renew renouvelle l'adresse IP.",
+   "dcdiag teste l'état d'un contrôleur de domaine."
+  ],
+  "n": 2
+ },
+ {
+  "t": "Active Directory et GPO",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire)",
+  "q": "Une GPO contient deux parties. Lesquelles ?",
+  "o": [
+   "Configuration ordinateur et Configuration utilisateur",
+   "Lecture et Écriture",
+   "Locale et Distante",
+   "Serveur et Client"
+  ],
+  "e": "La partie ordinateur s'applique au démarrage, la partie utilisateur à l'ouverture de session.",
+  "x": [
+   "Ce sont des droits, pas des parties de GPO.",
+   "Ça n'existe pas.",
+   "Ça n'existe pas."
+  ],
+  "n": 2
+ },
+ {
+  "t": "Active Directory et GPO",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire)",
+  "q": "Quelle est la différence entre une forêt, une arborescence et un domaine ?",
+  "o": [
+   "La forêt contient une ou plusieurs arborescences, chacune faite de domaines qui partagent un espace de noms",
+   "Le domaine contient la forêt",
+   "Ce sont trois noms pour la même chose",
+   "L'arborescence est un dossier partagé"
+  ],
+  "e": "Exemple : la forêt tssr.lan peut contenir l'arborescence tssr.lan (avec paris.tssr.lan) et une autre, autre.com.",
+  "x": [
+   "C'est l'inverse.",
+   "Ce sont trois niveaux différents.",
+   "Rien à voir avec le partage."
+  ],
+  "n": 3
+ },
+ {
+  "t": "Active Directory et GPO",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire)",
+  "q": "Quelle est la portée d'un groupe « global » ?",
+  "o": [
+   "Il contient des membres de son domaine et peut recevoir des droits dans toute la forêt",
+   "Il contient des membres de toute la forêt et n'a de droits que localement",
+   "Il est limité à un seul ordinateur",
+   "Il ne contient que des ordinateurs"
+  ],
+  "e": "Global : membres du même domaine, utilisable partout. Domaine local : membres de partout, utilisable seulement dans son domaine. Universel : partout et partout.",
+  "x": [
+   "C'est la définition du groupe de domaine local.",
+   "C'est un groupe local de machine.",
+   "Un groupe global peut contenir des utilisateurs, des ordinateurs et d'autres groupes globaux."
+  ],
+  "n": 3
+ },
+ {
+  "t": "Active Directory et GPO",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire)",
+  "q": "Un utilisateur s'est trompé trop de fois de mot de passe. Où le débloquer ?",
+  "o": [
+   "Dans les propriétés du compte (onglet Compte) dans « Utilisateurs et ordinateurs Active Directory », ou avec Unlock-ADAccount",
+   "En redémarrant le contrôleur de domaine",
+   "Avec gpupdate /force",
+   "En supprimant puis recréant le compte"
+  ],
+  "e": "Le verrouillage est réglé par la stratégie de verrouillage des comptes (GPO du domaine).",
+  "x": [
+   "Redémarrer le DC ne débloque pas un compte et coupe le service.",
+   "gpupdate n'agit pas sur l'état d'un compte.",
+   "Recréer le compte change son SID et fait perdre ses droits et ses groupes."
+  ],
+  "n": 3
+ },
+ {
+  "t": "Active Directory et GPO",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire)",
+  "q": "Que sont les rôles FSMO ?",
+  "o": [
+   "Cinq rôles uniques tenus par un seul contrôleur de domaine à la fois, comme le maître RID ou l'émulateur PDC",
+   "Les cinq types de GPO",
+   "Les comptes administrateurs par défaut",
+   "Les ports réseau d'AD"
+  ],
+  "e": "2 rôles par forêt (maître de schéma, maître d'attribution des noms de domaine) et 3 par domaine (RID, PDC, infrastructure). L'émulateur PDC sert aussi de référence pour l'heure.",
+  "x": [
+   "Il n'y a pas « cinq types » de GPO.",
+   "Ce ne sont pas des comptes.",
+   "Ce ne sont pas des ports."
+  ],
+  "n": 4
+ },
+ {
+  "t": "Active Directory et GPO",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire)",
+  "q": "Pourquoi installer au moins deux contrôleurs de domaine ?",
+  "o": [
+   "Pour la tolérance de panne : l'annuaire est répliqué, si un DC tombe l'autre authentifie",
+   "Pour doubler l'espace disque",
+   "Parce qu'un DC ne peut avoir qu'un seul utilisateur",
+   "Pour avoir deux domaines"
+  ],
+  "e": "Sans DC disponible, plus personne ne peut ouvrir de session réseau ni appliquer de GPO.",
+  "x": [
+   "La réplication copie l'annuaire, elle n'additionne pas les disques.",
+   "Un DC gère des milliers de comptes.",
+   "Les deux DC servent le même domaine."
+  ],
+  "n": 4
+ },
+ {
+  "t": "Active Directory et GPO",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire)",
+  "q": "Une GPO liée à une OU ne s'applique pas aux utilisateurs qui s'y trouvent. Quelle cause est la plus probable ?",
+  "o": [
+   "Les paramètres sont dans « Configuration ordinateur » alors que l'OU ne contient que des comptes utilisateurs",
+   "La GPO a un nom trop long",
+   "Le DHCP est arrêté",
+   "Les utilisateurs n'ont pas de mot de passe"
+  ],
+  "e": "La partie ordinateur ne s'applique qu'aux objets ordinateurs de l'OU. Il faut déplacer les ordinateurs ou mettre les paramètres côté utilisateur (ou utiliser le traitement en boucle de rappel).",
+  "x": [
+   "Le nom n'a aucune importance.",
+   "Le DHCP n'applique pas les GPO.",
+   "Ça n'a pas de lien."
+  ],
+  "n": 4
+ },
+ {
+  "t": "Active Directory et GPO",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire)",
+  "q": "Un poste affiche « La relation d'approbation entre cette station de travail et le domaine principal a échoué ». Que faire ?",
+  "o": [
+   "Réinitialiser le compte ordinateur, par exemple avec Test-ComputerSecureChannel -Repair, ou sortir puis remettre le poste dans le domaine",
+   "Réinstaller le contrôleur de domaine",
+   "Changer l'adresse MAC du poste",
+   "Désactiver le pare-feu du DC"
+  ],
+  "e": "Le mot de passe du compte ordinateur stocké sur le poste ne correspond plus à celui de l'annuaire (restauration d'un vieil instantané, par exemple).",
+  "x": [
+   "Le problème vient du poste, pas du DC.",
+   "L'adresse MAC n'est pas en cause.",
+   "Ce n'est pas un problème de pare-feu."
+  ],
+  "n": 5
+ },
+ {
+  "t": "Active Directory et GPO",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire)",
+  "q": "Pourquoi l'écart d'horloge entre un poste et le DC peut-il bloquer l'ouverture de session ?",
+  "o": [
+   "Kerberos refuse les tickets si l'écart dépasse 5 minutes par défaut",
+   "Parce que les GPO ont une heure d'expiration",
+   "Parce que le DHCP donne l'heure",
+   "Parce que NTFS date les fichiers"
+  ],
+  "e": "Les postes se synchronisent sur le DC, et le DC émulateur PDC sur une source NTP fiable.",
+  "x": [
+   "Les GPO n'expirent pas.",
+   "Le DHCP peut indiquer un serveur NTP, mais ce n'est pas la cause.",
+   "Les dates des fichiers n'ont rien à voir."
+  ],
+  "n": 5
+ },
+ {
+  "t": "Windows Server et PowerShell",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire)",
+  "q": "Quel outil graphique sert à ajouter un rôle à Windows Server ?",
+  "o": [
+   "Le Gestionnaire de serveur",
+   "Le Panneau de configuration",
+   "Le Gestionnaire des tâches",
+   "Paint"
+  ],
+  "e": "Gestionnaire de serveur → Gérer → Ajouter des rôles et fonctionnalités. En PowerShell : Install-WindowsFeature.",
+  "x": [
+   "Le Panneau de configuration ne sert pas à installer des rôles.",
+   "Il affiche les processus.",
+   "Hors sujet."
+  ],
+  "n": 0
+ },
+ {
+  "t": "Windows Server et PowerShell",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire)",
+  "q": "Qu'est-ce qu'une cmdlet PowerShell ?",
+  "o": [
+   "Une commande de la forme Verbe-Nom, comme Get-Service",
+   "Un fichier batch",
+   "Un service Windows",
+   "Un pilote réseau"
+  ],
+  "e": "Les cmdlets suivent toujours la forme Verbe-Nom : Get-, Set-, New-, Remove-, Start-, Stop-…",
+  "x": [
+   "Un fichier batch est un script .bat.",
+   "Un service est un programme qui tourne en arrière-plan.",
+   "Rien à voir."
+  ],
+  "n": 0
+ },
+ {
+  "t": "Windows Server et PowerShell",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire)",
+  "q": "Quelle cmdlet donne l'aide d'une commande ?",
+  "o": [
+   "Get-Help",
+   "Get-Command",
+   "Show-Info",
+   "Help-Me"
+  ],
+  "e": "Get-Help Get-Service -Examples montre des exemples. Get-Command liste les commandes disponibles.",
+  "x": [
+   "Get-Command liste les commandes, sans les expliquer.",
+   "Elle n'existe pas.",
+   "Elle n'existe pas."
+  ],
+  "n": 1
+ },
+ {
+  "t": "Windows Server et PowerShell",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire)",
+  "q": "Quelle commande PowerShell affiche la configuration IP ?",
+  "o": [
+   "Get-NetIPConfiguration (ou ipconfig)",
+   "Get-IP",
+   "Show-Network",
+   "Get-DnsServer"
+  ],
+  "e": "Get-NetIPAddress liste les adresses, Get-NetIPConfiguration donne adresse, passerelle et DNS.",
+  "x": [
+   "Elle n'existe pas.",
+   "Elle n'existe pas.",
+   "Elle concerne le rôle serveur DNS."
+  ],
+  "n": 1
+ },
+ {
+  "t": "Windows Server et PowerShell",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire)",
+  "q": "Quelle est la version « sans interface graphique » de Windows Server ?",
+  "o": [
+   "Server Core",
+   "Server Lite",
+   "Windows PE",
+   "Server Nano Desktop"
+  ],
+  "e": "Server Core : moins de mises à jour, moins de surface d'attaque, administration à distance ou en PowerShell.",
+  "x": [
+   "Ça n'existe pas.",
+   "Windows PE est un environnement de démarrage pour l'installation ou le dépannage.",
+   "Ça n'existe pas."
+  ],
+  "n": 1
+ },
+ {
+  "t": "Windows Server et PowerShell",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire)",
+  "q": "Que fait le symbole | (pipe) en PowerShell ?",
+  "o": [
+   "Il passe les objets produits par une commande à la suivante",
+   "Il crée un fichier",
+   "Il commente la ligne",
+   "Il lance la commande en administrateur"
+  ],
+  "e": "Exemple : Get-Service | Where-Object Status -eq 'Running'. PowerShell passe des objets, pas du simple texte.",
+  "x": [
+   "Pour écrire dans un fichier : > ou Out-File.",
+   "Le commentaire, c'est #.",
+   "Ça n'a rien à voir."
+  ],
+  "n": 2
+ },
+ {
+  "t": "Windows Server et PowerShell",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire)",
+  "q": "Quelle commande filtre les services arrêtés ?",
+  "o": [
+   "Get-Service | Where-Object Status -eq 'Stopped'",
+   "Get-Service -Stopped",
+   "Get-Service | Sort Stopped",
+   "Stop-Service *"
+  ],
+  "e": "Where-Object (alias « ? ») garde les objets qui répondent à la condition.",
+  "x": [
+   "Ce paramètre n'existe pas.",
+   "Sort-Object trie, il ne filtre pas.",
+   "Cette commande arrêterait tous les services !"
+  ],
+  "n": 2
+ },
+ {
+  "t": "Windows Server et PowerShell",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire)",
+  "q": "Quelle commande installe le rôle DHCP en PowerShell ?",
+  "o": [
+   "Install-WindowsFeature DHCP -IncludeManagementTools",
+   "Add-DHCP",
+   "New-Role DHCP",
+   "Enable-DHCP"
+  ],
+  "e": "-IncludeManagementTools ajoute la console de gestion. Get-WindowsFeature liste les rôles disponibles.",
+  "x": [
+   "Elle n'existe pas.",
+   "Elle n'existe pas.",
+   "Elle n'existe pas."
+  ],
+  "n": 2
+ },
+ {
+  "t": "Windows Server et PowerShell",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire)",
+  "q": "Pourquoi un script .ps1 refuse-t-il de se lancer avec « l'exécution de scripts est désactivée » ?",
+  "o": [
+   "La stratégie d'exécution (ExecutionPolicy) l'interdit ; on peut la régler avec Set-ExecutionPolicy RemoteSigned",
+   "Le fichier est trop gros",
+   "PowerShell n'est pas installé",
+   "Il faut le renommer en .bat"
+  ],
+  "e": "Par défaut, Windows client est en Restricted. RemoteSigned autorise les scripts locaux et exige une signature pour ceux téléchargés.",
+  "x": [
+   "La taille n'y est pour rien.",
+   "PowerShell est bien là, puisqu'il affiche ce message.",
+   "Un .bat n'interprète pas le PowerShell."
+  ],
+  "n": 3
+ },
+ {
+  "t": "Windows Server et PowerShell",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire)",
+  "q": "Quelle commande administre un serveur à distance en PowerShell ?",
+  "o": [
+   "Enter-PSSession -ComputerName SRV01",
+   "Connect-Server SRV01",
+   "ssh-ps SRV01",
+   "Remote-Desktop SRV01"
+  ],
+  "e": "PowerShell Remoting passe par WinRM (port 5985 en HTTP, 5986 en HTTPS). Invoke-Command lance une commande sur plusieurs machines.",
+  "x": [
+   "Elle n'existe pas.",
+   "Elle n'existe pas.",
+   "Elle n'existe pas."
+  ],
+  "n": 3
+ },
+ {
+  "t": "Windows Server et PowerShell",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire)",
+  "q": "Quel journal Windows consulter pour un échec d'ouverture de session ?",
+  "o": [
+   "Le journal Sécurité dans l'Observateur d'événements (événement 4625)",
+   "Le journal Application",
+   "Le journal Installation",
+   "Le fichier hosts"
+  ],
+  "e": "4624 = ouverture de session réussie, 4625 = échec, 4740 = compte verrouillé.",
+  "x": [
+   "Le journal Application concerne les programmes.",
+   "Il concerne les installations.",
+   "Le fichier hosts est un fichier de noms."
+  ],
+  "n": 3
+ },
+ {
+  "t": "Windows Server et PowerShell",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire)",
+  "q": "À quoi sert WSUS ?",
+  "o": [
+   "À centraliser et approuver les mises à jour Windows pour les postes du réseau",
+   "À sauvegarder les serveurs",
+   "À distribuer des adresses IP",
+   "À faire des sauvegardes de l'AD"
+  ],
+  "e": "Les postes sont dirigés vers WSUS par GPO. On valide les mises à jour avant de les déployer.",
+  "x": [
+   "C'est le rôle d'un outil de sauvegarde.",
+   "C'est le rôle du DHCP.",
+   "Ce n'est pas son rôle."
+  ],
+  "n": 3
+ },
+ {
+  "t": "Windows Server et PowerShell",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire)",
+  "q": "Quelle commande crée 50 utilisateurs depuis un fichier CSV ?",
+  "o": [
+   "Import-Csv users.csv | ForEach-Object { New-ADUser -Name $_.Nom -SamAccountName $_.Login ... }",
+   "New-ADUser users.csv",
+   "Get-ADUser -File users.csv",
+   "Copy-Item users.csv AD:"
+  ],
+  "e": "Import-Csv transforme chaque ligne en objet ; $_ désigne la ligne en cours dans la boucle.",
+  "x": [
+   "New-ADUser ne lit pas de CSV seule.",
+   "Get-ADUser lit l'annuaire, il ne crée rien.",
+   "Ça n'a pas de sens."
+  ],
+  "n": 4
+ },
+ {
+  "t": "Windows Server et PowerShell",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire)",
+  "q": "Que fait Get-ADUser -Filter * -Properties LastLogonDate | Where LastLogonDate -lt (Get-Date).AddDays(-90) ?",
+  "o": [
+   "Liste les comptes qui ne se sont pas connectés depuis 90 jours",
+   "Supprime les comptes de plus de 90 jours",
+   "Change le mot de passe de tous les comptes",
+   "Affiche les comptes créés aujourd'hui"
+  ],
+  "e": "Utile pour repérer les comptes inactifs à désactiver : c'est une bonne pratique de sécurité.",
+  "x": [
+   "Get- ne fait qu'afficher, il ne supprime rien.",
+   "Aucun Set- ici.",
+   "-lt veut dire « plus petit que » : plus ancien que 90 jours."
+  ],
+  "n": 4
+ },
+ {
+  "t": "Windows Server et PowerShell",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire)",
+  "q": "Pourquoi préfère-t-on « -WhatIf » avant de lancer un script qui modifie l'AD ?",
+  "o": [
+   "Il affiche ce que la commande ferait sans rien modifier",
+   "Il rend la commande plus rapide",
+   "Il sauvegarde l'AD",
+   "Il demande le mot de passe administrateur"
+  ],
+  "e": "-WhatIf simule, -Confirm demande une confirmation pour chaque objet.",
+  "x": [
+   "Il ne change pas la vitesse.",
+   "Ce n'est pas une sauvegarde.",
+   "Il ne demande pas d'identifiants."
+  ],
+  "n": 5
+ },
+ {
+  "t": "Windows Server et PowerShell",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire)",
+  "q": "Un serveur de fichiers doit limiter chaque utilisateur à 2 Go et bloquer les .mp3. Quel rôle ?",
+  "o": [
+   "Le Gestionnaire de ressources du serveur de fichiers (FSRM) : quotas et filtrage de fichiers",
+   "Le rôle DHCP",
+   "Les permissions de partage",
+   "Le pare-feu Windows"
+  ],
+  "e": "FSRM gère quotas, filtrage par extension et rapports de stockage.",
+  "x": [
+   "Le DHCP n'a rien à voir.",
+   "Le partage ne limite ni la taille ni les extensions.",
+   "Le pare-feu filtre le trafic réseau, pas les fichiers."
+  ],
+  "n": 5
+ },
+ {
+  "t": "Linux",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire)",
+  "q": "Quelle commande affiche le dossier courant ?",
+  "o": [
+   "pwd",
+   "ls",
+   "cd",
+   "dir /p"
+  ],
+  "e": "pwd = print working directory.",
+  "x": [
+   "ls liste le contenu.",
+   "cd change de dossier.",
+   "C'est une syntaxe Windows."
+  ],
+  "n": 0
+ },
+ {
+  "t": "Linux",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire)",
+  "q": "Quel compte a tous les droits sous Linux ?",
+  "o": [
+   "root",
+   "admin",
+   "system",
+   "superuser"
+  ],
+  "e": "root a l'UID 0. On évite de travailler en root : on utilise sudo pour une commande précise.",
+  "x": [
+   "Ce n'est pas le nom par défaut.",
+   "C'est un compte Windows.",
+   "Ce n'est pas un nom de compte Linux."
+  ],
+  "n": 0
+ },
+ {
+  "t": "Linux",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire)",
+  "q": "Que signifie la permission « rwxr-x--- » ?",
+  "o": [
+   "Propriétaire : tout ; groupe : lire et exécuter ; autres : rien",
+   "Tout le monde a tous les droits",
+   "Propriétaire : lire seulement",
+   "Groupe : écriture seulement"
+  ],
+  "e": "En octal : 750. r = 4, w = 2, x = 1.",
+  "x": [
+   "Ce serait rwxrwxrwx (777).",
+   "Le propriétaire a rwx.",
+   "Le groupe a r-x."
+  ],
+  "n": 1
+ },
+ {
+  "t": "Linux",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire)",
+  "q": "Quelle commande donne les droits 640 à un fichier ?",
+  "o": [
+   "chmod 640 fichier",
+   "chown 640 fichier",
+   "chgrp 640 fichier",
+   "umask 640 fichier"
+  ],
+  "e": "640 : propriétaire rw-, groupe r--, autres ---.",
+  "x": [
+   "chown change le propriétaire.",
+   "chgrp change le groupe.",
+   "umask règle les droits par défaut des nouveaux fichiers."
+  ],
+  "n": 1
+ },
+ {
+  "t": "Linux",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire)",
+  "q": "Où sont configurés les comptes utilisateurs locaux ?",
+  "o": [
+   "Dans /etc/passwd (et les mots de passe chiffrés dans /etc/shadow)",
+   "Dans /home/users.conf",
+   "Dans /var/log/users",
+   "Dans /boot/passwd"
+  ],
+  "e": "/etc/group liste les groupes.",
+  "x": [
+   "Ce fichier n'existe pas.",
+   "/var/log contient les journaux.",
+   "/boot contient le noyau."
+  ],
+  "n": 1
+ },
+ {
+  "t": "Linux",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire)",
+  "q": "Quelle commande installe un paquet sur Debian ou Ubuntu ?",
+  "o": [
+   "apt install nom",
+   "yum install nom",
+   "pkg add nom",
+   "install.exe nom"
+  ],
+  "e": "Avant : apt update pour rafraîchir la liste. Sur Red Hat, Rocky ou Fedora : dnf (ex-yum).",
+  "x": [
+   "yum (ou dnf) est pour Red Hat.",
+   "pkg est pour FreeBSD.",
+   "Ça n'existe pas sous Linux."
+  ],
+  "n": 2
+ },
+ {
+  "t": "Linux",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire)",
+  "q": "Quelle commande redémarre le service Apache sur une distribution récente ?",
+  "o": [
+   "systemctl restart apache2",
+   "service-restart apache2",
+   "restart apache2.exe",
+   "apt restart apache2"
+  ],
+  "e": "systemctl status, start, stop, enable (démarrage automatique) : c'est systemd.",
+  "x": [
+   "Ça n'existe pas.",
+   "Ça n'existe pas.",
+   "apt gère les paquets, pas les services."
+  ],
+  "n": 2
+ },
+ {
+  "t": "Linux",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire)",
+  "q": "Quelle commande affiche la fin d'un journal en continu ?",
+  "o": [
+   "tail -f /var/log/syslog",
+   "cat -end /var/log/syslog",
+   "head -f /var/log/syslog",
+   "less -live /var/log/syslog"
+  ],
+  "e": "Avec systemd : journalctl -f, ou journalctl -u ssh pour un service.",
+  "x": [
+   "Cette option n'existe pas.",
+   "head affiche le début.",
+   "Cette option n'existe pas."
+  ],
+  "n": 2
+ },
+ {
+  "t": "Linux",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire)",
+  "q": "Quel fichier configure l'adresse IP sur Debian (méthode classique) ?",
+  "o": [
+   "/etc/network/interfaces",
+   "/etc/ip.conf",
+   "/etc/hosts",
+   "/etc/resolv.ip"
+  ],
+  "e": "Sur Ubuntu récent : Netplan (/etc/netplan/*.yaml). Le DNS client est dans /etc/resolv.conf.",
+  "x": [
+   "Il n'existe pas.",
+   "/etc/hosts associe des noms à des adresses.",
+   "Il n'existe pas."
+  ],
+  "n": 2
+ },
+ {
+  "t": "Linux",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire)",
+  "q": "Quelle commande affiche les ports en écoute ?",
+  "o": [
+   "ss -tulnp",
+   "ls -ports",
+   "ping -l",
+   "ifconfig -p"
+  ],
+  "e": "t = TCP, u = UDP, l = en écoute, n = numérique, p = processus. L'ancienne commande est netstat -tulnp.",
+  "x": [
+   "Ça n'existe pas.",
+   "ping teste une adresse.",
+   "Ça n'existe pas."
+  ],
+  "n": 3
+ },
+ {
+  "t": "Linux",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire)",
+  "q": "Comment rechercher les lignes contenant « error » dans un fichier ?",
+  "o": [
+   "grep -i error fichier",
+   "find error fichier",
+   "cut error fichier",
+   "sort error fichier"
+  ],
+  "e": "-i ignore la casse, -r cherche dans un dossier, -v inverse la recherche.",
+  "x": [
+   "find cherche des fichiers, pas du texte.",
+   "cut découpe des colonnes.",
+   "sort trie."
+  ],
+  "n": 3
+ },
+ {
+  "t": "Linux",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire)",
+  "q": "À quoi sert le fichier /etc/fstab ?",
+  "o": [
+   "À monter automatiquement les partitions au démarrage",
+   "À configurer le pare-feu",
+   "À lister les utilisateurs",
+   "À planifier des tâches"
+  ],
+  "e": "Une erreur dans fstab peut empêcher le démarrage : on teste avec mount -a avant de redémarrer.",
+  "x": [
+   "Le pare-feu : nftables, iptables, ufw.",
+   "C'est /etc/passwd.",
+   "C'est crontab."
+  ],
+  "n": 3
+ },
+ {
+  "t": "Linux",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire)",
+  "q": "Que fait « 0 2 * * 1 /root/save.sh » dans une crontab ?",
+  "o": [
+   "Lance save.sh tous les lundis à 2 h 00",
+   "Lance save.sh toutes les 2 minutes",
+   "Lance save.sh le 2 de chaque mois",
+   "Lance save.sh deux fois par jour"
+  ],
+  "e": "Ordre des champs : minute, heure, jour du mois, mois, jour de la semaine (0 ou 7 = dimanche, 1 = lundi).",
+  "x": [
+   "Ce serait */2 * * * *.",
+   "Ce serait 0 0 2 * *.",
+   "Ce serait 0 */12 * * *."
+  ],
+  "n": 4
+ },
+ {
+  "t": "Linux",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire)",
+  "q": "Pour plus de sécurité, quelle ligne mettre dans /etc/ssh/sshd_config ?",
+  "o": [
+   "PermitRootLogin no",
+   "PermitRootLogin yes",
+   "PasswordAuthentication always",
+   "Port 23"
+  ],
+  "e": "On se connecte avec un compte normal, puis sudo. Encore mieux : l'authentification par clé (ssh-keygen, ssh-copy-id).",
+  "x": [
+   "C'est l'inverse.",
+   "Cette valeur n'existe pas, et il vaut mieux préférer les clés.",
+   "23 est le port de Telnet."
+  ],
+  "n": 4
+ },
+ {
+  "t": "Linux",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire)",
+  "q": "Un disque est plein mais du ne trouve pas les fichiers. Quelle est la cause la plus probable ?",
+  "o": [
+   "Un fichier supprimé est encore ouvert par un processus (à voir avec lsof +L1)",
+   "Le disque est en panne",
+   "La table de partitions est corrompue",
+   "Le fichier /etc/fstab est vide"
+  ],
+  "e": "L'espace n'est libéré qu'à la fermeture du fichier. Il faut redémarrer le service qui le tient (souvent un journal).",
+  "x": [
+   "Un disque en panne ne se remplit pas.",
+   "Ce n'est pas lié.",
+   "Le disque ne serait pas monté, mais il ne serait pas plein."
+  ],
+  "n": 5
+ },
+ {
+  "t": "Linux",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire)",
+  "q": "Quelle est la différence entre un lien physique (hard link) et un lien symbolique ?",
+  "o": [
+   "Le lien physique pointe vers le même inode, le symbolique vers un chemin et casse si la cible est supprimée",
+   "Aucune différence",
+   "Le lien physique fonctionne entre deux machines",
+   "Le lien symbolique copie le fichier"
+  ],
+  "e": "ln cible lien crée un lien physique ; ln -s cible lien crée un lien symbolique.",
+  "x": [
+   "Il y en a une, voir l'explication.",
+   "Ni l'un ni l'autre ne traverse le réseau.",
+   "Aucun des deux ne copie le fichier."
+  ],
+  "n": 5
+ },
+ {
+  "t": "Scripts (Bash, PowerShell)",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire)",
+  "q": "Quelle est la première ligne d'un script Bash ?",
+  "o": [
+   "#!/bin/bash",
+   "@echo off",
+   "<?php",
+   "// bash"
+  ],
+  "e": "Le shebang indique l'interpréteur. Puis chmod +x script.sh pour pouvoir le lancer.",
+  "x": [
+   "C'est un script batch Windows.",
+   "C'est du PHP.",
+   "Ce n'est pas un commentaire Bash."
+  ],
+  "n": 0
+ },
+ {
+  "t": "Scripts (Bash, PowerShell)",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire)",
+  "q": "Quelle est l'extension d'un script PowerShell ?",
+  "o": [
+   ".ps1",
+   ".bat",
+   ".sh",
+   ".psh"
+  ],
+  "e": "On le lance avec .\\script.ps1 depuis son dossier.",
+  "x": [
+   ".bat : script batch (cmd).",
+   ".sh : script shell Linux.",
+   "Cette extension n'est pas utilisée."
+  ],
+  "n": 0
+ },
+ {
+  "t": "Scripts (Bash, PowerShell)",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire)",
+  "q": "Comment lire la variable nom en Bash ?",
+  "o": [
+   "$nom",
+   "%nom%",
+   "nom$",
+   "@nom"
+  ],
+  "e": "On l'affecte sans espace autour du = : nom=\"Dimitri\". En PowerShell aussi : $nom = \"Dimitri\".",
+  "x": [
+   "C'est la syntaxe batch Windows.",
+   "Ça n'existe pas.",
+   "Ça n'existe pas en Bash."
+  ],
+  "n": 1
+ },
+ {
+  "t": "Scripts (Bash, PowerShell)",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire)",
+  "q": "En Bash, que contient $1 ?",
+  "o": [
+   "Le premier argument passé au script",
+   "Le résultat de la dernière commande",
+   "Le nom de l'utilisateur",
+   "Le numéro de ligne"
+  ],
+  "e": "$0 = nom du script, $# = nombre d'arguments, $? = code retour de la dernière commande.",
+  "x": [
+   "C'est $?.",
+   "C'est $USER.",
+   "C'est $LINENO."
+  ],
+  "n": 1
+ },
+ {
+  "t": "Scripts (Bash, PowerShell)",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire)",
+  "q": "En Bash, que vaut $? après une commande réussie ?",
+  "o": [
+   "0",
+   "1",
+   "true",
+   "-1"
+  ],
+  "e": "0 = succès ; toute autre valeur = erreur. On s'en sert dans les tests : if [ $? -ne 0 ]; then …",
+  "x": [
+   "1 signale une erreur.",
+   "C'est un nombre, pas un booléen.",
+   "Les codes retour vont de 0 à 255."
+  ],
+  "n": 2
+ },
+ {
+  "t": "Scripts (Bash, PowerShell)",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire)",
+  "q": "Quel opérateur PowerShell veut dire « égal » ?",
+  "o": [
+   "-eq",
+   "==",
+   "=",
+   "-is"
+  ],
+  "e": "-ne (différent), -gt (plus grand), -lt (plus petit), -like (avec jokers).",
+  "x": [
+   "== n'existe pas en PowerShell.",
+   "= est une affectation.",
+   "-is teste un type."
+  ],
+  "n": 2
+ },
+ {
+  "t": "Scripts (Bash, PowerShell)",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire)",
+  "q": "Quelle boucle Bash parcourt les fichiers .log d'un dossier ?",
+  "o": [
+   "for f in /var/log/*.log; do echo $f; done",
+   "foreach ($f in *.log) {}",
+   "loop f *.log",
+   "while f in *.log"
+  ],
+  "e": "En PowerShell : foreach ($f in Get-ChildItem *.log) { $f.Name }",
+  "x": [
+   "C'est du PowerShell.",
+   "Ça n'existe pas.",
+   "while attend une condition."
+  ],
+  "n": 2
+ },
+ {
+  "t": "Scripts (Bash, PowerShell)",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire)",
+  "q": "En Bash, que fait « commande > fichier 2>&1 » ?",
+  "o": [
+   "Envoie la sortie normale et les erreurs dans le même fichier",
+   "Affiche seulement les erreurs",
+   "Ajoute à la fin du fichier",
+   "Supprime le fichier"
+  ],
+  "e": "> écrase le fichier, >> ajoute à la fin. 2 = sortie d'erreur, 1 = sortie standard.",
+  "x": [
+   "Les deux sorties vont dans le fichier.",
+   "Pour ajouter, il faut >>.",
+   "Rien n'est supprimé, mais le contenu est écrasé."
+  ],
+  "n": 3
+ },
+ {
+  "t": "Scripts (Bash, PowerShell)",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire)",
+  "q": "Comment tester en PowerShell qu'un dossier existe ?",
+  "o": [
+   "Test-Path C:\\Sauvegardes",
+   "Exists C:\\Sauvegardes",
+   "Get-Exist C:\\Sauvegardes",
+   "if exist C:\\Sauvegardes"
+  ],
+  "e": "Test-Path renvoie $true ou $false : if (-not (Test-Path $d)) { New-Item $d -ItemType Directory }",
+  "x": [
+   "Ça n'existe pas.",
+   "Ça n'existe pas.",
+   "C'est la syntaxe batch."
+  ],
+  "n": 3
+ },
+ {
+  "t": "Scripts (Bash, PowerShell)",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire)",
+  "q": "Comment gérer une erreur en PowerShell ?",
+  "o": [
+   "try { ... } catch { ... }",
+   "on error goto",
+   "if error then",
+   "trap-error { }"
+  ],
+  "e": "Ajoute -ErrorAction Stop pour que les erreurs non bloquantes passent dans le catch.",
+  "x": [
+   "C'est du VBScript.",
+   "Ça n'existe pas.",
+   "Ça n'existe pas sous cette forme."
+  ],
+  "n": 3
+ },
+ {
+  "t": "Scripts (Bash, PowerShell)",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire)",
+  "q": "Quel est le rôle de « set -e » au début d'un script Bash ?",
+  "o": [
+   "Arrêter le script dès qu'une commande échoue",
+   "Afficher chaque commande",
+   "Exporter toutes les variables",
+   "Rendre le script exécutable"
+  ],
+  "e": "set -x affiche chaque commande (débogage). set -u arrête le script sur une variable non définie.",
+  "x": [
+   "C'est set -x.",
+   "C'est set -a.",
+   "C'est chmod +x."
+  ],
+  "n": 4
+ },
+ {
+  "t": "Scripts (Bash, PowerShell)",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire)",
+  "q": "Un script de sauvegarde doit garder 7 jours. Quelle commande supprime les plus anciens ?",
+  "o": [
+   "find /sauv -name '*.tar.gz' -mtime +7 -delete",
+   "rm -rf /sauv/*",
+   "ls /sauv | delete 7",
+   "tar --remove 7 /sauv"
+  ],
+  "e": "-mtime +7 : modifié il y a plus de 7 jours. Teste d'abord sans -delete pour voir la liste.",
+  "x": [
+   "Supprime tout, même la sauvegarde du jour.",
+   "Ça n'existe pas.",
+   "Ça n'existe pas."
+  ],
+  "n": 4
+ },
+ {
+  "t": "Scripts (Bash, PowerShell)",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire)",
+  "q": "Pourquoi ne jamais écrire un mot de passe en clair dans un script ?",
+  "o": [
+   "Le script peut être lu, copié ou versionné : on utilise un coffre, des identifiants chiffrés ou une clé",
+   "Parce que le script devient plus lent",
+   "Parce que Bash refuse les mots de passe",
+   "Parce que ça empêche la planification"
+  ],
+  "e": "En PowerShell : Get-Credential, ou un secret chiffré avec Export-Clixml (lié au compte et à la machine). Sous Linux : authentification par clé, fichiers en 600.",
+  "x": [
+   "La vitesse n'y change rien.",
+   "Bash ne les refuse pas.",
+   "La planification marche quand même."
+  ],
+  "n": 5
+ },
+ {
+  "t": "Scripts (Bash, PowerShell)",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire)",
+  "q": "Quel est l'intérêt d'écrire dans un journal (log) depuis un script planifié ?",
+  "o": [
+   "Savoir ce qui s'est passé et pourquoi il a échoué, puisque personne ne voit l'écran",
+   "Rendre le script plus rapide",
+   "Remplacer la sauvegarde",
+   "Éviter les droits administrateur"
+  ],
+  "e": "On note la date, l'action et le résultat. Exemple Bash : echo \"$(date '+%F %T') OK\" >> /var/log/save.log. Avec une alerte en cas d'échec.",
+  "x": [
+   "Ça le ralentit même un peu.",
+   "Un journal ne sauvegarde pas les données.",
+   "Ça ne change rien aux droits."
+  ],
+  "n": 5
+ },
+ {
+  "t": "Sauvegarde, RAID et PRA",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire)",
+  "q": "Que dit la règle de sauvegarde 3-2-1 ?",
+  "o": [
+   "3 copies, sur 2 supports différents, dont 1 hors site",
+   "3 sauvegardes par jour, 2 par semaine, 1 par mois",
+   "3 disques, 2 serveurs, 1 administrateur",
+   "3 heures, 2 jours, 1 semaine"
+  ],
+  "e": "On ajoute souvent une copie hors ligne ou immuable (3-2-1-1-0), contre les rançongiciels.",
+  "x": [
+   "Ce n'est pas une fréquence.",
+   "Ce n'est pas du matériel.",
+   "Ce ne sont pas des durées."
+  ],
+  "n": 0
+ },
+ {
+  "t": "Sauvegarde, RAID et PRA",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire)",
+  "q": "Le RAID est-il une sauvegarde ?",
+  "o": [
+   "Non : il protège d'une panne de disque, pas d'une suppression, d'un virus ou d'un incendie",
+   "Oui, c'est la meilleure sauvegarde",
+   "Oui, s'il est en RAID 1",
+   "Oui, s'il a plus de 4 disques"
+  ],
+  "e": "Une suppression ou un chiffrement est recopié aussitôt sur tous les disques du RAID.",
+  "x": [
+   "Le RAID n'est pas une sauvegarde.",
+   "Le RAID 1 recopie aussi les erreurs.",
+   "Le nombre de disques n'y change rien."
+  ],
+  "n": 0
+ },
+ {
+  "t": "Sauvegarde, RAID et PRA",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire)",
+  "q": "Quel RAID fait un miroir sur deux disques ?",
+  "o": [
+   "RAID 1",
+   "RAID 0",
+   "RAID 5",
+   "RAID 10"
+  ],
+  "e": "Capacité utile : un seul disque. Il supporte la panne d'un disque.",
+  "x": [
+   "RAID 0 répartit sans redondance.",
+   "RAID 5 utilise au moins 3 disques avec une parité.",
+   "RAID 10 combine miroir et répartition, avec au moins 4 disques."
+  ],
+  "n": 1
+ },
+ {
+  "t": "Sauvegarde, RAID et PRA",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire)",
+  "q": "Que se passe-t-il si un disque d'un RAID 0 tombe en panne ?",
+  "o": [
+   "Toutes les données sont perdues",
+   "Rien, l'autre disque prend le relais",
+   "Le RAID devient du RAID 1",
+   "Seuls les fichiers récents sont perdus"
+  ],
+  "e": "Le RAID 0 répartit les données pour la vitesse, sans aucune redondance.",
+  "x": [
+   "Il n'y a pas de copie.",
+   "Ça ne se transforme pas.",
+   "Chaque fichier est réparti sur tous les disques."
+  ],
+  "n": 1
+ },
+ {
+  "t": "Sauvegarde, RAID et PRA",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire)",
+  "q": "Quelle est la capacité utile d'un RAID 5 avec 4 disques de 2 To ?",
+  "o": [
+   "6 To",
+   "8 To",
+   "4 To",
+   "2 To"
+  ],
+  "e": "RAID 5 : (n − 1) × taille. La parité occupe l'équivalent d'un disque. Il supporte une panne de disque.",
+  "x": [
+   "Ce serait du RAID 0.",
+   "Ce serait du RAID 10 ou du RAID 6 sur 4 disques.",
+   "Ce serait du RAID 1 sur 2 disques."
+  ],
+  "n": 2
+ },
+ {
+  "t": "Sauvegarde, RAID et PRA",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire)",
+  "q": "Quelle sauvegarde copie tout ce qui a changé depuis la dernière sauvegarde complète ?",
+  "o": [
+   "La sauvegarde différentielle",
+   "La sauvegarde incrémentale",
+   "La sauvegarde complète",
+   "L'instantané"
+  ],
+  "e": "Pour restaurer : la complète + la dernière différentielle. L'incrémentale ne copie que ce qui a changé depuis la dernière sauvegarde, quelle qu'elle soit.",
+  "x": [
+   "L'incrémentale part de la dernière sauvegarde, quel que soit son type.",
+   "La complète copie tout.",
+   "Un instantané fige l'état d'un disque ou d'une VM à un moment donné."
+  ],
+  "n": 2
+ },
+ {
+  "t": "Sauvegarde, RAID et PRA",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire)",
+  "q": "Que mesure le RPO ?",
+  "o": [
+   "La perte de données maximale acceptable, en temps (ex. 24 h)",
+   "Le temps maximal pour redémarrer le service",
+   "Le nombre de disques du RAID",
+   "La vitesse de sauvegarde"
+  ],
+  "e": "RPO (Recovery Point Objective) : il fixe la fréquence des sauvegardes. RTO (Recovery Time Objective) : durée maximale d'interruption.",
+  "x": [
+   "C'est le RTO.",
+   "Rien à voir.",
+   "Rien à voir."
+  ],
+  "n": 2
+ },
+ {
+  "t": "Sauvegarde, RAID et PRA",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire)",
+  "q": "Quelle est la différence entre un PRA et un PCA ?",
+  "o": [
+   "Le PRA redémarre l'activité après un sinistre ; le PCA la maintient sans interruption pendant le sinistre",
+   "C'est la même chose",
+   "Le PCA concerne seulement les sauvegardes",
+   "Le PRA est un logiciel"
+  ],
+  "e": "Le PCA demande de la redondance (site secondaire actif, haute disponibilité), il coûte plus cher.",
+  "x": [
+   "Ils diffèrent par la continuité.",
+   "Le PCA va bien au-delà des sauvegardes.",
+   "Ce sont des plans, des procédures écrites."
+  ],
+  "n": 3
+ },
+ {
+  "t": "Sauvegarde, RAID et PRA",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire)",
+  "q": "Pourquoi faut-il tester régulièrement la restauration ?",
+  "o": [
+   "Une sauvegarde jamais restaurée peut être incomplète, corrompue ou impossible à relire",
+   "Pour libérer de l'espace",
+   "Parce que la loi l'interdit sinon",
+   "Pour accélérer les sauvegardes suivantes"
+  ],
+  "e": "On teste sur un environnement séparé et on note la durée réelle pour vérifier le RTO.",
+  "x": [
+   "Restaurer ne libère rien.",
+   "Ce n'est pas une obligation légale générale, c'est une bonne pratique.",
+   "Ça ne change pas la vitesse."
+  ],
+  "n": 3
+ },
+ {
+  "t": "Sauvegarde, RAID et PRA",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire)",
+  "q": "Combien de disques peuvent tomber en panne en RAID 6 sans perte de données ?",
+  "o": [
+   "2",
+   "1",
+   "0",
+   "La moitié"
+  ],
+  "e": "RAID 6 : double parité, au moins 4 disques, capacité utile (n − 2) × taille.",
+  "x": [
+   "C'est le RAID 5.",
+   "C'est le RAID 0.",
+   "C'est plutôt l'idée du RAID 10 (un disque par miroir)."
+  ],
+  "n": 3
+ },
+ {
+  "t": "Sauvegarde, RAID et PRA",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire)",
+  "q": "Contre un rançongiciel, quelle sauvegarde est la plus utile ?",
+  "o": [
+   "Une copie hors ligne ou immuable, que le serveur infecté ne peut pas modifier",
+   "Un RAID 1",
+   "Une copie sur un partage réseau toujours monté",
+   "Un instantané sur le même disque"
+  ],
+  "e": "Les rançongiciels chiffrent aussi les sauvegardes accessibles en ligne, et suppriment les instantanés (vssadmin delete shadows).",
+  "x": [
+   "Le RAID recopie le chiffrement.",
+   "Le partage sera chiffré lui aussi.",
+   "Il peut être supprimé par le rançongiciel."
+  ],
+  "n": 4
+ },
+ {
+  "t": "Sauvegarde, RAID et PRA",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire)",
+  "q": "Un instantané (snapshot) de VM remplace-t-il une sauvegarde ?",
+  "o": [
+   "Non : il dépend du disque d'origine et se dégrade en performance s'il dure",
+   "Oui, toujours",
+   "Oui, s'il est fait chaque jour",
+   "Oui, s'il est chiffré"
+  ],
+  "e": "L'instantané sert avant une mise à jour risquée : on le supprime (fusionne) ensuite.",
+  "x": [
+   "Il ne protège pas d'une panne du stockage.",
+   "La fréquence n'y change rien.",
+   "Le chiffrement n'y change rien."
+  ],
+  "n": 4
+ },
+ {
+  "t": "Sauvegarde, RAID et PRA",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire)",
+  "q": "Avec une complète le dimanche et des incrémentales chaque jour, que faut-il pour restaurer le jeudi ?",
+  "o": [
+   "La complète du dimanche + les incrémentales de lundi, mardi, mercredi et jeudi",
+   "Seulement l'incrémentale du jeudi",
+   "La complète + l'incrémentale du jeudi",
+   "Seulement la complète"
+  ],
+  "e": "Chaque incrémentale ne contient que les changements depuis la précédente. Si une seule manque, la chaîne est cassée.",
+  "x": [
+   "Elle ne contient que les changements du jeudi.",
+   "Ce serait vrai avec des différentielles.",
+   "On perdrait 4 jours."
+  ],
+  "n": 5
+ },
+ {
+  "t": "Sauvegarde, RAID et PRA",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire)",
+  "q": "Pourquoi le RAID 5 est-il déconseillé avec de très gros disques ?",
+  "o": [
+   "La reconstruction est très longue, et une erreur de lecture ou une 2e panne pendant ce temps fait tout perdre",
+   "Parce qu'il ne supporte que 2 disques",
+   "Parce qu'il est plus lent que le RAID 0 en lecture",
+   "Parce qu'il n'accepte pas les SSD"
+  ],
+  "e": "On préfère le RAID 6 ou le RAID 10 pour les grosses capacités.",
+  "x": [
+   "Il faut au moins 3 disques.",
+   "Ce n'est pas la raison.",
+   "Il accepte les SSD."
+  ],
+  "n": 5
+ },
+ {
+  "t": "Supervision et journaux",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire)",
+  "q": "À quoi sert un outil de supervision comme Zabbix, Centreon ou Nagios ?",
+  "o": [
+   "À surveiller en continu l'état des équipements et services, et à alerter en cas de problème",
+   "À sauvegarder les serveurs",
+   "À installer Windows",
+   "À distribuer des adresses IP"
+  ],
+  "e": "Il vérifie la disponibilité (ping, services), les ressources (CPU, RAM, disque) et envoie des alertes.",
+  "x": [
+   "C'est un outil de sauvegarde.",
+   "C'est le déploiement.",
+   "C'est le DHCP."
+  ],
+  "n": 0
+ },
+ {
+  "t": "Supervision et journaux",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire)",
+  "q": "Quel protocole sert à interroger l'état d'un équipement réseau ?",
+  "o": [
+   "SNMP",
+   "SMTP",
+   "SMB",
+   "SSH uniquement"
+  ],
+  "e": "SNMP : port UDP 161 pour les requêtes, 162 pour les traps (alertes envoyées par l'équipement).",
+  "x": [
+   "SMTP envoie des mails.",
+   "SMB partage des fichiers.",
+   "SSH sert à administrer, pas à superviser en continu."
+  ],
+  "n": 1
+ },
+ {
+  "t": "Supervision et journaux",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire)",
+  "q": "Quel protocole centralise les journaux des équipements réseau et Linux ?",
+  "o": [
+   "Syslog (UDP 514)",
+   "SNMP get",
+   "DHCP",
+   "NTP"
+  ],
+  "e": "Les niveaux vont de 0 (emergency) à 7 (debug). Sur Cisco : logging host 192.168.1.50.",
+  "x": [
+   "SNMP interroge des valeurs.",
+   "DHCP distribue des adresses.",
+   "NTP synchronise l'heure."
+  ],
+  "n": 1
+ },
+ {
+  "t": "Supervision et journaux",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire)",
+  "q": "Pourquoi synchroniser l'heure de tous les équipements (NTP) ?",
+  "o": [
+   "Pour pouvoir corréler les journaux et pour Kerberos",
+   "Pour que le réseau aille plus vite",
+   "Pour économiser de l'énergie",
+   "Pour que le DHCP fonctionne"
+  ],
+  "e": "Sans heure commune, impossible de reconstituer l'ordre des événements lors d'un incident.",
+  "x": [
+   "Ça ne change pas la vitesse.",
+   "Aucun lien.",
+   "Le DHCP fonctionne sans NTP."
+  ],
+  "n": 2
+ },
+ {
+  "t": "Supervision et journaux",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire)",
+  "q": "Qu'est-ce qu'un trap SNMP ?",
+  "o": [
+   "Une alerte envoyée spontanément par l'équipement au superviseur",
+   "Une requête du superviseur",
+   "Un mot de passe SNMP",
+   "Un virus"
+  ],
+  "e": "Le superviseur interroge (polling) ; l'équipement peut aussi prévenir tout seul (trap, UDP 162).",
+  "x": [
+   "C'est un get.",
+   "Le mot de passe s'appelle la communauté (v1/v2c).",
+   "Rien à voir."
+  ],
+  "n": 2
+ },
+ {
+  "t": "Supervision et journaux",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire)",
+  "q": "Pourquoi préférer SNMPv3 à SNMPv2c ?",
+  "o": [
+   "SNMPv3 ajoute l'authentification et le chiffrement ; v2c envoie la communauté en clair",
+   "SNMPv3 est plus rapide",
+   "SNMPv2c n'existe plus",
+   "SNMPv3 n'utilise pas d'UDP"
+  ],
+  "e": "Évite aussi la communauté « public » par défaut, et limite l'accès SNMP par ACL.",
+  "x": [
+   "Ce n'est pas l'argument.",
+   "Il est encore très utilisé.",
+   "Il utilise UDP aussi."
+  ],
+  "n": 3
+ },
+ {
+  "t": "Supervision et journaux",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire)",
+  "q": "Quelle valeur de seuil est la plus sensée pour l'alerte d'un disque ?",
+  "o": [
+   "Avertissement à 80 % et critique à 90 %",
+   "Alerte à 100 %",
+   "Alerte à 10 %",
+   "Pas de seuil, on regarde chaque matin"
+  ],
+  "e": "Deux niveaux : on a le temps d'agir avant la panne, sans crouler sous les alertes.",
+  "x": [
+   "Trop tard : le service est déjà en panne.",
+   "Trop d'alertes inutiles.",
+   "La supervision sert justement à ne pas dépendre d'une vérification à la main."
+  ],
+  "n": 3
+ },
+ {
+  "t": "Supervision et journaux",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire)",
+  "q": "Quel identifiant d'événement Windows signale un verrouillage de compte ?",
+  "o": [
+   "4740",
+   "4624",
+   "1074",
+   "41"
+  ],
+  "e": "4740 apparaît sur le DC émulateur PDC. 4624 = connexion réussie, 1074 = arrêt demandé, 41 = redémarrage sans arrêt propre.",
+  "x": [
+   "Connexion réussie.",
+   "Arrêt ou redémarrage demandé.",
+   "Arrêt brutal (Kernel-Power)."
+  ],
+  "n": 4
+ },
+ {
+  "t": "Supervision et journaux",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire)",
+  "q": "Qu'est-ce qu'un SIEM ?",
+  "o": [
+   "Un outil qui collecte et corrèle les journaux de sécurité pour détecter des attaques",
+   "Un type de câble",
+   "Un antivirus pour serveur",
+   "Un protocole de routage"
+  ],
+  "e": "Exemples : Wazuh, Splunk, Microsoft Sentinel.",
+  "x": [
+   "Rien à voir.",
+   "Il ne protège pas directement, il analyse.",
+   "Rien à voir."
+  ],
+  "n": 4
+ },
+ {
+  "t": "Supervision et journaux",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire)",
+  "q": "Un serveur supervisé passe en « injoignable » mais les utilisateurs travaillent normalement. Que vérifier d'abord ?",
+  "o": [
+   "Le chemin de supervision : pare-feu, ACL ou agent arrêté sur le serveur",
+   "Redémarrer le serveur tout de suite",
+   "Changer son adresse IP",
+   "Désinstaller la supervision"
+  ],
+  "e": "Une fausse alerte se diagnostique comme une vraie : ping depuis le superviseur, état de l'agent, port ouvert (10050 pour Zabbix).",
+  "x": [
+   "On ne redémarre pas un serveur qui fonctionne.",
+   "Ça casserait le service.",
+   "Ça ne résout rien."
+  ],
+  "n": 5
+ },
+ {
+  "t": "Supervision et journaux",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire)",
+  "q": "Pourquoi envoyer les journaux vers un serveur central plutôt que les laisser sur chaque machine ?",
+  "o": [
+   "Un attaquant qui prend la machine peut effacer ses journaux locaux, et on corrèle tout au même endroit",
+   "Pour économiser la bande passante",
+   "Parce que les journaux locaux n'existent pas",
+   "Pour accélérer les machines"
+  ],
+  "e": "La centralisation sert aussi à garder les journaux longtemps (exigences légales ou internes).",
+  "x": [
+   "Ça en consomme un peu.",
+   "Ils existent.",
+   "L'effet est négligeable."
+  ],
+  "n": 5
+ },
+ {
+  "t": "Sécurité",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire)",
+  "q": "Qu'est-ce que l'hameçonnage (phishing) ?",
+  "o": [
+   "Un faux message qui pousse à donner ses identifiants ou à ouvrir une pièce piégée",
+   "Une panne de câble réseau",
+   "Un logiciel de sauvegarde",
+   "Une technique de routage"
+  ],
+  "e": "Réflexes : vérifier l'expéditeur réel et l'adresse du lien, ne jamais donner son mot de passe, signaler au support.",
+  "x": [
+   "Rien à voir.",
+   "Rien à voir.",
+   "Rien à voir."
+  ],
+  "n": 0
+ },
+ {
+  "t": "Sécurité",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire)",
+  "q": "Que fait un rançongiciel (ransomware) ?",
+  "o": [
+   "Il chiffre les fichiers et réclame une rançon pour les rendre",
+   "Il accélère le PC",
+   "Il fait une sauvegarde automatique",
+   "Il met à jour Windows"
+  ],
+  "e": "Défense : sauvegardes hors ligne, mises à jour, droits minimaux, filtrage des mails, sensibilisation.",
+  "x": [
+   "C'est l'inverse.",
+   "C'est l'inverse.",
+   "Rien à voir."
+  ],
+  "n": 0
+ },
+ {
+  "t": "Sécurité",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire)",
+  "q": "Qu'est-ce que l'authentification multifacteur (MFA) ?",
+  "o": [
+   "Prouver son identité avec au moins deux types de preuves : ce qu'on sait, ce qu'on a, ce qu'on est",
+   "Avoir deux mots de passe",
+   "Se connecter sur deux PC",
+   "Changer de mot de passe chaque mois"
+  ],
+  "e": "Exemple : mot de passe + code sur le téléphone. Deux mots de passe restent un seul facteur (ce qu'on sait).",
+  "x": [
+   "Même facteur deux fois.",
+   "Rien à voir.",
+   "Ce n'est pas un second facteur."
+  ],
+  "n": 1
+ },
+ {
+  "t": "Sécurité",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire)",
+  "q": "Que dit le principe du moindre privilège ?",
+  "o": [
+   "Chacun n'a que les droits nécessaires à son travail, pas plus",
+   "Tout le monde est administrateur pour gagner du temps",
+   "Seul le directeur a des droits",
+   "Les droits sont donnés au hasard"
+  ],
+  "e": "On sépare aussi le compte d'administration du compte de tous les jours.",
+  "x": [
+   "C'est le contraire.",
+   "Ce n'est pas le principe.",
+   "Non."
+  ],
+  "n": 1
+ },
+ {
+  "t": "Sécurité",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire)",
+  "q": "Quel organisme français publie le guide d'hygiène informatique ?",
+  "o": [
+   "L'ANSSI",
+   "La CNIL",
+   "L'ARCEP",
+   "L'AFNIC"
+  ],
+  "e": "Le guide de l'ANSSI liste 42 mesures (inventaire, mises à jour, comptes d'administration séparés, sauvegardes…). La CNIL, elle, veille au RGPD.",
+  "x": [
+   "La CNIL protège les données personnelles.",
+   "L'ARCEP régule les télécoms.",
+   "L'AFNIC gère les noms en .fr."
+  ],
+  "n": 1
+ },
+ {
+  "t": "Sécurité",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire)",
+  "q": "Qu'est-ce qu'une DMZ ?",
+  "o": [
+   "Une zone réseau isolée qui accueille les serveurs joignables depuis Internet",
+   "Le réseau des postes utilisateurs",
+   "Un type de câble",
+   "Une sauvegarde"
+  ],
+  "e": "Si un serveur web de la DMZ est piraté, le pare-feu protège encore le réseau interne.",
+  "x": [
+   "Les postes sont dans le LAN.",
+   "Rien à voir.",
+   "Rien à voir."
+  ],
+  "n": 2
+ },
+ {
+  "t": "Sécurité",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire)",
+  "q": "Quelle est la différence entre un pare-feu sans état et un pare-feu à états (stateful) ?",
+  "o": [
+   "Le pare-feu à états suit les connexions et laisse passer automatiquement les réponses",
+   "Il n'y a pas de différence",
+   "Le pare-feu sans état est plus sûr",
+   "Le pare-feu à états ne filtre que les ports"
+  ],
+  "e": "Une ACL Cisco standard est sans état : il faut penser au trafic retour. pfSense ou OPNsense sont à états.",
+  "x": [
+   "Il y en a une.",
+   "C'est plutôt l'inverse.",
+   "Il filtre aussi les adresses et suit l'état."
+  ],
+  "n": 2
+ },
+ {
+  "t": "Sécurité",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire)",
+  "q": "À quoi sert un VPN ?",
+  "o": [
+   "À créer un tunnel chiffré pour relier un poste ou un site au réseau de l'entreprise via Internet",
+   "À accélérer Internet",
+   "À remplacer l'antivirus",
+   "À donner une adresse IP publique gratuite"
+  ],
+  "e": "VPN nomade (client vers site) ou site à site. Protocoles : IPsec, OpenVPN, WireGuard, SSL/TLS.",
+  "x": [
+   "Il ajoute même un peu de latence.",
+   "Il ne détecte pas de virus.",
+   "Ce n'est pas son rôle."
+  ],
+  "n": 2
+ },
+ {
+  "t": "Sécurité",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire)",
+  "q": "Quelle est la différence entre chiffrement symétrique et asymétrique ?",
+  "o": [
+   "Symétrique : une seule clé partagée ; asymétrique : une clé publique et une clé privée",
+   "Le symétrique n'utilise pas de clé",
+   "L'asymétrique est plus rapide",
+   "Ce sont deux noms d'un même algorithme"
+  ],
+  "e": "AES est symétrique (rapide), RSA est asymétrique. TLS combine les deux : l'asymétrique sert à échanger une clé symétrique.",
+  "x": [
+   "Il faut une clé.",
+   "Il est plus lent.",
+   "Ce sont deux familles différentes."
+  ],
+  "n": 3
+ },
+ {
+  "t": "Sécurité",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire)",
+  "q": "À quoi sert une fonction de hachage comme SHA-256 ?",
+  "o": [
+   "À produire une empreinte pour vérifier l'intégrité ; on ne peut pas revenir au texte d'origine",
+   "À chiffrer un fichier pour le déchiffrer plus tard",
+   "À compresser un fichier",
+   "À créer une adresse IP"
+  ],
+  "e": "On compare l'empreinte d'un fichier téléchargé à celle publiée. Les mots de passe sont stockés hachés (et salés).",
+  "x": [
+   "Un hachage n'est pas réversible.",
+   "Ce n'est pas de la compression.",
+   "Rien à voir."
+  ],
+  "n": 3
+ },
+ {
+  "t": "Sécurité",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire)",
+  "q": "Que garantit un certificat TLS sur un site HTTPS ?",
+  "o": [
+   "Que la clé publique appartient bien au site, grâce à la signature d'une autorité de certification",
+   "Que le site n'a pas de virus",
+   "Que le site est rapide",
+   "Que le site est légal"
+  ],
+  "e": "Le navigateur vérifie la chaîne de confiance et le nom du site. Let's Encrypt délivre des certificats gratuits.",
+  "x": [
+   "Ce n'est pas une analyse antivirus.",
+   "Rien à voir.",
+   "Ce n'est pas un contrôle légal."
+  ],
+  "n": 3
+ },
+ {
+  "t": "Sécurité",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire)",
+  "q": "Qu'est-ce que le RGPD impose à l'informaticien ?",
+  "o": [
+   "Protéger les données personnelles : accès limités, sécurité, durée de conservation, signalement des fuites sous 72 h à la CNIL",
+   "Rien, il ne concerne que les juristes",
+   "De chiffrer tous les e-mails",
+   "D'interdire le cloud"
+  ],
+  "e": "Une fuite de données personnelles doit être notifiée à la CNIL dans les 72 heures quand elle présente un risque.",
+  "x": [
+   "Il concerne directement l'informatique.",
+   "Ce n'est pas une obligation générale.",
+   "Le cloud reste possible avec des garanties."
+  ],
+  "n": 4
+ },
+ {
+  "t": "Sécurité",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire)",
+  "q": "Quelle mesure limite le mieux la propagation d'une attaque dans le réseau ?",
+  "o": [
+   "Segmenter le réseau (VLAN, pare-feu entre zones)",
+   "Mettre tous les postes dans un seul VLAN",
+   "Désactiver les journaux",
+   "Donner les droits administrateur à tous"
+  ],
+  "e": "Une attaque sur le VLAN des postes ne doit pas atteindre directement les serveurs ou l'administration.",
+  "x": [
+   "C'est l'inverse.",
+   "On perdrait la traçabilité.",
+   "C'est l'inverse du moindre privilège."
+  ],
+  "n": 4
+ },
+ {
+  "t": "Sécurité",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire)",
+  "q": "Pourquoi utiliser un compte dédié pour l'administration, sans messagerie ni navigation ?",
+  "o": [
+   "Pour qu'un mail ou un site piégé ne s'exécute jamais avec des droits d'administrateur",
+   "Pour avoir deux boîtes mail",
+   "Parce que Windows l'impose",
+   "Pour aller plus vite"
+  ],
+  "e": "Recommandation de l'ANSSI : comptes d'administration séparés, voire postes d'administration dédiés.",
+  "x": [
+   "Ce compte n'a justement pas de messagerie.",
+   "Windows ne l'impose pas.",
+   "Ça n'accélère rien."
+  ],
+  "n": 5
+ },
+ {
+  "t": "Sécurité",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire)",
+  "q": "Un utilisateur signale que ses fichiers ont une nouvelle extension et qu'un message demande une rançon. Premier réflexe ?",
+  "o": [
+   "Isoler le poste du réseau (débrancher le câble, couper le Wi-Fi) sans l'éteindre, puis alerter",
+   "Payer la rançon",
+   "Redémarrer le poste plusieurs fois",
+   "Restaurer tout de suite par-dessus"
+  ],
+  "e": "On évite la propagation, on garde des traces pour l'analyse, puis on suit la procédure d'incident. On restaure seulement après avoir éliminé la menace.",
+  "x": [
+   "Rien ne garantit la récupération, et ça finance l'attaque.",
+   "On peut perdre des traces utiles.",
+   "On risque de réinfecter, ou de chiffrer la sauvegarde."
+  ],
+  "n": 5
+ },
+ {
+  "t": "ITIL et support",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire)",
+  "q": "Qu'est-ce qu'un ticket ?",
+  "o": [
+   "La trace écrite d'une demande ou d'un incident, suivie jusqu'à sa résolution",
+   "Un billet de train",
+   "Un mot de passe temporaire",
+   "Un câble réseau"
+  ],
+  "e": "Outils : GLPI, ServiceNow, Jira Service Management. Le ticket garde l'historique et permet les statistiques.",
+  "x": [
+   "Hors sujet.",
+   "Rien à voir.",
+   "Rien à voir."
+  ],
+  "n": 0
+ },
+ {
+  "t": "ITIL et support",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire)",
+  "q": "Quelle est la différence entre un incident et une demande de service ?",
+  "o": [
+   "L'incident est une interruption ou dégradation imprévue ; la demande est un besoin normal (compte, logiciel…)",
+   "Aucune différence",
+   "L'incident est toujours grave",
+   "La demande concerne seulement le matériel"
+  ],
+  "e": "Exemples : « l'imprimante ne marche plus » = incident ; « je voudrais un accès au dossier Compta » = demande.",
+  "x": [
+   "ITIL les distingue.",
+   "Un incident peut être mineur.",
+   "Une demande peut porter sur tout."
+  ],
+  "n": 1
+ },
+ {
+  "t": "ITIL et support",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire)",
+  "q": "Qu'est-ce qu'un problème au sens ITIL ?",
+  "o": [
+   "La cause inconnue d'un ou plusieurs incidents, que l'on cherche à éliminer",
+   "Un incident très grave",
+   "Une demande urgente",
+   "Un utilisateur difficile"
+  ],
+  "e": "La gestion des incidents rétablit vite le service ; la gestion des problèmes cherche la cause pour éviter que ça recommence.",
+  "x": [
+   "La gravité ne définit pas un problème.",
+   "Ce n'est pas une demande.",
+   "Non."
+  ],
+  "n": 1
+ },
+ {
+  "t": "ITIL et support",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire)",
+  "q": "Comment détermine-t-on la priorité d'un ticket ?",
+  "o": [
+   "En croisant l'impact (combien de personnes touchées) et l'urgence",
+   "Selon l'ordre d'arrivée uniquement",
+   "Selon le grade de l'utilisateur uniquement",
+   "Au hasard"
+  ],
+  "e": "Une matrice impact × urgence donne la priorité (P1 à P4 ou P5).",
+  "x": [
+   "Ça ne suffit pas.",
+   "Ce n'est pas le critère ITIL.",
+   "Non."
+  ],
+  "n": 2
+ },
+ {
+  "t": "ITIL et support",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire)",
+  "q": "Que fixe un SLA ?",
+  "o": [
+   "Les engagements de service : délais de prise en charge et de résolution, disponibilité…",
+   "Le prix du matériel",
+   "Le mot de passe administrateur",
+   "Le plan d'adressage"
+  ],
+  "e": "SLA = Service Level Agreement (accord de niveau de service).",
+  "x": [
+   "Ce n'est pas son objet.",
+   "Rien à voir.",
+   "Rien à voir."
+  ],
+  "n": 2
+ },
+ {
+  "t": "ITIL et support",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire)",
+  "q": "Qu'est-ce que le support de niveau 1 ?",
+  "o": [
+   "Le premier contact : il prend l'appel, qualifie, résout les cas simples et escalade le reste",
+   "L'expert qui ne fait que les cas complexes",
+   "Le fournisseur du matériel",
+   "Le directeur informatique"
+  ],
+  "e": "N2 : techniciens spécialisés ; N3 : experts ou éditeurs.",
+  "x": [
+   "C'est le niveau 2 ou 3.",
+   "C'est souvent le niveau 3.",
+   "Non."
+  ],
+  "n": 2
+ },
+ {
+  "t": "ITIL et support",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire)",
+  "q": "À quoi sert une base de connaissances dans l'outil de ticketing ?",
+  "o": [
+   "À réutiliser les solutions déjà trouvées pour résoudre plus vite",
+   "À stocker les sauvegardes",
+   "À lister les mots de passe",
+   "À remplacer la supervision"
+  ],
+  "e": "On rédige un article pour chaque solution utile : symptômes, cause, résolution.",
+  "x": [
+   "Non.",
+   "Surtout pas de mots de passe dedans.",
+   "Non."
+  ],
+  "n": 3
+ },
+ {
+  "t": "ITIL et support",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire)",
+  "q": "Qu'est-ce qu'une CMDB ?",
+  "o": [
+   "La base qui recense les éléments de configuration (matériels, logiciels) et leurs liens",
+   "Une commande Linux",
+   "Un pare-feu",
+   "Un protocole de messagerie"
+  ],
+  "e": "GLPI avec un agent d'inventaire alimente automatiquement le parc.",
+  "x": [
+   "Non.",
+   "Non.",
+   "Non."
+  ],
+  "n": 3
+ },
+ {
+  "t": "ITIL et support",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire)",
+  "q": "Pourquoi passer un changement important par une demande de changement validée ?",
+  "o": [
+   "Pour évaluer les risques, prévoir un retour arrière et informer les personnes touchées",
+   "Pour ralentir les techniciens",
+   "Parce que c'est obligatoire par la loi",
+   "Pour éviter de faire des sauvegardes"
+  ],
+  "e": "Un changement mal préparé est une grande source d'incidents. On prévoit toujours un plan de retour arrière.",
+  "x": [
+   "Ce n'est pas le but.",
+   "Ce n'est pas une obligation légale.",
+   "On en fait justement avant."
+  ],
+  "n": 4
+ },
+ {
+  "t": "ITIL et support",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire)",
+  "q": "Un utilisateur appelle, furieux, car rien ne marche. Que fait-on d'abord ?",
+  "o": [
+   "On écoute, on reformule le problème, on pose des questions précises et on crée le ticket",
+   "On raccroche",
+   "On redémarre le serveur à distance",
+   "On lui dit d'appeler plus tard"
+  ],
+  "e": "Questions utiles : depuis quand ? Qu'est-ce qui a changé ? Est-ce que d'autres personnes sont touchées ? Y a-t-il un message d'erreur ?",
+  "x": [
+   "Non.",
+   "Sans diagnostic, c'est risqué.",
+   "Non."
+  ],
+  "n": 4
+ },
+ {
+  "t": "ITIL et support",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire)",
+  "q": "Vingt tickets arrivent en dix minutes pour le même souci de messagerie. Comment les traiter ?",
+  "o": [
+   "Ouvrir un incident majeur, y rattacher les tickets, prévenir les utilisateurs, et chercher la cause du problème ensuite",
+   "Traiter les tickets un par un",
+   "Fermer les tickets en double",
+   "Attendre que ça revienne tout seul"
+  ],
+  "e": "On communique une seule fois à tout le monde et on clôture tous les tickets liés quand c'est réglé.",
+  "x": [
+   "On perd du temps à faire 20 fois le même diagnostic.",
+   "Les utilisateurs perdraient leur suivi.",
+   "Non."
+  ],
+  "n": 5
+ },
+ {
+  "t": "Virtualisation, stockage et cloud",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire)",
+  "q": "Qu'est-ce qu'un hyperviseur ?",
+  "o": [
+   "Le logiciel qui fait tourner plusieurs machines virtuelles sur un même serveur physique",
+   "Un très gros disque",
+   "Un câble réseau rapide",
+   "Un antivirus"
+  ],
+  "e": "Exemples : Hyper-V, VMware ESXi, Proxmox VE, KVM.",
+  "x": [
+   "Non.",
+   "Non.",
+   "Non."
+  ],
+  "n": 0
+ },
+ {
+  "t": "Virtualisation, stockage et cloud",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire)",
+  "q": "Quelle est la différence entre un hyperviseur de type 1 et de type 2 ?",
+  "o": [
+   "Le type 1 s'installe directement sur le matériel ; le type 2 s'installe sur un système existant",
+   "Le type 2 est toujours plus rapide",
+   "Le type 1 ne fait tourner qu'une VM",
+   "Aucune"
+  ],
+  "e": "Type 1 : ESXi, Hyper-V, Proxmox. Type 2 : VirtualBox, VMware Workstation.",
+  "x": [
+   "Le type 1 est en général plus performant.",
+   "Il en fait tourner beaucoup.",
+   "Il y en a une."
+  ],
+  "n": 1
+ },
+ {
+  "t": "Virtualisation, stockage et cloud",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire)",
+  "q": "Que sont IaaS, PaaS et SaaS ?",
+  "o": [
+   "Trois modèles de cloud : infrastructure, plateforme, ou logiciel fourni comme un service",
+   "Trois types de câbles",
+   "Trois niveaux de RAID",
+   "Trois protocoles de mail"
+  ],
+  "e": "IaaS : des VM (Azure, AWS EC2). PaaS : une plateforme pour déployer du code. SaaS : un logiciel prêt à l'emploi (Microsoft 365).",
+  "x": [
+   "Non.",
+   "Non.",
+   "Non."
+  ],
+  "n": 1
+ },
+ {
+  "t": "Virtualisation, stockage et cloud",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire)",
+  "q": "Quelle est la différence entre un NAS et un SAN ?",
+  "o": [
+   "Le NAS partage des fichiers (SMB, NFS) ; le SAN fournit des disques en mode bloc (iSCSI, Fibre Channel)",
+   "Aucune différence",
+   "Le SAN est un simple disque USB",
+   "Le NAS ne fonctionne qu'en Wi-Fi"
+  ],
+  "e": "Un serveur voit un volume SAN comme un disque local qu'il doit formater.",
+  "x": [
+   "Il y en a une.",
+   "Non.",
+   "Non."
+  ],
+  "n": 2
+ },
+ {
+  "t": "Virtualisation, stockage et cloud",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire)",
+  "q": "Quel protocole transporte du stockage bloc sur un réseau IP ?",
+  "o": [
+   "iSCSI",
+   "SMB",
+   "NFS",
+   "FTP"
+  ],
+  "e": "iSCSI : initiateur (le serveur) et cible (la baie). Port TCP 3260. On le met de préférence sur un réseau dédié.",
+  "x": [
+   "SMB partage des fichiers.",
+   "NFS partage des fichiers.",
+   "FTP transfère des fichiers."
+  ],
+  "n": 2
+ },
+ {
+  "t": "Virtualisation, stockage et cloud",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire)",
+  "q": "Qu'est-ce que le « thin provisioning » (allocation dynamique) d'un disque virtuel ?",
+  "o": [
+   "Le fichier du disque grossit au fur et à mesure qu'il se remplit",
+   "Le disque est réservé en entier dès la création",
+   "Le disque est en lecture seule",
+   "Le disque est chiffré"
+  ],
+  "e": "Attention à la surallocation : si toutes les VM se remplissent, le stockage physique sature.",
+  "x": [
+   "C'est le provisionnement fixe (thick).",
+   "Non.",
+   "Non."
+  ],
+  "n": 3
+ },
+ {
+  "t": "Virtualisation, stockage et cloud",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire)",
+  "q": "À quoi sert la migration à chaud d'une VM (vMotion, Live Migration) ?",
+  "o": [
+   "Déplacer une VM allumée vers un autre hôte sans coupure de service",
+   "Copier une VM sur une clé USB",
+   "Réinstaller la VM",
+   "Sauvegarder la VM"
+  ],
+  "e": "Utile pour la maintenance d'un hôte. Il faut un stockage partagé ou une réplication.",
+  "x": [
+   "Non.",
+   "Non.",
+   "Ce n'est pas une sauvegarde."
+  ],
+  "n": 3
+ },
+ {
+  "t": "Virtualisation, stockage et cloud",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire)",
+  "q": "Dans le cloud, qui est responsable de la sécurité de la VM (mises à jour, pare-feu) en IaaS ?",
+  "o": [
+   "Le client, le fournisseur gérant le matériel et la virtualisation",
+   "Toujours le fournisseur",
+   "Personne",
+   "L'ANSSI"
+  ],
+  "e": "C'est le modèle de responsabilité partagée. En SaaS, le fournisseur gère presque tout, sauf les comptes et les données.",
+  "x": [
+   "Pas en IaaS.",
+   "Non.",
+   "Non."
+  ],
+  "n": 4
+ },
+ {
+  "t": "Virtualisation, stockage et cloud",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire)",
+  "q": "Une VM n'a pas de réseau alors que l'hôte en a. Que vérifier en premier ?",
+  "o": [
+   "Le commutateur virtuel auquel la carte de la VM est reliée (externe, interne, privé) et son VLAN",
+   "Le RAID de l'hôte",
+   "La licence Windows",
+   "La taille de la RAM"
+  ],
+  "e": "Hyper-V : un switch externe pour sortir ; un switch interne relie hôte et VM ; un switch privé ne relie que les VM entre elles.",
+  "x": [
+   "Sans lien avec le réseau.",
+   "Sans lien.",
+   "Sans lien."
+  ],
+  "n": 4
+ },
+ {
+  "t": "Virtualisation, stockage et cloud",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire)",
+  "q": "Pourquoi ne faut-il pas restaurer un contrôleur de domaine depuis un vieil instantané sans précaution ?",
+  "o": [
+   "On risque un « USN rollback » qui casse la réplication AD",
+   "Parce que l'instantané est chiffré",
+   "Parce que la VM perdrait son adresse MAC",
+   "Aucun risque"
+  ],
+  "e": "Les hyperviseurs récents gèrent le VM-GenerationID, mais la vraie protection reste une sauvegarde de l'état système faite avec un outil compatible AD.",
+  "x": [
+   "Non.",
+   "Ce n'est pas le problème.",
+   "Le risque est réel."
+  ],
+  "n": 5
+ },
+ {
+  "t": "Wi-Fi, VoIP et IPv6",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire)",
+  "q": "Quelle norme Wi-Fi s'appelle aussi Wi-Fi 6 ?",
+  "o": [
+   "802.11ax",
+   "802.11n",
+   "802.3",
+   "802.1Q"
+  ],
+  "e": "Wi-Fi 4 = 802.11n, Wi-Fi 5 = 802.11ac, Wi-Fi 6/6E = 802.11ax, Wi-Fi 7 = 802.11be.",
+  "x": [
+   "C'est le Wi-Fi 4.",
+   "C'est l'Ethernet filaire.",
+   "C'est le marquage VLAN."
+  ],
+  "n": 0
+ },
+ {
+  "t": "Wi-Fi, VoIP et IPv6",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire)",
+  "q": "Quelle sécurité Wi-Fi choisir aujourd'hui ?",
+  "o": [
+   "WPA3 (ou WPA2-AES au minimum)",
+   "WEP",
+   "Aucune, avec un SSID caché",
+   "WPA avec TKIP"
+  ],
+  "e": "En entreprise : WPA2/WPA3-Entreprise avec 802.1X et un serveur RADIUS (comptes individuels).",
+  "x": [
+   "WEP se casse en quelques minutes.",
+   "Cacher le SSID ne protège rien.",
+   "TKIP est obsolète."
+  ],
+  "n": 1
+ },
+ {
+  "t": "Wi-Fi, VoIP et IPv6",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire)",
+  "q": "Combien de bits fait une adresse IPv6 ?",
+  "o": [
+   "128",
+   "32",
+   "64",
+   "48"
+  ],
+  "e": "Notée en 8 groupes de 4 chiffres hexadécimaux. :: remplace une suite de groupes à zéro (une seule fois).",
+  "x": [
+   "C'est IPv4.",
+   "C'est la taille habituelle de l'identifiant d'interface.",
+   "C'est une adresse MAC."
+  ],
+  "n": 1
+ },
+ {
+  "t": "Wi-Fi, VoIP et IPv6",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire)",
+  "q": "Que commence par fe80:: en IPv6 ?",
+  "o": [
+   "Une adresse de lien local, valable seulement sur le segment",
+   "Une adresse publique",
+   "Une adresse de multicast",
+   "Le bouclage"
+  ],
+  "e": "Toute interface IPv6 en a une. Bouclage : ::1. Global : 2000::/3. Multicast : ff00::/8.",
+  "x": [
+   "Les globales commencent par 2 ou 3.",
+   "Le multicast commence par ff.",
+   "Le bouclage est ::1."
+  ],
+  "n": 2
+ },
+ {
+  "t": "Wi-Fi, VoIP et IPv6",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire)",
+  "q": "Quel protocole IPv6 remplace ARP ?",
+  "o": [
+   "NDP (Neighbor Discovery Protocol)",
+   "DHCPv6",
+   "ICMPv4",
+   "RIPng"
+  ],
+  "e": "NDP utilise ICMPv6 : sollicitation et annonce de voisin, annonce de routeur (RA).",
+  "x": [
+   "Il distribue des adresses.",
+   "C'est IPv4.",
+   "C'est un protocole de routage."
+  ],
+  "n": 2
+ },
+ {
+  "t": "Wi-Fi, VoIP et IPv6",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire)",
+  "q": "Pourquoi utilise-t-on 2,4 GHz plutôt que 5 GHz ?",
+  "o": [
+   "Il porte plus loin et traverse mieux les murs, mais il est plus lent et plus encombré",
+   "Il est toujours plus rapide",
+   "Il n'a aucune interférence",
+   "Il est obligatoire en entreprise"
+  ],
+  "e": "En 2,4 GHz, seuls les canaux 1, 6 et 11 ne se chevauchent pas.",
+  "x": [
+   "C'est le 5 GHz qui est plus rapide.",
+   "Il est très encombré (micro-ondes, Bluetooth).",
+   "Non."
+  ],
+  "n": 2
+ },
+ {
+  "t": "Wi-Fi, VoIP et IPv6",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire)",
+  "q": "Quel protocole établit les appels en VoIP ?",
+  "o": [
+   "SIP",
+   "RTP",
+   "SNMP",
+   "SMTP"
+  ],
+  "e": "SIP (port 5060) ouvre et ferme l'appel ; RTP transporte la voix.",
+  "x": [
+   "RTP transporte la voix.",
+   "Supervision.",
+   "Mail."
+  ],
+  "n": 3
+ },
+ {
+  "t": "Wi-Fi, VoIP et IPv6",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire)",
+  "q": "Pourquoi met-on la téléphonie IP dans un VLAN voix avec de la QoS ?",
+  "o": [
+   "La voix supporte mal la latence, la gigue et les pertes : on la sépare et on la rend prioritaire",
+   "Pour économiser des adresses IP uniquement",
+   "Parce que SIP ne fonctionne pas sans VLAN",
+   "Pour chiffrer les appels"
+  ],
+  "e": "Sur Cisco : switchport voice vlan 20. Les téléphones sont souvent alimentés par le câble (PoE).",
+  "x": [
+   "Ce n'est pas la raison principale.",
+   "Il fonctionne sans.",
+   "Un VLAN ne chiffre rien."
+  ],
+  "n": 3
+ },
+ {
+  "t": "Wi-Fi, VoIP et IPv6",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire)",
+  "q": "Comment un poste IPv6 peut-il se configurer sans serveur DHCP ?",
+  "o": [
+   "Avec SLAAC : il reçoit le préfixe dans l'annonce du routeur (RA) et fabrique lui-même son identifiant",
+   "Il ne peut pas",
+   "Il prend une adresse APIPA",
+   "Avec le protocole ARP"
+  ],
+  "e": "Le préfixe est souvent un /64. DHCPv6 peut compléter (DNS, par exemple).",
+  "x": [
+   "Il le peut.",
+   "APIPA, c'est IPv4.",
+   "ARP n'existe pas en IPv6."
+  ],
+  "n": 4
+ },
+ {
+  "t": "Wi-Fi, VoIP et IPv6",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire)",
+  "q": "Quelle est la forme abrégée de 2001:0db8:0000:0000:0000:0000:0000:0001 ?",
+  "o": [
+   "2001:db8::1",
+   "2001:db8:1",
+   "2001::db8::1",
+   "21:db8::1"
+  ],
+  "e": "On enlève les zéros en tête de chaque groupe et on remplace une seule suite de groupes nuls par ::.",
+  "x": [
+   "Il manque le :: : ce n'est plus la même adresse.",
+   ":: ne s'utilise qu'une fois.",
+   "On n'enlève que les zéros en tête : 2001 reste 2001."
+  ],
+  "n": 4
+ },
+ {
+  "t": "Wi-Fi, VoIP et IPv6",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire)",
+  "q": "Deux bornes Wi-Fi voisines sont sur le canal 3 et le canal 6 en 2,4 GHz. Problème ?",
+  "o": [
+   "Oui : ces canaux se chevauchent ; il faut utiliser 1, 6 et 11",
+   "Non, tous les canaux sont indépendants",
+   "Non, car ils sont différents",
+   "Oui, car le canal 3 est interdit"
+  ],
+  "e": "Un canal occupe environ 20 MHz, alors que les canaux sont espacés de 5 MHz.",
+  "x": [
+   "Faux en 2,4 GHz.",
+   "Ils se chevauchent quand même.",
+   "Il n'est pas interdit, mais il est mal choisi."
+  ],
+  "n": 5
+ },
+ {
+  "t": "Messagerie et web",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire)",
+  "q": "Quel protocole envoie les e-mails entre serveurs ?",
+  "o": [
+   "SMTP",
+   "POP3",
+   "IMAP",
+   "HTTP"
+  ],
+  "e": "SMTP : port 25 entre serveurs, 587 (STARTTLS) pour l'envoi par un client.",
+  "x": [
+   "POP3 relève les mails.",
+   "IMAP consulte les mails sur le serveur.",
+   "HTTP sert au web."
+  ],
+  "n": 0
+ },
+ {
+  "t": "Messagerie et web",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire)",
+  "q": "Quelle est la différence entre POP3 et IMAP ?",
+  "o": [
+   "IMAP garde les mails sur le serveur et synchronise tous les appareils ; POP3 les télécharge, souvent en les supprimant du serveur",
+   "POP3 est plus récent",
+   "IMAP sert à envoyer",
+   "Aucune"
+  ],
+  "e": "Ports sécurisés : IMAPS 993, POP3S 995.",
+  "x": [
+   "C'est l'inverse.",
+   "On envoie avec SMTP.",
+   "Il y en a une."
+  ],
+  "n": 1
+ },
+ {
+  "t": "Messagerie et web",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire)",
+  "q": "Quel est le port de HTTPS ?",
+  "o": [
+   "443",
+   "80",
+   "21",
+   "8080 obligatoirement"
+  ],
+  "e": "HTTP = 80. 8080 est souvent un port alternatif, pas une règle.",
+  "x": [
+   "C'est HTTP.",
+   "C'est FTP.",
+   "Ce n'est pas obligatoire."
+  ],
+  "n": 1
+ },
+ {
+  "t": "Messagerie et web",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire)",
+  "q": "Quel enregistrement DNS indique le serveur de messagerie d'un domaine ?",
+  "o": [
+   "MX",
+   "A",
+   "CNAME",
+   "PTR"
+  ],
+  "e": "Le MX a une priorité : le plus petit nombre est essayé en premier.",
+  "x": [
+   "A donne une adresse IPv4.",
+   "CNAME est un alias.",
+   "PTR sert à la résolution inverse."
+  ],
+  "n": 2
+ },
+ {
+  "t": "Messagerie et web",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire)",
+  "q": "Que signifie un code HTTP 404 ?",
+  "o": [
+   "La ressource n'existe pas",
+   "Le serveur est en panne",
+   "Accès refusé",
+   "Tout va bien"
+  ],
+  "e": "200 = OK, 301/302 = redirection, 403 = interdit, 404 = introuvable, 500 = erreur du serveur, 503 = service indisponible.",
+  "x": [
+   "C'est plutôt 500 ou 503.",
+   "C'est 403 (ou 401 sans authentification).",
+   "C'est 200."
+  ],
+  "n": 2
+ },
+ {
+  "t": "Messagerie et web",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire)",
+  "q": "À quoi sert l'enregistrement SPF ?",
+  "o": [
+   "À lister les serveurs autorisés à envoyer des mails pour le domaine",
+   "À chiffrer les mails",
+   "À stocker les mails",
+   "À accélérer l'envoi"
+  ],
+  "e": "SPF, DKIM (signature) et DMARC (politique à appliquer) luttent ensemble contre l'usurpation d'adresse.",
+  "x": [
+   "Ce n'est pas du chiffrement.",
+   "Non.",
+   "Non."
+  ],
+  "n": 3
+ },
+ {
+  "t": "Messagerie et web",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire)",
+  "q": "Quels sont les serveurs web les plus courants sous Linux ?",
+  "o": [
+   "Apache et Nginx",
+   "IIS et Exchange",
+   "Postfix et Dovecot",
+   "Bind et Unbound"
+  ],
+  "e": "IIS est le serveur web de Windows. Postfix et Dovecot font de la messagerie ; Bind et Unbound font du DNS.",
+  "x": [
+   "Ce sont des produits Windows.",
+   "Ils font de la messagerie.",
+   "Ils font du DNS."
+  ],
+  "n": 3
+ },
+ {
+  "t": "Messagerie et web",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire)",
+  "q": "Qu'est-ce qu'un reverse proxy ?",
+  "o": [
+   "Un serveur placé devant les serveurs web, qui reçoit les requêtes et les relaie (TLS, répartition, filtrage)",
+   "Un proxy qui filtre la navigation des employés",
+   "Un serveur DNS",
+   "Un pare-feu matériel uniquement"
+  ],
+  "e": "Exemples : Nginx, HAProxy, Traefik. Le proxy « classique » est côté utilisateurs ; le reverse proxy est côté serveurs.",
+  "x": [
+   "C'est un proxy classique.",
+   "Non.",
+   "Non."
+  ],
+  "n": 4
+ },
+ {
+  "t": "Messagerie et web",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire)",
+  "q": "Les mails de l'entreprise arrivent en spam chez les clients. Que vérifier en premier ?",
+  "o": [
+   "Les enregistrements SPF, DKIM et DMARC du domaine, et si l'adresse IP d'envoi est sur une liste noire",
+   "La taille des boîtes aux lettres",
+   "La vitesse de la connexion Internet",
+   "Le RAID du serveur"
+  ],
+  "e": "Outils : MXToolbox, mail-tester. Vérifie aussi la résolution inverse (PTR) de l'adresse IP d'envoi.",
+  "x": [
+   "Ça n'a pas d'effet sur le spam.",
+   "Non.",
+   "Non."
+  ],
+  "n": 5
+ }
+]

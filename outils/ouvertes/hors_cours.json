@@ -1,0 +1,645 @@
+[
+ {
+  "t": "Active Directory et GPO",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire)",
+  "q": "Explique comment tu organises l'attribution des droits sur un dossier partagé dans un domaine (méthode AGDLP), avec un exemple.",
+  "r": "On ne donne jamais les droits directement aux comptes. Les utilisateurs sont placés dans des groupes globaux par métier (G_Compta). Ces groupes sont mis dans des groupes de domaine local qui représentent l'accès à une ressource (DL_Compta_RW). On donne les permissions NTFS et de partage au groupe de domaine local. Exemple : un nouveau comptable ? On l'ajoute seulement à G_Compta : il reçoit tous les accès de son métier. C'est plus simple à gérer et à auditer.",
+  "p": [
+   [
+    "Pas de droits donnés directement aux comptes",
+    [
+     "directement",
+     "jamais aux comptes",
+     "pas aux utilisateurs"
+    ]
+   ],
+   [
+    "Utilisateurs dans des groupes globaux (par métier)",
+    [
+     "global",
+     "globaux"
+    ]
+   ],
+   [
+    "Groupes globaux dans des groupes de domaine local (par ressource)",
+    [
+     "domaine local",
+     "dl_"
+    ]
+   ],
+   [
+    "Permissions données au groupe de domaine local",
+    [
+     "permission",
+     "droit"
+    ]
+   ],
+   [
+    "Un exemple concret",
+    [
+     "exemple",
+     "compta"
+    ]
+   ]
+  ],
+  "n": 3
+ },
+ {
+  "t": "Active Directory et GPO",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire)",
+  "q": "Une GPO ne s'applique pas sur un poste. Décris ta démarche de diagnostic.",
+  "r": "Je vérifie d'abord que le poste est bien dans le domaine et dans la bonne OU, car la GPO doit être liée à l'OU qui contient l'objet (ordinateur ou utilisateur selon la partie de la GPO). Je vérifie le DNS du poste : il doit pointer vers le contrôleur de domaine. Je lance gpupdate /force, puis gpresult /r (ou gpresult /h rapport.html) pour voir les GPO appliquées ou refusées. Je regarde aussi le filtrage de sécurité, un éventuel blocage d'héritage, un filtre WMI et l'ordre LSDOU. Enfin, je consulte l'Observateur d'événements (journal GroupPolicy).",
+  "p": [
+   [
+    "Bonne OU et bon type d'objet (ordinateur ou utilisateur)",
+    [
+     "l'ou",
+     "bonne ou",
+     "unite d'organisation"
+    ]
+   ],
+   [
+    "DNS du poste pointant vers le DC",
+    [
+     "dns"
+    ]
+   ],
+   [
+    "gpupdate /force",
+    [
+     "gpupdate"
+    ]
+   ],
+   [
+    "gpresult pour voir ce qui est appliqué",
+    [
+     "gpresult"
+    ]
+   ],
+   [
+    "Filtrage, héritage, ordre LSDOU",
+    [
+     "filtrage",
+     "heritage",
+     "lsdou",
+     "enforced",
+     "wmi"
+    ]
+   ]
+  ],
+  "n": 4
+ },
+ {
+  "t": "Windows Server et PowerShell",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire)",
+  "q": "Explique ce que fait cette commande et à quoi elle peut servir : Get-Service | Where-Object Status -eq 'Stopped' | Select-Object Name",
+  "r": "Get-Service récupère tous les services sous forme d'objets. Le pipe | les passe à Where-Object, qui ne garde que ceux dont la propriété Status est égale (-eq) à Stopped, c'est-à-dire les services arrêtés. Select-Object Name n'affiche que leur nom. Ça sert par exemple à repérer un service important arrêté sur un serveur, et à exporter la liste avec Export-Csv.",
+  "p": [
+   [
+    "Get-Service liste les services",
+    [
+     "get-service",
+     "liste les services",
+     "tous les services"
+    ]
+   ],
+   [
+    "Le pipe transmet des objets",
+    [
+     "pipe",
+     "|",
+     "objet"
+    ]
+   ],
+   [
+    "Where-Object filtre (-eq Stopped)",
+    [
+     "where",
+     "filtre"
+    ]
+   ],
+   [
+    "Select-Object n'affiche que le nom",
+    [
+     "select",
+     "nom"
+    ]
+   ],
+   [
+    "Une utilité concrète",
+    [
+     "reperer",
+     "exporter",
+     "verifier",
+     "surveiller"
+    ]
+   ]
+  ],
+  "n": 3
+ },
+ {
+  "t": "Linux",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire)",
+  "q": "Explique les droits Linux d'un fichier affiché « -rwxr-x--- 1 alice compta script.sh » et comment les modifier.",
+  "r": "Le premier caractère « - » indique un fichier normal. Ensuite trois blocs : propriétaire alice rwx (lire, écrire, exécuter), groupe compta r-x (lire et exécuter), autres --- (aucun droit). En octal : r=4, w=2, x=1, donc 750. On change les droits avec chmod (chmod 750 script.sh ou chmod g-x script.sh), le propriétaire avec chown (chown bob script.sh) et le groupe avec chgrp ou chown alice:rh.",
+  "p": [
+   [
+    "Trois blocs : propriétaire, groupe, autres",
+    [
+     "proprietaire",
+     "groupe",
+     "autres"
+    ]
+   ],
+   [
+    "Signification de r, w, x",
+    [
+     "lire",
+     "lecture",
+     "ecrire",
+     "execut"
+    ]
+   ],
+   [
+    "Notation octale (750)",
+    [
+     "750",
+     "octal"
+    ]
+   ],
+   [
+    "chmod pour les droits",
+    [
+     "chmod"
+    ]
+   ],
+   [
+    "chown / chgrp pour le propriétaire ou le groupe",
+    [
+     "chown",
+     "chgrp"
+    ]
+   ]
+  ],
+  "n": 3
+ },
+ {
+  "t": "Scripts (Bash, PowerShell)",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire)",
+  "q": "Décris un script de sauvegarde quotidienne d'un dossier sous Linux : ce qu'il doit faire et comment le planifier.",
+  "r": "Le script Bash commence par #!/bin/bash et set -e. Il crée une archive datée : tar -czf /sauv/site_$(date +%F).tar.gz /var/www. Il vérifie le code retour ($?) et écrit le résultat dans un journal avec la date. Il supprime les archives de plus de 7 jours avec find /sauv -mtime +7 -delete. Idéalement il copie l'archive hors du serveur (rsync ou scp). On le rend exécutable avec chmod +x et on le planifie avec crontab -e, par exemple 0 2 * * * /root/save.sh pour 2 h chaque nuit.",
+  "p": [
+   [
+    "Archive datée (tar + date)",
+    [
+     "tar "
+    ]
+   ],
+   [
+    "Contrôle du résultat et journal",
+    [
+     "journal",
+     "log",
+     "$?",
+     "code retour"
+    ]
+   ],
+   [
+    "Rotation : suppression des vieilles sauvegardes",
+    [
+     "find",
+     "mtime",
+     "supprim",
+     "rotation"
+    ]
+   ],
+   [
+    "Copie hors du serveur",
+    [
+     "rsync",
+     "scp",
+     "hors",
+     "distant"
+    ]
+   ],
+   [
+    "Planification avec cron",
+    [
+     "cron"
+    ]
+   ]
+  ],
+  "n": 4
+ },
+ {
+  "t": "Sauvegarde, RAID et PRA",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire)",
+  "q": "Explique la règle 3-2-1, la différence entre RPO et RTO, et pourquoi un RAID ne remplace pas une sauvegarde.",
+  "r": "La règle 3-2-1 : garder 3 copies des données, sur 2 supports différents, dont 1 hors site (et idéalement une copie hors ligne contre les rançongiciels). Le RPO est la perte de données maximale acceptable (par exemple 24 h, donc une sauvegarde par jour). Le RTO est la durée maximale d'interruption avant le redémarrage du service. Un RAID protège seulement contre la panne d'un disque : une suppression, un virus, un rançongiciel ou un incendie touchent toutes les copies du RAID en même temps.",
+  "p": [
+   [
+    "3 copies, 2 supports, 1 hors site",
+    [
+     "3 copies",
+     "trois copies",
+     "3-2-1",
+     "hors site"
+    ]
+   ],
+   [
+    "RPO = perte de données acceptable",
+    [
+     "rpo"
+    ]
+   ],
+   [
+    "RTO = durée d'interruption acceptable",
+    [
+     "rto"
+    ]
+   ],
+   [
+    "Le RAID protège seulement d'une panne de disque",
+    [
+     "panne",
+     "disque"
+    ]
+   ],
+   [
+    "Suppression, virus ou sinistre touchent aussi le RAID",
+    [
+     "suppression",
+     "virus",
+     "rancon",
+     "incendie"
+    ]
+   ]
+  ],
+  "n": 3
+ },
+ {
+  "t": "Sauvegarde, RAID et PRA",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire)",
+  "q": "Compare les sauvegardes complète, incrémentale et différentielle : temps de sauvegarde, espace et restauration.",
+  "r": "La complète copie tout : elle est longue et prend beaucoup de place, mais la restauration est simple (un seul jeu). L'incrémentale ne copie que ce qui a changé depuis la dernière sauvegarde, quelle qu'elle soit : rapide et petite, mais pour restaurer il faut la complète et toutes les incrémentales suivantes (si une manque, la chaîne est cassée). La différentielle copie ce qui a changé depuis la dernière complète : elle grossit chaque jour, mais la restauration ne demande que la complète et la dernière différentielle.",
+  "p": [
+   [
+    "Complète : tout, longue, restauration simple",
+    [
+     "complete"
+    ]
+   ],
+   [
+    "Incrémentale : depuis la dernière sauvegarde",
+    [
+     "incrementale"
+    ]
+   ],
+   [
+    "Restauration incrémentale : complète + toutes les incrémentales",
+    [
+     "toutes les incrementales",
+     "chaine"
+    ]
+   ],
+   [
+    "Différentielle : depuis la dernière complète",
+    [
+     "differentielle"
+    ]
+   ],
+   [
+    "Restauration différentielle : complète + dernière différentielle",
+    [
+     "derniere differentielle"
+    ]
+   ]
+  ],
+  "n": 4
+ },
+ {
+  "t": "Supervision et journaux",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire)",
+  "q": "À quoi sert la supervision d'un parc, et quels protocoles et indicateurs utilise-t-on ?",
+  "r": "La supervision détecte les pannes avant les utilisateurs et aide à anticiper (disque qui se remplit). On surveille la disponibilité (ping, services, ports) et les ressources : CPU, mémoire, espace disque, trafic des interfaces. On utilise SNMP (UDP 161, traps sur 162) ou des agents (Zabbix, Centreon), et Syslog pour centraliser les journaux. On fixe des seuils (avertissement à 80 %, critique à 90 %) qui déclenchent des alertes par mail ou SMS. NTP synchronise l'heure pour pouvoir comparer les journaux.",
+  "p": [
+   [
+    "Détecter et anticiper les pannes",
+    [
+     "detect",
+     "anticip",
+     "avant"
+    ]
+   ],
+   [
+    "Indicateurs : CPU, RAM, disque, services",
+    [
+     "cpu",
+     "memoire",
+     "ram",
+     "disque"
+    ]
+   ],
+   [
+    "SNMP ou agents",
+    [
+     "snmp",
+     "agent"
+    ]
+   ],
+   [
+    "Seuils et alertes",
+    [
+     "seuil",
+     "alerte"
+    ]
+   ],
+   [
+    "Centralisation des journaux (Syslog) et heure (NTP)",
+    [
+     "syslog",
+     "journa",
+     "ntp"
+    ]
+   ]
+  ],
+  "n": 3
+ },
+ {
+  "t": "Sécurité",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire)",
+  "q": "Cite et explique cinq mesures d'hygiène informatique pour protéger une PME.",
+  "r": "1) Faire les mises à jour des systèmes et des logiciels rapidement. 2) Des mots de passe solides, uniques, avec l'authentification multifacteur (MFA) sur les accès sensibles. 3) Le moindre privilège : pas d'utilisateurs administrateurs, et des comptes d'administration séparés. 4) Des sauvegardes régulières, dont une hors ligne, et des tests de restauration. 5) La sensibilisation des utilisateurs à l'hameçonnage. On peut ajouter : un pare-feu, la segmentation du réseau, un antivirus ou EDR, la centralisation des journaux, l'inventaire du parc. Ces mesures viennent du guide d'hygiène de l'ANSSI.",
+  "p": [
+   [
+    "Mises à jour",
+    [
+     "mise a jour",
+     "mises a jour",
+     "correctif"
+    ]
+   ],
+   [
+    "Mots de passe solides et MFA",
+    [
+     "mot de passe",
+     "mfa",
+     "multifacteur"
+    ]
+   ],
+   [
+    "Moindre privilège, comptes d'administration séparés",
+    [
+     "moindre privilege",
+     "administrat"
+    ]
+   ],
+   [
+    "Sauvegardes (dont hors ligne)",
+    [
+     "sauvegarde"
+    ]
+   ],
+   [
+    "Sensibilisation, hameçonnage",
+    [
+     "sensibilis",
+     "hameconnage",
+     "phishing"
+    ]
+   ]
+  ],
+  "n": 3
+ },
+ {
+  "t": "Sécurité",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire)",
+  "q": "Explique le rôle d'une DMZ et d'un VPN dans l'architecture d'une entreprise.",
+  "r": "La DMZ est une zone réseau séparée par le pare-feu, où l'on place les serveurs accessibles depuis Internet (web, messagerie, reverse proxy). Si l'un d'eux est piraté, l'attaquant n'est pas directement dans le réseau interne, car le pare-feu filtre les flux de la DMZ vers le LAN. Le VPN crée un tunnel chiffré à travers Internet, soit pour un salarié nomade (client vers site), soit pour relier deux sites (site à site), avec IPsec, OpenVPN ou WireGuard. L'accès se fait avec une authentification forte.",
+  "p": [
+   [
+    "DMZ : zone pour les serveurs exposés à Internet",
+    [
+     "dmz"
+    ]
+   ],
+   [
+    "Isolation : le pare-feu protège le LAN",
+    [
+     "pare-feu",
+     "isol",
+     "lan",
+     "interne"
+    ]
+   ],
+   [
+    "VPN : tunnel chiffré",
+    [
+     "tunnel",
+     "chiffr"
+    ]
+   ],
+   [
+    "Nomade et site à site",
+    [
+     "nomade",
+     "site a site",
+     "teletravail"
+    ]
+   ],
+   [
+    "Protocoles (IPsec, OpenVPN, WireGuard…)",
+    [
+     "ipsec",
+     "openvpn",
+     "wireguard"
+    ]
+   ]
+  ],
+  "n": 4
+ },
+ {
+  "t": "ITIL et support",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire)",
+  "q": "Un utilisateur appelle le support : décris le traitement du ticket de bout en bout.",
+  "r": "J'accueille l'utilisateur et je crée le ticket dans l'outil (GLPI) : identité, poste, description et message d'erreur. Je qualifie : incident ou demande, catégorie, et priorité selon l'impact et l'urgence. Je diagnostique avec des questions (depuis quand ? qu'est-ce qui a changé ? d'autres personnes sont-elles touchées ?) et je cherche dans la base de connaissances. Je résous ou j'escalade au niveau 2 en documentant ce qui a été fait. Après la solution, je fais valider par l'utilisateur, puis je clôture le ticket en notant la solution, et j'enrichis la base de connaissances.",
+  "p": [
+   [
+    "Création du ticket avec les informations",
+    [
+     "ticket",
+     "glpi"
+    ]
+   ],
+   [
+    "Qualification : type, priorité (impact × urgence)",
+    [
+     "priorit",
+     "impact",
+     "urgence",
+     "qualif"
+    ]
+   ],
+   [
+    "Diagnostic par questions et base de connaissances",
+    [
+     "diagnost",
+     "question",
+     "base de connaissance"
+    ]
+   ],
+   [
+    "Résolution ou escalade documentée",
+    [
+     "escalad",
+     "niveau 2",
+     "n2"
+    ]
+   ],
+   [
+    "Validation par l'utilisateur et clôture",
+    [
+     "clotur",
+     "valid"
+    ]
+   ]
+  ],
+  "n": 3
+ },
+ {
+  "t": "Virtualisation, stockage et cloud",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire)",
+  "q": "Quels sont les avantages de la virtualisation de serveurs, et quelles précautions prendre ?",
+  "r": "Avantages : plusieurs serveurs sur une seule machine physique, donc moins de matériel, d'énergie et de place. On crée une VM en quelques minutes, on fait des instantanés avant une mise à jour, et on déplace des VM à chaud entre hôtes (haute disponibilité). Précautions : l'hôte devient un point unique de panne, d'où le cluster et le stockage partagé. Il faut dimensionner la RAM, le CPU et le stockage (attention à la surallocation), séparer les réseaux avec des commutateurs virtuels et des VLAN, et sauvegarder les VM : un instantané n'est pas une sauvegarde.",
+  "p": [
+   [
+    "Consolidation : moins de matériel et d'énergie",
+    [
+     "materiel",
+     "energie",
+     "consolid"
+    ]
+   ],
+   [
+    "Souplesse : création rapide, instantanés",
+    [
+     "instantane",
+     "snapshot",
+     "rapide"
+    ]
+   ],
+   [
+    "Haute disponibilité, migration à chaud",
+    [
+     "migration",
+     "haute disponibilite",
+     "cluster"
+    ]
+   ],
+   [
+    "Hôte = point unique de panne, dimensionnement",
+    [
+     "point unique",
+     "dimension",
+     "surallocation"
+    ]
+   ],
+   [
+    "Sauvegarder les VM (l'instantané ne suffit pas)",
+    [
+     "sauvegard"
+    ]
+   ]
+  ],
+  "n": 3
+ },
+ {
+  "t": "Wi-Fi, VoIP et IPv6",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire)",
+  "q": "Présente les principales différences entre IPv4 et IPv6.",
+  "r": "IPv4 a des adresses de 32 bits (environ 4,3 milliards), ce qui a obligé à utiliser le NAT. IPv6 a des adresses de 128 bits, notées en hexadécimal par groupes de 4 avec l'abréviation ::. Il n'y a plus de broadcast, seulement du multicast et de l'anycast. ARP est remplacé par NDP (ICMPv6). Une interface a plusieurs adresses : lien local fe80::/10, globale 2000::/3. L'autoconfiguration SLAAC permet de se passer de DHCP. Le NAT n'est plus nécessaire.",
+  "p": [
+   [
+    "32 bits contre 128 bits",
+    [
+     "128"
+    ]
+   ],
+   [
+    "Notation hexadécimale avec ::",
+    [
+     "hexa",
+     "::"
+    ]
+   ],
+   [
+    "Plus de broadcast (multicast)",
+    [
+     "broadcast",
+     "multicast"
+    ]
+   ],
+   [
+    "NDP remplace ARP",
+    [
+     "ndp",
+     "arp"
+    ]
+   ],
+   [
+    "SLAAC, lien local fe80, plus de NAT nécessaire",
+    [
+     "slaac",
+     "fe80"
+    ]
+   ]
+  ],
+  "n": 4
+ },
+ {
+  "t": "Messagerie et web",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire)",
+  "q": "Explique le trajet d'un e-mail, de l'expéditeur jusqu'à la boîte du destinataire, et les protocoles utilisés.",
+  "r": "Le client de messagerie envoie le mail à son serveur en SMTP (port 587 avec authentification et STARTTLS). Ce serveur interroge le DNS pour trouver l'enregistrement MX du domaine destinataire, puis transmet le mail au serveur du destinataire en SMTP (port 25). Le serveur de réception vérifie SPF, DKIM et DMARC, filtre le spam, puis dépose le mail dans la boîte. Le destinataire le consulte en IMAP (993, le mail reste sur le serveur) ou en POP3 (995), ou par un webmail en HTTPS.",
+  "p": [
+   [
+    "Envoi en SMTP",
+    [
+     "smtp"
+    ]
+   ],
+   [
+    "Recherche de l'enregistrement MX dans le DNS",
+    [
+     "mx"
+    ]
+   ],
+   [
+    "Vérifications anti-usurpation et anti-spam",
+    [
+     "spf",
+     "dkim",
+     "dmarc",
+     "spam"
+    ]
+   ],
+   [
+    "Consultation en IMAP ou POP3",
+    [
+     "imap",
+     "pop"
+    ]
+   ],
+   [
+    "Ports et chiffrement",
+    [
+     "587",
+     "993",
+     "tls",
+     "port 25"
+    ]
+   ]
+  ],
+  "n": 3
+ }
+]

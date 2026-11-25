@@ -419,7 +419,7 @@ const SHOWS = [
   ['show access-lists', (N, d) => sAcl(N, d), 'router'],
   ['show ip nat translations', (N, d) => sNat(N, d), 'router'],
 ];
-for (const [p, f, k] of SHOWS) { add('priv', p, (N, d) => { d.seen[p] = true; return f(N, d); }, k); }
+for (const [p, f, k] of SHOWS) { add(p === 'show users' ? 'user priv' : 'priv', p, (N, d) => { d.seen[p] = true; return f(N, d); }, k); }
 add('priv', 'show port-security interface IF', (N, d, [n]) => { const pf = parseIf(n); const nm = pf && pf.base; const i = nm && d.ifs[nm]; if (!i) return '% Invalid input detected at \'^\' marker.'; d.seen['show port-security interface'] = true; const p = i.ps; if (!p || !p.on) return 'Port Security              : Disabled\nPort Status                : Secure-down'; return `Port Security              : Enabled\nPort Status                : ${physUp(N, d.id, nm) ? 'Secure-up' : 'Secure-down'}\nViolation Mode             : ${p.viol[0].toUpperCase() + p.viol.slice(1)}\nAging Time                 : 0 mins\nAging Type                 : Absolute\nSecureStatic Address Aging : Disabled\nMaximum MAC Addresses      : ${p.max}\nTotal MAC Addresses        : ${p.macs.length}\nConfigured MAC Addresses   : 0\nSticky MAC Addresses       : ${p.sticky ? p.macs.length : 0}\nLast Source Address:Vlan   : ${p.macs[0] || '0000.0000.0000'}:${i.vlan}\nSecurity Violation Count   : ${p.count}`; }, 'switch');
 add('priv', 'show spanning-tree vlan N', (N, d, [v]) => { d.seen['show spanning-tree'] = true; return sStp(N, d, +v); }, 'switch');
 for (const [p, f, k] of SHOWS.filter(s => /ip interface brief|version|history/.test(s[0]))) add('user', p, (N, d) => { d.seen[p] = true; return f(N, d); }, k);
@@ -588,7 +588,7 @@ function genKey(d, bits) {
   if (bits < 360 || bits > 4096) return '% Invalid input detected at \'^\' marker.';
   d.rsa = bits; return `The name for the keys will be: ${d.hostname}.${d.dom}\n% The key modulus size is ${bits} bits\n% Generating ${bits} bit RSA keys, keys will be non-exportable...[OK]\n*Mar 1 00:12:41.123: %SSH-5-ENABLED: SSH 1.99 has been enabled`;
 }
-add('conf', 'crypto key generate rsa', (N, d) => { if (/^(router|switch)$/i.test(d.hostname) || !d.dom) return genKey(d, 1024); d.pend = { prompt: `The name for the keys will be: ${d.hostname}.${d.dom}\nChoose the size of the key modulus in the range of 360 to 4096 for your\n  General Purpose Keys. Choosing a key modulus greater than 512 may take\n  a few minutes.\n\nHow many bits in the modulus [512]: `, fn: a => ({ out: genKey(d, /^\s*\d+\s*$/.test(a) ? +a : 512).split('\n').slice(1).join('\n') }) }; return { out: '' }; });
+add('conf', 'crypto key generate rsa', (N, d) => { if (/^(router|switch)$/i.test(d.hostname) || !d.dom) return genKey(d, 1024); d.pend = { prompt: 'How many bits in the modulus [512]: ', fn: a => ({ out: genKey(d, /^\s*\d+\s*$/.test(a) ? +a : 512).split('\n').slice(1).join('\n') }) }; return { out: `The name for the keys will be: ${d.hostname}.${d.dom}\nChoose the size of the key modulus in the range of 360 to 4096 for your\n  General Purpose Keys. Choosing a key modulus greater than 512 may take\n  a few minutes.\n` }; });
 add('conf', 'crypto key generate rsa modulus N', (N, d, [b]) => genKey(d, +b));
 add('conf', 'crypto key generate rsa general-keys modulus N', (N, d, [b]) => genKey(d, +b));
 add('conf', 'crypto key zeroize rsa', (N, d) => { d.rsa = null; return '% All keys will be removed.\n% All router certs issued using these keys will also be removed.'; });
@@ -1105,7 +1105,7 @@ const LABS = [
   ['Sur R1, définis le domaine tssr.lan et un compte local admin (mot de passe chiffré : Cisco123).', 'ip domain-name tssr.lan\nusername admin secret Cisco123', N => dv(N, 'R1').dom === 'tssr.lan' && !!dv(N, 'R1').users.admin && dv(N, 'R1').users.admin.secret],
   ['Génère les clés RSA (1024 bits) et active SSH version 2.', 'crypto key generate rsa\n1024   (à la question du nombre de bits)\nip ssh version 2', N => dv(N, 'R1').rsa >= 768 && dv(N, 'R1').ssh.v === 2],
   ['Sur les lignes VTY 0 à 4 : authentification par les comptes locaux, SSH uniquement.', 'line vty 0 4\nlogin local\ntransport input ssh', N => dv(N, 'R1').vty.login === 'local' && dv(N, 'R1').vty.transport === 'ssh'],
-  ['Depuis PC1, connecte-toi en SSH à R1, puis tape show users et exit.', 'Clique sur PC1 : ssh -l admin 192.168.1.254\nmot de passe : Cisco123\nshow users\nexit', N => !!dv(N, 'R1').seen.sshLogin && !!dv(N, 'R1').seen['show users']],
+  ['Depuis PC1, connecte-toi en SSH à R1, puis tape show users et exit.', 'Clique sur PC1 : ssh -l admin 192.168.1.254\nmot de passe : Cisco123\nenable\nshow users\nexit', N => !!dv(N, 'R1').seen.sshLogin && !!dv(N, 'R1').seen['show users']],
   ['Depuis PC2, essaie telnet 192.168.1.254 : refusé, seul SSH est permis.', 'Clique sur PC2 : telnet 192.168.1.254', N => !!dv(N, 'PC2').seen['telnet 192.168.1.254'] && dv(N, 'R1').vty.transport === 'ssh'],
   ['Limite l\'accès distant au seul PC1 : ACL 5 et access-class sur les lignes VTY.', 'access-list 5 permit host 192.168.1.10\nline vty 0 4\naccess-class 5 in', N => dv(N, 'R1').vty.acl === '5' && rules(N, 'R1', '5').some(r => r.act === 'permit' && isHost(r.src, '192.168.1.10'))],
   ['Sur SW1, coupe les ports inutilisés Fa0/3 à Fa0/24.', 'interface range fa0/3 - 24\nshutdown', N => { const d = dv(N, 'SW1'); for (let k = 3; k <= 24; k++) { const i = d.ifs['FastEthernet0/' + k]; if (!i || !i.shut) return false; } return true; }],
@@ -1145,7 +1145,7 @@ if (typeof document !== 'undefined') (function () {
   const kindName = { router: 'Routeur', switch: 'Switch', pc: 'PC' };
 
   function welcome(d) {
-    if (d.kind === 'pc') return `${d.id} : invite de commandes Windows.\nCommandes : ipconfig, ping <adresse IP>.\n`;
+    if (d.kind === 'pc') return `${d.id} : invite de commandes Windows.\nCommandes : ipconfig, ipconfig /renew, ping <IP>, curl http://<IP>, ssh -l <utilisateur> <IP>, telnet <IP>. Tape help pour la liste.\n`;
     return `${d.id} (${d.kind === 'router' ? 'routeur Cisco 1941' : 'switch Cisco 2960'}) : connexion console.\nAide : « ? » liste les commandes, Tab complète, ↑ ↓ rappellent l'historique.\n\nPress RETURN to get started!\n`;
   }
   function loadLab(id, fresh) {
