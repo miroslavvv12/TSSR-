@@ -1,123 +1,267 @@
 [
 {
 "t": "NAT / PAT",
-"s": "Cours Architecture d'un réseau (NAT)",
-"q": "À quoi sert la NAT sur un routeur ou une box ?",
+"s": "Cours NAT/PAT (David Rodriguez)",
+"q": "Pourquoi une adresse privée ne peut-elle pas servir à communiquer sur Internet ?",
 "o": [
-"Remplacer les adresses IP privées des postes par l'adresse IP publique quand ils vont sur Internet",
-"Attribuer automatiquement les adresses IP aux postes",
-"Traduire les noms de domaine en adresses IP",
-"Découper le réseau en VLAN"
+"Internet n'accepte de véhiculer que des adresses publiques",
+"Elle est trop longue",
+"Elle change à chaque redémarrage",
+"Elle n'a pas de masque"
 ],
-"e": "NAT = Network Address Translation. Le routeur masque les adresses privées et présente son adresse publique."
+"e": "Une adresse privée n'est valable que sur un réseau privé."
 },
 {
 "t": "NAT / PAT",
-"s": "Cours Architecture d'un réseau (NAT)",
-"q": "Pourquoi un poste en 192.168.1.10 a-t-il besoin de la NAT pour aller sur Internet ?",
+"s": "Cours NAT/PAT (David Rodriguez)",
+"q": "Quel est le principal intérêt des adresses IP privées ?",
 "o": [
-"Une adresse privée n'est pas routable sur Internet",
-"Parce que son masque est trop petit",
-"Parce que le DNS ne connaît pas les adresses privées",
-"Il n'en a pas besoin"
+"Disposer de beaucoup d'adresses pour ses réseaux privés et pallier le manque d'adresses publiques IPv4",
+"Aller plus vite sur Internet",
+"Chiffrer les échanges",
+"Se passer de routeur"
 ],
-"e": "Les plages 10/8, 172.16/12 et 192.168/16 sont privées : les routeurs d'Internet ne les acheminent pas."
+"e": "Le manque d'adresses publiques est le gros problème d'IPv4."
 },
 {
 "t": "NAT / PAT",
-"s": "Cours Architecture d'un réseau (NAT)",
-"q": "Quelles informations la box garde-t-elle dans sa table de NAT pour renvoyer la réponse au bon poste ?",
+"s": "Cours NAT/PAT (David Rodriguez)",
+"q": "Où active-t-on le mécanisme de NAT ?",
 "o": [
-"L'IP privée du poste, l'IP de destination, la durée de vie et le port source",
-"Seulement l'adresse MAC du poste",
-"Le nom d'hôte et le mot de passe Wi-Fi",
-"Le bail DHCP du poste"
+"Sur le routeur qui fait le lien entre le réseau privé et le réseau public",
+"Sur chaque PC du réseau",
+"Sur le serveur DNS",
+"Sur le switch d'étage"
 ],
-"e": "Le port source permet de distinguer plusieurs demandes venant du même ordinateur ou de postes différents."
+"e": "Le cours cite aussi le pare-feu ou le proxy comme emplacements possibles."
 },
 {
 "t": "NAT / PAT",
-"s": "Cours Architecture d'un réseau (NAT)",
-"q": "Le poste 192.168.1.10 envoie une requête DNS à 8.8.8.8. Sur Internet, quelle adresse source voit Google ?",
+"s": "Cours NAT/PAT (David Rodriguez)",
+"q": "Quel est le principe général de la NAT pour un PC qui sort sur Internet ?",
 "o": [
-"L'adresse IP publique (WAN) de la box",
-"192.168.1.10",
-"L'adresse MAC du poste",
-"192.168.1.1, l'adresse LAN de la box"
+"Remplacer l'adresse IP source privée du PC par l'adresse IP publique du routeur",
+"Remplacer l'adresse du serveur par celle du PC",
+"Remplacer l'adresse MAC par l'adresse IP",
+"Chiffrer l'adresse IP du PC"
 ],
-"e": "Après le routeur, l'adresse source privée est remplacée par l'IP WAN. La réponse revient vers l'IP WAN, puis la box la renvoie au poste."
+"e": "Exemple du cours : un PC domestique qui surfe à travers sa box."
 },
 {
 "t": "NAT / PAT",
-"s": "Cours Architecture d'un réseau (PAT)",
-"q": "Dans ton cours, à quoi sert la table de PAT (redirection de port) ?",
+"s": "Cours NAT/PAT (David Rodriguez)",
+"q": "Que garde la box en mémoire quand elle traduit le paquet d'un PC ?",
 "o": [
-"Rendre un service du réseau local accessible depuis Internet",
-"Permettre aux postes d'aller sur Internet",
-"Bloquer les ports dangereux",
-"Donner une adresse IP aux postes"
+"L'association : adresse privée du PC, adresse publique du serveur, ports client-serveur",
+"Seulement l'adresse MAC du PC",
+"Le contenu de la page web",
+"Le mot de passe Wi-Fi"
 ],
-"e": "Exemple du cours : accéder à sa caméra IP depuis Internet. On l'appelle aussi port forwarding."
+"e": "Grâce à cette table, la réponse du serveur est renvoyée au bon PC."
 },
 {
 "t": "NAT / PAT",
-"s": "Cours Architecture d'un réseau (PAT)",
-"q": "Quelles informations contient une règle de redirection de port ?",
+"s": "Cours NAT/PAT (David Rodriguez)",
+"q": "Le serveur web répond au PC. Vers quelle adresse de destination envoie-t-il sa réponse ?",
 "o": [
-"Le protocole (TCP ou UDP), le port source, le port de destination et l'IP LAN de l'équipement",
-"L'adresse MAC et le VLAN",
-"Le nom de domaine et le serveur DNS",
-"Le masque et la passerelle"
+"L'adresse IP publique de la box",
+"L'adresse privée du PC",
+"L'adresse MAC du PC",
+"L'adresse du serveur DNS"
 ],
-"e": "La box sait ainsi vers quel équipement du LAN envoyer ce qui arrive sur ce port."
+"e": "La box remplace ensuite son adresse publique par l'adresse privée du PC."
 },
 {
 "t": "NAT / PAT",
-"s": "Notion générale (pas dans les cours que j'ai pu lire)",
-"q": "Sans redirection de port, peut-on joindre depuis Internet un PC du réseau local derrière une box ?",
+"s": "Cours NAT/PAT (David Rodriguez)",
+"q": "Avec une seule adresse IP publique, combien de machines peuvent communiquer en même temps sur Internet ?",
 "o": [
-"Non, une connexion entrante ne correspond à aucune entrée de la table de NAT",
-"Oui, avec son adresse privée",
-"Oui, avec son adresse MAC",
-"Oui, toujours"
+"Plusieurs machines d'adresses privées",
+"Une seule",
+"Deux au maximum",
+"Aucune sans NAT statique"
 ],
-"e": "La NAT ne laisse revenir que les réponses à des demandes parties de l'intérieur."
+"e": "C'est le cas de toutes les box : tous les appareils de la maison sortent avec la même IP publique."
 },
 {
 "t": "NAT / PAT",
-"s": "Notion générale (pas dans les cours que j'ai pu lire)",
-"q": "Chez Cisco, que veut dire PAT (ou NAT « overload ») ?",
+"s": "Cours NAT/PAT (David Rodriguez)",
+"q": "Que veut dire NAT ?",
 "o": [
-"Plusieurs postes partagent une seule adresse publique, distingués par leur numéro de port",
-"Une adresse privée toujours traduite par la même adresse publique",
-"Une redirection de port vers un serveur",
-"Un VLAN pour Internet"
+"Network Address Translation",
+"Network Access Table",
+"New Address Transfer",
+"Network Authentication Token"
 ],
-"e": "Attention au vocabulaire : chez Cisco, PAT désigne cette surcharge. Ton cours appelle « PAT » la redirection de port. C'est le cas d'une box à la maison : tous les appareils sortent avec la même IP publique."
+"e": "La NAT traduit des adresses entre les réseaux et isole le trafic local du trafic d'Internet."
 },
 {
 "t": "NAT / PAT",
-"s": "Notion générale (pas dans les cours que j'ai pu lire)",
-"q": "Qu'est-ce que la NAT statique ?",
+"s": "Cours NAT/PAT (David Rodriguez)",
+"q": "Quels sont les 3 types de translation cités dans le cours ?",
 "o": [
-"Une adresse privée toujours traduite par la même adresse publique",
-"Plusieurs postes qui partagent une seule adresse publique",
-"Une plage d'adresses publiques attribuées à la demande",
-"Une adresse IP fixe sur un poste"
+"n privées → 1 publique, n privées → m publiques, 1 privée → 1 publique",
+"1 privée → n publiques uniquement",
+"Privée → MAC, MAC → publique, publique → privée",
+"IPv4 → IPv6, IPv6 → IPv4, IPv4 → IPv4"
 ],
-"e": "Utile pour un serveur qui doit être joignable depuis Internet avec toujours la même adresse."
+"e": "1 privée vers 1 publique = traduction fixe ; n vers m = pool d'adresses ; n vers 1 = tout le monde derrière une seule adresse."
 },
 {
 "t": "NAT / PAT",
-"s": "Notion générale (pas dans les cours que j'ai pu lire)",
-"q": "Qu'est-ce que la NAT dynamique ?",
+"s": "Cours NAT/PAT (David Rodriguez)",
+"q": "Dans le cours, au départ, que contient la table de translation dynamique ?",
 "o": [
-"Les postes reçoivent une adresse publique prise dans un pool, tant qu'il en reste",
-"Chaque poste garde toujours la même adresse publique",
-"Tous les postes partagent une seule adresse grâce aux ports",
-"Le DHCP qui distribue des adresses"
+"Rien : elle est vide au départ",
+"Toutes les adresses du réseau",
+"Les adresses MAC",
+"Les règles du pare-feu"
 ],
-"e": "Si le pool est vide, les postes suivants ne sortent pas. C'est pour ça que la PAT (overload) est la plus utilisée."
+"e": "Les entrées sont ajoutées quand les paquets sortent."
+},
+{
+"t": "NAT / PAT",
+"s": "Cours NAT/PAT (David Rodriguez)",
+"q": "Une réponse arrive depuis Internet. Que fait le routeur NAT dynamique ?",
+"o": [
+"Il cherche dans sa table la source interne correspondante et remplace la destination par cette adresse interne",
+"Il l'envoie à tous les postes du réseau",
+"Il la rejette toujours",
+"Il la transmet au serveur DNS"
+],
+"e": "Les adresses et ports source et destination, internes et externes, sont inscrits dans la table."
+},
+{
+"t": "NAT / PAT",
+"s": "Cours NAT/PAT (David Rodriguez)",
+"q": "Exemple Cisco : le PC 10.1.1.1 envoie un paquet. Que fait le routeur NAT ?",
+"o": [
+"Il prend une adresse libre dans sa liste d'adresses globales (200.1.1.1), l'inscrit dans sa table et traduit la source",
+"Il garde 10.1.1.1 comme source",
+"Il prend l'adresse du serveur 170.1.1.1",
+"Il demande une adresse au DHCP"
+],
+"e": "Dans la table : Inside Local = 10.1.1.1, Inside Global = 200.1.1.1."
+},
+{
+"t": "NAT / PAT",
+"s": "Cours NAT/PAT (David Rodriguez)",
+"q": "Dans la table NAT Cisco, que désigne « Inside Local » ?",
+"o": [
+"L'adresse privée du poste à l'intérieur (ex. 10.1.1.1)",
+"L'adresse publique attribuée au poste (ex. 200.1.1.1)",
+"L'adresse du serveur distant",
+"L'adresse du routeur côté Internet"
+],
+"e": "Inside Global = l'adresse publique prise dans le pool pour représenter ce poste."
+},
+{
+"t": "NAT / PAT",
+"s": "Cours NAT/PAT (David Rodriguez)",
+"q": "Deux connexions ne diffèrent que par l'adresse interne : il y a collision. Quelles solutions donne le cours ?",
+"o": [
+"Utiliser un pool d'adresses publiques, ou changer le port source externe (PAT)",
+"Couper une des deux connexions",
+"Changer l'adresse MAC",
+"Passer en IPv6"
+],
+"e": "PAT = Port Address Translation : on distingue les connexions par le port."
+},
+{
+"t": "NAT / PAT",
+"s": "Cours NAT/PAT (David Rodriguez)",
+"q": "Que veut dire PAT ?",
+"o": [
+"Port Address Translation",
+"Private Address Table",
+"Public Access Translation",
+"Packet Address Transfer"
+],
+"e": "Avec la PAT, le routeur change le port source externe pour distinguer les connexions."
+},
+{
+"t": "NAT / PAT",
+"s": "Cours NAT/PAT (David Rodriguez)",
+"q": "Le NAT dynamique permet-il d'établir des connexions entrantes depuis Internet ?",
+"o": [
+"Non, et c'est une bonne protection par défaut",
+"Oui, toujours",
+"Oui, si le PC a une IP fixe",
+"Seulement en UDP"
+],
+"e": "Pour ouvrir un service vers l'extérieur, il faut une redirection de port."
+},
+{
+"t": "NAT / PAT",
+"s": "Cours NAT/PAT (David Rodriguez)",
+"q": "Une personne héberge son serveur web (TCP 80) chez elle, derrière sa box. Que configure-t-elle sur la box ?",
+"o": [
+"Une redirection du port 80 vers le serveur (PAT)",
+"Un VLAN",
+"Une réservation DHCP seulement",
+"Rien, ça marche tout seul"
+],
+"e": "La box remplace sa propre adresse publique (destination) par l'adresse privée du serveur."
+},
+{
+"t": "NAT / PAT",
+"s": "Cours NAT/PAT (David Rodriguez)",
+"q": "Comment le client sur Internet trouve-t-il l'adresse publique de la box qui héberge le serveur web ?",
+"o": [
+"Par la résolution DNS du nom du site",
+"Par l'adresse MAC de la box",
+"Par un broadcast sur Internet",
+"Par le DHCP de son FAI"
+],
+"e": "Le client envoie sa requête HTTP vers l'adresse publique de la box."
+},
+{
+"t": "NAT / PAT",
+"s": "Cours NAT/PAT (David Rodriguez)",
+"q": "Avec la redirection de port, quelle adresse source a la réponse du serveur web quand elle arrive chez le client ?",
+"o": [
+"L'adresse publique de la box",
+"L'adresse privée du serveur",
+"L'adresse du client",
+"L'adresse du DNS"
+],
+"e": "La box remplace l'adresse privée du serveur par son adresse publique."
+},
+{
+"t": "NAT / PAT",
+"s": "Cours NAT/PAT (David Rodriguez)",
+"q": "Avec la redirection de port, qu'a l'impression de voir le client sur Internet ?",
+"o": [
+"Que le serveur web est hébergé par la box",
+"Qu'il parle directement à l'adresse privée du serveur",
+"Que le site est en panne",
+"Qu'il est dans le même réseau local"
+],
+"e": "Il ne voit jamais l'adresse privée du serveur."
+},
+{
+"t": "NAT / PAT",
+"s": "Cours NAT/PAT (David Rodriguez)",
+"q": "Dans ce cours, la translation « DNAT » est présentée comme :",
+"o": [
+"La translation dynamique",
+"La translation de destination uniquement",
+"Une translation réservée à IPv6",
+"Une translation sans table"
+],
+"e": "Attention : ailleurs, DNAT désigne souvent la NAT de destination (redirection de port). Retiens le sens de ton formateur, mais sache que les deux existent."
+},
+{
+"t": "NAT / PAT",
+"s": "Cours Architecture d'un réseau",
+"q": "Je veux accéder depuis Internet à ma caméra IP chez moi. Que configurer sur la box ?",
+"o": [
+"Une redirection de port (PAT / port forwarding)",
+"Un serveur DHCP",
+"Un VLAN",
+"Un nouveau masque"
+],
+"e": "La règle contient le protocole (TCP ou UDP), le port source, le port de destination et l'IP LAN de la caméra."
 },
 {
 "t": "NAT / PAT",
@@ -134,18 +278,6 @@
 {
 "t": "NAT / PAT",
 "s": "Notion générale (pas dans les cours que j'ai pu lire)",
-"q": "Dans le vocabulaire Cisco, qu'est-ce que l'adresse « inside local » ?",
-"o": [
-"L'adresse privée du poste dans le réseau local",
-"L'adresse publique qui représente le poste sur Internet",
-"L'adresse du serveur distant",
-"L'adresse de la passerelle"
-],
-"e": "Inside global = l'adresse publique qui représente ce poste vue d'Internet."
-},
-{
-"t": "NAT / PAT",
-"s": "Notion générale (pas dans les cours que j'ai pu lire)",
 "q": "Quelle commande Cisco affiche les traductions NAT en cours ?",
 "o": [
 "show ip nat translations",
@@ -153,18 +285,6 @@
 "show nat table",
 "show ip interface brief"
 ],
-"e": "Pour les compteurs : show ip nat statistics."
-},
-{
-"t": "NAT / PAT",
-"s": "Notion générale (pas dans les cours que j'ai pu lire)",
-"q": "Pourquoi dit-on que la NAT a prolongé la vie d'IPv4 ?",
-"o": [
-"Tout un réseau privé sort avec une seule adresse publique, ce qui économise les adresses",
-"Elle chiffre les adresses IPv4",
-"Elle transforme les adresses IPv4 en IPv6",
-"Elle augmente la taille des adresses"
-],
-"e": "IPv4 n'a qu'environ 4,3 milliards d'adresses. IPv6 règle le problème à la source."
+"e": "On y retrouve les colonnes Inside local et Inside global de l'exemple du cours."
 }
 ]
