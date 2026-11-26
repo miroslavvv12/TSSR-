@@ -47,6 +47,10 @@ frag = re.sub(r'/\*OUV_DEBUT\*/.*?/\*OUV_FIN\*/', lambda m: '/*OUV_DEBUT*/' + da
 sim = open(p('outils', 'cisco_sim.js'), encoding='utf-8').read().replace('</', '<\\/')
 assert '/*CISCO_DEBUT*/' in frag and '/*CISCO_FIN*/' in frag
 frag = re.sub(r'/\*CISCO_DEBUT\*/.*?/\*CISCO_FIN\*/', lambda m: '/*CISCO_DEBUT*/\n' + sim + '\n/*CISCO_FIN*/', frag, count=1, flags=re.S)
+# Terminal Linux (outils/linux_sim.js), injecté entre /*LINUX_DEBUT*/ et /*LINUX_FIN*/.
+lx = open(p('outils', 'linux_sim.js'), encoding='utf-8').read().replace('</', '<\\/')
+assert '/*LINUX_DEBUT*/' in frag and '/*LINUX_FIN*/' in frag
+frag = re.sub(r'/\*LINUX_DEBUT\*/.*?/\*LINUX_FIN\*/', lambda m: '/*LINUX_DEBUT*/\n' + lx + '\n/*LINUX_FIN*/', frag, count=1, flags=re.S)
 open(fp, 'w', encoding='utf-8').write(frag)
 print(len(quiz), 'questions de cours,', len(ouv), 'questions ouvertes')
 open(p('entrainement.html'), 'w', encoding='utf-8').write(HEAD + frag + '\n</body>\n</html>\n')

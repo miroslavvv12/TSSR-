@@ -22,7 +22,7 @@ Ces cours sont dans `outils/quiz/*.json` et `outils/ouvertes/*.json`. Avant d'aj
 
 ## Fichiers du projet
 - `outils/entrainement.frag.html` : source de la page (HTML, CSS et JS en un seul fichier).
-  - Onglets : Cours (QCM + questions ouvertes, filtres de thème et de niveau, tableau « Couverture TSSR »), Sous-réseaux, Commandes, Cisco, Ports, OSI, Dépannage.
+  - Onglets : Cours (QCM + questions ouvertes + « À revoir aujourd'hui », filtres de thème et de niveau, tableau « Couverture TSSR »), Sous-réseaux, Commandes, Cisco, Linux, Ports, OSI, Dépannage.
   - Ce fragment, sans doctype, est aussi publié en Artifact claude.ai : https://claude.ai/artifact/GXvby1DYXEJd367ti3sapm (republier avec ce `url`).
 - `outils/quiz/*.json` : QCM `{t, s, q, o[4], e, x[3], n}`.
   - `o[0]` est la bonne réponse ; elle est mélangée à l'affichage.
@@ -33,8 +33,9 @@ Ces cours sont dans `outils/quiz/*.json` et `outils/ouvertes/*.json`. Avant d'aj
   - Les mots-clés sont cherchés dans la réponse en minuscules et sans accents. Éviter les mots trop courants.
 - Questions hors cours : `s` = « Notion générale (pas dans les cours que j'ai pu lire) ». Elles sont dans `outils/quiz/hors_cours.json` et `outils/ouvertes/hors_cours.json`. Elles s'affichent avec la mention « hors cours » et sont exclues du filtre « Mes cours seulement ». Quand un cours sur le même sujet arrive, remplacer ces questions par des questions tirées du cours.
 - `outils/cisco_sim.js` : simulateur Cisco IOS (`CiscoSim`), labs (`CiscoLabs.LABS`) et interface du terminal. On peut le charger sous Node pour les tests.
+- `outils/linux_sim.js` : terminal Linux simulé (`LinuxSim`), labs (`LinuxLabs.LABS`) et interface de l'onglet Linux. Système de fichiers en mémoire avec inodes, droits UGO, utilisateurs et groupes (`/etc/passwd`, `/etc/group`, `/etc/shadow` régénérés), sudo et su (mots de passe : dimitri = tssr, alice = alice), liens, tubes et redirections, processus. Notions du cours Initiation à Linux ; les commandes sont des notions générales (hors cours).
 - `outils/build_entrainement.py` :
-  - injecte les JSON et le simulateur dans le fragment, entre les marqueurs `/*QUIZ_DEBUT*/…/*QUIZ_FIN*/`, `/*OUV_DEBUT*/…/*OUV_FIN*/` et `/*CISCO_DEBUT*/…/*CISCO_FIN*/` ;
+  - injecte les JSON et le simulateur dans le fragment, entre les marqueurs `/*QUIZ_DEBUT*/…/*QUIZ_FIN*/`, `/*OUV_DEBUT*/…/*OUV_FIN*/`, `/*LINUX_DEBUT*/…/*LINUX_FIN*/` et `/*CISCO_DEBUT*/…/*CISCO_FIN*/` ;
   - génère `entrainement.html` ;
   - met à jour le nom du cache de `sw.js` (PWA hors ligne).
 
@@ -48,9 +49,9 @@ Ces cours sont dans `outils/quiz/*.json` et `outils/ouvertes/*.json`. Avant d'aj
   - une question ratée revient 8 questions plus tard ;
   - sinon, une question jamais vue, en commençant par le niveau le plus bas ;
   - sinon, une question parmi le quart le plus ancien.
-- Clés `localStorage` : `tssr-entrainement` (quiz) et `tssr-cisco` (labs).
+- Clés `localStorage` : `tssr-entrainement` (quiz), `tssr-cisco` (labs Cisco) et `tssr-linux` (labs Linux).
 - **Révision espacée** (mode « À revoir aujourd'hui ») : `S.srs[clé] = [boîte, jour d'échéance]`. Une question réussie revient dans 3, 7, 14 puis 30 jours ; ratée, elle revient le lendemain.
-- **Transfert de progression** entre appareils, sans réseau : un code `TSSRz1:` (gzip + base64) ou `TSSR1:` qui contient les deux clés `localStorage`. L'import remplace la progression de l'appareil.
+- **Transfert de progression** entre appareils, sans réseau : un code `TSSRz1:` (gzip + base64) ou `TSSR1:` qui contient les trois clés `localStorage`. L'import remplace la progression de l'appareil.
 - **Appli iPhone** : `index.html` (copie de `outils/shell.html`) déchiffre `content.enc` (le site de cours d'une autre session) et y ajoute un bouton « Entraînement ». `entrainement.html` a un lien « ← Mes cours » pour revenir. `outils/build_app.py` garde `entrainement.html` dans l'appli et dans le cache hors ligne.
 - **Publication** : GitHub Pages lit la branche `main`. Un changement n'arrive sur l'iPhone qu'une fois fusionné dans `main`.
 - **Simulateur Cisco** :
@@ -62,7 +63,8 @@ Ces cours sont dans `outils/quiz/*.json` et `outils/ouvertes/*.json`. Avant d'aj
   - SSH et Telnet (`login local`, `transport input`, `access-class`) ;
   - port-security, STP (affichage seulement), CDP, table MAC ;
   - PC : `ipconfig /renew` et `/release`, `ping`, `curl`, `ssh` et `telnet` avec session distante.
-- **13 labs** : base, if, vlan, trunk, static, rip, ros, ospf, acl, nat, dhcp, secu, libre (bac à sable). Tous les labs qui ont des tâches se valident avec leur solution.
+- **7 labs Linux** : arbo, fich, droits, users, liens, proc, libre. Tous se valident avec leur solution.
+- **13 labs Cisco** : base, if, vlan, trunk, static, rip, ros, ospf, acl, nat, dhcp, secu, libre (bac à sable). Tous les labs qui ont des tâches se valident avec leur solution.
 
 ## Tests
 - **Node** : `require('./outils/cisco_sim.js')`, puis exécuter la solution de chaque lab et vérifier ses tâches.
