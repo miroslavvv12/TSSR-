@@ -96,6 +96,11 @@ button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 .oqin{font:16px/1.55 var(--f-ui);width:100%;min-height:170px;padding:12px 14px;border-radius:10px;border:1px solid var(--line);background:var(--sunk);color:var(--fg);resize:vertical;outline:none}
 .oqin:focus-visible{border-color:var(--accent)}
 .oqin[readonly]{opacity:.85}
+.hint-box{border:1px dashed var(--fg);border-radius:10px;padding:12px 14px;margin:0 0 14px;font-size:15px;line-height:1.5;display:flex;flex-direction:column;gap:6px}
+.hint-box h4{margin:0;font-size:13px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);font-weight:600}
+.hint-box ul{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:3px}
+.hint-box .hid{color:var(--muted);font-style:italic}
+.opt.out{opacity:.45;text-decoration:line-through}
 .fiche h2{font-size:22px;margin:0}.fiche h3{font-size:16px;margin:16px 0 6px;font-weight:600}
 .fiche ul{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:5px;line-height:1.5}
 .fiche .intro{font-size:16px;line-height:1.55;margin:8px 0 0}
@@ -348,22 +353,24 @@ details summary{cursor:pointer;font-weight:500}
   <div class="card" id="qcmCard">
     <div class="bar"><span class="eyebrow" id="qEyebrow"></span><span class="lvl" id="qLvlB"></span></div>
     <div class="q" id="qQ"></div>
+    <div class="hint-box" id="qHintBox" hidden></div>
     <div class="opts" id="qOpts"></div>
     <div class="fb" id="qFb" hidden></div>
-    <div class="actions"><button class="btn" id="qGive">Je ne sais pas</button><button class="btn next" id="qNext">Question suivante →</button></div>
+    <div class="actions"><button class="btn" id="qHint">Indice</button><button class="btn" id="qGive">Je ne sais pas</button><button class="btn next" id="qNext">Question suivante →</button></div>
   </div>
   <div class="card" id="oqCard" hidden>
     <div class="bar"><span class="eyebrow" id="oqEyebrow"></span><span class="lvl" id="oqLvlB"></span></div>
     <div class="q" id="oqQ"></div>
+    <div class="hint-box" id="oqHintBox" hidden></div>
     <textarea class="oqin" id="oqIn" placeholder="Écris ta réponse ici : explique, développe, donne des exemples…" aria-label="Ta réponse"></textarea>
     <div class="fb" id="oqFb" hidden></div>
-    <div class="actions"><button class="btn primary" id="oqCheck">Voir la correction</button><button class="btn" id="oqGive">Je ne sais pas</button><button class="btn next" id="oqNext">Question suivante →</button></div>
+    <div class="actions"><button class="btn primary" id="oqCheck">Voir la correction</button><button class="btn" id="oqHint">Indice</button><button class="btn" id="oqGive">Je ne sais pas</button><button class="btn next" id="oqNext">Question suivante →</button></div>
   </div>
   <div class="card exam" id="exCard" hidden><div id="exBody"></div></div>
   <div id="fiCard" hidden><div class="chips" id="fiTheme"></div><article class="card fiche" id="fiBody"></article></div>
   <p class="foot" id="oqCount" hidden></p>
   <p class="foot" id="qCount"></p>
-  <p class="foot kb">Clavier : <kbd class="k">1</kbd>à<kbd class="k">4</kbd>pour répondre · <kbd class="k">Entrée</kbd>question suivante · <kbd class="k">0</kbd>je ne sais pas</p>
+  <p class="foot kb">Clavier : <kbd class="k">1</kbd>à<kbd class="k">4</kbd>pour répondre · <kbd class="k">Entrée</kbd>question suivante · <kbd class="k">0</kbd>je ne sais pas · <kbd class="k">I</kbd>indice</p>
 </section>
 
 <section id="sr" hidden>
@@ -1721,10 +1728,41 @@ function qPick(pool){
   const old=pool.slice().sort((a,b)=>S.qlast[qKey(a)]-S.qlast[qKey(b)]);
   return pick(old.slice(0,Math.max(1,Math.ceil(old.length/4))));
 }
+/* ---------- Indices automatiques ----------
+   1er clic : rappel de cours (la partie de la fiche qui correspond, ou des explications voisines du même thème),
+   sans jamais afficher la bonne réponse mot pour mot. 2e clic (QCM) : deux mauvaises réponses sont écartées.
+   Une question réussie avec indice revient le lendemain (révision espacée). */
+const STOP=new Set('dans pour avec sans sont est une des les quel quelle quels quelles quoi comment pourquoi entre plus moins cette ceux elle elles leur leurs mais donc avoir etre fait faire peut tout tous toute aussi selon cours votre notre quand chaque autre autres sur par que qui les des une est son ses aux mon ton tes nos vos qu il ils on se ce ou un de du la le et en au a ne pas'.split(' '));
+const toks=t=>nk(t).replace(/[^a-z0-9 ]/g,' ').split(/\s+/).filter(w=>w.length>=3&&!STOP.has(w));
+const pagesOf=t=>{const m=/p\.\s*([\d\-, et]+)/.exec(t||'');if(!m)return[];const out=[];for(const r of m[1].matchAll(/(\d+)(?:\s*-\s*(\d+))?/g)){const a=+r[1],b=r[2]?+r[2]:a;for(let i=a;i<=b&&i-a<60;i++)out.push(i)}return out};
+const hideAns=(txt,x)=>{if(!x||!x.o)return false;const a=nk(x.o[0]).trim();if(a.length>=4&&nk(txt).includes(a))return true;
+  const A=[...new Set(nk(x.o[0]).replace(/[^a-z0-9 ]/g,' ').split(/\s+/).filter(w=>w&&!STOP.has(w)&&(w.length>=3||/\d/.test(w))))],T=new Set(nk(txt).replace(/[^a-z0-9 ]/g,' ').split(/\s+/));
+  if(!A.length)return false;const hit=A.filter(w=>T.has(w)).length;return A.length===1?hit===1:hit/A.length>=.5};
+function hintHTML(x){
+  const qt=toks(x.q),F=FICHES.find(f=>f.t===x.t),pg=pagesOf(x.s),src=String(x.s).replace(/\s*\(David Rodriguez\)/,'');
+  const hc=isHC(x);let html=`<h4>${hc?'Rappel (hors cours)':'Rappel de cours'}</h4><div>Revois : <strong>${hc?esc(x.t)+' (notion hors cours)':esc(src)}</strong></div>`;
+  if(F){let best=null,score=-1;
+    for(const [h,L] of F.blocs){const bp=pagesOf(h);let sc=pg.length&&bp.some(p=>pg.includes(p))?100:0;const bt=new Set(toks(h+' '+L.join(' ')));sc+=qt.filter(w=>bt.has(w)).length;if(sc>score){score=sc;best=[h,L]}}
+    if(best&&score>0){const [h,L]=best;const pts=L.map(p=>[p,new Set(toks(p))]).map(([p,t])=>[p,qt.filter(w=>t.has(w)).length]);
+      const keep=pts.filter(([,n])=>n>0).sort((a,b)=>b[1]-a[1]).slice(0,3).map(([p])=>p);const show=[...keep,...L.filter(p=>!keep.includes(p)&&!hideAns(p,x))].slice(0,Math.max(3,keep.length)).sort((a,b)=>L.indexOf(a)-L.indexOf(b));
+      html+=`<div>Dans ta fiche, partie « ${esc(h)} » :</div><ul>${show.map(p=>hideAns(p,x)?'<li class="hid">… un point de cette partie contient la réponse : à toi de le retrouver.</li>':`<li>${esc(p)}</li>`).join('')}</ul>`;return html}}
+  // sinon : explications de questions voisines du même thème (en dernier recours, toutes les questions)
+  const near=QUIZ.filter(y=>y.t===x.t&&y!==x&&y.q!==x.q).map(y=>{const t=new Set(toks(y.q+' '+y.e));return[y,qt.filter(w=>t.has(w)).length]}).filter(([,n])=>n>0).sort((a,b)=>b[1]-a[1]).map(([y])=>y.e).filter(e=>!hideAns(e,x)).slice(0,2);
+  if(near.length)html+=`<div>${hc?'Notions proches':'Ce que dit le cours sur des notions proches'} :</div><ul>${near.map(e=>`<li>${esc(e)}</li>`).join('')}</ul>`;
+  else if(x.x&&x.x.some(e=>e.length>25)){const ks=x.x.map((e,k)=>[e,k]).filter(([e])=>e.length>25);const [e,k]=ks[Math.floor(Math.random()*ks.length)];html+=`<div>Piste : la réponse « ${esc(x.o[k+1])} » ne convient pas. ${esc(e)}</div>`}
+  else if(x.o)html+=`<div>Piste : élimine d'abord les réponses qui n'ont aucun rapport avec « ${esc(x.t)} », puis compare celles qui restent.</div>`;
+  else html+='<div>Relis ta fiche ou le mémo express de ce thème (Cours → Fiches à retenir).</div>';
+  return html}
+let qHintLvl=0;
+function qHint(){if(qDone||!qCur)return;qHintLvl++;const box=$('#qHintBox');
+  if(qHintLvl===1){box.innerHTML=hintHTML(qCur);box.hidden=false;$('#qHint').textContent='Indice 2 : écarter 2 réponses'}
+  else{const wrong=shuffle($$('#qOpts .opt').filter(b=>b.dataset.i!=='0')).slice(0,2);wrong.forEach(b=>{b.disabled=true;b.classList.add('out')});
+    box.insertAdjacentHTML('beforeend','<div><strong>Deux mauvaises réponses ont été écartées.</strong> Il en reste deux : à toi de choisir.</div>');$('#qHint').hidden=true}}
 function qNew(){
   const rev=qMode==='rev', all=rev?QUIZ.filter(isDue):QUIZ.filter(x=>tOk(x)&&nivOk(x)), pool=all.length>1?all.filter(x=>x!==qLast):all;
-  if(!pool.length){$('#qQ').textContent=rev?'Rien à revoir aujourd\'hui. Reviens demain, ou continue en mode QCM pour voir de nouvelles questions.':'Aucune question pour ce cours à ce niveau.';$('#qEyebrow').textContent='';$('#qCount').textContent='';$('#qGive').hidden=true;$('#qFb').hidden=true;$('#qOpts').innerHTML='';$('#qLvlB').hidden=true;return}
+  if(!pool.length){$('#qHint').hidden=true;$('#qHintBox').hidden=true;$('#qQ').textContent=rev?'Rien à revoir aujourd\'hui. Reviens demain, ou continue en mode QCM pour voir de nouvelles questions.':'Aucune question pour ce cours à ce niveau.';$('#qEyebrow').textContent='';$('#qCount').textContent='';$('#qGive').hidden=true;$('#qFb').hidden=true;$('#qOpts').innerHTML='';$('#qLvlB').hidden=true;return}
   qCur=qPick(pool);S.qn++;S.qlast[qKey(qCur)]=S.qn;save();qLast=qCur;qDone=false;$('#qFb').hidden=true;$('#qGive').hidden=false;
+  qHintLvl=0;$('#qHintBox').hidden=true;$('#qHint').hidden=false;$('#qHint').textContent='Indice';
   $('#qEyebrow').textContent=qCur.t+(isHC(qCur)?' · hors cours':'')+((S.miss[qKey(qCur)]||0)>0?' · à retravailler':'');
   $('#qQ').textContent=qCur.q;$('#qLvlB').hidden=false;$('#qLvlB').innerHTML=lvlHTML(qCur.n);
   $('#qOpts').innerHTML=shuffle(qCur.o.map((o,i)=>[o,i])).map(([o,i],k)=>`<button class="opt" data-i="${i}"><kbd class="k">${k+1}</kbd>${esc(o)}</button>`).join('');
@@ -1735,15 +1773,15 @@ function qNew(){
 }
 // btn = null : « Je ne sais pas » → on montre la réponse, et la question compte comme ratée (elle reviendra plus souvent).
 function qAnswer(btn){
-  if(qDone)return;qDone=true;$('#qGive').hidden=true;const ok=!!btn&&btn.dataset.i==='0',k=qKey(qCur);
+  if(qDone)return;qDone=true;$('#qGive').hidden=true;$('#qHint').hidden=true;const ok=!!btn&&btn.dataset.i==='0',k=qKey(qCur),aid=qHintLvl>0;
   S.miss[k]=ok?Math.max(0,(S.miss[k]||0)-1):(S.miss[k]||0)+1;
   if(ok)delete S.qdue[k];else S.qdue[k]=S.qn+Q_DELAI;
-  srsMark(k,ok);tally('quiz',ok);revCount();if($('details.bilan').open)bilan();
+  srsMark(k,ok);if(ok&&aid){S.srs[k]=[1,DAY()+1];save()}tally('quiz',ok);revCount();if($('details.bilan').open)bilan();
   $$('#qOpts .opt').forEach(b=>{const i=+b.dataset.i;b.disabled=true;
     if(i===0)b.classList.add('ok');else if(b===btn)b.classList.add('ko');
     b.insertAdjacentHTML('beforeend',`<span class="ox">${i===0?'Bonne réponse.':esc((qCur.x||[])[i-1]||'')}</span>`)});
   const fb=$('#qFb');fb.className='fb '+(ok?'ok':btn?'ko':'');fb.hidden=false;
-  fb.innerHTML=`<span class="verdict ${ok?'ok':btn?'ko':''}">${ok?'Correct.':btn?'Raté.':'Voici la réponse.'}</span>${ok?'':`<div>Bonne réponse : <strong>${esc(qCur.o[0])}</strong></div>`}<div>${esc(qCur.e)}</div><div class="empty">Source : ${esc(qCur.s)}</div>${repBtn(qCur)}`;
+  fb.innerHTML=`<span class="verdict ${ok?'ok':btn?'ko':''}">${ok?(aid?'Correct, avec indice.':'Correct.'):btn?'Raté.':'Voici la réponse.'}</span>${ok&&aid?'<div class="empty">Trouvée avec un indice : elle reviendra demain dans « À revoir aujourd\'hui » pour confirmer.</div>':''}${ok?'':`<div>Bonne réponse : <strong>${esc(qCur.o[0])}</strong></div>`}<div>${esc(qCur.e)}</div><div class="empty">Source : ${esc(qCur.s)}</div>${repBtn(qCur)}`;
 }
 $('#qNext').onclick=qNew;
 
@@ -1764,7 +1802,7 @@ const nrm=t=>' '+String(t).toLowerCase().normalize('NFD').replace(/[\u0300-\u036
 const nk=t=>String(t).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[’`]/g,"'");
 function oqNew(){
   const all=OUV.filter(x=>tOk(x)&&nivOk(x)), pool=all.filter(x=>x!==oqLast);
-  oqDone=false;oqCounted=false;$('#oqFb').hidden=true;const inp=$('#oqIn');inp.value='';inp.readOnly=false;
+  oqDone=false;oqCounted=false;oqHintUsed=false;$('#oqFb').hidden=true;$('#oqHintBox').hidden=true;$('#oqHint').hidden=false;const inp=$('#oqIn');inp.value='';inp.readOnly=false;
   if(!pool.length){oqCur=null;$('#oqEyebrow').textContent='';$('#oqQ').textContent='Pas de question ouverte pour ce cours à ce niveau.';$('#oqLvlB').hidden=true;$('#oqCount').textContent='';return}
   oqCur=qPick(pool);oqLast=oqCur;S.qn++;S.qlast[qKey(oqCur)]=S.qn;save();
   $('#oqEyebrow').textContent=oqCur.t+(isHC(oqCur)?' · hors cours':'')+((S.miss[qKey(oqCur)]||0)>0?' · à retravailler':'');
@@ -1773,13 +1811,16 @@ function oqNew(){
   $('#oqCount').textContent=`${vues}/${all.length} questions ouvertes déjà vues dans ${tLabel()}. Écris comme pour un examen : définis, explique, donne un exemple.`;
   if(matchMedia('(pointer:fine)').matches)inp.focus();
 }
+let oqHintUsed=false;
+function oqHint(){if(!oqCur||oqDone)return;oqHintUsed=true;const box=$('#oqHintBox');
+  box.innerHTML=hintHTML(oqCur)+`<div>Pour une réponse complète, parle de ces ${oqCur.p.length} points :</div><ul>${oqCur.p.map(([lab])=>`<li>${esc(lab)}</li>`).join('')}</ul>`;box.hidden=false;$('#oqHint').hidden=true}
 function oqScore(){const c=$$('#oqFb .ptl input');const n=c.filter(x=>x.checked).length;return{n,t:c.length,ok:n/c.length>=.6}}
 function oqVerdict(){const r=oqScore(),v=$('#oqFb .verdict');v.className='verdict '+(r.ok?'ok':'ko');
   v.textContent=`${r.n}/${r.t} points ${r.ok?'— bien développé.':'— à compléter.'}`;$('#oqFb').className='fb '+(r.ok?'ok':'ko')}
 function oqCheck(give){
   if(!oqCur||oqDone)return;
   const txt=nrm($('#oqIn').value);if(!give&&!txt.trim()){$('#oqIn').focus();return}
-  oqDone=true;$('#oqIn').readOnly=true;
+  oqDone=true;$('#oqIn').readOnly=true;$('#oqHint').hidden=true;
   const found=oqCur.p.map(([,ks])=>!give&&ks.some(k=>txt.includes(nk(k))));
   const fb=$('#oqFb');fb.hidden=false;
   fb.innerHTML=`<span class="verdict"></span>
@@ -1796,7 +1837,7 @@ function oqCount(){ // compte la question au moment de passer à la suivante (ap
   if(r.ok)delete S.qdue[k];else S.qdue[k]=S.qn+Q_DELAI;
   srsMark(k,r.ok);tally('ouv',r.ok);
 }
-$('#oqCheck').onclick=()=>oqCheck(false);$('#oqGive').onclick=()=>oqCheck(true);
+$('#oqCheck').onclick=()=>oqCheck(false);$('#oqGive').onclick=()=>oqCheck(true);$('#oqHint').onclick=oqHint;$('#qHint').onclick=qHint;
 $('#oqNext').onclick=()=>{oqCount();oqNew()};
 $('#oqIn').onkeydown=e=>{if(e.key==='Enter'&&(e.ctrlKey||e.metaKey)){e.preventDefault();oqCheck(false)}};
 /* ---------- Examen blanc ----------
@@ -1923,6 +1964,7 @@ document.addEventListener('keydown',ev=>{
     if(/^[1-4]$/.test(ev.key)&&!qDone)go($$('#qOpts .opt')[+ev.key-1]);
     else if((ev.key==='Enter'||ev.key===' ')&&qDone)go($('#qNext'));
     else if(ev.key==='0'&&!qDone)go($('#qGive'));
+    else if((ev.key==='i'||ev.key==='I')&&!qDone)go($('#qHint'));
   }else if(S.pref.tab==='ports'){
     if(/^[1-4]$/.test(ev.key)&&!pDone&&pCur&&pCur.type==='qcm')go($$('#pBody .opt')[+ev.key-1]);
     else if((ev.key==='Enter'||ev.key===' ')&&pDone)go($('#pNext'));
