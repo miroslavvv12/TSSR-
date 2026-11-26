@@ -96,6 +96,22 @@ button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 .oqin{font:16px/1.55 var(--f-ui);width:100%;min-height:170px;padding:12px 14px;border-radius:10px;border:1px solid var(--line);background:var(--sunk);color:var(--fg);resize:vertical;outline:none}
 .oqin:focus-visible{border-color:var(--accent)}
 .oqin[readonly]{opacity:.85}
+.exam h2{font-size:20px;margin:0}
+.exam .exbar{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.exam .time{font:600 18px var(--f-mono)} .exam .time.low{text-decoration:underline}
+.exam .opt[aria-pressed="true"]{border:2px solid var(--fg);font-weight:600}
+.exam .opt[aria-pressed="true"]::before{content:"● "}
+.exam .grid{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0}
+.exam .q{margin:6px 0 12px}
+.exam .grid button{min-width:38px;height:38px;border-radius:8px;border:1px solid var(--line);background:var(--bg);color:var(--fg);font:500 14px var(--f-ui);cursor:pointer}
+.exam .grid button.rep{background:var(--fg);color:var(--bg);border-color:var(--fg)}
+.exam .grid button.cur{outline:2px solid var(--fg);outline-offset:2px}
+.exam .grid button.flag::after{content:"?";font-size:11px;margin-left:1px}
+.exam .note{font:700 44px var(--f-ui);line-height:1}
+.exam .res{border-top:1px solid var(--line);padding-top:12px}
+.exam .res .ans{color:var(--muted);font-size:14px}
+.exam table{border-collapse:collapse;width:100%}.exam td,.exam th{border-top:1px solid var(--line);padding:6px 8px;text-align:left;font-size:14px}
+.exam .hist{color:var(--muted);font-size:14px;margin:0;padding-left:20px}
 .ptl{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
 .ptl label{display:flex;gap:10px;align-items:flex-start;flex-direction:row;color:var(--fg);font-size:inherit;cursor:pointer}
 .ptl input{width:20px;height:20px;margin:2px 0 0;accent-color:var(--accent);flex:none}
@@ -140,7 +156,7 @@ button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
   .term{height:520px;font-size:14.5px}
   .ci-brief .topo{font-size:13px}
 }
-#qOpts{grid-template-columns:repeat(2,minmax(0,1fr))}
+#qOpts,#exOpts{grid-template-columns:repeat(2,minmax(0,1fr))}
 .k,.kb{display:none}
 @media (hover:hover) and (pointer:fine){
   .k{display:inline-block;min-width:18px;text-align:center;font:600 11px/16px var(--f-mono);border:1px solid var(--line);border-radius:4px;padding:0 4px;margin-right:7px;color:var(--muted);vertical-align:1px}
@@ -271,6 +287,7 @@ details summary{cursor:pointer;font-weight:500}
     <button class="chip" data-v="qcm">QCM</button>
     <button class="chip" data-v="ouv">Questions ouvertes</button>
     <button class="chip" data-v="rev">À revoir aujourd'hui</button>
+    <button class="chip" data-v="exam">Examen blanc</button>
   </div>
   <div class="bar">
     <div class="chips" id="qTheme"></div>
@@ -307,6 +324,7 @@ details summary{cursor:pointer;font-weight:500}
     <div class="fb" id="oqFb" hidden></div>
     <div class="actions"><button class="btn primary" id="oqCheck">Voir la correction</button><button class="btn" id="oqGive">Je ne sais pas</button><button class="btn next" id="oqNext">Question suivante →</button></div>
   </div>
+  <div class="card exam" id="exCard" hidden><div id="exBody"></div></div>
   <p class="foot" id="oqCount" hidden></p>
   <p class="foot" id="qCount"></p>
   <p class="foot kb">Clavier : <kbd class="k">1</kbd>à<kbd class="k">4</kbd>pour répondre · <kbd class="k">Entrée</kbd>question suivante · <kbd class="k">0</kbd>je ne sais pas</p>
@@ -1678,7 +1696,7 @@ const SRS_J=[1,1,3,7,14,30];
 function srsMark(k,ok){const c=S.srs[k];const b=ok?(c?Math.min(5,c[0]+1):2):0;S.srs[k]=[b,DAY()+SRS_J[b]]}
 const isDue=x=>{const c=S.srs[qKey(x)];return !!c&&c[1]<=DAY()};
 function revCount(){const n=QUIZ.filter(isDue).length;$('#qMode [data-v="rev"]').textContent=`À revoir aujourd'hui (${n})`;return n}
-let qMode=['ouv','rev'].includes(S.pref.qMode)?S.pref.qMode:'qcm', oqCur=null, oqLast=null, oqDone=false, oqCounted=false;
+let qMode=['ouv','rev','exam'].includes(S.pref.qMode)?S.pref.qMode:'qcm', oqCur=null, oqLast=null, oqDone=false, oqCounted=false;
 const nrm=t=>' '+String(t).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[’`]/g,"'").replace(/\s+/g,' ')+' ';
 const nk=t=>String(t).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[’`]/g,"'");
 function oqNew(){
@@ -1718,8 +1736,80 @@ function oqCount(){ // compte la question au moment de passer à la suivante (ap
 $('#oqCheck').onclick=()=>oqCheck(false);$('#oqGive').onclick=()=>oqCheck(true);
 $('#oqNext').onclick=()=>{oqCount();oqNew()};
 $('#oqIn').onkeydown=e=>{if(e.key==='Enter'&&(e.ctrlKey||e.metaKey)){e.preventDefault();oqCheck(false)}};
-function qRefresh(){qMode==='ouv'?oqNew():qNew()}
-function qApply(){const o=qMode==='ouv',rv=qMode==='rev';$('#qTheme').hidden=rv;$('#qNiv').hidden=rv;revCount();$('#qcmCard').hidden=o;$('#qCount').hidden=o;$('#quiz .kb').hidden=o;$('#oqCard').hidden=!o;$('#oqCount').hidden=!o;
+/* ---------- Examen blanc ----------
+   Questions tirées au hasard (réparties entre les thèmes), chronomètre, aucune correction avant la fin.
+   QCM = 1 point ; question ouverte = 3 points × part des points attendus cochés. Note ramenée sur 20. */
+const KQ=new Map([...QUIZ,...OUV].map(x=>[qKey(x),x]));
+const EX_FMT={court:{n:20,o:2,min:30,lab:'20 QCM + 2 questions ouvertes · 30 min'},long:{n:40,o:4,min:60,lab:'40 QCM + 4 questions ouvertes · 60 min'}};
+S.exams=S.exams||[];let exPref={fmt:'court',scope:'cours'},exTimer=null,exArm=false;
+function exDraw(pool,n){const by={};for(const x of shuffle(pool))(by[x.t]=by[x.t]||[]).push(x);const ts=shuffle(Object.keys(by)),out=[];
+  while(out.length<n&&ts.some(t=>by[t].length))for(const t of ts){if(by[t].length&&out.length<n)out.push(by[t].pop())}return shuffle(out)}
+function exStart(){const F=EX_FMT[exPref.fmt],ok=x=>exPref.scope==='all'||!isHC(x);
+  const q=exDraw(QUIZ.filter(ok),F.n).map(x=>({k:qKey(x),t:'q',ord:shuffle([0,1,2,3]),a:null,f:false}));
+  const o=exDraw(OUV.filter(ok),F.o).map(x=>({k:qKey(x),t:'o',a:'',f:false}));
+  S.exam={start:Date.now(),min:F.min,fmt:exPref.fmt,scope:exPref.scope,items:[...q,...o],cur:0,done:false};save();exRender()}
+const exLeft=()=>S.exam.start+S.exam.min*60000-Date.now();
+const exMmss=ms=>{ms=Math.max(0,ms);const m=Math.floor(ms/60000),sec=Math.floor(ms/1000)%60;return String(m).padStart(2,'0')+':'+String(sec).padStart(2,'0')};
+function exTick(){clearInterval(exTimer);exTimer=setInterval(()=>{if(qMode!=='exam'||!S.exam||S.exam.done){clearInterval(exTimer);return}
+  const l=exLeft(),t=$('#exTime');if(t){t.textContent='⏱ '+exMmss(l);t.classList.toggle('low',l<5*60000)}if(l<=0)exFinish(true)},1000)}
+function exPoints(it){const x=KQ.get(it.k);if(it.t==='q')return{p:it.a===0?1:0,max:1};
+  const t=nrm(it.a||''),got=it.chk||x.p.map(([,ks])=>!!(it.a||'').trim()&&ks.some(k=>t.includes(nk(k))));it.chk=got;return{p:3*got.filter(Boolean).length/x.p.length,max:3}}
+function exFinish(auto){const E=S.exam;if(!E||E.done)return;clearInterval(exTimer);E.done=true;E.end=Date.now();E.auto=!!auto;
+  for(const it of E.items){const x=KQ.get(it.k);if(!x)continue;const r=exPoints(it),ok=r.p/r.max>=.6,k=it.k;
+    S.miss[k]=ok?Math.max(0,(S.miss[k]||0)-1):(S.miss[k]||0)+1;srsMark(k,ok);S.qlast[k]=++S.qn;tally(it.t==='q'?'quiz':'ouv',ok)}
+  S.exams.unshift({d:new Date().toISOString().slice(0,10),note:exNote(),fmt:E.fmt,scope:E.scope});S.exams=S.exams.slice(0,10);save();revCount();exRender();window.scrollTo({top:$('#exCard').offsetTop-80})}
+function exNote(){let p=0,m=0;for(const it of S.exam.items){if(!KQ.get(it.k))continue;const r=exPoints(it);p+=r.p;m+=r.max}return m?Math.round(40*p/m)/2:0}
+function exRender(){
+  const B=$('#exBody'),E=S.exam;
+  if(!E||(E.done&&E.closed)){clearInterval(exTimer);
+    B.innerHTML=`<h2>Examen blanc</h2>
+    <p style="margin:8px 0">Comme le jour de l'examen : des questions de tous les thèmes, un chronomètre, et <strong>aucune correction avant la fin</strong>. Tu peux revenir sur une question et en marquer pour la revoir. À la fin : une note sur 20, le détail par thème et la correction complète. Les questions ratées passent dans « À revoir aujourd'hui ».</p>
+    <div class="chips" id="exFmt">${Object.entries(EX_FMT).map(([k,v])=>`<button class="chip" data-v="${k}">${v.lab}</button>`).join('')}</div>
+    <div class="chips" id="exScope"><button class="chip" data-v="cours">Mes cours seulement</button><button class="chip" data-v="all">Tout le TSSR (avec le hors cours)</button></div>
+    <div class="actions"><button class="btn primary" id="exGo">Commencer l'examen</button></div>
+    ${S.exams.length?`<p style="margin:12px 0 4px"><strong>Mes derniers examens</strong></p><ul class="hist">${S.exams.slice(0,5).map(h=>`<li>${h.d} — <strong>${String(h.note).replace('.',',')}/20</strong> · ${EX_FMT[h.fmt]?EX_FMT[h.fmt].lab.split(' · ')[0]:''} · ${h.scope==='all'?'tout le TSSR':'mes cours'}</li>`).join('')}</ul>`:''}`;
+    chips('exFmt',exPref.fmt,v=>exPref.fmt=v);chips('exScope',exPref.scope,v=>exPref.scope=v);$('#exGo').onclick=exStart;return}
+  if(!E.done&&exLeft()<=0){exFinish(true);return}
+  if(!E.done){const it=E.items[E.cur],x=KQ.get(it.k),n=E.items.length,rep=E.items.filter(i=>i.t==='q'?i.a!=null:(i.a||'').trim()).length;
+    B.innerHTML=`<div class="exbar"><span class="eyebrow">Question ${E.cur+1} / ${n} · ${rep} répondue${rep>1?'s':''}</span><span class="time" id="exTime">⏱ ${exMmss(exLeft())}</span></div>
+    <div class="bar"><span class="eyebrow">${esc(x.t)}${isHC(x)?' · hors cours':''}</span><span class="lvl">${lvlHTML(x.n)}</span></div>
+    <div class="q">${esc(x.q)}</div>
+    ${it.t==='q'?`<div class="opts" id="exOpts">${it.ord.map((i,j)=>`<button class="opt" data-i="${i}" aria-pressed="${it.a===i}"><kbd class="k">${j+1}</kbd>${esc(x.o[i])}</button>`).join('')}</div>`
+      :`<textarea class="oqin" id="exTxt" placeholder="Rédige ta réponse : définis, explique, donne un exemple…" aria-label="Ta réponse">${esc(it.a||'')}</textarea>`}
+    <div class="actions"><button class="btn" id="exPrev" ${E.cur?'':'disabled'}>← Précédente</button><button class="btn" id="exFlag">${it.f?'Ne plus marquer':'Marquer pour revoir'}</button><button class="btn next" id="exNext">${E.cur<n-1?'Suivante →':'Dernière question'}</button></div>
+    <div class="grid" aria-label="Aller à une question">${E.items.map((i,j)=>`<button data-j="${j}" class="${(i.t==='q'?i.a!=null:(i.a||'').trim())?'rep':''} ${j===E.cur?'cur':''} ${i.f?'flag':''}" aria-label="Question ${j+1}">${j+1}</button>`).join('')}</div>
+    <div class="actions"><button class="btn primary" id="exEnd">${exArm?'Confirmer : rendre ma copie':'Rendre ma copie'}</button></div>
+    ${exArm?`<p class="empty" style="margin:0">${n-rep?`Il reste ${n-rep} question${n-rep>1?'s':''} sans réponse. `:''}Clique encore pour rendre ta copie.</p>`:''}`;
+    $$('#exOpts .opt').forEach(b=>b.onclick=()=>{it.a=+b.dataset.i;save();exRender()});
+    const ta=$('#exTxt');if(ta)ta.oninput=()=>{it.a=ta.value;save()};
+    const go=j=>{E.cur=Math.max(0,Math.min(n-1,j));exArm=false;save();exRender()};
+    $('#exPrev').onclick=()=>go(E.cur-1);$('#exNext').onclick=()=>go(E.cur+1);$('#exFlag').onclick=()=>{it.f=!it.f;save();exRender()};
+    $$('#exBody .grid button').forEach(b=>b.onclick=()=>go(+b.dataset.j));
+    $('#exEnd').onclick=()=>{if(!exArm){exArm=true;exRender();return}exArm=false;exFinish(false)};
+    exTick();return}
+  // Résultats
+  const th={};let qok=0,qn=0;
+  for(const it of E.items){const x=KQ.get(it.k);if(!x)continue;const r=exPoints(it);const T=th[x.t]=th[x.t]||{p:0,m:0};T.p+=r.p;T.m+=r.max;if(it.t==='q'){qn++;if(r.p)qok++}}
+  const note=exNote(),used=exMmss(Math.min(E.end-E.start,E.min*60000));
+  B.innerHTML=`<div class="exbar"><h2>Résultat de l'examen blanc</h2><span class="eyebrow">${E.auto?'Temps écoulé : copie rendue automatiquement':'Copie rendue en '+used}</span></div>
+    <p style="margin:10px 0"><span class="note" id="exNote">${String(note).replace('.',',')}</span> <strong>/ 20</strong></p>
+    <p style="margin:0">QCM : ${qok}/${qn} justes. Questions ouvertes : vérifie les points cochés plus bas ; la note se met à jour.</p>
+    <table style="margin-top:12px"><tr><th>Thème</th><th>Points</th><th>Réussite</th></tr>${Object.entries(th).sort((a,b)=>a[1].p/a[1].m-b[1].p/b[1].m).map(([t,v])=>`<tr><td>${esc(t)}</td><td>${(Math.round(v.p*10)/10).toString().replace('.',',')} / ${v.m}</td><td>${Math.round(100*v.p/v.m)} %</td></tr>`).join('')}</table>
+    <div class="actions"><button class="btn primary" id="exNew">Nouvel examen</button></div>
+    <h2 style="margin-top:8px;font-size:18px">Correction</h2>
+    ${E.items.map((it,j)=>{const x=KQ.get(it.k);if(!x)return'';
+      if(it.t==='q'){const ok=it.a===0;return`<div class="res"><div class="verdict ${ok?'ok':'ko'}">Question ${j+1} — ${ok?'juste':it.a==null?'sans réponse':'fausse'}</div><div class="q" style="font-size:16px;margin:4px 0">${esc(x.q)}</div>
+        ${ok?'':`<div class="ans">Ta réponse : ${it.a==null?'aucune':esc(x.o[it.a])}${it.a?' — '+esc(x.x[it.a-1]||''):''}</div>`}<div>Bonne réponse : <strong>${esc(x.o[0])}</strong></div><div class="ans">${esc(x.e)} · Source : ${esc(x.s)}</div></div>`}
+      const r=exPoints(it);return`<div class="res" data-j="${j}"><div class="verdict ${r.p/r.max>=.6?'ok':'ko'}">Question ${j+1} (ouverte) — ${(Math.round(r.p*10)/10).toString().replace('.',',')} / 3</div><div class="q" style="font-size:16px;margin:4px 0">${esc(x.q)}</div>
+        <div class="ans">Ta réponse :</div><p class="modele" style="border-left-style:dashed">${esc(it.a||'(aucune réponse)')}</p>
+        <div><strong>Points attendus</strong> <span class="empty">— coche ceux que tu as vraiment expliqués</span></div>
+        <ul class="ptl">${x.p.map(([lab],i)=>`<li><label><input type="checkbox" data-j="${j}" data-i="${i}" ${it.chk[i]?'checked':''}>${esc(lab)}</label></li>`).join('')}</ul>
+        <div><strong>Réponse modèle</strong></div><p class="modele">${esc(x.r)}</p><div class="ans">Source : ${esc(x.s)}</div></div>`}).join('')}`;
+  $$('#exBody .ptl input').forEach(c=>c.onchange=()=>{const it=E.items[+c.dataset.j];it.chk[+c.dataset.i]=c.checked;const n=exNote();if(S.exams[0])S.exams[0].note=n;save();exRender()});
+  $('#exNew').onclick=()=>{E.closed=true;save();exRender()};
+}
+function qRefresh(){qMode==='ouv'?oqNew():qMode==='exam'?exRender():qNew()}
+function qApply(){const ex=qMode==='exam',o=qMode==='ouv',rv=qMode==='rev'||ex;$('#qTheme').hidden=rv;$('#qNiv').hidden=rv;$('#exCard').hidden=!ex;revCount();$('#qcmCard').hidden=o||ex;$('#qCount').hidden=o||ex;$('#quiz .kb').hidden=o||ex;$('#oqCard').hidden=!o;$('#oqCount').hidden=!o;
   $$('#quiz [data-score="quiz"]').forEach(e=>e.hidden=o);$$('#quiz [data-score="ouv"]').forEach(e=>e.hidden=!o);qRefresh()}
 chips('qMode',qMode,v=>{qMode=S.pref.qMode=v;save();qApply()});$('#qGive').onclick=()=>qAnswer(null);
 renderScore('quiz');renderScore('ouv');
@@ -1736,7 +1826,10 @@ document.addEventListener('keydown',ev=>{
   const t=ev.target;if(t&&/^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName)&&t.type!=='checkbox')return;
   if(t&&(t.id==='qNext'||t.id==='pNext'||t.id==='oqNext')&&(ev.key==='Enter'||ev.key===' '))return; // ce bouton réagit déjà tout seul
   const go=b=>{if(b&&!b.hidden&&!b.disabled){ev.preventDefault();b.click()}};
-  if(S.pref.tab==='quiz'&&qMode==='ouv'){
+  if(S.pref.tab==='quiz'&&qMode==='exam'){
+    if(/^[1-4]$/.test(ev.key))go($$('#exOpts .opt')[+ev.key-1]);
+    else if(ev.key==='ArrowRight')go($('#exNext'));else if(ev.key==='ArrowLeft')go($('#exPrev'));
+  }else if(S.pref.tab==='quiz'&&qMode==='ouv'){
     if((ev.key==='Enter'||ev.key===' ')&&oqDone)go($('#oqNext'));
   }else if(S.pref.tab==='quiz'){
     if(/^[1-4]$/.test(ev.key)&&!qDone)go($$('#qOpts .opt')[+ev.key-1]);
