@@ -54,7 +54,7 @@ open(p('entrainement.html'), 'w', encoding='utf-8').write(HEAD + frag + '\n</bod
 sw = open(p('sw.js'), encoding='utf-8').read()
 if '"entrainement.html"' not in sw:
     sw = sw.replace('"index.html", ', '"index.html", "entrainement.html", ', 1)
-h = hashlib.sha1(open(p('entrainement.html'), 'rb').read() + open(p('content.enc'), 'rb').read()).hexdigest()[:10]
+h = hashlib.sha1(b''.join(open(p(f), 'rb').read() for f in ('entrainement.html', 'index.html', 'content.enc'))).hexdigest()[:10]
 sw = re.sub(r"tssr-[0-9a-f]+", "tssr-" + h, sw, count=1)
 open(p('sw.js'), 'w', encoding='utf-8').write(sw)
 print('entrainement.html construit, cache', 'tssr-' + h)
