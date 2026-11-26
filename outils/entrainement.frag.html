@@ -93,6 +93,7 @@ button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 .lvl .d{letter-spacing:1.5px;margin-left:5px}
 .nivlab{font-size:13px;color:var(--muted);align-self:center;margin-right:2px}
 .niv-aide{font-size:14px;color:var(--muted)}
+.sync h2{font-size:18px;margin:0 0 6px}.sync label{display:block;margin-top:14px}.sync textarea{min-height:90px;font:13px var(--f-mono)}
 .niv-aide summary{cursor:pointer}
 .niv-aide table{border-collapse:collapse;margin-top:8px;width:100%;color:var(--fg)}
 .niv-aide td{border-top:1px solid var(--line);padding:6px 8px;vertical-align:top}
@@ -252,6 +253,7 @@ details summary{cursor:pointer;font-weight:500}
   <div class="chips" id="qMode">
     <button class="chip" data-v="qcm">QCM</button>
     <button class="chip" data-v="ouv">Questions ouvertes</button>
+    <button class="chip" data-v="rev">À revoir aujourd'hui</button>
   </div>
   <div class="bar">
     <div class="chips" id="qTheme"></div>
@@ -441,7 +443,17 @@ details summary{cursor:pointer;font-weight:500}
   <div id="depBox" style="display:flex;flex-direction:column;gap:14px"></div>
 </section>
 
-<p class="foot">Ta progression est enregistrée sur cet appareil. <button class="link" id="reset">Remettre les scores à zéro</button> <span id="resetConfirm" hidden> · <button class="link" id="resetYes">Confirmer</button></span></p>
+<p class="foot">Ta progression est enregistrée sur cet appareil. <button class="link" id="syncOpen">Transférer ma progression (PC ↔ iPhone)</button> · <button class="link" id="reset">Remettre les scores à zéro</button> <span id="resetConfirm" hidden> · <button class="link" id="resetYes">Confirmer</button></span></p>
+<div class="card sync" id="syncBox" hidden>
+  <h2>Transférer ma progression</h2>
+  <p>Ta progression est rangée dans le navigateur de chaque appareil. Pour la passer de l'un à l'autre, sans Internet ni compte : copie ton code sur un appareil, puis colle-le sur l'autre. Le code contient tes scores, tes questions à revoir et tes labs Cisco.</p>
+  <div class="actions"><button class="btn primary" id="syncCopy">Copier mon code</button><button class="btn" id="syncFile">Enregistrer dans un fichier</button></div>
+  <p class="empty" id="syncMsg"></p>
+  <label for="syncIn"><strong>Sur l'autre appareil</strong> : colle le code ici (ou choisis le fichier), puis importe.</label>
+  <textarea class="oqin" id="syncIn" placeholder="Colle ici le code qui commence par TSSR…" spellcheck="false" autocapitalize="off"></textarea>
+  <div class="actions"><input type="file" id="syncPick" accept=".txt,text/plain" hidden><button class="btn" id="syncPickBtn">Choisir un fichier</button><button class="btn primary" id="syncImp">Importer</button></div>
+  <p class="empty">L'import <strong>remplace</strong> la progression de cet appareil par celle du code.</p>
+</div>
 </div></main>
 
 <script>
@@ -461,7 +473,38 @@ function renderScore(m){const s=S.score[m];$$(`[data-score="${m}"]`).forEach(e=>
 function tally(m,ok){const s=S.score[m]||(S.score[m]={ok:0,n:0});s.n++;if(ok)s.ok++;save();renderScore(m)}
 ['quiz','ouv','sr','cmd','ports','ordre','dep'].forEach(renderScore);
 $('#reset').onclick=()=>{$('#resetConfirm').hidden=false};
-$('#resetYes').onclick=()=>{S.score={};S.miss={};S.chrono={};S.qlast={};S.qdue={};S.qn=0;save();['quiz','ouv','sr','cmd','ports','ordre','dep'].forEach(renderScore);$('#resetConfirm').hidden=true;if(srMode==='chrono')crReset();S.depBest={};S.osiBest={};save();depList();osiNew()};
+$('#resetYes').onclick=()=>{S.score={};S.miss={};S.chrono={};S.qlast={};S.qdue={};S.qn=0;S.srs={};save();['quiz','ouv','sr','cmd','ports','ordre','dep'].forEach(renderScore);$('#resetConfirm').hidden=true;if(srMode==='chrono')crReset();S.depBest={};S.osiBest={};save();depList();osiNew();if(typeof revCount==='function')revCount()};
+
+/* Transfert de la progression entre appareils, sans réseau : un code texte (compressé si possible) */
+const SYNC_KEYS=['tssr-entrainement','tssr-cisco'];
+const b64e=u8=>{let s='';for(let i=0;i<u8.length;i+=32768)s+=String.fromCharCode.apply(null,u8.subarray(i,i+32768));return btoa(s)};
+const b64d=t=>Uint8Array.from(atob(t),c=>c.charCodeAt(0));
+async function zip(u8,dir){const cs=dir?new CompressionStream('gzip'):new DecompressionStream('gzip');return new Uint8Array(await new Response(new Blob([u8]).stream().pipeThrough(cs)).arrayBuffer())}
+async function syncExport(){
+  save();const d={v:1,date:new Date().toISOString().slice(0,10)};
+  for(const k of SYNC_KEYS){try{d[k]=localStorage.getItem(k)}catch(e){}}
+  const raw=new TextEncoder().encode(JSON.stringify(d));
+  if(typeof CompressionStream!=='undefined'){try{return 'TSSRz1:'+b64e(await zip(raw,true))}catch(e){}}
+  return 'TSSR1:'+b64e(raw);
+}
+async function syncDecode(t){
+  t=String(t).replace(/\s+/g,'');const m=/^TSSR(z?)1:(.+)$/.exec(t);if(!m)throw new Error('format');
+  let u8=b64d(m[2]);if(m[1])u8=await zip(u8,false);
+  const d=JSON.parse(new TextDecoder().decode(u8));if(!d||d.v!==1)throw new Error('version');return d;
+}
+$('#syncOpen').onclick=()=>{const b=$('#syncBox');b.hidden=!b.hidden;if(!b.hidden)b.scrollIntoView({block:'nearest'})};
+$('#syncCopy').onclick=async()=>{const c=await syncExport();let ok=false;try{await navigator.clipboard.writeText(c);ok=true}catch(e){}
+  if(!ok){$('#syncIn').value=c;$('#syncIn').select()}
+  $('#syncMsg').textContent=ok?`Code copié (${Math.round(c.length/1024)} Ko). Colle-le sur l'autre appareil, par exemple dans un message à toi-même ou une note.`:'Copie automatique impossible : le code est affiché ci-dessous, sélectionne-le et copie-le.'};
+$('#syncFile').onclick=async()=>{const c=await syncExport();const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([c],{type:'text/plain'}));a.download='progression-tssr-'+new Date().toISOString().slice(0,10)+'.txt';document.body.appendChild(a);a.click();a.remove();
+  $('#syncMsg').textContent='Fichier enregistré. Envoie-le sur l\'autre appareil, puis utilise « Choisir un fichier ».'};
+$('#syncPickBtn').onclick=()=>$('#syncPick').click();
+$('#syncPick').onchange=async e=>{const f=e.target.files[0];if(f)$('#syncIn').value=await f.text()};
+let syncArm=false;
+$('#syncImp').onclick=async()=>{let d;try{d=await syncDecode($('#syncIn').value)}catch(e){$('#syncMsg').textContent='Ce code n\'est pas reconnu. Vérifie qu\'il est complet (il commence par TSSR).';return}
+  if(!syncArm){syncArm=true;$('#syncImp').textContent='Confirmer : remplacer ma progression';$('#syncMsg').textContent=`Code valide, créé le ${d.date}. Clique encore pour remplacer la progression de cet appareil.`;return}
+  for(const k of SYNC_KEYS){try{if(d[k]!=null)localStorage.setItem(k,d[k]);else localStorage.removeItem(k)}catch(e){}}
+  location.reload()};
 
 function chips(box,val,on){$$(`#${box} .chip`).forEach(b=>{b.setAttribute('aria-pressed',b.dataset.v===val);b.onclick=()=>{$$(`#${box} .chip`).forEach(x=>x.setAttribute('aria-pressed',x===b));on(b.dataset.v)}})}
 
@@ -1541,14 +1584,15 @@ function qPick(pool){
   return pick(old.slice(0,Math.max(1,Math.ceil(old.length/4))));
 }
 function qNew(){
-  const all=QUIZ.filter(x=>tOk(x)&&nivOk(x)), pool=all.filter(x=>x!==qLast);
-  if(!pool.length){$('#qQ').textContent='Aucune question pour ce cours à ce niveau.';$('#qOpts').innerHTML='';$('#qLvlB').hidden=true;return}
+  const rev=qMode==='rev', all=rev?QUIZ.filter(isDue):QUIZ.filter(x=>tOk(x)&&nivOk(x)), pool=all.length>1?all.filter(x=>x!==qLast):all;
+  if(!pool.length){$('#qQ').textContent=rev?'Rien à revoir aujourd\'hui. Reviens demain, ou continue en mode QCM pour voir de nouvelles questions.':'Aucune question pour ce cours à ce niveau.';$('#qEyebrow').textContent='';$('#qCount').textContent='';$('#qGive').hidden=true;$('#qFb').hidden=true;$('#qOpts').innerHTML='';$('#qLvlB').hidden=true;return}
   qCur=qPick(pool);S.qn++;S.qlast[qKey(qCur)]=S.qn;save();qLast=qCur;qDone=false;$('#qFb').hidden=true;$('#qGive').hidden=false;
   $('#qEyebrow').textContent=qCur.t+(isHC(qCur)?' · hors cours':'')+((S.miss[qKey(qCur)]||0)>0?' · à retravailler':'');
   $('#qQ').textContent=qCur.q;$('#qLvlB').hidden=false;$('#qLvlB').innerHTML=lvlHTML(qCur.n);
   $('#qOpts').innerHTML=shuffle(qCur.o.map((o,i)=>[o,i])).map(([o,i],k)=>`<button class="opt" data-i="${i}"><kbd class="k">${k+1}</kbd>${esc(o)}</button>`).join('');
   $$('#qOpts .opt').forEach(b=>b.onclick=()=>qAnswer(b));
   const n=all.length, vues=all.filter(x=>S.qlast[qKey(x)]!=null).length, todo=all.filter(x=>(S.miss[qKey(x)]||0)>0).length;
+  if(rev){$('#qCount').textContent=`${n} question${n>1?'s':''} à revoir aujourd'hui (tous thèmes). Réussie, une question revient dans 3, 7, 14 puis 30 jours ; ratée, elle revient demain.`;return}
   $('#qCount').textContent=`${vues}/${n} questions déjà vues dans ${tLabel()}${todo?` · ${todo} à retravailler`:''}. Toutes passent avant qu'une revienne ; une question ratée revient ${Q_DELAI} questions plus tard.`;
 }
 // btn = null : « Je ne sais pas » → on montre la réponse, et la question compte comme ratée (elle reviendra plus souvent).
@@ -1556,7 +1600,7 @@ function qAnswer(btn){
   if(qDone)return;qDone=true;$('#qGive').hidden=true;const ok=!!btn&&btn.dataset.i==='0',k=qKey(qCur);
   S.miss[k]=ok?Math.max(0,(S.miss[k]||0)-1):(S.miss[k]||0)+1;
   if(ok)delete S.qdue[k];else S.qdue[k]=S.qn+Q_DELAI;
-  tally('quiz',ok);
+  srsMark(k,ok);tally('quiz',ok);revCount();
   $$('#qOpts .opt').forEach(b=>{const i=+b.dataset.i;b.disabled=true;
     if(i===0)b.classList.add('ok');else if(b===btn)b.classList.add('ko');
     b.insertAdjacentHTML('beforeend',`<span class="ox">${i===0?'Bonne réponse.':esc((qCur.x||[])[i-1]||'')}</span>`)});
@@ -1569,7 +1613,15 @@ $('#qNext').onclick=qNew;
    Chaque question : réponse modèle (r) + points attendus (p : [libellé, mots-clés]).
    Les points dont un mot-clé apparaît dans la réponse sont cochés d'office ; l'élève corrige les cases.
    Réussie si au moins 60 % des points sont cochés ; sinon elle revient plus tard (même tirage que le QCM). */
-let qMode=S.pref.qMode==='ouv'?'ouv':'qcm', oqCur=null, oqLast=null, oqDone=false, oqCounted=false;
+/* Révision espacée sur plusieurs jours (boîtes de Leitner) :
+   une question réussie revient dans 3, 7, 14 puis 30 jours ; ratée (ou « je ne sais pas »), elle revient le lendemain. */
+S.srs=S.srs||{};
+const DAY=()=>{const d=new Date();return Math.floor((d.getTime()-d.getTimezoneOffset()*60000)/864e5)};
+const SRS_J=[1,1,3,7,14,30];
+function srsMark(k,ok){const c=S.srs[k];const b=ok?(c?Math.min(5,c[0]+1):2):0;S.srs[k]=[b,DAY()+SRS_J[b]]}
+const isDue=x=>{const c=S.srs[qKey(x)];return !!c&&c[1]<=DAY()};
+function revCount(){const n=QUIZ.filter(isDue).length;$('#qMode [data-v="rev"]').textContent=`À revoir aujourd'hui (${n})`;return n}
+let qMode=['ouv','rev'].includes(S.pref.qMode)?S.pref.qMode:'qcm', oqCur=null, oqLast=null, oqDone=false, oqCounted=false;
 const nrm=t=>' '+String(t).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[’`]/g,"'").replace(/\s+/g,' ')+' ';
 const nk=t=>String(t).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[’`]/g,"'");
 function oqNew(){
@@ -1604,13 +1656,13 @@ function oqCount(){ // compte la question au moment de passer à la suivante (ap
   const r=oqScore(),k=qKey(oqCur);
   S.miss[k]=r.ok?Math.max(0,(S.miss[k]||0)-1):(S.miss[k]||0)+1;
   if(r.ok)delete S.qdue[k];else S.qdue[k]=S.qn+Q_DELAI;
-  tally('ouv',r.ok);
+  srsMark(k,r.ok);tally('ouv',r.ok);
 }
 $('#oqCheck').onclick=()=>oqCheck(false);$('#oqGive').onclick=()=>oqCheck(true);
 $('#oqNext').onclick=()=>{oqCount();oqNew()};
 $('#oqIn').onkeydown=e=>{if(e.key==='Enter'&&(e.ctrlKey||e.metaKey)){e.preventDefault();oqCheck(false)}};
 function qRefresh(){qMode==='ouv'?oqNew():qNew()}
-function qApply(){const o=qMode==='ouv';$('#qcmCard').hidden=o;$('#qCount').hidden=o;$('#quiz .kb').hidden=o;$('#oqCard').hidden=!o;$('#oqCount').hidden=!o;
+function qApply(){const o=qMode==='ouv',rv=qMode==='rev';$('#qTheme').hidden=rv;$('#qNiv').hidden=rv;revCount();$('#qcmCard').hidden=o;$('#qCount').hidden=o;$('#quiz .kb').hidden=o;$('#oqCard').hidden=!o;$('#oqCount').hidden=!o;
   $$('#quiz [data-score="quiz"]').forEach(e=>e.hidden=o);$$('#quiz [data-score="ouv"]').forEach(e=>e.hidden=!o);qRefresh()}
 chips('qMode',qMode,v=>{qMode=S.pref.qMode=v;save();qApply()});$('#qGive').onclick=()=>qAnswer(null);
 renderScore('quiz');renderScore('ouv');
