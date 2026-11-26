@@ -129,7 +129,9 @@ button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 .lvl .d{letter-spacing:1.5px;margin-left:5px}
 .nivlab{font-size:13px;color:var(--muted);align-self:center;margin-right:2px}
 .niv-aide{font-size:14px;color:var(--muted)}
-.sync h2{font-size:18px;margin:0 0 6px}.sync label{display:block;margin-top:14px}.sync textarea{min-height:90px;font:13px var(--f-mono)}
+.sync h2{font-size:18px;margin:0 0 6px}
+.repform{display:flex;flex-direction:column;gap:8px}.repform textarea{min-height:70px}
+#repList ol{margin:0;padding-left:22px}#repList li{margin:6px 0}.sync label{display:block;margin-top:14px}.sync textarea{min-height:90px;font:13px var(--f-mono)}
 .niv-aide summary{cursor:pointer}
 .niv-aide table{border-collapse:collapse;margin-top:8px;width:100%;color:var(--fg)}
 .niv-aide td{border-top:1px solid var(--line);padding:6px 8px;vertical-align:top}
@@ -512,7 +514,14 @@ details summary{cursor:pointer;font-weight:500}
   <div id="depBox" style="display:flex;flex-direction:column;gap:14px"></div>
 </section>
 
-<p class="foot">Ta progression est enregistrée sur cet appareil. <button class="link" id="syncOpen">Transférer ma progression (PC ↔ iPhone)</button> · <button class="link" id="reset">Remettre les scores à zéro</button> <span id="resetConfirm" hidden> · <button class="link" id="resetYes">Confirmer</button></span></p>
+<p class="foot">Ta progression est enregistrée sur cet appareil. <button class="link" id="syncOpen">Transférer ma progression (PC ↔ iPhone)</button> · <button class="link" id="repOpen">Mes signalements</button> · <button class="link" id="reset">Remettre les scores à zéro</button> <span id="resetConfirm" hidden> · <button class="link" id="resetYes">Confirmer</button></span></p>
+<div class="card sync" id="repBox" hidden>
+  <h2>Mes signalements</h2>
+  <p>Les questions où tu as signalé une erreur. Copie la liste et envoie-la à Claude : il vérifiera chaque question avec ton cours et la corrigera.</p>
+  <div id="repList"></div>
+  <div class="actions"><button class="btn primary" id="repCopy">Copier la liste</button><button class="btn" id="repClear">Tout effacer</button></div>
+  <p class="empty" id="repMsg"></p>
+</div>
 <div class="card sync" id="syncBox" hidden>
   <h2>Transférer ma progression</h2>
   <p>Ta progression est rangée dans le navigateur de chaque appareil. Pour la passer de l'un à l'autre, sans Internet ni compte : copie ton code sur un appareil, puis colle-le sur l'autre. Le code contient tes scores, tes questions à revoir et tes labs Cisco et Linux.</p>
@@ -574,6 +583,26 @@ $('#syncImp').onclick=async()=>{let d;try{d=await syncDecode($('#syncIn').value)
   if(!syncArm){syncArm=true;$('#syncImp').textContent='Confirmer : remplacer ma progression';$('#syncMsg').textContent=`Code valide, créé le ${d.date}. Clique encore pour remplacer la progression de cet appareil.`;return}
   for(const k of SYNC_KEYS){try{if(d[k]!=null)localStorage.setItem(k,d[k]);else localStorage.removeItem(k)}catch(e){}}
   location.reload()};
+
+/* Signaler une erreur : enregistré sur l'appareil (S.reports), à copier pour Claude */
+S.reports=S.reports||[];
+const repBtn=x=>{const k=x.t+'|'+x.q,done=S.reports.some(r=>r.k===k);return `<div class="repzone" data-k="${esc(k)}"><button class="link repbtn">${done?'✓ Erreur signalée (modifier)':'Signaler une erreur dans cette question'}</button></div>`};
+document.addEventListener('click',e=>{
+  const b=e.target.closest('.repbtn');if(b){const z=b.closest('.repzone'),k=z.dataset.k,old=S.reports.find(r=>r.k===k);
+    z.innerHTML=`<div class="repform"><label for="repTxt">Qu'est-ce qui ne va pas ? (réponse fausse, explication confuse, différent de ton cours…)</label><textarea class="oqin" id="repTxt">${esc(old?old.note:'')}</textarea><div class="actions"><button class="btn primary repsave">Enregistrer le signalement</button><button class="btn repcancel">Annuler</button></div></div>`;
+    z.querySelector('textarea').focus();return}
+  const sv=e.target.closest('.repsave,.repcancel');if(sv){const z=sv.closest('.repzone'),k=z.dataset.k;
+    if(sv.classList.contains('repsave')){const note=z.querySelector('textarea').value.trim();S.reports=S.reports.filter(r=>r.k!==k);const [t,...q]=k.split('|');S.reports.push({k,t,q:q.join('|'),note,d:new Date().toISOString().slice(0,10)});save();repRender()}
+    const done=S.reports.some(r=>r.k===k);z.innerHTML=`<button class="link repbtn">${done?'✓ Erreur signalée (modifier)':'Signaler une erreur dans cette question'}</button>`}});
+function repRender(){$('#repOpen').textContent=`Mes signalements${S.reports.length?' ('+S.reports.length+')':''}`;
+  $('#repList').innerHTML=S.reports.length?`<ol>${S.reports.map((r,i)=>`<li><strong>${esc(r.t)}</strong> — ${esc(r.q)}<br><span class="empty">${esc(r.note||'(sans commentaire)')} · ${r.d}</span> <button class="link" data-del="${i}">Retirer</button></li>`).join('')}</ol>`:'<p class="empty">Aucun signalement pour l\'instant. Sous chaque correction, un lien « Signaler une erreur » permet d\'en ajouter.</p>';
+  $$('#repList [data-del]').forEach(b=>b.onclick=()=>{S.reports.splice(+b.dataset.del,1);save();repRender()})}
+const repText=()=>'Erreurs signalées dans mon outil de révision TSSR :\n\n'+S.reports.map((r,i)=>`${i+1}. [${r.t}] ${r.q}\n   Problème : ${r.note||'(non précisé)'}`).join('\n\n');
+$('#repOpen').onclick=()=>{const b=$('#repBox');b.hidden=!b.hidden;repRender();if(!b.hidden)b.scrollIntoView({block:'nearest'})};
+$('#repCopy').onclick=async()=>{if(!S.reports.length)return;let ok=false;try{await navigator.clipboard.writeText(repText());ok=true}catch(e){}
+  $('#repMsg').textContent=ok?'Liste copiée : colle-la dans ta conversation avec Claude.':'Copie impossible ici : sélectionne le texte ci-dessous.';if(!ok){$('#repList').insertAdjacentHTML('beforeend',`<textarea class="oqin" readonly>${esc(repText())}</textarea>`)}};
+let repArm=false;$('#repClear').onclick=()=>{if(!repArm){repArm=true;$('#repClear').textContent='Confirmer : tout effacer';return}repArm=false;$('#repClear').textContent='Tout effacer';S.reports=[];save();repRender()};
+setTimeout(repRender,0);
 
 function chips(box,val,on){$$(`#${box} .chip`).forEach(b=>{b.setAttribute('aria-pressed',b.dataset.v===val);b.onclick=()=>{$$(`#${box} .chip`).forEach(x=>x.setAttribute('aria-pressed',x===b));on(b.dataset.v)}})}
 
@@ -1690,7 +1719,7 @@ function qAnswer(btn){
     if(i===0)b.classList.add('ok');else if(b===btn)b.classList.add('ko');
     b.insertAdjacentHTML('beforeend',`<span class="ox">${i===0?'Bonne réponse.':esc((qCur.x||[])[i-1]||'')}</span>`)});
   const fb=$('#qFb');fb.className='fb '+(ok?'ok':btn?'ko':'');fb.hidden=false;
-  fb.innerHTML=`<span class="verdict ${ok?'ok':btn?'ko':''}">${ok?'Correct.':btn?'Raté.':'Voici la réponse.'}</span>${ok?'':`<div>Bonne réponse : <strong>${esc(qCur.o[0])}</strong></div>`}<div>${esc(qCur.e)}</div><div class="empty">Source : ${esc(qCur.s)}</div>`;
+  fb.innerHTML=`<span class="verdict ${ok?'ok':btn?'ko':''}">${ok?'Correct.':btn?'Raté.':'Voici la réponse.'}</span>${ok?'':`<div>Bonne réponse : <strong>${esc(qCur.o[0])}</strong></div>`}<div>${esc(qCur.e)}</div><div class="empty">Source : ${esc(qCur.s)}</div>${repBtn(qCur)}`;
 }
 $('#qNext').onclick=qNew;
 
@@ -1733,7 +1762,7 @@ function oqCheck(give){
     <div><strong>Points attendus</strong> <span class="empty">— coche ceux que tu as vraiment expliqués</span></div>
     <ul class="ptl">${oqCur.p.map(([lab],i)=>`<li><label><input type="checkbox" ${found[i]?'checked':''}>${esc(lab)}</label></li>`).join('')}</ul>
     <div><strong>Réponse modèle</strong></div><p class="modele">${esc(oqCur.r)}</p>
-    <div class="empty">Source : ${esc(oqCur.s)}</div>`;
+    <div class="empty">Source : ${esc(oqCur.s)}</div>${repBtn(oqCur)}`;
   $$('#oqFb .ptl input').forEach(c=>c.onchange=oqVerdict);oqVerdict();
 }
 function oqCount(){ // compte la question au moment de passer à la suivante (après les éventuelles corrections de cases)
@@ -1809,12 +1838,12 @@ function exRender(){
     <h2 style="margin-top:8px;font-size:18px">Correction</h2>
     ${E.items.map((it,j)=>{const x=KQ.get(it.k);if(!x)return'';
       if(it.t==='q'){const ok=it.a===0;return`<div class="res"><div class="verdict ${ok?'ok':'ko'}">Question ${j+1} — ${ok?'juste':it.a==null?'sans réponse':'fausse'}</div><div class="q" style="font-size:16px;margin:4px 0">${esc(x.q)}</div>
-        ${ok?'':`<div class="ans">Ta réponse : ${it.a==null?'aucune':esc(x.o[it.a])}${it.a?' — '+esc(x.x[it.a-1]||''):''}</div>`}<div>Bonne réponse : <strong>${esc(x.o[0])}</strong></div><div class="ans">${esc(x.e)} · Source : ${esc(x.s)}</div></div>`}
+        ${ok?'':`<div class="ans">Ta réponse : ${it.a==null?'aucune':esc(x.o[it.a])}${it.a?' — '+esc(x.x[it.a-1]||''):''}</div>`}<div>Bonne réponse : <strong>${esc(x.o[0])}</strong></div><div class="ans">${esc(x.e)} · Source : ${esc(x.s)}</div>${repBtn(x)}</div>`}
       const r=exPoints(it);return`<div class="res" data-j="${j}"><div class="verdict ${r.p/r.max>=.6?'ok':'ko'}">Question ${j+1} (ouverte) — ${(Math.round(r.p*10)/10).toString().replace('.',',')} / 3</div><div class="q" style="font-size:16px;margin:4px 0">${esc(x.q)}</div>
         <div class="ans">Ta réponse :</div><p class="modele" style="border-left-style:dashed">${esc(it.a||'(aucune réponse)')}</p>
         <div><strong>Points attendus</strong> <span class="empty">— coche ceux que tu as vraiment expliqués</span></div>
         <ul class="ptl">${x.p.map(([lab],i)=>`<li><label><input type="checkbox" data-j="${j}" data-i="${i}" ${it.chk[i]?'checked':''}>${esc(lab)}</label></li>`).join('')}</ul>
-        <div><strong>Réponse modèle</strong></div><p class="modele">${esc(x.r)}</p><div class="ans">Source : ${esc(x.s)}</div></div>`}).join('')}`;
+        <div><strong>Réponse modèle</strong></div><p class="modele">${esc(x.r)}</p><div class="ans">Source : ${esc(x.s)}</div>${repBtn(x)}</div>`}).join('')}`;
   $$('#exBody .ptl input').forEach(c=>c.onchange=()=>{const it=E.items[+c.dataset.j];it.chk[+c.dataset.i]=c.checked;const n=exNote();if(S.exams[0])S.exams[0].note=n;save();exRender()});
   $('#exNew').onclick=()=>{E.closed=true;save();exRender()};
 }
