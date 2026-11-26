@@ -22,7 +22,7 @@ Ces cours sont dans `outils/quiz/*.json` et `outils/ouvertes/*.json`. Avant d'aj
 
 ## Fichiers du projet
 - `outils/entrainement.frag.html` : source de la page (HTML, CSS et JS en un seul fichier).
-  - Onglets : Cours (QCM + questions ouvertes + « À revoir aujourd'hui » + « Examen blanc » (chronométré, note sur 20, historique dans `S.exams`), filtres de thème et de niveau, « Mon bilan » des points faibles, tableau « Couverture TSSR »), Sous-réseaux, Commandes, Cisco, Linux, Ports, OSI, Dépannage.
+  - Onglets : Cours (QCM + questions ouvertes + « À revoir aujourd'hui » + « Examen blanc » (chronométré, note sur 20, historique dans `S.exams`) + « Fiches à retenir », filtres de thème et de niveau, « Mon bilan » des points faibles, tableau « Couverture TSSR »), Sous-réseaux, Commandes, Cisco, Linux, Ports, OSI, Dépannage.
   - Ce fragment, sans doctype, est aussi publié en Artifact claude.ai : https://claude.ai/artifact/GXvby1DYXEJd367ti3sapm (republier avec ce `url`).
 - `outils/quiz/*.json` : QCM `{t, s, q, o[4], e, x[3], n}`.
   - `o[0]` est la bonne réponse ; elle est mélangée à l'affichage.
@@ -33,6 +33,7 @@ Ces cours sont dans `outils/quiz/*.json` et `outils/ouvertes/*.json`. Avant d'aj
   - Les mots-clés sont cherchés dans la réponse en minuscules et sans accents. Éviter les mots trop courants.
 - Questions hors cours : `s` = « Notion générale (pas dans les cours que j'ai pu lire) ». Elles sont dans `outils/quiz/hors_cours.json` et `outils/ouvertes/hors_cours.json`. Elles s'affichent avec la mention « hors cours » et sont exclues du filtre « Mes cours seulement ». Quand un cours sur le même sujet arrive, remplacer ces questions par des questions tirées du cours.
 - `outils/cisco_sim.js` : simulateur Cisco IOS (`CiscoSim`), labs (`CiscoLabs.LABS`) et interface du terminal. On peut le charger sous Node pour les tests.
+- `outils/fiches/*.json` : fiches « À retenir » `{t, src, intro, blocs:[[titre, [points]]], pieges}`, rédigées à partir des cours (pages citées). Le thème `t` doit exister dans le quiz. Les thèmes sans fiche affichent un « mémo express » généré à partir des QCM de niveau 0 à 2.
 - `outils/linux_sim.js` : terminal Linux simulé (`LinuxSim`), labs (`LinuxLabs.LABS`) et interface de l'onglet Linux. Système de fichiers en mémoire avec inodes, droits UGO, utilisateurs et groupes (`/etc/passwd`, `/etc/group`, `/etc/shadow` régénérés), sudo et su (mots de passe : dimitri = tssr, alice = alice), liens, tubes et redirections, processus. Notions du cours Initiation à Linux ; les commandes sont des notions générales (hors cours).
 - `outils/build_entrainement.py` :
   - injecte les JSON et le simulateur dans le fragment, entre les marqueurs `/*QUIZ_DEBUT*/…/*QUIZ_FIN*/`, `/*OUV_DEBUT*/…/*OUV_FIN*/`, `/*LINUX_DEBUT*/…/*LINUX_FIN*/` et `/*CISCO_DEBUT*/…/*CISCO_FIN*/` ;
