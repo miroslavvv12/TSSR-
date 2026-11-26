@@ -1636,10 +1636,10 @@ function couverture(){
   const R=[
     ['Réseau : notions de base, modèle OSI, adressage IPv4, sous-réseaux, ports',[nb('Initiation aux réseaux'),nb('Modèle OSI'),'Onglets Sous-réseaux, OSI, Ports', nb('Wi-Fi, VoIP et IPv6')]],
     ['Câblage et matériel du poste de travail',[nb('Câblage réseau'),nb('Hardware')]],
-    ['Commutation : VLAN, trunk, spanning-tree, sécurité des ports',[nb('VLAN'),lab('vlan','trunk','secu')]],
-    ['Routage : statique, RIP, OSPF, inter-VLAN',[nb('Routeurs'),lab('base','if','static','rip','ros','ospf'),cmd('cisco')]],
-    ['Services réseau : DHCP, DNS',[nb('DHCP'),nb('DNS'),lab('dhcp')]],
-    ['NAT/PAT et ACL',[nb('NAT / PAT'),lab('acl','nat')]],
+    ['Commutation : VLAN, trunk, spanning-tree, sécurité des ports',[nb('VLAN'),lab('vlan','trunk','secu','dep2')]],
+    ['Routage : statique, RIP, OSPF, inter-VLAN',[nb('Routeurs'),lab('base','if','static','rip','ros','ospf','dep1'),cmd('cisco')]],
+    ['Services réseau : DHCP, DNS',[nb('DHCP'),nb('DNS'),lab('dhcp','dep3')]],
+    ['NAT/PAT et ACL',[nb('NAT / PAT'),lab('acl','nat','dep4')]],
     ['Postes Windows : prise en main, systèmes, partitionnement, NTFS et partages',[nb('Prise en main Windows 11'),nb('Systèmes Windows'),nb('Partitionnement'),nb('Droits NTFS et partage'),cmd('cmd')]],
     ['Active Directory et GPO',[nb('Active Directory et GPO'),cmd('ad')]],
     ['Windows Server, PowerShell et scripts',[nb('Windows Server et PowerShell'),nb('Scripts (Bash, PowerShell)'),cmd('ps')]],
@@ -3611,7 +3611,77 @@ const LABS = [
  ],
 },
 {
- id: 'libre', n: 13, niv: 0, titre: 'Bac à sable',
+ id: 'dep1', n: 13, niv: 4, titre: 'Dépannage : PC1 ne joint plus PC2',
+ intro: "Panne signalée : « PC1 n'arrive plus à joindre PC2 depuis ce matin. » Le réseau était configuré (routage statique). Trouve les 2 pannes, sans tout reconfigurer : observe d'abord, corrige ensuite.",
+ topo: '   PC1 192.168.1.1 ── G0/0 [ R1 ] G0/1 ──── 10.0.0.0/8 ──── G0/1 [ R2 ] G0/0 ── PC2 192.168.2.1\n                       .254        .1                       .2          .254',
+ devs: ['R1', 'R2', 'PC1', 'PC2'],
+ make: () => { const N = S.mkNet([S.R('R1'), S.R('R2'), S.newPC('PC1', '192.168.1.1', '255.255.255.0', '192.168.1.254'), S.newPC('PC2', '192.168.2.1', '255.255.255.0', '192.168.2.254')], [['PC1', '', 'R1', 'g0/0'], ['R1', 'g0/1', 'R2', 'g0/1'], ['PC2', '', 'R2', 'g0/0']]);
+  S.preset(N, 'R1', ['conf t', 'hostname R1', 'int g0/0', 'ip address 192.168.1.254 255.255.255.0', 'no shut', 'int g0/1', 'ip address 10.0.0.1 255.0.0.0', 'shutdown', 'exit', 'ip route 192.168.2.0 255.255.255.0 10.0.0.2', 'end']);
+  S.preset(N, 'R2', ['conf t', 'hostname R2', 'int g0/0', 'ip address 192.168.2.254 255.255.255.0', 'no shut', 'int g0/1', 'ip address 10.0.0.2 255.0.0.0', 'no shut', 'exit', 'ip route 192.168.1.0 255.255.255.0 10.0.0.3', 'end']); return N; },
+ tasks: [
+  ['Constate la panne : depuis PC1, pingue PC2.', 'Clique sur PC1 : ping 192.168.2.1 (échec)', N => dv(N, 'PC1').seen['ping 192.168.2.1'] !== undefined],
+  ['Sur R1, vérifie l\'état des interfaces.', 'show ip interface brief\n→ G0/1 est « administratively down »', N => !!dv(N, 'R1').seen['show ip interface brief']],
+  ['Corrige la 1re panne sur R1.', 'Solution : interface g0/1\nno shutdown', N => !I(N, 'R1', 'GigabitEthernet0/1').shut],
+  ['Depuis R1, pingue R2 (10.0.0.2), puis regarde la table de routage de R2.', 'ping 10.0.0.2 sur R1 (réussite)\nshow ip route sur R2\n→ la route vers 192.168.1.0 passe par 10.0.0.3, qui n\'existe pas', N => !!dv(N, 'R1').seen['ping 10.0.0.2'] && !!dv(N, 'R2').seen['show ip route']],
+  ['Corrige la 2e panne sur R2 : la route de retour.', 'Solution :\nno ip route 192.168.1.0 255.255.255.0 10.0.0.3\nip route 192.168.1.0 255.255.255.0 10.0.0.1', N => route(N, 'R2', '192.168.1.0', '255.255.255.0', '10.0.0.1') && !route(N, 'R2', '192.168.1.0', '255.255.255.0', '10.0.0.3')],
+  ['Vérifie : PC1 joint PC2.', 'Clique sur PC1 : ping 192.168.2.1', N => dv(N, 'PC1').seen['ping 192.168.2.1'] === true],
+  ['Sauvegarde les deux routeurs.', 'copy run start  (sur R1 et sur R2)', N => allSaved(N, ['R1', 'R2']) && !I(N, 'R1', 'GigabitEthernet0/1').shut && route(N, 'R2', '192.168.1.0', '255.255.255.0', '10.0.0.1')],
+ ],
+},
+{
+ id: 'dep2', n: 14, niv: 4, titre: 'Dépannage : VLAN coupé entre deux switchs',
+ intro: "Panne signalée : « PC1 et PC3 sont tous les deux au service COMPTA (VLAN 10) mais ne se voient pas. » Les VLAN et le trunk existent déjà. Trouve les 2 erreurs de configuration.",
+ topo: '   PC1 V10 192.168.10.1 ─ Fa0/1 [ SW1 ] G0/1 ═══ trunk ═══ G0/1 [ SW2 ] Fa0/1 ─ PC3 V10 192.168.10.3\n   PC2 V20 192.168.20.1 ─ Fa0/2                                   Fa0/2 ─ PC4 V20 192.168.20.3',
+ devs: ['SW1', 'SW2', 'PC1', 'PC3', 'PC2', 'PC4'],
+ make: () => { const N = S.mkNet([S.SW('SW1'), S.SW('SW2'), S.newPC('PC1', '192.168.10.1', '255.255.255.0'), S.newPC('PC2', '192.168.20.1', '255.255.255.0'), S.newPC('PC3', '192.168.10.3', '255.255.255.0'), S.newPC('PC4', '192.168.20.3', '255.255.255.0')], [['PC1', '', 'SW1', 'f0/1'], ['PC2', '', 'SW1', 'f0/2'], ['PC3', '', 'SW2', 'f0/1'], ['PC4', '', 'SW2', 'f0/2'], ['SW1', 'g0/1', 'SW2', 'g0/1']]);
+  const base = s => ['conf t', 'hostname ' + s, 'vlan 10', 'name COMPTA', 'vlan 20', 'name RH', 'int f0/1', 'switchport mode access', 'switchport access vlan 10', 'int f0/2', 'switchport mode access', 'switchport access vlan 20', 'int g0/1', 'switchport mode trunk'];
+  S.preset(N, 'SW1', [...base('SW1'), 'switchport trunk allowed vlan 20', 'end']);
+  S.preset(N, 'SW2', [...base('SW2'), 'int f0/1', 'switchport access vlan 20', 'end']); return N; },
+ tasks: [
+  ['Constate la panne : PC1 ne joint pas PC3, mais PC2 joint PC4.', 'Sur PC1 : ping 192.168.10.3 (échec)\nSur PC2 : ping 192.168.20.3 (réussite) → le trunk fonctionne, mais pas pour le VLAN 10', N => dv(N, 'PC1').seen['ping 192.168.10.3'] !== undefined && dv(N, 'PC2').seen['ping 192.168.20.3'] !== undefined],
+  ['Sur SW2, vérifie dans quel VLAN est le port de PC3.', 'show vlan brief\n→ Fa0/1 est dans le VLAN 20 au lieu du 10', N => !!dv(N, 'SW2').seen['show vlan brief']],
+  ['Corrige le port de PC3 sur SW2.', 'Solution : interface f0/1\nswitchport access vlan 10', N => access(N, 'SW2', 'FastEthernet0/1', 10)],
+  ['Vérifie les trunks : quels VLAN sont autorisés ?', 'show interfaces trunk  (sur SW1)\n→ seul le VLAN 20 est autorisé', N => !!dv(N, 'SW1').seen['show interfaces trunk']],
+  ['Autorise le VLAN 10 sur le trunk de SW1, sans retirer le 20.', 'Solution : interface g0/1\nswitchport trunk allowed vlan add 10\n(ou switchport trunk allowed vlan 10,20)', N => { const a = I(N, 'SW1', 'GigabitEthernet0/1').allowed; return trunk(N, 'SW1', 'GigabitEthernet0/1') && (a == null || (a.includes(10) && a.includes(20))); }],
+  ['Vérifie : PC1 joint PC3, et PC2 joint toujours PC4.', 'Sur PC1 : ping 192.168.10.3\nSur PC2 : ping 192.168.20.3', N => pingOk(N, 'PC1', '192.168.10.3') && pingOk(N, 'PC2', '192.168.20.3') && dv(N, 'PC1').seen['ping 192.168.10.3'] === true],
+  ['Sauvegarde les deux switchs.', 'copy run start  (sur SW1 et sur SW2)', N => allSaved(N, ['SW1', 'SW2']) && access(N, 'SW2', 'FastEthernet0/1', 10)],
+ ],
+},
+{
+ id: 'dep3', n: 15, niv: 5, titre: 'Dépannage : pas d\'adresse DHCP',
+ intro: "Panne signalée : « PC3 n'a pas d'adresse, et quand il en avait une, il ne sortait pas de son réseau. » R1 est le serveur DHCP des deux réseaux ; R2 relaie. Trouve les 2 erreurs.",
+ topo: '   PC1 192.168.10.10 (fixe) ─ G0/0 [ R1 ] G0/1 ── 10.0.0.0/30 ── G0/1 [ R2 ] G0/0 ── PC3 (DHCP)\n                       192.168.10.254   .1                .2   192.168.20.254\n   R1 : pools DHCP LAN10 et LAN20. R2 : relais DHCP sur G0/0.',
+ devs: ['R1', 'R2', 'PC3', 'PC1'],
+ make: () => { const N = S.mkNet([S.R('R1'), S.R('R2'), S.newPC('PC1', '192.168.10.10', '255.255.255.0', '192.168.10.254'), S.newPC('PC3')], [['PC1', '', 'R1', 'g0/0'], ['R1', 'g0/1', 'R2', 'g0/1'], ['PC3', '', 'R2', 'g0/0']]);
+  S.preset(N, 'R1', ['conf t', 'hostname R1', 'int g0/0', 'ip address 192.168.10.254 255.255.255.0', 'no shut', 'int g0/1', 'ip address 10.0.0.1 255.255.255.252', 'no shut', 'exit', 'ip route 192.168.20.0 255.255.255.0 10.0.0.2', 'ip dhcp excluded-address 192.168.10.1 192.168.10.10', 'ip dhcp excluded-address 192.168.20.250 192.168.20.254', 'ip dhcp pool LAN10', 'network 192.168.10.0 255.255.255.0', 'default-router 192.168.10.254', 'dns-server 8.8.8.8', 'exit', 'ip dhcp pool LAN20', 'network 192.168.20.0 255.255.255.0', 'default-router 192.168.20.1', 'dns-server 8.8.8.8', 'end']);
+  S.preset(N, 'R2', ['conf t', 'hostname R2', 'int g0/0', 'ip address 192.168.20.254 255.255.255.0', 'ip helper-address 10.0.0.9', 'no shut', 'int g0/1', 'ip address 10.0.0.2 255.255.255.252', 'no shut', 'exit', 'ip route 192.168.10.0 255.255.255.0 10.0.0.1', 'end']); return N; },
+ tasks: [
+  ['Constate la panne : sur PC3, ipconfig /renew donne une adresse APIPA (169.254.x.x).', 'Clique sur PC3 : ipconfig /renew', N => !!dv(N, 'PC3').seen['ipconfig /renew']],
+  ['Sur R2, regarde la configuration de l\'interface G0/0.', 'show running-config\n→ ip helper-address 10.0.0.9 : ce n\'est pas l\'adresse de R1', N => !!dv(N, 'R2').seen['show running-config']],
+  ['Corrige le relais DHCP sur R2.', 'Solution : interface g0/0\nno ip helper-address\nip helper-address 10.0.0.1', N => I(N, 'R2', 'GigabitEthernet0/0').helper === ip('10.0.0.1')],
+  ['Sur PC3, renouvelle l\'adresse, puis pingue PC1 : ça échoue encore. Regarde la passerelle reçue.', 'ipconfig /renew\nping 192.168.10.10 (échec)\nipconfig → passerelle 192.168.20.1 : ce n\'est pas R2 (192.168.20.254)', N => dv(N, 'PC3').dhcpSrv === 'R1' && dv(N, 'PC3').seen['ping 192.168.10.10'] !== undefined],
+  ['Sur R1, corrige la passerelle distribuée par le pool LAN20.', 'Solution : ip dhcp pool LAN20\ndefault-router 192.168.20.254', N => Object.values(dv(N, 'R1').dhcp.pools).some(p => p.net === ip('192.168.20.0') && p.gw === ip('192.168.20.254'))],
+  ['Sur PC3, renouvelle l\'adresse et pingue PC1.', 'ipconfig /renew\nping 192.168.10.10', N => dv(N, 'PC3').gw === ip('192.168.20.254') && dv(N, 'PC3').seen['ping 192.168.10.10'] === true],
+  ['Sauvegarde R1 et R2.', 'copy run start  (sur les deux)', N => allSaved(N, ['R1', 'R2']) && I(N, 'R2', 'GigabitEthernet0/0').helper === ip('10.0.0.1')],
+ ],
+},
+{
+ id: 'dep4', n: 16, niv: 5, titre: 'Dépannage : plus personne n\'accède au serveur',
+ intro: "Panne signalée : « Depuis qu'un collègue a ajouté une ACL pour bloquer PC2, plus personne n'accède au serveur. » PC2 doit rester bloqué, PC1 doit retrouver l'accès.",
+ topo: '   PC1 192.168.1.10 ─ Fa0/1 ┐\n                           ├ [SW1] G0/1 ── G0/0 [ R1 ] G0/1 ── SRV 192.168.2.100 (serveur web)\n   PC2 192.168.1.20 ─ Fa0/2 ┘          192.168.1.254    192.168.2.254',
+ devs: ['R1', 'PC1', 'PC2', 'SRV'],
+ make: () => { const N = S.mkNet([S.R('R1'), S.SW('SW1'), S.newPC('PC1', '192.168.1.10', '255.255.255.0', '192.168.1.254'), S.newPC('PC2', '192.168.1.20', '255.255.255.0', '192.168.1.254'), S.newPC('SRV', '192.168.2.100', '255.255.255.0', '192.168.2.254', true)], [['PC1', '', 'SW1', 'f0/1'], ['PC2', '', 'SW1', 'f0/2'], ['SW1', 'g0/1', 'R1', 'g0/0'], ['SRV', '', 'R1', 'g0/1']]);
+  S.preset(N, 'R1', ['conf t', 'hostname R1', 'int g0/0', 'ip address 192.168.1.254 255.255.255.0', 'no shut', 'int g0/1', 'ip address 192.168.2.254 255.255.255.0', 'ip access-group 10 out', 'no shut', 'exit', 'access-list 10 deny host 192.168.1.20', 'end']); S.preset(N, 'SW1', ['conf t', 'hostname SW1', 'end']); return N; },
+ tasks: [
+  ['Constate la panne : PC1 ne joint plus le serveur.', 'Clique sur PC1 : ping 192.168.2.100 (échec)', N => dv(N, 'PC1').seen['ping 192.168.2.100'] !== undefined],
+  ['Sur R1, affiche les ACL.', 'show access-lists\n→ une seule règle « deny » : à la fin de chaque ACL, un « deny any » implicite bloque tout le reste', N => !!dv(N, 'R1').seen['show access-lists']],
+  ['Corrige l\'ACL 10 sans retirer la règle qui bloque PC2.', 'Solution : access-list 10 permit any\n(elle s\'ajoute après le deny)', N => { const r = rules(N, 'R1', '10'); return r.length >= 2 && r[0].act === 'deny' && isHost(r[0].src, '192.168.1.20') && r.some(x => x.act === 'permit' && x.src.any); }],
+  ['Vérifie : PC1 joint le serveur et ouvre le site web ; PC2 reste bloqué.', 'Sur PC1 : ping 192.168.2.100 et curl http://192.168.2.100\nSur PC2 : ping 192.168.2.100 (échec)', N => dv(N, 'PC1').seen['ping 192.168.2.100'] === true && dv(N, 'PC1').seen['curl 192.168.2.100'] === true && dv(N, 'PC2').seen['ping 192.168.2.100'] === false],
+  ['Sauvegarde R1.', 'copy run start', N => S.saved(dv(N, 'R1')) && rules(N, 'R1', '10').some(x => x.act === 'permit' && x.src.any)],
+ ],
+},
+{
+ id: 'libre', n: 17, niv: 0, titre: 'Bac à sable',
  intro: "Aucune consigne : entraîne-toi librement. Tout est vierge.",
  topo: '   PC1 192.168.1.1/24 (passerelle .254) ─ Fa0/1 [ SW1 ] G0/1 ─ G0/0 [ R1 ] G0/1 ─ G0/1 [ R2 ] G0/0 ─ PC2 192.168.2.1/24 (passerelle .254)',
  devs: ['R1', 'R2', 'SW1', 'PC1', 'PC2'],
@@ -3619,6 +3689,9 @@ const LABS = [
  tasks: [],
 },
 ];
+// La tâche finale « Sauvegarde » ne compte que si toutes les autres tâches sont réussies
+// (sinon elle paraîtrait validée dès le départ : la configuration de départ est déjà sauvegardée).
+for (const L of LABS) { const T = L.tasks, last = T[T.length - 1]; if (last && /copy run start/.test(last[1])) { const ok = last[2], prev = T.slice(0, -1); last[2] = N => ok(N) && prev.every(t => { try { return !!t[2](N); } catch (e) { return false; } }); } }
 return { LABS };
 })();
 if (typeof module !== 'undefined') module.exports.LABS = CiscoLabs.LABS;

@@ -66,7 +66,7 @@ Ces cours sont dans `outils/quiz/*.json` et `outils/ouvertes/*.json`. Avant d'aj
   - port-security, STP (affichage seulement), CDP, table MAC ;
   - PC : `ipconfig /renew` et `/release`, `ping`, `curl`, `ssh` et `telnet` avec session distante.
 - **7 labs Linux** : arbo, fich, droits, users, liens, proc, libre. Tous se valident avec leur solution.
-- **13 labs Cisco** : base, if, vlan, trunk, static, rip, ros, ospf, acl, nat, dhcp, secu, libre (bac à sable). Tous les labs qui ont des tâches se valident avec leur solution.
+- **17 labs Cisco** : base, if, vlan, trunk, static, rip, ros, ospf, acl, nat, dhcp, secu, 4 labs de dépannage (dep1 routage, dep2 VLAN/trunk, dep3 DHCP/relais, dep4 ACL : pannes préconfigurées à trouver), libre (bac à sable). Tous les labs qui ont des tâches se valident avec leur solution ; aucune tâche n'est validée au départ (la tâche « Sauvegarde » exige que les autres soient réussies).
 
 ## Tests
 - **Node** : `require('./outils/cisco_sim.js')`, puis exécuter la solution de chaque lab et vérifier ses tâches.
