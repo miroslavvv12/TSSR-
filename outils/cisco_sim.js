@@ -1231,9 +1231,16 @@ if (typeof document !== 'undefined') (function () {
     dev = lab.devs[0]; renderLabs(); renderBrief(); renderDevs(); showDev(dev); check(); save();
   }
   function renderLabs() {
-    q('#ciLabs').innerHTML = LABS.map(l => `<button class="chip" data-v="${l.id}" aria-pressed="${l.id === lab.id}">${l.n}. ${esc(l.titre)}${ST.labs[l.id] && ST.labs[l.id].done ? ' ✓' : ''}</button>`).join('');
-    qa('#ciLabs .chip').forEach(b => b.onclick = () => loadLab(b.dataset.v));
+    const ok = LABS.filter(l => ST.labs[l.id] && ST.labs[l.id].done).length;
+    q('#ciCount').textContent = `${ok}/${LABS.filter(l => l.tasks.length).length} labs réussis`;
+    q('#ciLabs').innerHTML = LABS.map(l => { const s = ST.labs[l.id] || {}, cur = l.id === lab.id;
+      const etat = !l.tasks.length ? 'Terminal libre, sans tâche' : s.done ? '✓ Réussi' : s.n ? `${s.n}/${l.tasks.length} tâches faites` : 'Pas encore fait';
+      return `<button class="sc" data-v="${l.id}"${cur ? ' aria-current="true"' : ''}><span class="tag">Lab ${l.n}${l.niv ? ' · niveau ' + l.niv : ''}${cur ? ' · dernier ouvert' : ''}</span><b>${esc(l.titre)}</b><small>${etat}</small></button>`; }).join('');
+    qa('#ciLabs .sc').forEach(b => b.onclick = () => { if (b.dataset.v !== lab.id) loadLab(b.dataset.v); openLab(); });
   }
+  function openLab() { q('#ciPick').hidden = true; q('#ciView').hidden = false; window.scrollTo({ top: 0 }); paint(); if (matchMedia('(pointer:fine)').matches) inp.focus(); }
+  q('#ciBack').onclick = () => { renderLabs(); q('#ciView').hidden = true; q('#ciPick').hidden = false; window.scrollTo({ top: 0 }); };
+  q('#ciPick').addEventListener('labs', renderLabs);
   function renderBrief() {
     q('#ciTitle').textContent = `Lab ${lab.n} · ${lab.titre}`;
     q('#ciLvl').innerHTML = `Niveau ${lab.niv}<span class="d" aria-hidden="true">${'●'.repeat(lab.niv)}${'○'.repeat(5 - lab.niv)}</span>`;
@@ -1266,6 +1273,7 @@ if (typeof document !== 'undefined') (function () {
     lab.tasks.forEach(([, , ok], i) => { let r = false; try { r = !!ok(N); } catch (e) { } if (r) n++; const li = q(`#ciTasks li[data-i="${i}"]`); li.classList.toggle('ok', r); li.querySelector('.mk').textContent = r ? '✓' : '○'; });
     const all = n === lab.tasks.length;
     q('#ciProg').textContent = `${n}/${lab.tasks.length} tâches` + (all ? ' · Lab réussi ✓' : '');
+    ST.labs[lab.id] = Object.assign(ST.labs[lab.id] || {}, { n });
     q('#ciDone').hidden = !all;
     if (all && !(ST.labs[lab.id] && ST.labs[lab.id].done)) { ST.labs[lab.id] = Object.assign(ST.labs[lab.id] || {}, { done: true }); renderLabs(); }
   }

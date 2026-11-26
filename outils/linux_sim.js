@@ -555,7 +555,17 @@ if (typeof document !== 'undefined') (function () {
     screen = `Terminal Linux simulé (Ubuntu) : connecté en tant que dimitri sur ${'tssr-pc'}.\nTape help pour la liste des commandes. Tab complète, ↑ rappelle les commandes.\n\n`;
     hpos = st.hist.length; showAll = false; armReset = false; renderLabs(); renderBrief(); paint(); check(); save();
   }
-  function renderLabs() { q('#lxLabs').innerHTML = LABS.map(l => `<button class="chip" data-v="${l.id}" aria-pressed="${l.id === lab.id}">${l.n}. ${esc(l.titre)}${ST.labs[l.id] && ST.labs[l.id].done ? ' ✓' : ''}</button>`).join(''); qa('#lxLabs .chip').forEach(b => b.onclick = () => load(b.dataset.v)); }
+  function renderLabs() {
+    const ok = LABS.filter(l => ST.labs[l.id] && ST.labs[l.id].done).length;
+    q('#lxCount').textContent = `${ok}/${LABS.filter(l => l.tasks.length).length} labs réussis`;
+    q('#lxLabs').innerHTML = LABS.map(l => { const s = ST.labs[l.id] || {}, cur = l.id === lab.id;
+      const etat = !l.tasks.length ? 'Terminal libre, sans tâche' : s.done ? '✓ Réussi' : s.n ? `${s.n}/${l.tasks.length} tâches faites` : 'Pas encore fait';
+      return `<button class="sc" data-v="${l.id}"${cur ? ' aria-current="true"' : ''}><span class="tag">Lab ${l.n}${l.niv ? ' · niveau ' + l.niv : ''}${cur ? ' · dernier ouvert' : ''}</span><b>${esc(l.titre)}</b><small>${etat}</small></button>`; }).join('');
+    qa('#lxLabs .sc').forEach(b => b.onclick = () => { if (b.dataset.v !== lab.id) load(b.dataset.v); openLab(); });
+  }
+  function openLab() { q('#lxPick').hidden = true; q('#lxView').hidden = false; window.scrollTo({ top: 0 }); paint(); if (matchMedia('(pointer:fine)').matches) inp.focus(); }
+  q('#lxBack').onclick = () => { renderLabs(); q('#lxView').hidden = true; q('#lxPick').hidden = false; window.scrollTo({ top: 0 }); };
+  q('#lxPick').addEventListener('labs', renderLabs);
   function renderBrief() {
     q('#lxTitle').textContent = `Lab ${lab.n} · ${lab.titre}`;
     q('#lxLvl').innerHTML = `Niveau ${lab.niv}<span class="d" aria-hidden="true">${'●'.repeat(lab.niv)}${'○'.repeat(5 - lab.niv)}</span>`;
@@ -569,6 +579,7 @@ if (typeof document !== 'undefined') (function () {
   function check() {
     if (!lab.tasks.length) { q('#lxProg').textContent = ''; q('#lxDone').hidden = true; return; }
     let n = 0; lab.tasks.forEach(([, , ok], i) => { let r = false; try { r = !!ok(st); } catch (e) { } if (r) n++; const li = q(`#lxTasks li[data-i="${i}"]`); li.classList.toggle('ok', r); li.querySelector('.mk').textContent = r ? '✓' : '○'; });
+    ST.labs[lab.id] = Object.assign(ST.labs[lab.id] || {}, { n });
     const all = n === lab.tasks.length; q('#lxProg').textContent = `${n}/${lab.tasks.length} tâches` + (all ? ' · Lab réussi ✓' : ''); q('#lxDone').hidden = !all;
     if (all && !(ST.labs[lab.id] && ST.labs[lab.id].done)) { ST.labs[lab.id] = Object.assign(ST.labs[lab.id] || {}, { done: true }); renderLabs(); }
   }
