@@ -1241,7 +1241,25 @@ if (typeof document !== 'undefined') (function () {
   function openLab() { q('#ciPick').hidden = true; q('#ciView').hidden = false; window.scrollTo({ top: 0 }); paint(); if (matchMedia('(pointer:fine)').matches) inp.focus(); }
   q('#ciBack').onclick = () => { renderLabs(); q('#ciView').hidden = true; q('#ciPick').hidden = false; window.scrollTo({ top: 0 }); };
   q('#ciPick').addEventListener('labs', renderLabs);
+
+  // Tâche en cours (affichée seule au-dessus du terminal sur téléphone)
+  let curF = -2, curN = null, full = false;
+  function curReset() { curF = -2; curN = null; full = !lab.tasks.length; q('#ciView').classList.toggle('full', full); q('#ciAll').textContent = 'Voir toutes les tâches et le schéma'; }
+  function curTask() {
+    const box = q('#ciCur'); if (!lab.tasks.length) { box.hidden = true; return; } box.hidden = false;
+    const res = qa('#ciTasks li[data-i]').map(li => li.classList.contains('ok')), f = res.indexOf(false), n = res.filter(Boolean).length;
+    const gained = curN != null && n > curN; curN = n;
+    q('#ciCurE').textContent = `Lab ${lab.n} · ` + (f < 0 ? 'terminé' : `tâche ${f + 1}/${res.length}`) + (gained ? ' · ✓ tâche validée' : '');
+    if (f === curF) return; curF = f;
+    q('#ciCurT').textContent = f < 0 ? '✓ Lab réussi : toutes les tâches sont validées.' : lab.tasks[f][0];
+    q('#ciCurH').hidden = f < 0; q('#ciCurH').textContent = 'Indice'; q('#ciCurP').hidden = true; q('#ciCurP').textContent = f < 0 ? '' : lab.tasks[f][1];
+  }
+  q('#ciCurH').onclick = () => { const h = q('#ciCurP'); h.hidden = !h.hidden; q('#ciCurH').textContent = h.hidden ? 'Indice' : 'Cacher l\'indice'; };
+  q('#ciAll').onclick = () => { full = !full; q('#ciView').classList.toggle('full', full); q('#ciAll').textContent = full ? 'Masquer le détail' : 'Voir toutes les tâches et le schéma'; };
+  // Clavier ouvert sur téléphone : garder la ligne de saisie visible.
+  inp.addEventListener('focus', () => { if (innerWidth < 1024) setTimeout(() => inp.scrollIntoView({ block: 'center', behavior: 'smooth' }), 350); });
   function renderBrief() {
+    curReset();
     q('#ciTitle').textContent = `Lab ${lab.n} · ${lab.titre}`;
     q('#ciLvl').innerHTML = `Niveau ${lab.niv}<span class="d" aria-hidden="true">${'●'.repeat(lab.niv)}${'○'.repeat(5 - lab.niv)}</span>`;
     q('#ciIntro').textContent = lab.intro; q('#ciTopo').textContent = lab.topo;
@@ -1268,13 +1286,13 @@ if (typeof document !== 'undefined') (function () {
   }
   function write(s) { outs[dev] += s; const L = outs[dev].split('\n'); if (L.length > 600) outs[dev] = L.slice(-600).join('\n'); }
   function check() {
-    if (!lab.tasks.length) { q('#ciProg').textContent = ''; return; }
+    if (!lab.tasks.length) { q('#ciProg').textContent = ''; curTask(); return; }
     let n = 0;
     lab.tasks.forEach(([, , ok], i) => { let r = false; try { r = !!ok(N); } catch (e) { } if (r) n++; const li = q(`#ciTasks li[data-i="${i}"]`); li.classList.toggle('ok', r); li.querySelector('.mk').textContent = r ? '✓' : '○'; });
     const all = n === lab.tasks.length;
     q('#ciProg').textContent = `${n}/${lab.tasks.length} tâches` + (all ? ' · Lab réussi ✓' : '');
     ST.labs[lab.id] = Object.assign(ST.labs[lab.id] || {}, { n });
-    q('#ciDone').hidden = !all;
+    q('#ciDone').hidden = !all; curTask();
     if (all && !(ST.labs[lab.id] && ST.labs[lab.id].done)) { ST.labs[lab.id] = Object.assign(ST.labs[lab.id] || {}, { done: true }); renderLabs(); }
   }
   function run(raw) {
