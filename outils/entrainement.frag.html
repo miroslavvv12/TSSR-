@@ -100,6 +100,10 @@ button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 .niv-aide td:first-child{font:600 13px var(--f-mono);white-space:nowrap}
 .couv td:first-child{font-family:inherit;font-weight:500;font-size:14px;white-space:normal;width:40%}
 .couv .hc{color:var(--muted)}
+.bilan td:first-child{font-family:inherit;font-weight:500;font-size:14px;white-space:normal}
+.bilan th{text-align:left;font-weight:500;color:var(--muted);padding:6px 8px;font-size:13px}
+.bilan .bar{display:inline-block;vertical-align:middle;width:70px;height:8px;border:1px solid var(--fg);border-radius:4px;margin-right:6px;background:linear-gradient(to right,var(--fg) var(--p),transparent var(--p))}
+.bilan ol{margin:6px 0 0;padding-left:22px;color:var(--fg)}.bilan li{margin:4px 0}
 @media (min-width:1024px){.lvl{font-size:14px;padding:3px 12px}.niv-aide{font-size:15px}}
 /* Terminal Cisco */
 .ci-grid{display:grid;gap:14px}
@@ -272,6 +276,7 @@ details summary{cursor:pointer;font-weight:500}
     </table>
     <p style="margin:8px 0 0">Avec « Tous », les questions pas encore vues arrivent du niveau 0 vers le niveau 5.</p>
   </details>
+  <details class="niv-aide bilan"><summary>Mon bilan : points forts et points faibles</summary><div id="bilanT"></div></details>
   <details class="niv-aide couv"><summary>Couverture du titre TSSR : où réviser chaque domaine ?</summary>
     <div id="couvT"></div>
     <p style="margin:8px 0 0">Les questions marquées <strong>hors cours</strong> sont des notions générales du métier, pas tirées de tes cours. Envoie-moi tes cours sur ces sujets et je les remplacerai par des questions de tes cours. Ce tableau regroupe les domaines par thème ; il ne reprend pas le découpage officiel du référentiel.</p>
@@ -1592,6 +1597,22 @@ function couverture(){
   $('#couvT').innerHTML='<table>'+R.map(([d,w])=>`<tr><td>${esc(d)}</td><td>${w.filter(Boolean).join('<br>')}</td></tr>`).join('')+'</table>';
 }
 $('details.couv').addEventListener('toggle',e=>{if(e.target.open)couverture()});
+/* Bilan : pour chaque thème, questions vues, réussite à la dernière réponse, questions à revoir ; puis les plus ratées */
+function bilan(){
+  // réussite à la dernière réponse (questions simplement affichées, sans réponse : ignorées)
+  const last=x=>{const c=S.srs[qKey(x)];if(c)return c[0]>0;return (S.miss[qKey(x)]||0)>0?false:null};
+  const rows=QTHEMES.map(t=>{const L=[...QUIZ,...OUV].filter(x=>x.t===t);const v=L.filter(x=>last(x)!=null);const ok=v.filter(x=>last(x)).length;
+    return{t,n:L.length,v:v.length,p:v.length?Math.round(100*ok/v.length):null,due:L.filter(x=>{const c=S.srs[qKey(x)];return c&&c[1]<=DAY()}).length,hc:HCT.includes(t)}});
+  const seen=rows.filter(r=>r.v).sort((a,b)=>(a.v<3)-(b.v<3)||a.p-b.p), unseen=rows.filter(r=>!r.v);
+  const miss=[...QUIZ,...OUV].filter(x=>(S.miss[qKey(x)]||0)>0).sort((a,b)=>S.miss[qKey(b)]-S.miss[qKey(a)]).slice(0,10);
+  const tot=rows.reduce((a,r)=>a+r.v,0);
+  $('#bilanT').innerHTML=!tot?'<p>Pas encore de réponse enregistrée : fais quelques questions, ton bilan apparaîtra ici.</p>':
+   `<p>Les thèmes sont classés du plus faible au plus fort (réussite à ta dernière réponse sur chaque question).</p>
+   <table><tr><th>Thème</th><th>Vues</th><th>Réussite</th><th>À revoir</th></tr>${seen.map(r=>`<tr><td>${esc(r.t)}${r.hc?' <span class="hc">(hors cours)</span>':''}${r.v<3?' <span class="hc">(trop tôt pour juger)</span>':''}</td><td>${r.v}/${r.n}</td><td><span class="bar" style="--p:${r.p}%"></span>${r.p} %</td><td>${r.due||''}</td></tr>`).join('')}</table>
+   ${unseen.length?`<p style="margin-top:10px"><strong>Jamais travaillés :</strong> ${unseen.map(r=>esc(r.t)).join(', ')}.</p>`:''}
+   ${miss.length?`<p style="margin-top:10px"><strong>Tes questions les plus ratées :</strong></p><ol>${miss.map(x=>`<li>${esc(x.q)} <span class="hc">— ${esc(x.t)}, ratée ${S.miss[qKey(x)]} fois</span></li>`).join('')}</ol>`:''}`;
+}
+$('details.bilan').addEventListener('toggle',e=>{if(e.target.open)bilan()});
 chips('qNiv',qNiv,v=>{qNiv=S.pref.qNiv=v;save();qRefresh()});
 // Ordre de tirage :
 // 1. une question ratée revient quand son délai (8 questions) est passé ;
@@ -1624,7 +1645,7 @@ function qAnswer(btn){
   if(qDone)return;qDone=true;$('#qGive').hidden=true;const ok=!!btn&&btn.dataset.i==='0',k=qKey(qCur);
   S.miss[k]=ok?Math.max(0,(S.miss[k]||0)-1):(S.miss[k]||0)+1;
   if(ok)delete S.qdue[k];else S.qdue[k]=S.qn+Q_DELAI;
-  srsMark(k,ok);tally('quiz',ok);revCount();
+  srsMark(k,ok);tally('quiz',ok);revCount();if($('details.bilan').open)bilan();
   $$('#qOpts .opt').forEach(b=>{const i=+b.dataset.i;b.disabled=true;
     if(i===0)b.classList.add('ok');else if(b===btn)b.classList.add('ko');
     b.insertAdjacentHTML('beforeend',`<span class="ox">${i===0?'Bonne réponse.':esc((qCur.x||[])[i-1]||'')}</span>`)});

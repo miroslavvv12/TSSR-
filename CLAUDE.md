@@ -22,7 +22,7 @@ Ces cours sont dans `outils/quiz/*.json` et `outils/ouvertes/*.json`. Avant d'aj
 
 ## Fichiers du projet
 - `outils/entrainement.frag.html` : source de la page (HTML, CSS et JS en un seul fichier).
-  - Onglets : Cours (QCM + questions ouvertes + « À revoir aujourd'hui », filtres de thème et de niveau, tableau « Couverture TSSR »), Sous-réseaux, Commandes, Cisco, Linux, Ports, OSI, Dépannage.
+  - Onglets : Cours (QCM + questions ouvertes + « À revoir aujourd'hui », filtres de thème et de niveau, « Mon bilan » des points faibles, tableau « Couverture TSSR »), Sous-réseaux, Commandes, Cisco, Linux, Ports, OSI, Dépannage.
   - Ce fragment, sans doctype, est aussi publié en Artifact claude.ai : https://claude.ai/artifact/GXvby1DYXEJd367ti3sapm (republier avec ce `url`).
 - `outils/quiz/*.json` : QCM `{t, s, q, o[4], e, x[3], n}`.
   - `o[0]` est la bonne réponse ; elle est mélangée à l'affichage.
