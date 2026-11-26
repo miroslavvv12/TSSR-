@@ -34,6 +34,7 @@ Ces cours sont dans `outils/quiz/*.json` et `outils/ouvertes/*.json`. Avant d'aj
 - Questions hors cours : `s` = « Notion générale (pas dans les cours que j'ai pu lire) ». Elles sont dans `outils/quiz/hors_cours.json` et `outils/ouvertes/hors_cours.json`. Elles s'affichent avec la mention « hors cours » et sont exclues du filtre « Mes cours seulement ». Quand un cours sur le même sujet arrive, remplacer ces questions par des questions tirées du cours.
 - `outils/cisco_sim.js` : simulateur Cisco IOS (`CiscoSim`), labs (`CiscoLabs.LABS`) et interface du terminal. On peut le charger sous Node pour les tests.
 - `outils/fiches/*.json` : fiches « À retenir » `{t, src, intro, blocs:[[titre, [points]]], pieges}`, rédigées à partir des cours (pages citées). Le thème `t` doit exister dans le quiz. Les thèmes sans fiche affichent un « mémo express » généré à partir des QCM de niveau 0 à 2.
+- **Signalements** : lien « Signaler une erreur » sous chaque correction ; liste dans `S.reports` (pied de page « Mes signalements », bouton « Copier la liste » pour l'envoyer à Claude).
 - `outils/linux_sim.js` : terminal Linux simulé (`LinuxSim`), labs (`LinuxLabs.LABS`) et interface de l'onglet Linux. Système de fichiers en mémoire avec inodes, droits UGO, utilisateurs et groupes (`/etc/passwd`, `/etc/group`, `/etc/shadow` régénérés), sudo et su (mots de passe : dimitri = tssr, alice = alice), liens, tubes et redirections, processus. Notions du cours Initiation à Linux ; les commandes sont des notions générales (hors cours).
 - `outils/build_entrainement.py` :
   - injecte les JSON et le simulateur dans le fragment, entre les marqueurs `/*QUIZ_DEBUT*/…/*QUIZ_FIN*/`, `/*OUV_DEBUT*/…/*OUV_FIN*/`, `/*LINUX_DEBUT*/…/*LINUX_FIN*/` et `/*CISCO_DEBUT*/…/*CISCO_FIN*/` ;
@@ -65,7 +66,7 @@ Ces cours sont dans `outils/quiz/*.json` et `outils/ouvertes/*.json`. Avant d'aj
   - port-security, STP (affichage seulement), CDP, table MAC ;
   - PC : `ipconfig /renew` et `/release`, `ping`, `curl`, `ssh` et `telnet` avec session distante.
 - **7 labs Linux** : arbo, fich, droits, users, liens, proc, libre. Tous se valident avec leur solution.
-- **13 labs Cisco** : base, if, vlan, trunk, static, rip, ros, ospf, acl, nat, dhcp, secu, libre (bac à sable). Tous les labs qui ont des tâches se valident avec leur solution.
+- **17 labs Cisco** : base, if, vlan, trunk, static, rip, ros, ospf, acl, nat, dhcp, secu, 4 labs de dépannage (dep1 routage, dep2 VLAN/trunk, dep3 DHCP/relais, dep4 ACL : pannes préconfigurées à trouver), libre (bac à sable). Tous les labs qui ont des tâches se valident avec leur solution ; aucune tâche n'est validée au départ (la tâche « Sauvegarde » exige que les autres soient réussies).
 
 ## Tests
 - **Node** : `require('./outils/cisco_sim.js')`, puis exécuter la solution de chaque lab et vérifier ses tâches.
