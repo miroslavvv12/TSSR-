@@ -40,9 +40,49 @@ header{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var
 h1{font-size:18px;font-weight:600;margin:0;letter-spacing:.2px}
 h1 small{font-weight:400;color:var(--muted);font-size:13px;margin-left:6px}
 .backapp{float:right;font-size:14px;font-weight:500;color:var(--fg);text-decoration:none;border:1px solid var(--line);border-radius:8px;padding:3px 10px;margin-top:-2px}
-nav{display:flex;gap:4px;margin-top:10px;overflow-x:auto;scrollbar-width:none}
-nav button{flex:1 0 auto;font:500 14px var(--f-ui);background:none;border:0;color:var(--muted);padding:9px 12px;border-bottom:2px solid transparent;cursor:pointer}
-nav button[aria-selected="true"]{color:var(--fg);border-bottom-color:var(--accent)}
+/* Menu latéral : toujours ouvert sur PC (≥ 1000 px, repliable avec ☰), tiroir qui glisse sur téléphone. */
+:root{--sidew:236px}
+.hbar{display:flex;align-items:center;gap:10px;padding-bottom:10px;min-width:0}
+.hbar h1{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.backapp{float:none!important;margin:0!important;flex:none}
+.menubtn{flex:none;width:40px;height:40px;border-radius:9px;border:1px solid var(--line);background:var(--surface);color:var(--fg);font:500 20px/1 var(--f-ui);cursor:pointer;display:grid;place-items:center}
+.menubtn:focus-visible,.side button:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+.side{position:fixed;top:0;bottom:0;left:0;z-index:30;width:var(--sidew);max-width:85vw;background:var(--surface);border-right:1px solid var(--line);overflow-y:auto;overscroll-behavior:contain;
+  padding:calc(env(safe-area-inset-top,0px) + 12px) 10px calc(env(safe-area-inset-bottom,0px) + 20px) max(10px,env(safe-area-inset-left,0px))}
+.sidetop{display:flex;align-items:center;justify-content:space-between;padding:4px 8px 6px;font:600 15px var(--f-ui)}
+.sideclose{border:1px solid var(--line);background:none;color:var(--fg);border-radius:8px;width:34px;height:34px;font-size:15px;cursor:pointer}
+.side nav{display:flex;flex-direction:column;gap:2px}
+.side .grp{font:600 11px var(--f-ui);text-transform:uppercase;letter-spacing:.9px;color:var(--muted);padding:14px 10px 4px}
+.side nav button{display:flex;align-items:center;justify-content:space-between;gap:8px;text-align:left;font:500 15px var(--f-ui);background:none;border:1px solid transparent;border-radius:8px;color:var(--fg);padding:9px 10px;cursor:pointer}
+.side nav button:hover{background:var(--sunk)}
+.side nav button[aria-current="page"]{background:var(--accent);color:var(--accent-ink);font-weight:600}
+.side .cnt{font:600 12px var(--f-mono);border:1px solid currentColor;border-radius:999px;padding:0 7px;min-width:24px;text-align:center}
+.side .cnt:empty{display:none}
+.scrim{position:fixed;inset:0;z-index:25;background:rgba(0,0,0,.5)}
+@media (min-width:1000px){
+  body{padding-left:var(--sidew)}
+  .sideclose{display:none}
+  .scrim{display:none!important}
+  body.side-off{padding-left:0}
+  body.side-off .side{display:none}
+}
+@media (max-width:999.98px){
+  .side{transform:translateX(-102%);visibility:hidden;transition:transform .22s ease,visibility 0s .22s;box-shadow:4px 0 24px rgba(0,0,0,.35)}
+  body.side-open .side{transform:none;visibility:visible;transition:transform .22s ease}
+  body.side-open{overflow:hidden}
+}
+@media (prefers-reduced-motion:reduce){.side{transition:none!important}}
+/* Filtres du quiz (thèmes et niveaux), repliables */
+.qtop{align-items:flex-start}
+.filtres{flex:1 1 260px;min-width:0}
+.filtres>summary{list-style:none;cursor:pointer;display:inline-flex;align-items:center;gap:8px;flex-wrap:wrap;font:500 14px var(--f-ui);border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:7px 14px;max-width:100%}
+.filtres>summary::-webkit-details-marker{display:none}
+.filtres>summary .fl::before{content:"▸";display:inline-block;margin-right:6px}
+.filtres[open]>summary .fl::before{content:"▾"}
+.filtres .fsum{color:var(--muted);font-size:13px;overflow-wrap:anywhere}
+.filtres .fbody{display:flex;flex-direction:column;gap:8px;margin-top:10px;padding:12px;border:1px solid var(--line);border-radius:10px;background:var(--surface)}
+.bilanv h2{font-size:18px;margin:0}
+.bilanv .niv-aide{color:var(--fg);font-size:inherit}
 main{padding-block:18px 40px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
 section{display:flex;flex-direction:column;gap:14px}
 .bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:space-between}
@@ -107,7 +147,7 @@ button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 .fiche .pieges h3{margin-top:0}
 .fiche .memo li{list-style:none;margin-left:-20px;border-top:1px solid var(--line);padding-top:6px}
 .fiche .memo .r{font-weight:600}
-@media print{header,nav,#qMode,#qTheme,#qNiv,.niv-aide,#fiTheme,.foot,.actions{display:none!important}.fiche{border:0;box-shadow:none}}
+@media print{header,nav,.side,.filtres,#qTheme,#qNiv,.niv-aide,#fiTheme,.foot,.actions{display:none!important}.fiche{border:0;box-shadow:none}}
 .exam{scroll-margin-top:130px}#exCorr{scroll-margin-top:130px}
 .exam #exBody{display:flex;flex-direction:column;gap:22px}
 .exam .exres{display:flex;flex-direction:column;gap:12px}.exam .exres .exnote,.exam .exres .exstats{margin:0}.exam .exres .actions{margin:0}
@@ -268,13 +308,12 @@ details summary{cursor:pointer;font-weight:500}
 .lh b{font:600 17px var(--f-mono);color:var(--accent)}
 .lz{display:flex;flex-wrap:wrap;gap:6px;min-width:0}
 @media (max-width:480px){.layer{grid-template-columns:96px 1fr;padding:6px 8px}.lh{font-size:12px}}
-@media (max-width:480px){nav{gap:0}nav button{padding:9px 5px;font-size:13px}h1 small{display:none}.out{font-size:11.5px}}
+@media (max-width:480px){h1 small{display:none}.out{font-size:11.5px}}
 /* Grand écran (PC) : page plus large, texte et boutons plus grands. */
 @media (min-width:1024px){
   .wrap{max-width:1040px}
   body{font-size:17px}
   h1{font-size:23px} h1 small{font-size:15px}
-  nav button{font-size:16px;padding:11px 16px}
   main{padding-block:26px 48px}
   section{gap:18px}
   .card{padding:26px 28px;gap:16px;border-radius:14px}
@@ -304,35 +343,44 @@ details summary{cursor:pointer;font-weight:500}
 @media (prefers-reduced-motion:no-preference){.fb{animation:in .18s ease-out}@keyframes in{from{opacity:.4;transform:translateY(3px)}to{opacity:1;transform:none}}}
 </style>
 
-<header><div class="wrap">
-  <h1>Entraînement TSSR <small>exercices illimités</small><a id="backApp" class="backapp" href="./" hidden>← Mes cours</a></h1>
-  <nav role="tablist">
-    <button role="tab" data-tab="quiz">Cours</button>
-    <button role="tab" data-tab="sr">Sous-réseaux</button>
-    <button role="tab" data-tab="cmd">Commandes</button>
-    <button role="tab" data-tab="cisco">Cisco</button>
-    <button role="tab" data-tab="linux">Linux</button>
-    <button role="tab" data-tab="ports">Ports</button>
-    <button role="tab" data-tab="ordre">OSI</button>
-    <button role="tab" data-tab="dep">Dépannage</button>
-  </nav>
+<header><div class="hbar">
+  <button id="menuBtn" class="menubtn" aria-label="Ouvrir ou fermer le menu" aria-controls="side" aria-expanded="false">☰</button>
+  <h1>Entraînement TSSR <small id="curTitle"></small></h1>
+  <a id="backApp" class="backapp" href="./" hidden>← Mes cours</a>
 </div></header>
+<aside id="side" class="side" aria-label="Menu">
+  <div class="sidetop"><span>Menu</span><button id="sideClose" class="sideclose" aria-label="Fermer le menu">✕</button></div>
+  <nav id="sideNav">
+    <div class="grp">Cours</div>
+    <button data-tab="quiz" data-qm="qcm">QCM</button>
+    <button data-tab="quiz" data-qm="ouv">Questions ouvertes</button>
+    <button data-tab="quiz" data-qm="rev">À revoir <span class="cnt" id="revCnt"></span></button>
+    <button data-tab="quiz" data-qm="exam">Examen blanc</button>
+    <button data-tab="quiz" data-qm="fiche">Fiches</button>
+    <button data-tab="quiz" data-qm="bilan">Mon bilan</button>
+    <div class="grp">Pratique</div>
+    <button data-tab="cmd">Commandes</button>
+    <button data-tab="cisco">Cisco</button>
+    <button data-tab="linux">Linux</button>
+    <button data-tab="sr">Sous-réseaux</button>
+    <div class="grp">Mémo</div>
+    <button data-tab="ports">Ports</button>
+    <button data-tab="ordre">OSI</button>
+    <button data-tab="dep">Dépannage</button>
+  </nav>
+</aside>
+<div id="scrim" class="scrim" hidden></div>
 
 <main><div class="wrap">
 
 <section id="quiz" hidden>
-  <div class="chips" id="qMode">
-    <button class="chip" data-v="qcm">QCM</button>
-    <button class="chip" data-v="ouv">Questions ouvertes</button>
-    <button class="chip" data-v="rev">À revoir aujourd'hui</button>
-    <button class="chip" data-v="exam">Examen blanc</button>
-    <button class="chip" data-v="fiche">Fiches à retenir</button>
-  </div>
-  <div class="bar">
-    <div class="chips" id="qTheme"></div>
-    <span class="score" data-score="quiz"></span><span class="score" data-score="ouv"></span>
-  </div>
-  <div class="chips" id="qNiv"><span class="nivlab">Niveau</span><button class="chip" data-v="all">Tous</button><button class="chip" data-v="0">0</button><button class="chip" data-v="1">1</button><button class="chip" data-v="2">2</button><button class="chip" data-v="3">3</button><button class="chip" data-v="4">4</button><button class="chip" data-v="5">5</button></div>
+  <div class="bar qtop">
+    <details class="filtres" id="qFiltres"><summary><span class="fl">Filtres</span> <span class="fsum" id="qFiltSum"></span></summary>
+      <div class="fbody">
+        <div class="eyebrow">Thème</div>
+        <div class="chips" id="qTheme"></div>
+        <div class="eyebrow">Niveau</div>
+  <div class="chips" id="qNiv"><button class="chip" data-v="all">Tous</button><button class="chip" data-v="0">0</button><button class="chip" data-v="1">1</button><button class="chip" data-v="2">2</button><button class="chip" data-v="3">3</button><button class="chip" data-v="4">4</button><button class="chip" data-v="5">5</button></div>
   <details class="niv-aide"><summary>Que veulent dire les niveaux ?</summary>
     <table>
       <tr><td>0</td><td>Vocabulaire : un sigle, un mot (« Que veut dire DHCP ? »)</td></tr>
@@ -344,11 +392,15 @@ details summary{cursor:pointer;font-weight:500}
     </table>
     <p style="margin:8px 0 0">Avec « Tous », les questions pas encore vues arrivent du niveau 0 vers le niveau 5.</p>
   </details>
-  <details class="niv-aide bilan"><summary>Mon bilan : points forts et points faibles</summary><div id="bilanT"></div></details>
-  <details class="niv-aide couv"><summary>Couverture du titre TSSR : où réviser chaque domaine ?</summary>
-    <div id="couvT"></div>
+      </div>
+    </details>
+    <span class="score" data-score="quiz"></span><span class="score" data-score="ouv"></span>
+  </div>
+  <div class="card bilanv" id="biCard" hidden>
+    <h2>Mon bilan : points forts et points faibles</h2><div class="niv-aide bilan" id="bilanT"></div>
+    <h2>Couverture du titre TSSR : où réviser chaque domaine ?</h2><div class="niv-aide couv" id="couvT"></div>
     <p style="margin:8px 0 0">Les questions marquées <strong>hors cours</strong> sont des notions générales du métier, pas tirées de tes cours. Envoie-moi tes cours sur ces sujets et je les remplacerai par des questions de tes cours. Ce tableau regroupe les domaines par thème ; il ne reprend pas le découpage officiel du référentiel.</p>
-  </details>
+  </div>
   <div class="card" id="qcmCard">
     <div class="bar"><span class="eyebrow" id="qEyebrow"></span><span class="lvl" id="qLvlB"></span></div>
     <div class="q" id="qQ"></div>
@@ -641,9 +693,25 @@ setTimeout(repRender,0);
 function chips(box,val,on){$$(`#${box} .chip`).forEach(b=>{b.setAttribute('aria-pressed',b.dataset.v===val);b.onclick=()=>{$$(`#${box} .chip`).forEach(x=>x.setAttribute('aria-pressed',x===b));on(b.dataset.v)}})}
 
 /* ---------- onglets ---------- */
-function tab(t){$$('nav button').forEach(b=>b.setAttribute('aria-selected',b.dataset.tab===t));$$('main section').forEach(s=>s.hidden=s.id!==t);S.pref.tab=t;save();
+/* Menu latéral : sur PC il reste ouvert (☰ le replie), sur téléphone c'est un tiroir qui glisse depuis la gauche. */
+const wide=matchMedia('(min-width:1000px)');
+const sideOpen=()=>wide.matches?!document.body.classList.contains('side-off'):document.body.classList.contains('side-open');
+function sideSet(open){const B=document.body;
+  if(wide.matches){B.classList.remove('side-open');B.classList.toggle('side-off',!open);S.pref.sideOff=!open;save()}
+  else{B.classList.toggle('side-open',open);$('#scrim').hidden=!open;if(open){const c=$('#sideNav [aria-current="page"]')||$('#sideNav button');c&&c.focus({preventScroll:true})}}
+  $('#menuBtn').setAttribute('aria-expanded',sideOpen())}
+$('#menuBtn').onclick=()=>sideSet(!sideOpen());$('#sideClose').onclick=()=>{sideSet(false);$('#menuBtn').focus()};$('#scrim').onclick=()=>sideSet(false);
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!wide.matches&&sideOpen()){sideSet(false);$('#menuBtn').focus()}});
+const sideInit=()=>{document.body.classList.remove('side-open');$('#scrim').hidden=true;document.body.classList.toggle('side-off',wide.matches&&!!S.pref.sideOff);$('#menuBtn').setAttribute('aria-expanded',sideOpen())};
+wide.addEventListener?wide.addEventListener('change',sideInit):wide.addListener(sideInit);sideInit();
+// Glisser vers la gauche ferme le tiroir.
+{let x0=null;$('#side').addEventListener('touchstart',e=>{x0=e.touches[0].clientX},{passive:true});$('#side').addEventListener('touchend',e=>{if(x0!=null&&x0-e.changedTouches[0].clientX>60&&!wide.matches)sideSet(false);x0=null},{passive:true})}
+function navMark(){const t=S.pref.tab,qm=S.pref.qMode||'qcm';let cur=null;
+  $$('#sideNav button').forEach(b=>{const on=b.dataset.tab===t&&(!b.dataset.qm||b.dataset.qm===qm);if(on)cur=b;on?b.setAttribute('aria-current','page'):b.removeAttribute('aria-current')});
+  $('#curTitle').textContent=cur?'· '+cur.firstChild.textContent.trim():''}
+function tab(t){$$('main section').forEach(s=>s.hidden=s.id!==t);S.pref.tab=t;save();navMark();
   const f=$(`#${t} input[type=text]:not([readonly])`);if(f&&f.offsetParent&&matchMedia('(pointer:fine)').matches)f.focus()}
-$$('nav button').forEach(b=>b.onclick=()=>tab(b.dataset.tab));
+$$('#sideNav button').forEach(b=>b.onclick=()=>{if(b.dataset.qm)setQMode(b.dataset.qm);tab(b.dataset.tab);if(!wide.matches)sideSet(false);window.scrollTo({top:0})});
 
 /* =========================================================
    1. SOUS-RÉSEAUX
@@ -1730,7 +1798,6 @@ function couverture(){
   ];
   $('#couvT').innerHTML='<table>'+R.map(([d,w])=>`<tr><td>${esc(d)}</td><td>${w.filter(Boolean).join('<br>')}</td></tr>`).join('')+'</table>';
 }
-$('details.couv').addEventListener('toggle',e=>{if(e.target.open)couverture()});
 /* Bilan : pour chaque thème, questions vues, réussite à la dernière réponse, questions à revoir ; puis les plus ratées */
 function bilan(){
   // réussite à la dernière réponse (questions simplement affichées, sans réponse : ignorées)
@@ -1746,7 +1813,6 @@ function bilan(){
    ${unseen.length?`<p style="margin-top:10px"><strong>Jamais travaillés :</strong> ${unseen.map(r=>esc(r.t)).join(', ')}.</p>`:''}
    ${miss.length?`<p style="margin-top:10px"><strong>Tes questions les plus ratées :</strong></p><ol>${miss.map(x=>`<li>${esc(x.q)} <span class="hc">— ${esc(x.t)}, ratée ${S.miss[qKey(x)]} fois</span></li>`).join('')}</ol>`:''}`;
 }
-$('details.bilan').addEventListener('toggle',e=>{if(e.target.open)bilan()});
 chips('qNiv',qNiv,v=>{qNiv=S.pref.qNiv=v;save();qRefresh()});
 // Ordre de tirage :
 // 1. une question ratée revient quand son délai (8 questions) est passé ;
@@ -1830,8 +1896,8 @@ const DAY=()=>{const d=new Date();return Math.floor((d.getTime()-d.getTimezoneOf
 const SRS_J=[1,1,3,7,14,30];
 function srsMark(k,ok){const c=S.srs[k];const b=ok?(c?Math.min(5,c[0]+1):2):0;S.srs[k]=[b,DAY()+SRS_J[b]]}
 const isDue=x=>{const c=S.srs[qKey(x)];return !!c&&c[1]<=DAY()};
-function revCount(){const n=QUIZ.filter(isDue).length;$('#qMode [data-v="rev"]').textContent=`À revoir aujourd'hui (${n})`;return n}
-let qMode=['ouv','rev','exam','fiche'].includes(S.pref.qMode)?S.pref.qMode:'qcm', oqCur=null, oqLast=null, oqDone=false, oqCounted=false;
+function revCount(){const n=QUIZ.filter(isDue).length;$('#revCnt').textContent=n||'';$('#revCnt').title=n+' question(s) à revoir aujourd\'hui';return n}
+let qMode=['ouv','rev','exam','fiche','bilan'].includes(S.pref.qMode)?S.pref.qMode:'qcm', oqCur=null, oqLast=null, oqDone=false, oqCounted=false;
 const nrm=t=>' '+String(t).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[’`]/g,"'").replace(/\s+/g,' ')+' ';
 const nk=t=>String(t).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[’`]/g,"'");
 function oqNew(){
@@ -1968,13 +2034,15 @@ function fiRender(){
     :`<p class="intro">Pas encore de fiche rédigée pour ce thème${HCT.includes(fiTheme)?' (il n\'est pas dans tes cours)':''}. Voici l'essentiel, tiré des questions de niveau 0 à 2.</p>`}
    ${memo.length?`<h3>Mémo express : ${memo.length} réponses à connaître</h3><ul class="memo">${memo.map(x=>`<li>${esc(x.q)}<br><span class="r">→ ${esc(x.o[0])}</span></li>`).join('')}</ul>`:''}
    <div class="actions"><button class="btn primary" id="fiGo">S'entraîner sur ce thème</button><button class="btn" id="fiPrint">Imprimer cette fiche</button></div>`;
-  $('#fiGo').onclick=()=>{qTheme=S.pref.qTheme=fiTheme;chips('qTheme',qTheme,v=>{qTheme=S.pref.qTheme=v;save();qRefresh()});qMode=S.pref.qMode='qcm';chips('qMode',qMode,v=>{qMode=S.pref.qMode=v;save();qApply()});save();qApply();window.scrollTo({top:0})};
+  $('#fiGo').onclick=()=>{qTheme=S.pref.qTheme=fiTheme;chips('qTheme',qTheme,v=>{qTheme=S.pref.qTheme=v;save();qRefresh()});setQMode('qcm');window.scrollTo({top:0})};
   $('#fiPrint').onclick=()=>window.print();
 }
-function qRefresh(){qMode==='ouv'?oqNew():qMode==='exam'?exRender():qMode==='fiche'?fiRender():qNew()}
-function qApply(){const fi=qMode==='fiche',ex=qMode==='exam'||fi,o=qMode==='ouv',rv=qMode==='rev'||ex;$('#qTheme').hidden=rv;$('#qNiv').hidden=rv;$('#exCard').hidden=qMode!=='exam';$('#fiCard').hidden=!fi;$$('#quiz .niv-aide').forEach(d=>d.hidden=fi||qMode==='exam');revCount();$('#qcmCard').hidden=o||ex;$('#qCount').hidden=o||ex;$('#quiz .kb').hidden=o||ex;$('#oqCard').hidden=!o;$('#oqCount').hidden=!o;
+function qRefresh(){qFiltSum();qMode==='ouv'?oqNew():qMode==='exam'?exRender():qMode==='fiche'?fiRender():qMode==='bilan'?(bilan(),couverture()):qNew()}
+function qFiltSum(){const th=qTheme==='all'?'Tout le TSSR':qTheme==='cours'?'Mes cours seulement':qTheme;$('#qFiltSum').textContent=th+' · '+(qNiv==='all'?'tous niveaux':'niveau '+qNiv)}
+function setQMode(v){if(v===qMode)return;qMode=S.pref.qMode=v;save();qApply();navMark()}
+function qApply(){const bi=qMode==='bilan',fi=qMode==='fiche'||bi,ex=qMode==='exam'||fi,o=qMode==='ouv',rv=qMode==='rev'||ex;$('#quiz .qtop').hidden=bi||qMode==='fiche';$('#qFiltres').hidden=rv;$('#exCard').hidden=qMode!=='exam';$('#fiCard').hidden=qMode!=='fiche';$('#biCard').hidden=!bi;revCount();$('#qcmCard').hidden=o||ex;$('#qCount').hidden=o||ex;$('#quiz .kb').hidden=o||ex;$('#oqCard').hidden=!o;$('#oqCount').hidden=!o;
   $$('#quiz [data-score="quiz"]').forEach(e=>e.hidden=o);$$('#quiz [data-score="ouv"]').forEach(e=>e.hidden=!o);qRefresh()}
-chips('qMode',qMode,v=>{qMode=S.pref.qMode=v;save();qApply()});$('#qGive').onclick=()=>qAnswer(null);
+$('#qGive').onclick=()=>qAnswer(null);
 renderScore('quiz');renderScore('ouv');
 qApply();
 
@@ -1994,7 +2062,7 @@ document.addEventListener('keydown',ev=>{
     else if(ev.key==='ArrowRight')go($('#exNext'));else if(ev.key==='ArrowLeft')go($('#exPrev'));
   }else if(S.pref.tab==='quiz'&&qMode==='ouv'){
     if((ev.key==='Enter'||ev.key===' ')&&oqDone)go($('#oqNext'));
-  }else if(S.pref.tab==='quiz'){
+  }else if(S.pref.tab==='quiz'&&(qMode==='qcm'||qMode==='rev')){
     if(/^[1-4]$/.test(ev.key)&&!qDone)go($$('#qOpts .opt')[+ev.key-1]);
     else if((ev.key==='Enter'||ev.key===' ')&&qDone)go($('#qNext'));
     else if(ev.key==='0'&&!qDone)go($('#qGive'));

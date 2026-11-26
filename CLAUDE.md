@@ -22,7 +22,11 @@ Ces cours sont dans `outils/quiz/*.json` et `outils/ouvertes/*.json`. Avant d'aj
 
 ## Fichiers du projet
 - `outils/entrainement.frag.html` : source de la page (HTML, CSS et JS en un seul fichier).
-  - Onglets : Cours (QCM + questions ouvertes + « À revoir aujourd'hui » + « Examen blanc » (chronométré, note sur 20, historique dans `S.exams`) + « Fiches à retenir », filtres de thème et de niveau, « Mon bilan » des points faibles, tableau « Couverture TSSR »), Sous-réseaux, Commandes, Cisco, Linux, Ports, OSI, Dépannage.
+  - Navigation : menu latéral (`<aside id="side">`, bouton ☰ `#menuBtn` en haut à gauche). Sur PC (≥ 1000 px) il reste ouvert (☰ le replie, choix gardé dans `S.pref.sideOff`) ; sur iPhone c'est un tiroir qui glisse (fermé par ✕, le voile, Échap ou un glissement vers la gauche). Rubriques :
+    - Cours : QCM, Questions ouvertes, À revoir (compteur), Examen blanc (chronométré, note sur 20, historique dans `S.exams`), Fiches, Mon bilan (points faibles + tableau « Couverture TSSR ») ; ce sont les valeurs de `qMode` (`qcm`, `ouv`, `rev`, `exam`, `fiche`, `bilan`), changées par `setQMode()` ;
+    - Pratique : Commandes, Cisco, Linux, Sous-réseaux ;
+    - Mémo : Ports, OSI, Dépannage.
+  - Thèmes et niveaux du quiz : dans le bouton repliable « Filtres » (`#qFiltres`, résumé des filtres choisis à côté).
   - Ce fragment, sans doctype, est aussi publié en Artifact claude.ai : https://claude.ai/artifact/GXvby1DYXEJd367ti3sapm (republier avec ce `url`).
 - `outils/quiz/*.json` : QCM `{t, s, q, o[4], e, x[3], n}`.
   - `o[0]` est la bonne réponse ; elle est mélangée à l'affichage.
@@ -35,7 +39,7 @@ Ces cours sont dans `outils/quiz/*.json` et `outils/ouvertes/*.json`. Avant d'aj
 - `outils/cisco_sim.js` : simulateur Cisco IOS (`CiscoSim`), labs (`CiscoLabs.LABS`) et interface du terminal. On peut le charger sous Node pour les tests.
 - `outils/fiches/*.json` : fiches « À retenir » `{t, src, intro, blocs:[[titre, [points]]], pieges}`, rédigées à partir des cours (pages citées). Le thème `t` doit exister dans le quiz. Les thèmes sans fiche affichent un « mémo express » généré à partir des QCM de niveau 0 à 2.
 - **Indices automatiques** (bouton « Indice », touche I ; pas en examen blanc) : 1er clic = rappel de cours (partie de la fiche choisie par la page citée dans `s` ou par les mots communs, sinon explications de questions voisines du même thème, sinon explication d'une mauvaise réponse) ; les points trop proches de la bonne réponse sont masqués (`hideAns`). 2e clic en QCM = deux mauvaises réponses écartées. Questions ouvertes : rappel + liste des points attendus. Réussie avec indice = revient le lendemain.
-- **Commandes → « Dérouler (niveau 0) »** : les commandes de `CMDS` d'une catégorie défilent dans l'ordre ; on recopie chacune (commande + explication affichées), série de 10, 25, 50 ou toutes, à rejouer en boucle. Prévu ensuite (si Dimitri valide) : niveaux 1 à 4 (recopier dans le désordre, compléter, de mémoire, en situation) et plus de commandes Cisco et Linux.
+- **Commandes → « Dérouler (niveau 0) »** : les commandes de `CMDS` d'une catégorie défilent dans l'ordre ; on recopie chacune (commande + explication affichées), série de 10, 25, 50 ou toutes, à rejouer en boucle. Prévu plus tard (Dimitri le demandera quand il aura plus utilisé l'outil) : niveaux 1 à 5 pour Cisco (un objectif → taper la commande, du plus simple au plus complexe, derniers niveaux = mises en situation enchaînant plusieurs commandes), niveaux 1 à 4 (recopier dans le désordre, compléter, de mémoire, en situation) et plus de commandes Cisco et Linux.
 - **Signalements** : lien « Signaler une erreur » sous chaque correction ; liste dans `S.reports` (pied de page « Mes signalements », bouton « Copier la liste » pour l'envoyer à Claude).
 - `outils/linux_sim.js` : terminal Linux simulé (`LinuxSim`), labs (`LinuxLabs.LABS`) et interface de l'onglet Linux. Système de fichiers en mémoire avec inodes, droits UGO, utilisateurs et groupes (`/etc/passwd`, `/etc/group`, `/etc/shadow` régénérés), sudo et su (mots de passe : dimitri = tssr, alice = alice), liens, tubes et redirections, processus. Notions du cours Initiation à Linux ; les commandes sont des notions générales (hors cours).
 - `outils/build_entrainement.py` :
