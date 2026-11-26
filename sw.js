@@ -1,4 +1,4 @@
-const CACHE='tssr-cec7863809';
+const CACHE='tssr-9dde23c706';
 const FILES=["./", "index.html", "entrainement.html", "manifest.webmanifest", "keys.json", "content.enc", "icons/apple-touch-icon.png", "icons/icon-192.png", "icons/icon-512.png"];
 self.addEventListener('install',e=>{e.waitUntil(caches.open(CACHE).then(c=>c.addAll(FILES.map(f=>new Request(f,{cache:'reload'})))))});
 self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(ks=>Promise.all(ks.filter(k=>k!==CACHE).map(k=>caches.delete(k)))).then(()=>self.clients.claim()))});
