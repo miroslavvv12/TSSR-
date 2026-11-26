@@ -47,6 +47,16 @@ frag = re.sub(r'/\*OUV_DEBUT\*/.*?/\*OUV_FIN\*/', lambda m: '/*OUV_DEBUT*/' + da
 sim = open(p('outils', 'cisco_sim.js'), encoding='utf-8').read().replace('</', '<\\/')
 assert '/*CISCO_DEBUT*/' in frag and '/*CISCO_FIN*/' in frag
 frag = re.sub(r'/\*CISCO_DEBUT\*/.*?/\*CISCO_FIN\*/', lambda m: '/*CISCO_DEBUT*/\n' + sim + '\n/*CISCO_FIN*/', frag, count=1, flags=re.S)
+# Fiches à retenir : outils/fiches/*.json, injectées entre /*FICHES_DEBUT*/ et /*FICHES_FIN*/.
+fiches = []
+for f in sorted(glob.glob(p('outils', 'fiches', '*.json'))):
+    for x in json.load(open(f, encoding='utf-8')):
+        assert set(x) == {'t', 'src', 'intro', 'blocs', 'pieges'} and x['blocs'], (f, x.get('t'))
+        assert x['t'] in {q['t'] for q in quiz}, ('fiche sans thème de quiz', x['t'])
+        fiches.append(x)
+data_fi = json.dumps(fiches, ensure_ascii=False, separators=(',', ':')).replace('</', '<\\/')
+frag = re.sub(r'/\*FICHES_DEBUT\*/.*?/\*FICHES_FIN\*/', lambda m: '/*FICHES_DEBUT*/' + data_fi + '/*FICHES_FIN*/', frag, count=1, flags=re.S)
+print(len(fiches), 'fiches')
 # Terminal Linux (outils/linux_sim.js), injecté entre /*LINUX_DEBUT*/ et /*LINUX_FIN*/.
 lx = open(p('outils', 'linux_sim.js'), encoding='utf-8').read().replace('</', '<\\/')
 assert '/*LINUX_DEBUT*/' in frag and '/*LINUX_FIN*/' in frag
