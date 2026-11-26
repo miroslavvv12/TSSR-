@@ -56,7 +56,7 @@ Ces cours sont dans `outils/quiz/*.json` et `outils/ouvertes/*.json`. Avant d'aj
 - Clés `localStorage` : `tssr-entrainement` (quiz), `tssr-cisco` (labs Cisco) et `tssr-linux` (labs Linux).
 - **Révision espacée** (mode « À revoir aujourd'hui ») : `S.srs[clé] = [boîte, jour d'échéance]`. Une question réussie revient dans 3, 7, 14 puis 30 jours ; ratée, elle revient le lendemain.
 - **Transfert de progression** entre appareils, sans réseau : un code `TSSRz1:` (gzip + base64) ou `TSSR1:` qui contient les trois clés `localStorage`. L'import remplace la progression de l'appareil.
-- **Appli iPhone** : `index.html` (copie de `outils/shell.html`) déchiffre `content.enc` (le site de cours d'une autre session) et y ajoute un bouton « Entraînement ». `entrainement.html` a un lien « ← Mes cours » pour revenir. `outils/build_app.py` garde `entrainement.html` dans l'appli et dans le cache hors ligne.
+- **Appli iPhone** : `index.html` (copie de `outils/shell.html`) déchiffre `content.enc` (le site de cours d'une autre session) et y ajoute un bouton « Entraînement » dans la barre du haut (`header`, à droite ; la barre se décale pour ne rien recouvrir ; à défaut, bouton fixe en haut à droite), pour ne pas être caché par la bannière de mise à jour en bas. `entrainement.html` a un lien « ← Mes cours » pour revenir. `outils/build_app.py` garde `entrainement.html` dans l'appli et dans le cache hors ligne.
 - **Publication** : GitHub Pages lit la branche `main`. Un changement n'arrive sur l'iPhone qu'une fois fusionné dans `main`.
 - **Simulateur Cisco** :
   - modes, abréviations, `?`, Tab ;
