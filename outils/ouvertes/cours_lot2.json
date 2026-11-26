@@ -1,0 +1,579 @@
+[
+ {
+  "t": "Câblage réseau",
+  "s": "Cours Le câblage réseau (David Rodriguez), p. 4, 7-9, 13-15",
+  "q": "Décris les trois niveaux de câblage d'un site et le support utilisé pour chacun.",
+  "r": "Le câblage primaire, ou fédérateur, relie les bâtiments entre eux, en général en fibre optique. Le câblage secondaire, ou vertical (backbone), relie les étages d'un même immeuble, en principe en fibre. Le câblage tertiaire, ou horizontal (capillaire), relie les zones de travail d'un étage à l'armoire de brassage du local technique, en paire torsadée. On choisit la fibre pour les longues distances et les gros débits, et la paire torsadée pour la distribution vers les postes (segments de 100 m au maximum).",
+  "p": [
+   [
+    "Primaire / fédérateur : entre bâtiments",
+    [
+     "primaire",
+     "federateur"
+    ]
+   ],
+   [
+    "Secondaire / vertical / backbone : entre étages",
+    [
+     "secondaire",
+     "vertical",
+     "backbone"
+    ]
+   ],
+   [
+    "Tertiaire / horizontal : vers les postes, jusqu'à l'armoire de brassage",
+    [
+     "tertiaire",
+     "horizontal",
+     "capillaire"
+    ]
+   ],
+   [
+    "Fibre optique pour les niveaux hauts",
+    [
+     "fibre"
+    ]
+   ],
+   [
+    "Paire torsadée pour le tertiaire",
+    [
+     "paire torsad",
+     "cuivre"
+    ]
+   ]
+  ],
+  "n": 3
+ },
+ {
+  "t": "Câblage réseau",
+  "s": "Cours Le câblage réseau (David Rodriguez), p. 8-9, 14-15, 17",
+  "q": "Compare les câbles à paires torsadées (blindages, catégories) et la fibre optique (monomode, multimode).",
+  "r": "La paire torsadée est en cuivre : la torsion réduit la diaphonie. Selon le blindage : UTP non blindé, FTP avec une feuille d'aluminium, STP avec les paires blindées, S/FTP et S/STP pour les environnements parasités ou les grandes longueurs. Les catégories fixent le débit : Cat5e et Cat6 en 1 Gbit/s, Cat6a et Cat7 en 10 Gbit/s, Cat8 en 25 ou 40 Gbit/s, sur 100 m au maximum. La fibre transmet de la lumière par réflexion totale et n'est pas sensible aux parasites électriques. La monomode (un seul trajet) porte très loin, jusqu'à 10 km en 10 Gbit/s ; la multimode (plusieurs trajets, à saut ou à gradient d'indice) porte quelques centaines de mètres.",
+  "p": [
+   [
+    "Torsion contre la diaphonie",
+    [
+     "diaphonie",
+     "torsion"
+    ]
+   ],
+   [
+    "Types de blindage (UTP, FTP, STP, S/FTP…)",
+    [
+     "utp",
+     "ftp",
+     "stp"
+    ]
+   ],
+   [
+    "Catégories et débits",
+    [
+     "cat"
+    ]
+   ],
+   [
+    "Fibre : lumière, réflexion totale",
+    [
+     "lumiere",
+     "reflexion",
+     "photon"
+    ]
+   ],
+   [
+    "Monomode longue distance / multimode courte distance",
+    [
+     "monomode",
+     "multimode"
+    ]
+   ]
+  ],
+  "n": 4
+ },
+ {
+  "t": "Hardware",
+  "s": "Cours Poste de travail Hardware (David Rodriguez), p. 11-16",
+  "q": "Décris la séquence de démarrage d'un PC, de la mise sous tension au lancement du système.",
+  "r": "À la mise sous tension, l'alimentation envoie le signal Power Good quand les tensions sont correctes, ce qui lance le processeur. Le BIOS (ou l'UEFI) exécute le POST (Power On Self Test) : il contrôle le bus et les connecteurs, la carte graphique, teste la RAM par écriture et lecture, vérifie le clavier, détecte les périphériques de stockage, puis compare la configuration au CMOS. En cas d'erreur, il peut émettre des bips, qui dépendent du BIOS. Il lance ensuite la zone d'amorce MBR ou GPT, qui lance le chargeur d'amorçage (GRUB, ou le gestionnaire de démarrage de Windows), qui charge enfin le système d'exploitation.",
+  "p": [
+   [
+    "Power Good envoyé par l'alimentation",
+    [
+     "power good",
+     "power-good",
+     "pw-ok"
+    ]
+   ],
+   [
+    "POST : test des composants (RAM, carte graphique…)",
+    [
+     "post"
+    ]
+   ],
+   [
+    "Bips d'erreur selon le BIOS",
+    [
+     "bip"
+    ]
+   ],
+   [
+    "MBR ou GPT",
+    [
+     "mbr",
+     "gpt"
+    ]
+   ],
+   [
+    "Chargeur d'amorçage puis système",
+    [
+     "chargeur",
+     "grub",
+     "ntldr",
+     "bootmgr",
+     "boot manager"
+    ]
+   ]
+  ],
+  "n": 3
+ },
+ {
+  "t": "Hardware",
+  "s": "Cours Poste de travail Hardware (David Rodriguez), p. 6-9",
+  "q": "Explique le rôle du BIOS et ce que l'UEFI apporte de plus.",
+  "r": "Le BIOS (Basic Input Output System) est un micrologiciel stocké dans la mémoire morte de la carte mère. Il initialise les composants de la carte mère et du chipset, identifie les périphériques internes et externes, définit l'ordre de démarrage et lance le système d'exploitation présent sur le premier périphérique disponible. L'UEFI lui succède : c'est une interface entre le micrologiciel et le système d'exploitation, issue d'EFI d'Intel. Il apporte le réseau en standard, une interface graphique, la gestion de plusieurs systèmes et la prise en charge des disques de plus de 2,2 To.",
+  "p": [
+   [
+    "BIOS en mémoire morte (ROM) de la carte mère",
+    [
+     "rom",
+     "memoire morte",
+     "micrologiciel",
+     "firmware"
+    ]
+   ],
+   [
+    "Initialise et identifie les composants",
+    [
+     "initialise",
+     "identifie"
+    ]
+   ],
+   [
+    "Lance le système d'exploitation",
+    [
+     "lance",
+     "demarre"
+    ]
+   ],
+   [
+    "L'UEFI succède au BIOS",
+    [
+     "uefi"
+    ]
+   ],
+   [
+    "Avantages : disques de plus de 2,2 To, réseau, interface graphique",
+    [
+     "2,2",
+     "2.2",
+     "graphique",
+     "reseau"
+    ]
+   ]
+  ],
+  "n": 3
+ },
+ {
+  "t": "Hardware",
+  "s": "Cours Hardware (David Rodriguez), p. 5-18",
+  "q": "Pourquoi les processeurs actuels ont-ils plusieurs cœurs plutôt qu'une fréquence toujours plus élevée ?",
+  "r": "Un processeur est fait de milliards de transistors qui jouent le rôle d'interrupteurs. La loi de Moore prévoyait un doublement régulier du nombre de transistors grâce à la miniaturisation : plus petits, ils sont plus rapides et consomment moins. Mais la gravure atteint quelques nanomètres, la limite de la taille des atomes et des effets quantiques. De plus, la chaleur produite (effet Joule) augmente avec la fréquence. La fréquence stagne donc depuis une quinzaine d'années : on ajoute plusieurs cœurs qui travaillent en parallèle, et des accélérateurs spécialisés comme les GPU ou les TPU.",
+  "p": [
+   [
+    "Transistors et miniaturisation",
+    [
+     "transistor",
+     "miniatur"
+    ]
+   ],
+   [
+    "Loi de Moore",
+    [
+     "moore"
+    ]
+   ],
+   [
+    "Limite physique (atomes, quantique)",
+    [
+     "atome",
+     "quantique",
+     "limite"
+    ]
+   ],
+   [
+    "Chaleur / effet Joule liée à la fréquence",
+    [
+     "chaleur",
+     "joule"
+    ]
+   ],
+   [
+    "Plusieurs cœurs en parallèle, accélérateurs",
+    [
+     "coeur",
+     "parallele",
+     "gpu"
+    ]
+   ]
+  ],
+  "n": 4
+ },
+ {
+  "t": "Linux",
+  "s": "Cours Initiation à Linux (David Rodriguez), p. 3-11",
+  "q": "Raconte en quelques lignes la naissance d'UNIX, du projet GNU et de Linux.",
+  "r": "UNIX est né en 1969 aux laboratoires Bell, avec Ken Thompson et Dennis Ritchie, en réaction à Multics jugé trop complexe : chaque programme ne fait qu'une chose, mais la fait bien. Richard Stallman a lancé le projet GNU pour créer un système d'exploitation libre ; la licence GPL fixe les règles du logiciel libre (libre ne veut pas dire gratuit). En 1991, l'étudiant finlandais Linus Torvalds a développé un noyau, le noyau Linux, publié sous licence GPL. Les outils GNU associés au noyau Linux forment GNU/Linux. Les distributions (Debian, Ubuntu, Red Hat…) l'assemblent avec des outils et un installateur.",
+  "p": [
+   [
+    "UNIX en 1969, laboratoires Bell",
+    [
+     "1969",
+     "bell",
+     "unix"
+    ]
+   ],
+   [
+    "GNU et Richard Stallman, logiciel libre",
+    [
+     "gnu",
+     "stallman"
+    ]
+   ],
+   [
+    "Licence GPL",
+    [
+     "gpl"
+    ]
+   ],
+   [
+    "Linus Torvalds, 1991, noyau Linux",
+    [
+     "torvalds",
+     "1991",
+     "noyau"
+    ]
+   ],
+   [
+    "GNU/Linux = noyau + outils GNU ; distributions",
+    [
+     "gnu/linux",
+     "distribution"
+    ]
+   ]
+  ],
+  "n": 2
+ },
+ {
+  "t": "Linux",
+  "s": "Cours Initiation à Linux (David Rodriguez), p. 12, 17-25",
+  "q": "Explique l'organisation des fichiers sous Linux et le fonctionnement des droits.",
+  "r": "Sous Linux, tout est fichier, et tous les fichiers sont dans une arborescence unique qui part de la racine /. Dossiers clés : /etc pour la configuration, /home pour les dossiers des utilisateurs, /bin et /sbin pour les exécutables, /dev pour les périphériques, /tmp pour les fichiers temporaires, /media pour les médias amovibles. Chaque fichier a des droits pour trois catégories (UGO) : le propriétaire, le groupe et les autres. Pour chacune, trois droits : r (lecture), w (écriture) et x (exécution). Chaque droit est un bit ; le triplet s'écrit en octal de 0 à 7. Exemple : 111, 100, 101 donne 745. Les utilisateurs sont dans /etc/passwd, les groupes dans /etc/group, les mots de passe dans /etc/shadow, et root a l'UID 0.",
+  "p": [
+   [
+    "Tout est fichier, une seule arborescence depuis /",
+    [
+     "tout est fichier",
+     "racine",
+     "arborescence"
+    ]
+   ],
+   [
+    "Dossiers clés (/etc, /home, /dev…)",
+    [
+     "/etc",
+     "/home",
+     "/dev"
+    ]
+   ],
+   [
+    "Propriétaire, groupe, autres",
+    [
+     "proprietaire",
+     "groupe",
+     "autres"
+    ]
+   ],
+   [
+    "r, w, x",
+    [
+     "lecture",
+     "ecriture",
+     "execution"
+    ]
+   ],
+   [
+    "Notation octale",
+    [
+     "octal",
+     "745",
+     "755",
+     "0 a 7"
+    ]
+   ]
+  ],
+  "n": 3
+ },
+ {
+  "t": "Initiation aux réseaux",
+  "s": "Cours Initiation aux réseaux informatiques (David Rodriguez), p. 6-15",
+  "q": "Présente les types de réseaux selon leur taille, et les trois modes de communication.",
+  "r": "Selon la distance, on distingue le PAN (réseau personnel, une dizaine de mètres), le LAN (réseau local, quelques centaines de mètres, en général filaire), le MAN (réseau métropolitain, à l'échelle d'une ville ou d'un campus) et le WAN (réseau étendu, sur un ou plusieurs pays ; Internet est le plus connu). Il y a trois modes de communication : le simplex dans un seul sens (un capteur), le half-duplex dans les deux sens mais chacun son tour (risque de collision), et le full-duplex dans les deux sens en même temps (le téléphone).",
+  "p": [
+   [
+    "PAN",
+    [
+     "pan"
+    ]
+   ],
+   [
+    "LAN",
+    [
+     "lan"
+    ]
+   ],
+   [
+    "MAN et WAN (Internet)",
+    [
+     "man",
+     "wan",
+     "internet"
+    ]
+   ],
+   [
+    "Simplex et half-duplex",
+    [
+     "simplex",
+     "half"
+    ]
+   ],
+   [
+    "Full-duplex",
+    [
+     "full"
+    ]
+   ]
+  ],
+  "n": 2
+ },
+ {
+  "t": "Initiation aux réseaux",
+  "s": "Cours Initiation aux réseaux informatiques (David Rodriguez), p. 17-23",
+  "q": "Compare les topologies bus, étoile, anneau et maillée : principe, avantages et points faibles.",
+  "r": "Bus : un seul câble partagé, en mode diffusion, fermé par des bouchons ; une station en panne ne gêne pas, mais une coupure du câble arrête tout. Anneau : les stations sont reliées en boucle et relaient les messages ; une panne coupe l'anneau, d'où l'usage de deux anneaux contra-rotatifs. Étoile : tout passe par un équipement central (switch) ; on ajoute facilement des postes et on localise facilement les pannes, mais elle coûte plus cher et tout tombe si l'équipement central tombe. Maillée : les hôtes sont reliés pair à pair, sans point sensible ; si un hôte tombe, les données prennent une autre route.",
+  "p": [
+   [
+    "Bus : câble unique, coupure = panne générale",
+    [
+     "bus"
+    ]
+   ],
+   [
+    "Anneau : boucle, anneaux contra-rotatifs",
+    [
+     "anneau"
+    ]
+   ],
+   [
+    "Étoile : équipement central",
+    [
+     "etoile"
+    ]
+   ],
+   [
+    "Point faible de l'étoile : l'équipement central",
+    [
+     "central",
+     "switch",
+     "concentrateur"
+    ]
+   ],
+   [
+    "Maillé : pas de point sensible, routes alternatives",
+    [
+     "maill"
+    ]
+   ]
+  ],
+  "n": 3
+ },
+ {
+  "t": "Initiation aux réseaux",
+  "s": "Cours Initiation aux réseaux informatiques (David Rodriguez), p. 29-38",
+  "q": "Explique ce qu'est une adresse IPv4, le rôle du masque, et la différence entre adresses privées, publiques et particulières.",
+  "r": "Une adresse IPv4 fait 32 bits, notée en 4 nombres de 0 à 255. Elle identifie une interface. Elle a une partie réseau à gauche et une partie hôte à droite. Le masque indique la frontière : on garde les bits de l'adresse là où le masque vaut 1 pour obtenir l'adresse du réseau. Les adresses privées (10.0.0.0/8, 172.16.0.0 à 172.31.255.255, 192.168.0.0/16) servent dans les réseaux locaux et ne sont pas routées sur Internet. Les adresses publiques sont uniques au monde et attribuées par un organisme central. Adresses particulières : 127.0.0.1 pour la boucle locale, 0.0.0.0 pour la route par défaut. La passerelle permet de sortir vers un autre réseau.",
+  "p": [
+   [
+    "32 bits, 4 nombres de 0 à 255",
+    [
+     "32 bits",
+     "0 a 255"
+    ]
+   ],
+   [
+    "Partie réseau et partie hôte, masque",
+    [
+     "masque"
+    ]
+   ],
+   [
+    "Plages privées",
+    [
+     "10.0.0.0",
+     "172.16",
+     "192.168"
+    ]
+   ],
+   [
+    "Publiques : uniques et routées sur Internet",
+    [
+     "public",
+     "unique"
+    ]
+   ],
+   [
+    "127.0.0.1 et 0.0.0.0",
+    [
+     "127",
+     "0.0.0.0"
+    ]
+   ]
+  ],
+  "n": 3
+ },
+ {
+  "t": "Modèle OSI",
+  "s": "Cours Le modèle OSI (David Rodriguez), p. 12-36",
+  "q": "Cite les 7 couches du modèle OSI avec, pour chacune, son rôle et un exemple d'équipement ou de protocole.",
+  "r": "1 Physique : transmettre les bits sur le support (cuivre, fibre, radio) ; équipement : le hub. 2 Liaison de données : les trames, l'adresse MAC, la détection d'erreurs ; protocoles Ethernet et PPP, équipement : le switch. 3 Réseau : le routage des paquets ; protocoles IP et ICMP, équipement : le routeur. 4 Transport : le découpage et le transport de bout en bout ; protocoles TCP et UDP, et les ports. 5 Session : ouvrir les sessions et les synchroniser. 6 Présentation : la syntaxe et la représentation des données. 7 Application : les services pour l'utilisateur ; protocoles HTTP, SMTP, DNS, FTP et SSH.",
+  "p": [
+   [
+    "Physique (bits, hub)",
+    [
+     "physique"
+    ]
+   ],
+   [
+    "Liaison (trames, MAC, switch)",
+    [
+     "liaison"
+    ]
+   ],
+   [
+    "Réseau (routage, IP, routeur)",
+    [
+     "reseau"
+    ]
+   ],
+   [
+    "Transport (TCP/UDP, ports)",
+    [
+     "transport"
+    ]
+   ],
+   [
+    "Session, Présentation, Application",
+    [
+     "session",
+     "presentation",
+     "application"
+    ]
+   ]
+  ],
+  "n": 2
+ },
+ {
+  "t": "Modèle OSI",
+  "s": "Cours Le modèle OSI (David Rodriguez), p. 28-32, 38-39",
+  "q": "Explique la différence entre TCP et UDP, le rôle des ports, et le principe d'encapsulation.",
+  "r": "TCP est orienté connexion : le destinataire confirme la réception par des accusés de réception, et les données abîmées sont renvoyées. UDP est sans connexion : il envoie sans prévenir et sans accusé de réception, ce qui est plus léger. Un port, codé sur 16 bits (65 536 ports), distingue les programmes d'une même machine ; les ports 0 à 1023 sont les ports bien connus (53 pour DNS, 67/68 pour DHCP, 80 pour HTTP). L'encapsulation : chaque couche ajoute ses propres informations autour des données de la couche du dessus avant de les passer à la couche du dessous ; à la réception, on fait l'inverse.",
+  "p": [
+   [
+    "TCP orienté connexion, accusé de réception",
+    [
+     "accuse",
+     "connexion"
+    ]
+   ],
+   [
+    "UDP sans connexion",
+    [
+     "udp"
+    ]
+   ],
+   [
+    "Port sur 16 bits / 65 536",
+    [
+     "16 bits",
+     "65 536",
+     "65536"
+    ]
+   ],
+   [
+    "Ports bien connus et exemples",
+    [
+     "53",
+     "80",
+     "1023"
+    ]
+   ],
+   [
+    "Encapsulation : chaque couche ajoute ses informations",
+    [
+     "encapsul"
+    ]
+   ]
+  ],
+  "n": 3
+ },
+ {
+  "t": "Modèle OSI",
+  "s": "Cours Le modèle OSI (David Rodriguez), p. 44-50",
+  "q": "Avec l'IP 188.56.58.39 et le masque 255.255.248.0, calcule l'adresse du réseau, le broadcast et le nombre d'adresses utilisables. Explique ta méthode.",
+  "r": "Le masque 255.255.248.0 est un /21 : 21 bits à 1 et 11 bits d'hôte. Seul le 3e octet est partagé : 248 = 11111000. On fait un ET entre 58 (00111010) et 248, ce qui donne 56 (00111000). L'adresse du réseau est donc 188.56.56.0 (tous les bits d'hôte à 0). Pour le broadcast, on met tous les bits d'hôte à 1 : le 3e octet devient 56 + 7 = 63, et le dernier 255, soit 188.56.63.255. Le nombre d'adresses utilisables est 2^11 − 2 = 2046, car on retire l'adresse du réseau et le broadcast.",
+  "p": [
+   [
+    "Masque /21, 11 bits d'hôte",
+    [
+     "/21",
+     "11 bits"
+    ]
+   ],
+   [
+    "ET logique sur le 3e octet",
+    [
+     "et logique",
+     "11111000",
+     "58"
+    ]
+   ],
+   [
+    "Réseau 188.56.56.0",
+    [
+     "188.56.56.0"
+    ]
+   ],
+   [
+    "Broadcast 188.56.63.255",
+    [
+     "188.56.63.255"
+    ]
+   ],
+   [
+    "2^11 − 2 = 2046",
+    [
+     "2046"
+    ]
+   ]
+  ],
+  "n": 4
+ }
+]

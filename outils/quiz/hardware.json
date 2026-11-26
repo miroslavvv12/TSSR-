@@ -1,0 +1,488 @@
+[
+ {
+  "t": "Hardware",
+  "s": "Cours Hardware (David Rodriguez), p. 3",
+  "q": "Que désigne le hardware ?",
+  "o": [
+   "Le matériel informatique : les pièces physiques d'un appareil",
+   "Les logiciels",
+   "Les données",
+   "Le réseau Internet"
+  ],
+  "e": "Le hardware va de pair avec le software (logiciel) et le firmware (micrologiciel).",
+  "x": [
+   "C'est le software.",
+   "Non.",
+   "Non."
+  ],
+  "n": 0
+ },
+ {
+  "t": "Hardware",
+  "s": "Cours Hardware (David Rodriguez), p. 2",
+  "q": "Sur quelle logique reposent toutes les opérations d'un ordinateur ?",
+  "o": [
+   "La logique binaire (0 et 1)",
+   "La logique décimale",
+   "La logique hexadécimale",
+   "La logique analogique"
+  ],
+  "e": "L'ordinateur ne comprend que des impulsions électriques, codées en suites de bits.",
+  "x": [
+   "Non.",
+   "L'hexadécimal n'est qu'une notation pour les humains.",
+   "Non."
+  ],
+  "n": 1
+ },
+ {
+  "t": "Hardware",
+  "s": "Cours Hardware (David Rodriguez), p. 5",
+  "q": "Quel composant joue le rôle d'« interrupteur » ouvert ou fermé (0 ou 1) ?",
+  "o": [
+   "Le transistor",
+   "Le condensateur",
+   "Le disque dur",
+   "La carte réseau"
+  ],
+  "e": "La grille du transistor contrôle s'il laisse passer le courant. Un processeur en contient plusieurs milliards.",
+  "x": [
+   "Non.",
+   "Non.",
+   "Non."
+  ],
+  "n": 1
+ },
+ {
+  "t": "Hardware",
+  "s": "Cours Hardware (David Rodriguez), p. 6",
+  "q": "Quelles sont les trois portes logiques de base ?",
+  "o": [
+   "OU, ET, NON",
+   "PLUS, MOINS, FOIS",
+   "SI, ALORS, SINON",
+   "LIRE, ÉCRIRE, EXÉCUTER"
+  ],
+  "e": "Une porte est un circuit à une ou plusieurs entrées : l'état des entrées détermine l'état des sorties.",
+  "x": [
+   "Ce sont des opérations arithmétiques.",
+   "C'est une structure de programme.",
+   "Ce sont des droits Linux."
+  ],
+  "n": 1
+ },
+ {
+  "t": "Hardware",
+  "s": "Cours Hardware (David Rodriguez), p. 8",
+  "q": "Selon le cours, que se passe-t-il quand un transistor est plus petit ?",
+  "o": [
+   "Il est plus rapide et consomme moins d'énergie",
+   "Il est plus lent",
+   "Il chauffe davantage",
+   "Il ne change rien"
+  ],
+  "e": "Plus la densité de transistors est forte, plus le processeur est performant.",
+  "x": [
+   "C'est l'inverse.",
+   "Il consomme moins.",
+   "C'est tout l'intérêt de la miniaturisation."
+  ],
+  "n": 2
+ },
+ {
+  "t": "Hardware",
+  "s": "Cours Hardware (David Rodriguez), p. 9",
+  "q": "Que prévoit la loi de Moore, telle que présentée dans le cours ?",
+  "o": [
+   "Le nombre de transistors par puce double à prix constant tous les 18 mois",
+   "La fréquence double chaque année",
+   "Les prix doublent tous les 18 mois",
+   "Les disques doublent de taille chaque mois"
+  ],
+  "e": "Gordon Moore, cofondateur d'Intel. Hors cours, à vérifier avec ton formateur : Moore parlait en 1965 d'un doublement chaque année, puis tous les deux ans en 1975. Les « 18 mois » sont une version popularisée.",
+  "x": [
+   "Ce n'est pas la fréquence.",
+   "C'est à prix constant.",
+   "Non."
+  ],
+  "n": 2
+ },
+ {
+  "t": "Hardware",
+  "s": "Cours Hardware (David Rodriguez), p. 9 et 15",
+  "q": "Pourquoi la miniaturisation des transistors finit-elle par buter ?",
+  "o": [
+   "On atteint la taille des atomes et les effets de la physique quantique",
+   "Parce que le silicium est épuisé",
+   "Parce que la loi l'interdit",
+   "Parce que les logiciels ne suivent plus"
+  ],
+  "e": "Moore annonçait en 1997 une limite vers 2017. Le cours parle d'une gravure de l'ordre de 7 nanomètres.",
+  "x": [
+   "Non.",
+   "Non.",
+   "Non."
+  ],
+  "n": 3
+ },
+ {
+  "t": "Hardware",
+  "s": "Cours Hardware (David Rodriguez), p. 12",
+  "q": "Qu'est-ce qu'un circuit intégré ?",
+  "o": [
+   "Une puce qui reproduit une ou plusieurs fonctions électroniques dans un petit volume",
+   "Un câble réseau",
+   "Un logiciel",
+   "Un disque dur"
+  ],
+  "e": "Il intègre plusieurs composants de base, ce qui le rend facile à mettre en œuvre.",
+  "x": [
+   "Non.",
+   "Non.",
+   "Non."
+  ],
+  "n": 1
+ },
+ {
+  "t": "Hardware",
+  "s": "Cours Hardware (David Rodriguez), p. 13",
+  "q": "Qu'est-ce que le « die » ?",
+  "o": [
+   "Le circuit gravé sur la tranche de silicium, avant d'être découpé et encapsulé en puce",
+   "Le ventilateur du processeur",
+   "Le connecteur de la carte mère",
+   "Le logiciel du BIOS"
+  ],
+  "e": "Les dies sont reproduits en série sur une tranche de silicium, puis découpés.",
+  "x": [
+   "Non.",
+   "Non.",
+   "Non."
+  ],
+  "n": 3
+ },
+ {
+  "t": "Hardware",
+  "s": "Cours Hardware (David Rodriguez), p. 15",
+  "q": "À quoi le cours compare-t-il la lithographie ?",
+  "o": [
+   "À la photographie, à l'échelle nanométrique",
+   "À l'impression 3D",
+   "À la soudure",
+   "Au moulage"
+  ],
+  "e": "On définit la forme des circuits sur une plaque de silicium.",
+  "x": [
+   "Non.",
+   "Non.",
+   "Non."
+  ],
+  "n": 2
+ },
+ {
+  "t": "Hardware",
+  "s": "Cours Hardware (David Rodriguez), p. 16",
+  "q": "Quelle tendance actuelle le cours décrit-il ?",
+  "o": [
+   "Des accélérateurs dédiés (GPU, TPU pour l'IA…) en plus du processeur",
+   "Le retour aux processeurs à un seul cœur",
+   "La disparition du processeur",
+   "L'abandon du binaire"
+  ],
+  "e": "Le processeur reste le chef d'orchestre qui distribue le travail.",
+  "x": [
+   "C'est l'inverse.",
+   "Il reste central pour distribuer le travail.",
+   "Non."
+  ],
+  "n": 2
+ },
+ {
+  "t": "Hardware",
+  "s": "Cours Hardware (David Rodriguez), p. 17-18",
+  "q": "Pourquoi augmente-t-on le nombre de cœurs plutôt que la fréquence ?",
+  "o": [
+   "La chaleur produite (effet Joule) augmente avec la fréquence et limite sa hausse",
+   "Parce que les cœurs sont gratuits",
+   "Parce que la fréquence ne sert à rien",
+   "Parce que Windows l'impose"
+  ],
+  "e": "Depuis une quinzaine d'années, la fréquence stagne. On ajoute des cœurs qui travaillent en parallèle.",
+  "x": [
+   "Non.",
+   "Elle compte, mais elle est limitée.",
+   "Non."
+  ],
+  "n": 3
+ },
+ {
+  "t": "Hardware",
+  "s": "Cours Hardware (David Rodriguez), p. 18",
+  "q": "Combien d'opérations par seconde fait un processeur à 3 GHz selon le cours ?",
+  "o": [
+   "3 milliards",
+   "3 millions",
+   "3 000",
+   "300 milliards"
+  ],
+  "e": "1 GHz = 1 milliard de cycles par seconde.",
+  "x": [
+   "C'est 3 MHz.",
+   "C'est 3 kHz.",
+   "Non."
+  ],
+  "n": 1
+ },
+ {
+  "t": "Hardware",
+  "s": "Cours Poste de travail Hardware (David Rodriguez), p. 2",
+  "q": "Qu'est-ce qu'un bus informatique ?",
+  "o": [
+   "Un système de communication partagé entre plusieurs composants",
+   "Un câble d'alimentation",
+   "Un type de mémoire",
+   "Un logiciel de pilotage"
+  ],
+  "e": "C'est l'ensemble des parties matérielles et immatérielles qui transmettent les données entre composants.",
+  "x": [
+   "Non.",
+   "Non.",
+   "Non."
+  ],
+  "n": 0
+ },
+ {
+  "t": "Hardware",
+  "s": "Cours Poste de travail Hardware (David Rodriguez), p. 3",
+  "q": "Que permet le DMA (Direct Memory Access) ?",
+  "o": [
+   "D'accéder à la mémoire vive sans passer par le processeur",
+   "De démarrer l'ordinateur",
+   "De chiffrer la mémoire",
+   "De relier deux ordinateurs"
+  ],
+  "e": "Le cours explique que ça accélère fortement les performances.",
+  "x": [
+   "Non.",
+   "Non.",
+   "Non."
+  ],
+  "n": 2
+ },
+ {
+  "t": "Hardware",
+  "s": "Cours Poste de travail Hardware (David Rodriguez), p. 3",
+  "q": "Quel bus relie le processeur à la mémoire vive ?",
+  "o": [
+   "Le bus mémoire (FSB, front-side bus)",
+   "Le bus USB",
+   "Le bus SATA",
+   "Le bus PCI"
+  ],
+  "e": "Le cours l'appelle aussi bus processeur.",
+  "x": [
+   "L'USB relie des périphériques.",
+   "Le SATA relie des disques.",
+   "Non."
+  ],
+  "n": 1
+ },
+ {
+  "t": "Hardware",
+  "s": "Cours Poste de travail Hardware (David Rodriguez), p. 4",
+  "q": "De quoi dépend la vitesse d'un bus ?",
+  "o": [
+   "De sa largeur (bits transmis en même temps) et de sa fréquence",
+   "Uniquement de sa couleur",
+   "Uniquement de sa longueur",
+   "Du système d'exploitation"
+  ],
+  "e": "Exemple du cours : une nappe de 32 fils transmet 32 bits en parallèle. La fréquence est le nombre d'envois par seconde (cycles).",
+  "x": [
+   "Non.",
+   "Ce n'est pas ce que dit le cours.",
+   "Non."
+  ],
+  "n": 2
+ },
+ {
+  "t": "Hardware",
+  "s": "Cours Poste de travail Hardware (David Rodriguez), p. 5",
+  "q": "USB et SATA sont des bus…",
+  "o": [
+   "série",
+   "parallèles",
+   "optiques",
+   "sans fil"
+  ],
+  "e": "Série : les bits passent l'un après l'autre sur une ligne. Parallèle : sur plusieurs lignes en même temps (exemple : PATA).",
+  "x": [
+   "PATA est parallèle.",
+   "Non.",
+   "Non."
+  ],
+  "n": 1
+ },
+ {
+  "t": "Hardware",
+  "s": "Cours Poste de travail Hardware (David Rodriguez), p. 6",
+  "q": "Que veut dire BIOS ?",
+  "o": [
+   "Basic Input Output System",
+   "Binary Integrated Operating System",
+   "Boot Internal Option Setup",
+   "Basic Internet Online Service"
+  ],
+  "e": "« Système élémentaire d'entrée/sortie », stocké dans la mémoire morte (ROM) de la carte mère.",
+  "x": [
+   "Non.",
+   "Non.",
+   "Non."
+  ],
+  "n": 0
+ },
+ {
+  "t": "Hardware",
+  "s": "Cours Poste de travail Hardware (David Rodriguez), p. 7",
+  "q": "Lequel de ces rôles n'est PAS celui du BIOS ?",
+  "o": [
+   "Gérer les comptes utilisateurs",
+   "Initialiser les composants de la carte mère",
+   "Identifier les périphériques connectés",
+   "Démarrer le système d'exploitation"
+  ],
+  "e": "Les comptes utilisateurs sont gérés par le système d'exploitation.",
+  "x": [
+   "C'est un rôle du BIOS.",
+   "C'est un rôle du BIOS.",
+   "C'est un rôle du BIOS."
+  ],
+  "n": 2
+ },
+ {
+  "t": "Hardware",
+  "s": "Cours Poste de travail Hardware (David Rodriguez), p. 8-9",
+  "q": "Quel avantage de l'UEFI sur le BIOS cite le cours ?",
+  "o": [
+   "Il dépasse la limite des disques de 2,2 To",
+   "Il fonctionne sans carte mère",
+   "Il remplace le système d'exploitation",
+   "Il double la RAM"
+  ],
+  "e": "Autres avantages : réseau en standard, interface graphique, gestion de plusieurs systèmes. L'UEFI succède au BIOS et vient d'EFI, conçu par Intel pour l'Itanium.",
+  "x": [
+   "Non.",
+   "C'est un intermédiaire avec l'OS.",
+   "Non."
+  ],
+  "n": 2
+ },
+ {
+  "t": "Hardware",
+  "s": "Cours Poste de travail Hardware (David Rodriguez), p. 11",
+  "q": "Qu'est-ce que le signal « Power Good » ?",
+  "o": [
+   "Le signal de l'alimentation qui indique que les tensions sont correctes et lance le processeur",
+   "Le premier bip du démarrage",
+   "Le voyant de l'écran",
+   "Un test de la RAM"
+  ],
+  "e": "Si l'alimentation ne peut plus fournir de bonnes tensions (court-circuit, surconsommation), elle passe le signal à 0 V.",
+  "x": [
+   "Les bips viennent du BIOS.",
+   "Non.",
+   "La RAM est testée pendant le POST."
+  ],
+  "n": 3
+ },
+ {
+  "t": "Hardware",
+  "s": "Cours Poste de travail Hardware (David Rodriguez), p. 12",
+  "q": "Que veut dire POST ?",
+  "o": [
+   "Power On Self Test",
+   "Post Operating System Test",
+   "Primary Output System Task",
+   "Power Off Safe Transfer"
+  ],
+  "e": "Pendant le POST, le BIOS teste les composants. Si le POST échoue, le système ne démarre pas.",
+  "x": [
+   "Non.",
+   "Non.",
+   "Non."
+  ],
+  "n": 1
+ },
+ {
+  "t": "Hardware",
+  "s": "Cours Poste de travail Hardware (David Rodriguez), p. 13",
+  "q": "Pendant le POST, comment le BIOS teste-t-il la RAM ?",
+  "o": [
+   "Il écrit dans chaque zone puis relit pour comparer",
+   "Il la formate",
+   "Il la retire",
+   "Il la compare à Internet"
+  ],
+  "e": "Les résultats sont comparés au CMOS pour savoir si le matériel a changé depuis le dernier démarrage.",
+  "x": [
+   "Non.",
+   "Non.",
+   "Non."
+  ],
+  "n": 3
+ },
+ {
+  "t": "Hardware",
+  "s": "Cours Poste de travail Hardware (David Rodriguez), p. 14",
+  "q": "Le PC émet des bips au démarrage. Qu'en dit le cours ?",
+  "o": [
+   "Leur signification dépend entièrement du BIOS",
+   "Ils signalent toujours un virus",
+   "Ils sont identiques sur tous les PC",
+   "Ils viennent de Windows"
+  ],
+  "e": "Il faut consulter la documentation du fabricant du BIOS ou de la carte mère.",
+  "x": [
+   "Non.",
+   "Ils dépendent du BIOS.",
+   "Windows n'est pas encore lancé."
+  ],
+  "n": 2
+ },
+ {
+  "t": "Hardware",
+  "s": "Cours Poste de travail Hardware (David Rodriguez), p. 15",
+  "q": "Dans l'ordre, que se passe-t-il après le POST ?",
+  "o": [
+   "Le BIOS lance le MBR ou la GPT, qui lance le chargeur d'amorçage, qui lance le système",
+   "Le système se lance avant le BIOS",
+   "Le chargeur d'amorçage teste la RAM",
+   "Le MBR teste le clavier"
+  ],
+  "e": "Le cours cite deux chargeurs d'amorçage : NTLDR et GRUB.",
+  "x": [
+   "Non.",
+   "C'est le POST qui teste la RAM.",
+   "Non."
+  ],
+  "n": 4
+ },
+ {
+  "t": "Hardware",
+  "s": "Cours Poste de travail Hardware (David Rodriguez), p. 16",
+  "q": "Le cours présente NTLDR et Boot.ini comme chargeur de Windows. Qu'en est-il sur Windows 10 et 11 ?",
+  "o": [
+   "Ils ont été remplacés par le Boot Manager (bootmgr) et la BCD, comme le dit le cours avancé Windows",
+   "Rien n'a changé",
+   "Windows 11 utilise GRUB",
+   "Windows 11 n'a plus de chargeur"
+  ],
+  "e": "Le cours avancé Windows (p. 15) parle du Boot Manager qui lit la BCD. NTLDR concerne les anciens Windows (XP). Point à vérifier avec ton formateur.",
+  "x": [
+   "Ce n'est plus le cas depuis Vista.",
+   "GRUB est surtout pour Linux.",
+   "Il en faut toujours un."
+  ],
+  "n": 5
+ }
+]

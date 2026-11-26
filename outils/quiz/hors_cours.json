@@ -614,42 +614,6 @@
  {
   "t": "Linux",
   "s": "Notion générale (pas dans les cours que j'ai pu lire)",
-  "q": "Quel compte a tous les droits sous Linux ?",
-  "o": [
-   "root",
-   "admin",
-   "system",
-   "superuser"
-  ],
-  "e": "root a l'UID 0. On évite de travailler en root : on utilise sudo pour une commande précise.",
-  "x": [
-   "Ce n'est pas le nom par défaut.",
-   "C'est un compte Windows.",
-   "Ce n'est pas un nom de compte Linux."
-  ],
-  "n": 0
- },
- {
-  "t": "Linux",
-  "s": "Notion générale (pas dans les cours que j'ai pu lire)",
-  "q": "Que signifie la permission « rwxr-x--- » ?",
-  "o": [
-   "Propriétaire : tout ; groupe : lire et exécuter ; autres : rien",
-   "Tout le monde a tous les droits",
-   "Propriétaire : lire seulement",
-   "Groupe : écriture seulement"
-  ],
-  "e": "En octal : 750. r = 4, w = 2, x = 1.",
-  "x": [
-   "Ce serait rwxrwxrwx (777).",
-   "Le propriétaire a rwx.",
-   "Le groupe a r-x."
-  ],
-  "n": 1
- },
- {
-  "t": "Linux",
-  "s": "Notion générale (pas dans les cours que j'ai pu lire)",
   "q": "Quelle commande donne les droits 640 à un fichier ?",
   "o": [
    "chmod 640 fichier",
@@ -662,24 +626,6 @@
    "chown change le propriétaire.",
    "chgrp change le groupe.",
    "umask règle les droits par défaut des nouveaux fichiers."
-  ],
-  "n": 1
- },
- {
-  "t": "Linux",
-  "s": "Notion générale (pas dans les cours que j'ai pu lire)",
-  "q": "Où sont configurés les comptes utilisateurs locaux ?",
-  "o": [
-   "Dans /etc/passwd (et les mots de passe chiffrés dans /etc/shadow)",
-   "Dans /home/users.conf",
-   "Dans /var/log/users",
-   "Dans /boot/passwd"
-  ],
-  "e": "/etc/group liste les groupes.",
-  "x": [
-   "Ce fichier n'existe pas.",
-   "/var/log contient les journaux.",
-   "/boot contient le noyau."
   ],
   "n": 1
  },
@@ -860,24 +806,6 @@
    "Un disque en panne ne se remplit pas.",
    "Ce n'est pas lié.",
    "Le disque ne serait pas monté, mais il ne serait pas plein."
-  ],
-  "n": 5
- },
- {
-  "t": "Linux",
-  "s": "Notion générale (pas dans les cours que j'ai pu lire)",
-  "q": "Quelle est la différence entre un lien physique (hard link) et un lien symbolique ?",
-  "o": [
-   "Le lien physique pointe vers le même inode, le symbolique vers un chemin et casse si la cible est supprimée",
-   "Aucune différence",
-   "Le lien physique fonctionne entre deux machines",
-   "Le lien symbolique copie le fichier"
-  ],
-  "e": "ln cible lien crée un lien physique ; ln -s cible lien crée un lien symbolique.",
-  "x": [
-   "Il y en a une, voir l'explication.",
-   "Ni l'un ni l'autre ne traverse le réseau.",
-   "Aucun des deux ne copie le fichier."
   ],
   "n": 5
  },
@@ -2300,24 +2228,6 @@
    "Les globales commencent par 2 ou 3.",
    "Le multicast commence par ff.",
    "Le bouclage est ::1."
-  ],
-  "n": 2
- },
- {
-  "t": "Wi-Fi, VoIP et IPv6",
-  "s": "Notion générale (pas dans les cours que j'ai pu lire)",
-  "q": "Quel protocole IPv6 remplace ARP ?",
-  "o": [
-   "NDP (Neighbor Discovery Protocol)",
-   "DHCPv6",
-   "ICMPv4",
-   "RIPng"
-  ],
-  "e": "NDP utilise ICMPv6 : sollicitation et annonce de voisin, annonce de routeur (RA).",
-  "x": [
-   "Il distribue des adresses.",
-   "C'est IPv4.",
-   "C'est un protocole de routage."
   ],
   "n": 2
  },

@@ -1,0 +1,218 @@
+[
+ {
+  "t": "Prise en main Windows 11",
+  "s": "Cours Prise en main Windows 11 (David Rodriguez), p. 7",
+  "q": "Quel rôle le cours donne-t-il à Windows ?",
+  "o": [
+   "Un système d'exploitation, le « chef d'orchestre » de l'ordinateur",
+   "Un traitement de texte",
+   "Un antivirus",
+   "Un navigateur web"
+  ],
+  "e": "Windows n'est qu'un système d'exploitation parmi d'autres (Linux, macOS…).",
+  "x": [
+   "Non.",
+   "Non.",
+   "Non."
+  ],
+  "n": 0
+ },
+ {
+  "t": "Prise en main Windows 11",
+  "s": "Cours Prise en main Windows 11 (David Rodriguez), p. 11",
+  "q": "Qu'est-ce qu'un fichier ?",
+  "o": [
+   "Un ensemble de données numériques réunies sous un même nom",
+   "Un dossier vide",
+   "Un programme uniquement",
+   "Un disque dur"
+  ],
+  "e": "Il est enregistré sur un support de stockage. Son extension indique son type.",
+  "x": [
+   "Non.",
+   "Pas seulement.",
+   "Non."
+  ],
+  "n": 0
+ },
+ {
+  "t": "Prise en main Windows 11",
+  "s": "Cours Prise en main Windows 11 (David Rodriguez), p. 11",
+  "q": "Quelle est l'extension d'un fichier Excel ?",
+  "o": [
+   ".xlsx",
+   ".docx",
+   ".odt",
+   ".png"
+  ],
+  "e": "Le cours cite .txt, .docx, .odt pour le texte, .xlsx pour Excel, .jpg et .png pour les images.",
+  "x": [
+   "Word.",
+   "LibreOffice.",
+   "Image."
+  ],
+  "n": 1
+ },
+ {
+  "t": "Prise en main Windows 11",
+  "s": "Cours Prise en main Windows 11 (David Rodriguez), p. 13",
+  "q": "Comment s'appelle le point d'entrée de l'arborescence des fichiers ?",
+  "o": [
+   "La racine",
+   "Le dossier enfant",
+   "Le bureau",
+   "La corbeille"
+  ],
+  "e": "Sous Windows, la racine du disque C est C:\\. Chaque dossier a un dossier parent.",
+  "x": [
+   "Non.",
+   "Non.",
+   "Non."
+  ],
+  "n": 1
+ },
+ {
+  "t": "Prise en main Windows 11",
+  "s": "Cours Prise en main Windows 11 (David Rodriguez), p. 15",
+  "q": "Quel raccourci verrouille le PC ?",
+  "o": [
+   "Touche Windows + L",
+   "Alt + F4",
+   "Ctrl + C",
+   "Touche Windows + D"
+  ],
+  "e": "Le cours conseille de verrouiller sa session dès qu'on quitte son poste, même un court instant.",
+  "x": [
+   "Ferme l'application.",
+   "Copie.",
+   "Affiche le bureau."
+  ],
+  "n": 1
+ },
+ {
+  "t": "Prise en main Windows 11",
+  "s": "Cours Prise en main Windows 11 (David Rodriguez), p. 15",
+  "q": "Quel raccourci permet de basculer entre les applications ouvertes ?",
+  "o": [
+   "Alt + Tab",
+   "Ctrl + X",
+   "Touche Windows + X",
+   "F11"
+  ],
+  "e": "Touche Windows + Tab ouvre l'affichage des tâches.",
+  "x": [
+   "Coupe.",
+   "Ouvre le menu Lien rapide.",
+   "Met en plein écran."
+  ],
+  "n": 1
+ },
+ {
+  "t": "Prise en main Windows 11",
+  "s": "Cours Prise en main Windows 11 (David Rodriguez), p. 15",
+  "q": "Quel raccourci ouvre le menu Lien rapide (clic droit sur Démarrer) ?",
+  "o": [
+   "Touche Windows + X",
+   "Touche Windows + L",
+   "Alt + F4",
+   "Ctrl + V"
+  ],
+  "e": "Ce menu donne accès au Gestionnaire de périphériques, à la gestion de l'ordinateur, au terminal…",
+  "x": [
+   "Verrouille.",
+   "Ferme.",
+   "Colle."
+  ],
+  "n": 2
+ },
+ {
+  "t": "Prise en main Windows 11",
+  "s": "Cours Prise en main Windows 11 (David Rodriguez), p. 16",
+  "q": "Selon le cours, de quoi dépend ce qu'un utilisateur peut faire ?",
+  "o": [
+   "Des droits qui lui sont attribués",
+   "De la taille de son écran",
+   "De son fond d'écran",
+   "De son navigateur"
+  ],
+  "e": "Les comptes sont des objets, utilisés par des humains ou des programmes pour se connecter.",
+  "x": [
+   "Non.",
+   "Non.",
+   "Non."
+  ],
+  "n": 2
+ },
+ {
+  "t": "Prise en main Windows 11",
+  "s": "Cours Prise en main Windows 11 (David Rodriguez), p. 18",
+  "q": "Laquelle de ces bonnes pratiques n'est PAS dans le cours ?",
+  "o": [
+   "Désactiver les mises à jour pour gagner du temps",
+   "Verrouiller sa session",
+   "Sauvegarder régulièrement son travail",
+   "Sécuriser ses mots de passe"
+  ],
+  "e": "Le cours dit au contraire de mettre à jour le système et les applications.",
+  "x": [
+   "C'est dans le cours.",
+   "C'est dans le cours.",
+   "C'est dans le cours."
+  ],
+  "n": 3
+ },
+ {
+  "t": "Prise en main Windows 11",
+  "s": "Cours Prise en main Windows 11 (David Rodriguez), p. 17",
+  "q": "Comment une application utilise-t-elle le matériel ?",
+  "o": [
+   "Par les services du système d'exploitation",
+   "Directement, sans passer par l'OS",
+   "Par Internet",
+   "Par le BIOS uniquement"
+  ],
+  "e": "C'est le système d'exploitation qui pilote le matériel pour les applications.",
+  "x": [
+   "Non.",
+   "Non.",
+   "Non."
+  ],
+  "n": 2
+ },
+ {
+  "t": "Prise en main Windows 11",
+  "s": "Cours Prise en main Windows 11 (David Rodriguez), p. 15",
+  "q": "Tu veux mettre une fenêtre en plein écran au clavier. Que proposes-tu ?",
+  "o": [
+   "F11, ou touche Windows + flèche vers le haut",
+   "Alt + F4",
+   "Touche Windows + D",
+   "Ctrl + X"
+  ],
+  "e": "Raccourcis listés dans le cours (source : support Microsoft).",
+  "x": [
+   "Ferme l'application.",
+   "Affiche le bureau.",
+   "Coupe."
+  ],
+  "n": 4
+ },
+ {
+  "t": "Prise en main Windows 11",
+  "s": "Cours Prise en main Windows 11 (David Rodriguez), p. 15",
+  "q": "Un utilisateur a perdu toutes ses fenêtres en appuyant sur une combinaison et ne voit plus que le bureau. Que lui dis-tu de faire ?",
+  "o": [
+   "Appuyer de nouveau sur touche Windows + D, qui affiche puis masque le bureau",
+   "Redémarrer le PC",
+   "Appuyer sur Alt + F4",
+   "Réinstaller Windows"
+  ],
+  "e": "Windows + D bascule entre afficher et masquer le bureau.",
+  "x": [
+   "Inutile.",
+   "Fermerait une application.",
+   "Beaucoup trop."
+  ],
+  "n": 5
+ }
+]

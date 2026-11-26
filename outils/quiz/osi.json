@@ -1,0 +1,614 @@
+[
+ {
+  "t": "Modèle OSI",
+  "s": "Cours Le modèle OSI (David Rodriguez), p. 12",
+  "q": "En combien de couches est organisé le modèle OSI ?",
+  "o": [
+   "7",
+   "4",
+   "5",
+   "8"
+  ],
+  "e": "Physique, Liaison de données, Réseau, Transport, Session, Présentation, Application.",
+  "x": [
+   "C'est le modèle TCP/IP.",
+   "Non.",
+   "Non."
+  ],
+  "n": 0
+ },
+ {
+  "t": "Modèle OSI",
+  "s": "Cours Le modèle OSI (David Rodriguez), p. 10",
+  "q": "Que veut dire OSI ?",
+  "o": [
+   "Open Systems Interconnection",
+   "Operating System Interface",
+   "Open Software Internet",
+   "Optical Signal Interface"
+  ],
+  "e": "Interconnexion de systèmes ouverts, créé par l'ISO.",
+  "x": [
+   "Non.",
+   "Non.",
+   "Non."
+  ],
+  "n": 0
+ },
+ {
+  "t": "Modèle OSI",
+  "s": "Cours Le modèle OSI (David Rodriguez), p. 4",
+  "q": "Qui a défini le bit comme unité élémentaire de l'information ?",
+  "o": [
+   "Claude Shannon",
+   "Gordon Moore",
+   "Linus Torvalds",
+   "Alan Turing"
+  ],
+  "e": "Dans son article « A Mathematical Theory of Communication » de 1948.",
+  "x": [
+   "Loi de Moore.",
+   "Noyau Linux.",
+   "Non, d'après le cours."
+  ],
+  "n": 1
+ },
+ {
+  "t": "Modèle OSI",
+  "s": "Cours Le modèle OSI (David Rodriguez), p. 5",
+  "q": "Dans le schéma de Shannon, quel est le rôle de l'émetteur ?",
+  "o": [
+   "Transformer le message en signal adapté au canal",
+   "Recevoir le message",
+   "Être le support physique",
+   "Lire le message à la fin"
+  ],
+  "e": "Source → émetteur → canal → récepteur → destination.",
+  "x": [
+   "C'est le récepteur.",
+   "C'est le canal.",
+   "C'est la destination."
+  ],
+  "n": 2
+ },
+ {
+  "t": "Modèle OSI",
+  "s": "Cours Le modèle OSI (David Rodriguez), p. 7-10",
+  "q": "Pourquoi l'ISO a-t-elle créé le modèle OSI ?",
+  "o": [
+   "Pour rendre compatibles des réseaux qui utilisaient chacun leurs protocoles privés",
+   "Pour remplacer Internet",
+   "Pour vendre du matériel",
+   "Pour créer le Wi-Fi"
+  ],
+  "e": "Dans les années 70-80, chaque constructeur avait sa solution : c'était le « chaos ».",
+  "x": [
+   "Non.",
+   "Non.",
+   "Non."
+  ],
+  "n": 2
+ },
+ {
+  "t": "Modèle OSI",
+  "s": "Cours Le modèle OSI (David Rodriguez), p. 13",
+  "q": "Quel est le rôle de la couche 1 (Physique) ?",
+  "o": [
+   "Transmettre les bits sur le support (cuivre, fibre, radio)",
+   "Router les paquets",
+   "Chiffrer les données",
+   "Gérer les sessions"
+  ],
+  "e": "Son service se limite à émettre et recevoir des bits.",
+  "x": [
+   "Couche 3.",
+   "Couche 6.",
+   "Couche 5."
+  ],
+  "n": 1
+ },
+ {
+  "t": "Modèle OSI",
+  "s": "Cours Le modèle OSI (David Rodriguez), p. 16",
+  "q": "À quelle couche fonctionne un concentrateur (hub) ?",
+  "o": [
+   "Couche 1",
+   "Couche 2",
+   "Couche 3",
+   "Couche 7"
+  ],
+  "e": "Il répète le signal reçu sur un port vers tous les autres : on l'appelle aussi répéteur multiports.",
+  "x": [
+   "C'est le switch.",
+   "C'est le routeur.",
+   "Non."
+  ],
+  "n": 2
+ },
+ {
+  "t": "Modèle OSI",
+  "s": "Cours Le modèle OSI (David Rodriguez), p. 15",
+  "q": "Qu'est-ce que le multiplexage ?",
+  "o": [
+   "Faire passer plusieurs informations sur un seul support",
+   "Couper un câble en deux",
+   "Chiffrer une trame",
+   "Doubler une adresse IP"
+  ],
+  "e": "Il permet de partager une même ressource entre plusieurs utilisateurs.",
+  "x": [
+   "Non.",
+   "Non.",
+   "Non."
+  ],
+  "n": 2
+ },
+ {
+  "t": "Modèle OSI",
+  "s": "Cours Le modèle OSI (David Rodriguez), p. 17",
+  "q": "Comment s'appellent les données à la couche 2 ?",
+  "o": [
+   "Des trames",
+   "Des paquets",
+   "Des segments",
+   "Des bits"
+  ],
+  "e": "Couche 2 = trames, couche 3 = paquets.",
+  "x": [
+   "Couche 3.",
+   "Hors cours : couche 4 en TCP.",
+   "Couche 1."
+  ],
+  "n": 1
+ },
+ {
+  "t": "Modèle OSI",
+  "s": "Cours Le modèle OSI (David Rodriguez), p. 18",
+  "q": "En quelles sous-couches la couche 2 est-elle parfois découpée ?",
+  "o": [
+   "MAC (accès au support) et LLC (contrôle de la liaison)",
+   "TCP et UDP",
+   "IP et ICMP",
+   "HTTP et FTP"
+  ],
+  "e": "MAC est la sous-couche basse, LLC la sous-couche haute.",
+  "x": [
+   "Couche 4.",
+   "Couche 3.",
+   "Couche 7."
+  ],
+  "n": 2
+ },
+ {
+  "t": "Modèle OSI",
+  "s": "Cours Le modèle OSI (David Rodriguez), p. 20",
+  "q": "Combien d'octets fait une adresse MAC ?",
+  "o": [
+   "6",
+   "4",
+   "8",
+   "16"
+  ],
+  "e": "Elle sert à Ethernet, au Bluetooth et au Wi-Fi.",
+  "x": [
+   "C'est une adresse IPv4.",
+   "Non.",
+   "C'est une adresse IPv6."
+  ],
+  "n": 1
+ },
+ {
+  "t": "Modèle OSI",
+  "s": "Cours Le modèle OSI (David Rodriguez), p. 20",
+  "q": "Quel protocole gère l'accès au support sur un bus Ethernet partagé ?",
+  "o": [
+   "CSMA/CD",
+   "ARP",
+   "ICMP",
+   "DNS"
+  ],
+  "e": "Il régule les émissions quand plusieurs stations peuvent parler en même temps sur le même support.",
+  "x": [
+   "ARP traduit une IP en MAC.",
+   "Messages de contrôle IP.",
+   "Résolution de noms."
+  ],
+  "n": 3
+ },
+ {
+  "t": "Modèle OSI",
+  "s": "Cours Le modèle OSI (David Rodriguez), p. 21",
+  "q": "Lequel de ces protocoles est de couche 2 ?",
+  "o": [
+   "PPP",
+   "IP",
+   "TCP",
+   "SMTP"
+  ],
+  "e": "Le cours cite Ethernet, PPP et HDLC.",
+  "x": [
+   "Couche 3.",
+   "Couche 4.",
+   "Couche 7."
+  ],
+  "n": 1
+ },
+ {
+  "t": "Modèle OSI",
+  "s": "Cours Le modèle OSI (David Rodriguez), p. 23",
+  "q": "Quel équipement relie des segments et ressemble à un hub, mais est plus intelligent ?",
+  "o": [
+   "Le commutateur (switch)",
+   "Le routeur",
+   "Le modem",
+   "Le répéteur"
+  ],
+  "e": "Le switch est un équipement actif de couche 2.",
+  "x": [
+   "Couche 3.",
+   "Non.",
+   "Couche 1."
+  ],
+  "n": 2
+ },
+ {
+  "t": "Modèle OSI",
+  "s": "Cours Le modèle OSI (David Rodriguez), p. 24",
+  "q": "À quoi sert ARP ?",
+  "o": [
+   "À trouver l'adresse MAC correspondant à une adresse IPv4",
+   "À trouver l'IP à partir d'un nom",
+   "À distribuer des adresses IP",
+   "À router les paquets"
+  ],
+  "e": "Il est entre les couches 2 et 3. En IPv6, c'est NDP qui le remplace.",
+  "x": [
+   "C'est DNS.",
+   "C'est DHCP.",
+   "C'est le routage."
+  ],
+  "n": 3
+ },
+ {
+  "t": "Modèle OSI",
+  "s": "Cours Le modèle OSI (David Rodriguez), p. 25",
+  "q": "Quel est le rôle de la couche 3 (Réseau) ?",
+  "o": [
+   "Le routage des paquets de la source à la destination",
+   "Transmettre les bits",
+   "Établir une session",
+   "Présenter les données"
+  ],
+  "e": "C'est aussi là que se gère la qualité de service (QoS).",
+  "x": [
+   "Couche 1.",
+   "Couche 5.",
+   "Couche 6."
+  ],
+  "n": 2
+ },
+ {
+  "t": "Modèle OSI",
+  "s": "Cours Le modèle OSI (David Rodriguez), p. 26",
+  "q": "Quels protocoles le cours cite-t-il à la couche 3 ?",
+  "o": [
+   "IP et ICMP",
+   "TCP et UDP",
+   "Ethernet et PPP",
+   "FTP et SSH"
+  ],
+  "e": "IP est le plus utilisé.",
+  "x": [
+   "Couche 4.",
+   "Couche 2.",
+   "Couche 7."
+  ],
+  "n": 1
+ },
+ {
+  "t": "Modèle OSI",
+  "s": "Cours Le modèle OSI (David Rodriguez), p. 28",
+  "q": "Pourquoi dit-on que la couche Transport est « de bout en bout » ?",
+  "o": [
+   "Elle communique directement avec la couche Transport de la machine de destination",
+   "Elle ne parle qu'au voisin direct",
+   "Elle est au bout du câble",
+   "Elle gère les deux bouts du câble"
+  ],
+  "e": "Les couches 1 à 3 font la liaison entre voisins immédiats.",
+  "x": [
+   "C'est le cas des couches 1 à 3.",
+   "Non.",
+   "Non."
+  ],
+  "n": 2
+ },
+ {
+  "t": "Modèle OSI",
+  "s": "Cours Le modèle OSI (David Rodriguez), p. 29-30",
+  "q": "Quelle est la différence entre TCP et UDP ?",
+  "o": [
+   "TCP est orienté connexion avec accusé de réception ; UDP est sans connexion",
+   "UDP est plus fiable",
+   "TCP est de couche 3",
+   "Aucune"
+  ],
+  "e": "TCP permet de redemander les données abîmées.",
+  "x": [
+   "C'est TCP le plus fiable.",
+   "Tous deux sont de couche 4.",
+   "Il y en a une."
+  ],
+  "n": 2
+ },
+ {
+  "t": "Modèle OSI",
+  "s": "Cours Le modèle OSI (David Rodriguez), p. 32",
+  "q": "Sur combien de bits est codé un numéro de port ?",
+  "o": [
+   "16, soit 65 536 ports",
+   "8",
+   "32",
+   "48"
+  ],
+  "e": "Les ports 0 à 1023 sont les ports « bien connus ».",
+  "x": [
+   "Non.",
+   "C'est une IPv4.",
+   "C'est une MAC."
+  ],
+  "n": 1
+ },
+ {
+  "t": "Modèle OSI",
+  "s": "Cours Le modèle OSI (David Rodriguez), p. 32",
+  "q": "Quel port utilise le DNS ?",
+  "o": [
+   "53",
+   "67",
+   "80",
+   "443"
+  ],
+  "e": "Le cours cite 53 (DNS), 67/68 (DHCP) et 80 (HTTP).",
+  "x": [
+   "DHCP.",
+   "HTTP.",
+   "HTTPS, hors cours."
+  ],
+  "n": 1
+ },
+ {
+  "t": "Modèle OSI",
+  "s": "Cours Le modèle OSI (David Rodriguez), p. 33",
+  "q": "Quelle couche gère la synchronisation et la reprise après une coupure ?",
+  "o": [
+   "La couche 5 (Session)",
+   "La couche 4 (Transport)",
+   "La couche 6 (Présentation)",
+   "La couche 2 (Liaison)"
+  ],
+  "e": "La couche Session établit les sessions et gère les jetons (tokens).",
+  "x": [
+   "Non.",
+   "Non.",
+   "Non."
+  ],
+  "n": 2
+ },
+ {
+  "t": "Modèle OSI",
+  "s": "Cours Le modèle OSI (David Rodriguez), p. 34",
+  "q": "Que manipule la couche 6 (Présentation) ?",
+  "o": [
+   "La syntaxe et la représentation des données",
+   "Les bits",
+   "Les adresses IP",
+   "Les ports"
+  ],
+  "e": "Ce ne sont plus des bits, mais des représentations de données.",
+  "x": [
+   "Couche 1.",
+   "Couche 3.",
+   "Couche 4."
+  ],
+  "n": 2
+ },
+ {
+  "t": "Modèle OSI",
+  "s": "Cours Le modèle OSI (David Rodriguez), p. 36",
+  "q": "À quelle couche se trouvent HTTP, SMTP, DNS et SSH ?",
+  "o": [
+   "Couche 7 (Application)",
+   "Couche 4",
+   "Couche 3",
+   "Couche 2"
+  ],
+  "e": "La couche Application est le point de contact entre l'utilisateur et le réseau.",
+  "x": [
+   "Non.",
+   "Non.",
+   "Non."
+  ],
+  "n": 1
+ },
+ {
+  "t": "Modèle OSI",
+  "s": "Cours Le modèle OSI (David Rodriguez), p. 38-39",
+  "q": "Qu'est-ce que l'encapsulation ?",
+  "o": [
+   "Chaque couche ajoute ses informations autour des données de la couche du dessus",
+   "Le chiffrement des données",
+   "La compression d'un fichier",
+   "Le découpage du câble"
+  ],
+  "e": "À la réception, chaque couche retire ses informations : c'est la désencapsulation.",
+  "x": [
+   "Non.",
+   "Non.",
+   "Non."
+  ],
+  "n": 3
+ },
+ {
+  "t": "Modèle OSI",
+  "s": "Cours Le modèle OSI (David Rodriguez), p. 40",
+  "q": "D'où vient le modèle TCP/IP ?",
+  "o": [
+   "D'ARPANET, un projet militaire américain",
+   "De l'ISO",
+   "De Microsoft",
+   "De l'université d'Helsinki"
+  ],
+  "e": "Objectif : garder les communications même après une attaque. C'est le modèle utilisé par Internet.",
+  "x": [
+   "L'ISO a fait OSI.",
+   "Non.",
+   "C'est Linux."
+  ],
+  "n": 2
+ },
+ {
+  "t": "Modèle OSI",
+  "s": "Cours Le modèle OSI (David Rodriguez), p. 44",
+  "q": "Un masque est toujours…",
+  "o": [
+   "Une suite de 1, puis seulement des 0",
+   "Une suite de 0, puis des 1",
+   "Un mélange libre de 0 et de 1",
+   "Toujours 255.255.255.0"
+  ],
+  "e": "Les 1 désignent la partie réseau, les 0 la partie hôte.",
+  "x": [
+   "C'est l'inverse.",
+   "Non.",
+   "Ce n'est qu'un exemple."
+  ],
+  "n": 3
+ },
+ {
+  "t": "Modèle OSI",
+  "s": "Cours Le modèle OSI (David Rodriguez), p. 46",
+  "q": "Qu'apporte le CIDR (1993) ?",
+  "o": [
+   "Abandonner les classes au profit d'un masque déclaré, noté /n",
+   "Le passage à IPv6",
+   "Le chiffrement des adresses",
+   "La suppression des masques"
+  ],
+  "e": "But : ralentir la croissance des tables de routage et l'épuisement des adresses IPv4.",
+  "x": [
+   "Non.",
+   "Non.",
+   "Au contraire, le masque devient central."
+  ],
+  "n": 3
+ },
+ {
+  "t": "Modèle OSI",
+  "s": "Cours Le modèle OSI (David Rodriguez), p. 47",
+  "q": "Quel mode de livraison disparaît en IPv6 ?",
+  "o": [
+   "Le broadcast",
+   "L'unicast",
+   "Le multicast",
+   "L'anycast"
+  ],
+  "e": "En IPv6, le multicast remplace le broadcast et l'anycast se généralise.",
+  "x": [
+   "Il existe toujours.",
+   "Il remplace le broadcast.",
+   "Il se généralise."
+  ],
+  "n": 3
+ },
+ {
+  "t": "Modèle OSI",
+  "s": "Cours Le modèle OSI (David Rodriguez), p. 49",
+  "q": "Combien d'adresses utilisables dans un réseau avec 5 bits d'hôte ?",
+  "o": [
+   "30",
+   "32",
+   "31",
+   "62"
+  ],
+  "e": "2^n − 2 : on retire l'adresse du réseau et l'adresse de broadcast. 2^5 − 2 = 30.",
+  "x": [
+   "On oublie de retirer les deux adresses.",
+   "On n'en retire qu'une.",
+   "C'est 6 bits d'hôte."
+  ],
+  "n": 4
+ },
+ {
+  "t": "Modèle OSI",
+  "s": "Cours Le modèle OSI (David Rodriguez), p. 50",
+  "q": "IP 188.56.58.39, masque 255.255.248.0. Quelle est l'adresse du réseau ?",
+  "o": [
+   "188.56.56.0",
+   "188.56.58.0",
+   "188.56.0.0",
+   "188.56.48.0"
+  ],
+  "e": "248 = 11111000 : sur le 3e octet, 58 donne 56. Le broadcast est 188.56.63.255. C'est l'exemple du cours.",
+  "x": [
+   "Le masque n'est pas /24.",
+   "Le masque n'est pas /16.",
+   "Mauvais calcul : 58 ET 248 = 56."
+  ],
+  "n": 4
+ },
+ {
+  "t": "Modèle OSI",
+  "s": "Cours Le modèle OSI (David Rodriguez), p. 50",
+  "q": "Même exemple (188.56.58.39/21) : combien d'adresses utilisables ?",
+  "o": [
+   "2046",
+   "2048",
+   "254",
+   "4094"
+  ],
+  "e": "Masque /21 → 11 bits d'hôte → 2^11 − 2 = 2046.",
+  "x": [
+   "On oublie les 2 adresses réservées.",
+   "C'est un /24.",
+   "C'est un /20."
+  ],
+  "n": 5
+ },
+ {
+  "t": "Modèle OSI",
+  "s": "Cours Le modèle OSI (David Rodriguez), p. 51",
+  "q": "Quelle commande affiche la table de routage sous Windows ?",
+  "o": [
+   "route print",
+   "show ip route",
+   "netstat -r",
+   "ipconfig /route"
+  ],
+  "e": "Cisco : show ip route. GNU/Linux et macOS : netstat -r.",
+  "x": [
+   "Cisco IOS.",
+   "Linux et macOS.",
+   "N'existe pas."
+  ],
+  "n": 4
+ },
+ {
+  "t": "Modèle OSI",
+  "s": "Cours Le modèle OSI (David Rodriguez), p. 29-30",
+  "q": "Le cours dit que TCP utilise un contrôle CRC et qu'UDP ne transmet pas d'informations sur l'émetteur. Qu'en est-il ?",
+  "o": [
+   "TCP et UDP utilisent une somme de contrôle (checksum), le CRC est surtout en couche 2 ; l'en-tête UDP contient le port source",
+   "C'est exact tel quel",
+   "UDP n'a pas d'en-tête",
+   "TCP n'a pas de contrôle d'erreur"
+  ],
+  "e": "Hors cours, point à vérifier avec ton formateur. L'idée importante reste juste : TCP confirme la réception, UDP non.",
+  "x": [
+   "Ce sont des approximations.",
+   "Il en a un, de 8 octets.",
+   "Il en a un."
+  ],
+  "n": 5
+ }
+]
