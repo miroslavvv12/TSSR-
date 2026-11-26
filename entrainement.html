@@ -84,6 +84,17 @@ h1 small{font-weight:400;color:var(--muted);font-size:13px;margin-left:6px}
   body.side-open{overflow:hidden}
 }
 @media (prefers-reduced-motion:reduce){.side{transition:none!important}}
+/* Accueil */
+#home .hello{display:flex;flex-direction:column;gap:8px}
+#home h2{font-size:24px;margin:0}
+#home .hello p{margin:0}
+#home .hgrp{font:600 12px var(--f-ui);text-transform:uppercase;letter-spacing:.9px;color:var(--muted);margin:10px 0 0}
+.hgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px}
+.htile{display:flex;flex-direction:column;gap:3px;text-align:left;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:12px 14px;color:var(--fg);font:inherit;cursor:pointer}
+.htile b{font-size:16px;font-weight:600}
+.htile span{font-size:13px;color:var(--muted)}
+.htile:hover{border-color:var(--fg)}
+@media (max-width:480px){.hgrid{grid-template-columns:1fr 1fr}.htile{padding:10px 12px}}
 /* Filtres du quiz (thèmes et niveaux), repliables */
 .qtop{align-items:flex-start}
 .filtres{flex:1 1 260px;min-width:0}
@@ -363,6 +374,7 @@ details summary{cursor:pointer;font-weight:500}
 <aside id="side" class="side" aria-label="Menu">
   <div class="sidetop"><span>Menu</span><button id="sideClose" class="sideclose" aria-label="Fermer le menu">✕</button></div>
   <nav id="sideNav">
+    <button data-tab="home">Accueil</button>
     <div class="grp">Cours</div>
     <button data-tab="quiz" data-qm="qcm">QCM</button>
     <button data-tab="quiz" data-qm="ouv">Questions ouvertes</button>
@@ -384,6 +396,36 @@ details summary{cursor:pointer;font-weight:500}
 <div id="scrim" class="scrim" hidden></div>
 
 <main><div class="wrap">
+
+<section id="home" hidden>
+  <div class="hello">
+    <h2>Bienvenue</h2>
+    <p class="empty" id="homeStat"></p>
+    <div class="actions"><button class="btn primary" id="homeGo">Reprendre</button><button class="btn" id="homeRev" hidden></button></div>
+  </div>
+  <h3 class="hgrp">Cours</h3>
+  <div class="hgrid">
+    <button class="htile" data-tab="quiz" data-qm="qcm"><b>QCM</b><span>Questions à choix, par thème et niveau</span></button>
+    <button class="htile" data-tab="quiz" data-qm="ouv"><b>Questions ouvertes</b><span>Réponds avec tes mots</span></button>
+    <button class="htile" data-tab="quiz" data-qm="rev"><b>À revoir</b><span>Les questions du jour</span></button>
+    <button class="htile" data-tab="quiz" data-qm="exam"><b>Examen blanc</b><span>Chronométré, noté sur 20</span></button>
+    <button class="htile" data-tab="quiz" data-qm="fiche"><b>Fiches</b><span>L'essentiel de chaque cours</span></button>
+    <button class="htile" data-tab="quiz" data-qm="bilan"><b>Mon bilan</b><span>Tes points forts et faibles</span></button>
+  </div>
+  <h3 class="hgrp">Pratique</h3>
+  <div class="hgrid">
+    <button class="htile" data-tab="cmd"><b>Commandes</b><span>Windows, Linux, Cisco, AD</span></button>
+    <button class="htile" data-tab="cisco"><b>Cisco</b><span>Terminal simulé et labs</span></button>
+    <button class="htile" data-tab="linux"><b>Linux</b><span>Terminal simulé et labs</span></button>
+    <button class="htile" data-tab="sr"><b>Sous-réseaux</b><span>Calculs d'adresses et défi chrono</span></button>
+  </div>
+  <h3 class="hgrp">Mémo</h3>
+  <div class="hgrid">
+    <button class="htile" data-tab="ports"><b>Ports</b><span>Numéros de ports à connaître</span></button>
+    <button class="htile" data-tab="ordre"><b>OSI</b><span>Les 7 couches</span></button>
+    <button class="htile" data-tab="dep"><b>Dépannage</b><span>Méthode pas à pas</span></button>
+  </div>
+</section>
 
 <section id="quiz" hidden>
   <div class="bar qtop">
@@ -721,9 +763,9 @@ wide.addEventListener?wide.addEventListener('change',sideInit):wide.addListener(
 function navMark(){const t=S.pref.tab,qm=S.pref.qMode||'qcm';let cur=null;
   $$('#sideNav button').forEach(b=>{const on=b.dataset.tab===t&&(!b.dataset.qm||b.dataset.qm===qm);if(on)cur=b;on?b.setAttribute('aria-current','page'):b.removeAttribute('aria-current')});
   $('#curTitle').textContent=cur?'· '+cur.firstChild.textContent.trim():''}
-function tab(t){$$('main section').forEach(s=>s.hidden=s.id!==t);S.pref.tab=t;save();navMark();
+function tab(t){$$('main section').forEach(s=>s.hidden=s.id!==t);S.pref.tab=t;if(t!=='home')S.pref.lastTab=t;else homeRender();save();navMark();
   const f=$(`#${t} input[type=text]:not([readonly])`);if(f&&f.offsetParent&&matchMedia('(pointer:fine)').matches)f.focus()}
-$$('#sideNav button').forEach(b=>b.onclick=()=>{if(b.dataset.qm)setQMode(b.dataset.qm);tab(b.dataset.tab);if(!wide.matches)sideSet(false);window.scrollTo({top:0})});
+$$('#sideNav button,#home .htile').forEach(b=>b.onclick=()=>{if(b.dataset.qm)setQMode(b.dataset.qm);tab(b.dataset.tab);if(!wide.matches)sideSet(false);window.scrollTo({top:0})});
 
 /* =========================================================
    1. SOUS-RÉSEAUX
@@ -2086,7 +2128,15 @@ document.addEventListener('keydown',ev=>{
   }
 });
 
-tab(S.pref.tab||'quiz');
+function homeRender(){const n=revCount(),sc=S.score.quiz,ex=S.exams&&S.exams[0];
+  const L=[n?`${n} question${n>1?'s':''} à revoir aujourd'hui`:'Rien à revoir aujourd\'hui',sc&&sc.n?`QCM : ${Math.round(100*sc.ok/sc.n)} % de bonnes réponses (${sc.n} réponses)`:'',ex?`Dernier examen blanc : ${String(ex.note).replace('.',',')}/20 (${ex.d})`:''];
+  $('#homeStat').textContent=L.filter(Boolean).join(' · ');
+  const lt=S.pref.lastTab,b=lt&&$(`#sideNav button[data-tab="${lt}"]`+(lt==='quiz'?`[data-qm="${qMode}"]`:''));
+  $('#homeGo').hidden=!b;if(b){$('#homeGo').textContent='Reprendre : '+b.firstChild.textContent.trim();$('#homeGo').onclick=()=>b.click()}
+  $('#homeRev').hidden=!n;$('#homeRev').textContent=`Réviser les ${n} questions du jour`;$('#homeRev').onclick=()=>$('#sideNav button[data-qm="rev"]').click()}
+// À chaque ouverture : la page d'accueil (« Reprendre » ramène à la dernière rubrique).
+if(S.pref.tab&&S.pref.tab!=='home')S.pref.lastTab=S.pref.tab;
+tab('home');
 })();
 </script>
 <script>

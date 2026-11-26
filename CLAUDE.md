@@ -22,10 +22,11 @@ Ces cours sont dans `outils/quiz/*.json` et `outils/ouvertes/*.json`. Avant d'aj
 
 ## Fichiers du projet
 - `outils/entrainement.frag.html` : source de la page (HTML, CSS et JS en un seul fichier).
-  - Navigation : menu latéral (`<aside id="side">`, bouton ☰ `#menuBtn` en haut à gauche). Sur PC (≥ 1000 px) il reste ouvert (☰ le replie, choix gardé dans `S.pref.sideOff`) ; sur iPhone c'est un tiroir qui glisse (fermé par ✕, le voile, Échap ou un glissement vers la gauche). Rubriques :
+  - Navigation : menu latéral (`<aside id="side">`, bouton ☰ `#menuBtn` en haut à gauche). Sur PC (≥ 1000 px) il reste ouvert (☰ le replie, choix gardé dans `S.pref.sideOff`) ; sur iPhone c'est un tiroir qui glisse (fermé par ✕, le voile, Échap ou un glissement vers la gauche). Rubriques : Accueil, puis
     - Cours : QCM, Questions ouvertes, À revoir (compteur), Examen blanc (chronométré, note sur 20, historique dans `S.exams`), Fiches, Mon bilan (points faibles + tableau « Couverture TSSR ») ; ce sont les valeurs de `qMode` (`qcm`, `ouv`, `rev`, `exam`, `fiche`, `bilan`), changées par `setQMode()` ;
     - Pratique : Commandes, Cisco, Linux, Sous-réseaux ;
     - Mémo : Ports, OSI, Dépannage.
+  - Page d'accueil (`#home`) affichée à chaque ouverture : rappel du jour (questions à revoir, réussite QCM, dernier examen), bouton « Reprendre » vers la dernière rubrique (`S.pref.lastTab`), cases vers chaque rubrique. « Accueil » est aussi le 1er lien du menu.
   - Thèmes et niveaux du quiz : dans le bouton repliable « Filtres » (`#qFiltres`, résumé des filtres choisis à côté).
   - Ce fragment, sans doctype, est aussi publié en Artifact claude.ai : https://claude.ai/artifact/GXvby1DYXEJd367ti3sapm (republier avec ce `url`).
 - `outils/quiz/*.json` : QCM `{t, s, q, o[4], e, x[3], n}`.
