@@ -293,6 +293,20 @@ details summary{cursor:pointer;font-weight:500}
 .sc b{font-weight:600;font-size:15px}
 .sc small{color:var(--muted);font-size:12px}
 .labpick,.labview{display:flex;flex-direction:column;gap:14px}
+/* Séries de 10 questions : barre d'avancement, bilan de fin */
+.serbar{display:flex;align-items:center;gap:10px;font:500 13px var(--f-ui);color:var(--muted)}
+.serbar .track{flex:1;height:6px;border:1px solid var(--fg);border-radius:4px;overflow:hidden}
+.serbar .track i{display:block;height:100%;background:var(--fg)}
+.serend .drend{font:700 40px/1.1 var(--f-ui)}
+.serbad{margin:0;padding-left:22px}.serbad li{margin:6px 0}
+/* Lab sur téléphone / petit écran : seule la tâche en cours au-dessus du terminal ; le détail (intro, schéma, liste) se déplie. */
+.curtask{gap:8px;padding:12px 14px}
+.curtask .ctt{font-size:17px;font-weight:500;line-height:1.45}
+.curtask .hint{margin:0}
+.curlinks{display:flex;flex-wrap:wrap;gap:6px 18px}
+@media (max-width:1023.98px){.labview:not(.full) .ci-brief{display:none}}
+@media (min-width:1024px){.curtask{display:none!important}}
+@media (max-width:600px){.term{height:min(40vh,300px)!important}}
 .sc[aria-current="true"]{border:2px solid var(--fg)}
 .tag{align-self:flex-start;font:600 11px var(--f-ui);text-transform:uppercase;letter-spacing:.6px;color:var(--accent)}
 .ticket{margin:0;padding:10px 14px;border-left:3px solid var(--accent);background:var(--sunk);border-radius:0 8px 8px 0;font-size:15px}
@@ -431,6 +445,7 @@ details summary{cursor:pointer;font-weight:500}
     <p style="margin:8px 0 0">Les questions marquées <strong>hors cours</strong> sont des notions générales du métier, pas tirées de tes cours. Envoie-moi tes cours sur ces sujets et je les remplacerai par des questions de tes cours. Ce tableau regroupe les domaines par thème ; il ne reprend pas le découpage officiel du référentiel.</p>
   </div>
   <div class="card" id="qcmCard">
+    <div class="serbar" id="qSer" hidden></div>
     <div class="bar"><span class="eyebrow" id="qEyebrow"></span><span class="lvl" id="qLvlB"></span></div>
     <div class="q" id="qQ"></div>
     <div class="hint-box" id="qHintBox" hidden></div>
@@ -439,6 +454,7 @@ details summary{cursor:pointer;font-weight:500}
     <div class="actions"><button class="btn" id="qHint">Indice</button><button class="btn" id="qGive">Je ne sais pas</button><button class="btn next" id="qNext">Question suivante →</button></div>
   </div>
   <div class="card" id="oqCard" hidden>
+    <div class="serbar" id="oqSer" hidden></div>
     <div class="bar"><span class="eyebrow" id="oqEyebrow"></span><span class="lvl" id="oqLvlB"></span></div>
     <div class="q" id="oqQ"></div>
     <div class="hint-box" id="oqHintBox" hidden></div>
@@ -446,6 +462,8 @@ details summary{cursor:pointer;font-weight:500}
     <div class="fb" id="oqFb" hidden></div>
     <div class="actions"><button class="btn primary" id="oqCheck">Voir la correction</button><button class="btn" id="oqHint">Indice</button><button class="btn" id="oqGive">Je ne sais pas</button><button class="btn next" id="oqNext">Question suivante →</button></div>
   </div>
+  <div class="card serend" id="qEnd" hidden></div>
+  <div class="card serend" id="oqEnd" hidden></div>
   <div class="card exam" id="exCard" hidden><div id="exBody"></div></div>
   <div id="fiCard" hidden><div class="chips" id="fiTheme"></div><article class="card fiche" id="fiBody"></article></div>
   <p class="foot" id="oqCount" hidden></p>
@@ -511,7 +529,8 @@ details summary{cursor:pointer;font-weight:500}
     <div class="chips" id="cmdCat"></div>
     <span class="score" data-score="cmd"></span>
   </div>
-  <div class="card">
+  <div class="card" id="cmdCard">
+    <div class="serbar" id="cmdSer" hidden></div>
     <span class="eyebrow" id="cmdEyebrow"></span>
     <div class="q" id="cmdQ"></div>
     <div class="console" id="cmdConsole"><span class="ps" id="cmdPs"></span>
@@ -524,6 +543,7 @@ details summary{cursor:pointer;font-weight:500}
       <button class="btn next" id="cmdNext">Commande suivante →</button>
     </div>
   </div>
+  <div class="card serend" id="cmdEnd" hidden></div>
   <p class="foot">Les abréviations Cisco sont acceptées (<code>sh ip int br</code>, <code>conf t</code>, <code>copy run start</code>). Les commandes que tu rates reviennent plus souvent.</p>
   </div>
 </section>
@@ -537,6 +557,12 @@ details summary{cursor:pointer;font-weight:500}
   </div>
   <div class="labview" id="ciView" hidden>
     <div class="labnav"><button class="btn" id="ciBack">← Tous les labs</button></div>
+    <div class="card curtask" id="ciCur">
+      <span class="eyebrow" id="ciCurE"></span>
+      <div class="ctt" id="ciCurT"></div>
+      <div class="curlinks"><button class="link" id="ciCurH">Indice</button><button class="link" id="ciAll">Voir toutes les tâches et le schéma</button></div>
+      <pre class="hint" id="ciCurP" hidden></pre>
+    </div>
   <div class="ci-grid">
     <div class="card ci-brief">
       <div class="bar"><span class="eyebrow" id="ciProg"></span><span class="lvl" id="ciLvl"></span></div>
@@ -568,6 +594,12 @@ details summary{cursor:pointer;font-weight:500}
   </div>
   <div class="labview" id="lxView" hidden>
     <div class="labnav"><button class="btn" id="lxBack">← Tous les labs</button></div>
+    <div class="card curtask" id="lxCur">
+      <span class="eyebrow" id="lxCurE"></span>
+      <div class="ctt" id="lxCurT"></div>
+      <div class="curlinks"><button class="link" id="lxCurH">Indice</button><button class="link" id="lxAll">Voir toutes les tâches et le schéma</button></div>
+      <pre class="hint" id="lxCurP" hidden></pre>
+    </div>
   <div class="ci-grid">
     <div class="card ci-brief">
       <div class="bar"><span class="eyebrow" id="lxProg"></span><span class="lvl" id="lxLvl"></span></div>
@@ -956,6 +988,27 @@ chips('srMode',srMode,v=>{srMode=S.pref.srMode=v;save();srApply()});
 chips('srLvl',srLvl,v=>{srLvl=S.pref.srLvl=v;save();srApply()});
 srNew();srApply();
 
+/* ---------- Séries de 10 : chaque exercice a un début, une fin et un bilan ----------
+   S.ser[mode] = {n répondues, ok, bad: erreurs, len, rev: série « revoir mes erreurs »} ; S.serRev[mode] = file des erreurs à revoir. */
+S.ser=S.ser||{};S.serRev=S.serRev||{};
+const SER_N=10;
+const ser=m=>S.ser[m]||(S.ser[m]={n:0,ok:0,bad:[],len:SER_N,rev:false});
+const serDone=m=>ser(m).n>=ser(m).len;
+function serRec(m,ok,id){const x=ser(m);x.n++;if(ok)x.ok++;else if(!x.bad.includes(id))x.bad.push(id);save()}
+function serPop(m,find){const r=S.serRev[m];while(r&&r.length){const x=find(r.shift());if(x!=null){save();return x}}return null}
+function serBar(m,el,show){const x=ser(m),e=$(el);e.hidden=!show;if(!show)return;
+  e.innerHTML=`<span>${x.rev?'Revoir mes erreurs':'Série'} · ${Math.min(x.n+1,x.len)}/${x.len}</span><span class="track" aria-hidden="true"><i style="width:${Math.round(100*x.n/x.len)}%"></i></span>`}
+function serEnd(m,card,end,desc,again){
+  const x=ser(m),E=$(end);$(card).hidden=true;E.hidden=false;
+  const p=x.ok/Math.max(1,x.n),msg=p>=.8?'Très bien !':p>=.5?'Pas mal. Revois tes erreurs pour bien les retenir.':'Courage : revois tes erreurs, puis relis la fiche du thème (menu → Fiches).';
+  const bad=x.bad.map(desc).filter(Boolean);
+  E.innerHTML=`<span class="eyebrow">${x.rev?'Révision des erreurs terminée':'Série terminée'}</span><div class="drend">${x.ok}/${x.n}</div><p style="margin:0">${msg}</p>
+   ${bad.length?`<div><strong>À retravailler :</strong></div><ol class="serbad">${bad.map(([q,r])=>`<li>${esc(q)}<br><span class="empty">→ ${esc(r)}</span></li>`).join('')}</ol>`:'<p style="margin:0">Aucune erreur sur cette série.</p>'}
+   <div class="actions">${bad.length?`<button class="btn primary" data-s="rev">Revoir mes ${bad.length} erreur${bad.length>1?'s':''}</button>`:''}<button class="btn${bad.length?'':' primary'}" data-s="next">Série suivante</button></div>`;
+  E.querySelectorAll('[data-s]').forEach(b=>b.onclick=()=>{const r=b.dataset.s==='rev'&&x.bad.length>0;S.serRev[m]=r?x.bad.slice():[];S.ser[m]={n:0,ok:0,bad:[],len:r?x.bad.length:SER_N,rev:r};save();E.hidden=true;$(card).hidden=false;again();window.scrollTo({top:0})});
+  window.scrollTo({top:0});const f=E.querySelector('.btn.primary');if(f&&E.offsetParent)f.focus({preventScroll:true})}
+const cut=(t,n)=>{t=String(t);return t.length>n?t.slice(0,n-1)+'…':t};
+
 /* =========================================================
    2. COMMANDES
    ========================================================= */
@@ -1148,9 +1201,10 @@ let cmdCat=S.pref.cmdCat||'all', cmdCur=-1, cmdDone=false;
 $('#cmdCat').innerHTML=[['all','Tout'],...Object.entries(CATS).map(([k,v])=>[k,v.n])].map(([k,n])=>`<button class="chip" data-v="${k}">${n}</button>`).join('');
 chips('cmdCat',cmdCat,v=>{cmdCat=S.pref.cmdCat=v;save();cmdNew()});
 function cmdNew(){
+  if(serDone('cmd')){serEnd('cmd','#cmdCard','#cmdEnd',i=>CMDS[i]&&[CMDS[i][1],CMDS[i][2][0]],cmdNew);return}
   const pool=CMDS.map((c,i)=>i).filter(i=>(cmdCat==='all'||CMDS[i][0]===cmdCat)&&(i!==cmdCur||false));
   const w=pool.map(i=>1+3*(S.miss[i]||0));let r=Math.random()*w.reduce((a,b)=>a+b,0),k=0;while(r>=w[k]){r-=w[k];k++}
-  cmdCur=pool[Math.min(k,pool.length-1)];cmdDone=false;
+  cmdCur=pool[Math.min(k,pool.length-1)];const rv=serPop('cmd',i=>CMDS[i]?i:null);if(rv!=null)cmdCur=rv;cmdDone=false;serBar('cmd','#cmdSer',true);
   const [cat,q,,,ps,hc]=CMDS[cmdCur];
   $('#cmdEyebrow').textContent=CATS[cat].n+(hc?' · hors cours':'')+((S.miss[cmdCur]||0)>0?' · à retravailler':'');
   $('#cmdQ').textContent=q;$('#cmdPs').textContent=ps||CATS[cat].ps;
@@ -1159,7 +1213,7 @@ function cmdNew(){
 }
 function cmdShow(ok,given){
   const [cat,,ans,why,,hc]=CMDS[cmdCur];
-  if(!cmdDone){cmdDone=true;tally('cmd',ok);S.miss[cmdCur]=ok?Math.max(0,(S.miss[cmdCur]||0)-1):(S.miss[cmdCur]||0)+1;save()}
+  if(!cmdDone){cmdDone=true;tally('cmd',ok);serRec('cmd',ok,cmdCur);S.miss[cmdCur]=ok?Math.max(0,(S.miss[cmdCur]||0)-1):(S.miss[cmdCur]||0)+1;save()}
   $('#cmdConsole').className='console '+(ok?'ok':'ko');
   const fb=$('#cmdFb');fb.className='fb '+(ok?'ok':'ko');fb.hidden=false;
   fb.innerHTML=`<span class="verdict ${ok?'ok':'ko'}">${ok?'Correct.':given?'Réponse :':'Pas tout à fait.'}</span>
@@ -1902,9 +1956,11 @@ function qHint(){if(qDone||!qCur)return;qHintLvl++;const box=$('#qHintBox');
   else{const wrong=shuffle($$('#qOpts .opt').filter(b=>b.dataset.i!=='0')).slice(0,2);wrong.forEach(b=>{b.disabled=true;b.classList.add('out')});
     box.insertAdjacentHTML('beforeend','<div><strong>Deux mauvaises réponses ont été écartées.</strong> Il en reste deux : à toi de choisir.</div>');$('#qHint').hidden=true}}
 function qNew(){
+  if(qMode==='qcm'&&serDone('qcm')){serEnd('qcm','#qcmCard','#qEnd',k=>{const x=QUIZ.find(y=>qKey(y)===k);return x&&[x.q,x.o[0]]},qNew);return}
+  $('#qEnd').hidden=true;$('#qcmCard').hidden=false;serBar('qcm','#qSer',qMode==='qcm');
   const rev=qMode==='rev', all=rev?QUIZ.filter(isDue):QUIZ.filter(x=>tOk(x)&&nivOk(x)), pool=all.length>1?all.filter(x=>x!==qLast):all;
   if(!pool.length){$('#qHint').hidden=true;$('#qHintBox').hidden=true;$('#qQ').textContent=rev?'Rien à revoir aujourd\'hui. Reviens demain, ou continue en mode QCM pour voir de nouvelles questions.':'Aucune question pour ce cours à ce niveau.';$('#qEyebrow').textContent='';$('#qCount').textContent='';$('#qGive').hidden=true;$('#qFb').hidden=true;$('#qOpts').innerHTML='';$('#qLvlB').hidden=true;return}
-  qCur=qPick(pool);S.qn++;S.qlast[qKey(qCur)]=S.qn;save();qLast=qCur;qDone=false;$('#qFb').hidden=true;$('#qGive').hidden=false;
+  qCur=(qMode==='qcm'&&serPop('qcm',k=>QUIZ.find(y=>qKey(y)===k)))||qPick(pool);S.qn++;S.qlast[qKey(qCur)]=S.qn;save();qLast=qCur;qDone=false;$('#qFb').hidden=true;$('#qGive').hidden=false;
   qHintLvl=0;$('#qHintBox').hidden=true;$('#qHint').hidden=false;$('#qHint').textContent='Indice';
   $('#qEyebrow').textContent=qCur.t+(isHC(qCur)?' · hors cours':'')+((S.miss[qKey(qCur)]||0)>0?' · à retravailler':'');
   $('#qQ').textContent=qCur.q;$('#qLvlB').hidden=false;$('#qLvlB').innerHTML=lvlHTML(qCur.n);
@@ -1919,7 +1975,7 @@ function qAnswer(btn){
   if(qDone)return;qDone=true;$('#qGive').hidden=true;$('#qHint').hidden=true;const ok=!!btn&&btn.dataset.i==='0',k=qKey(qCur),aid=qHintLvl>0;
   S.miss[k]=ok?Math.max(0,(S.miss[k]||0)-1):(S.miss[k]||0)+1;
   if(ok)delete S.qdue[k];else S.qdue[k]=S.qn+Q_DELAI;
-  srsMark(k,ok);if(ok&&aid){S.srs[k]=[1,DAY()+1];save()}tally('quiz',ok);revCount();
+  srsMark(k,ok);if(ok&&aid){S.srs[k]=[1,DAY()+1];save()}tally('quiz',ok);revCount();if(qMode==='qcm')serRec('qcm',ok,k);
   $$('#qOpts .opt').forEach(b=>{const i=+b.dataset.i;b.disabled=true;
     if(i===0)b.classList.add('ok');else if(b===btn)b.classList.add('ko');
     b.insertAdjacentHTML('beforeend',`<span class="ox">${i===0?'Bonne réponse.':esc((qCur.x||[])[i-1]||'')}</span>`)});
@@ -1944,10 +2000,12 @@ let qMode=['ouv','rev','exam','fiche','bilan'].includes(S.pref.qMode)?S.pref.qMo
 const nrm=t=>' '+String(t).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[’`]/g,"'").replace(/\s+/g,' ')+' ';
 const nk=t=>String(t).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[’`]/g,"'");
 function oqNew(){
+  if(serDone('ouv')){serEnd('ouv','#oqCard','#oqEnd',k=>{const x=OUV.find(y=>qKey(y)===k);return x&&[x.q,cut(x.r,220)]},oqNew);return}
+  $('#oqEnd').hidden=true;$('#oqCard').hidden=false;serBar('ouv','#oqSer',true);
   const all=OUV.filter(x=>tOk(x)&&nivOk(x)), pool=all.filter(x=>x!==oqLast);
   oqDone=false;oqCounted=false;oqHintUsed=false;$('#oqFb').hidden=true;$('#oqHintBox').hidden=true;$('#oqHint').hidden=false;const inp=$('#oqIn');inp.value='';inp.readOnly=false;
   if(!pool.length){oqCur=null;$('#oqEyebrow').textContent='';$('#oqQ').textContent='Pas de question ouverte pour ce cours à ce niveau.';$('#oqLvlB').hidden=true;$('#oqCount').textContent='';return}
-  oqCur=qPick(pool);oqLast=oqCur;S.qn++;S.qlast[qKey(oqCur)]=S.qn;save();
+  oqCur=serPop('ouv',k=>OUV.find(y=>qKey(y)===k))||qPick(pool);oqLast=oqCur;S.qn++;S.qlast[qKey(oqCur)]=S.qn;save();
   $('#oqEyebrow').textContent=oqCur.t+(isHC(oqCur)?' · hors cours':'')+((S.miss[qKey(oqCur)]||0)>0?' · à retravailler':'');
   $('#oqQ').textContent=oqCur.q;$('#oqLvlB').hidden=false;$('#oqLvlB').innerHTML=lvlHTML(oqCur.n);
   const vues=all.filter(x=>S.qlast[qKey(x)]!=null).length;
@@ -1978,7 +2036,7 @@ function oqCount(){ // compte la question au moment de passer à la suivante (ap
   const r=oqScore(),k=qKey(oqCur);
   S.miss[k]=r.ok?Math.max(0,(S.miss[k]||0)-1):(S.miss[k]||0)+1;
   if(r.ok)delete S.qdue[k];else S.qdue[k]=S.qn+Q_DELAI;
-  srsMark(k,r.ok);tally('ouv',r.ok);
+  srsMark(k,r.ok);tally('ouv',r.ok);serRec('ouv',r.ok,k);
 }
 $('#oqCheck').onclick=()=>oqCheck(false);$('#oqGive').onclick=()=>oqCheck(true);$('#oqHint').onclick=oqHint;$('#qHint').onclick=qHint;
 $('#oqNext').onclick=()=>{oqCount();oqNew()};
@@ -2083,7 +2141,7 @@ function fiRender(){
 function qRefresh(){qFiltSum();qMode==='ouv'?oqNew():qMode==='exam'?exRender():qMode==='fiche'?fiRender():qMode==='bilan'?(bilan(),couverture()):qNew()}
 function qFiltSum(){const th=qTheme==='all'?'Tout le TSSR':qTheme==='cours'?'Mes cours seulement':qTheme;$('#qFiltSum').textContent=th+' · '+(qNiv==='all'?'tous niveaux':'niveau '+qNiv)}
 function setQMode(v){if(v===qMode)return;qMode=S.pref.qMode=v;save();qApply();navMark()}
-function qApply(){const bi=qMode==='bilan',fi=qMode==='fiche'||bi,ex=qMode==='exam'||fi,o=qMode==='ouv',rv=qMode==='rev'||ex;$('#quiz .qtop').hidden=bi||qMode==='fiche';$('#qFiltres').hidden=rv;$('#exCard').hidden=qMode!=='exam';$('#fiCard').hidden=qMode!=='fiche';$('#biCard').hidden=!bi;revCount();$('#qcmCard').hidden=o||ex;$('#qCount').hidden=o||ex;$('#quiz .kb').hidden=o||ex;$('#oqCard').hidden=!o;$('#oqCount').hidden=!o;
+function qApply(){const bi=qMode==='bilan',fi=qMode==='fiche'||bi,ex=qMode==='exam'||fi,o=qMode==='ouv',rv=qMode==='rev'||ex;$('#quiz .qtop').hidden=bi||qMode==='fiche';$('#qFiltres').hidden=rv;$('#exCard').hidden=qMode!=='exam';$('#fiCard').hidden=qMode!=='fiche';$('#biCard').hidden=!bi;$('#qEnd').hidden=true;$('#oqEnd').hidden=true;revCount();$('#qcmCard').hidden=o||ex;$('#qCount').hidden=o||ex;$('#quiz .kb').hidden=o||ex;$('#oqCard').hidden=!o;$('#oqCount').hidden=!o;
   $$('#quiz [data-score="quiz"]').forEach(e=>e.hidden=o);$$('#quiz [data-score="ouv"]').forEach(e=>e.hidden=!o);qRefresh()}
 $('#qGive').onclick=()=>qAnswer(null);
 renderScore('quiz');renderScore('ouv');
@@ -2098,6 +2156,8 @@ qApply();
 document.addEventListener('keydown',ev=>{
   if(ev.ctrlKey||ev.metaKey||ev.altKey)return;
   const t=ev.target;if(t&&/^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName)&&t.type!=='checkbox')return;
+  if(t&&t.closest&&t.closest('.serend'))return;
+  if(S.pref.tab==='quiz'&&!$('#qEnd').hidden)return;
   if(t&&(t.id==='qNext'||t.id==='pNext'||t.id==='oqNext')&&(ev.key==='Enter'||ev.key===' '))return; // ce bouton réagit déjà tout seul
   const go=b=>{if(b&&!b.hidden&&!b.disabled){ev.preventDefault();b.click()}};
   if(S.pref.tab==='quiz'&&qMode==='exam'){
@@ -2711,7 +2771,25 @@ if (typeof document !== 'undefined') (function () {
   function openLab() { q('#lxPick').hidden = true; q('#lxView').hidden = false; window.scrollTo({ top: 0 }); paint(); if (matchMedia('(pointer:fine)').matches) inp.focus(); }
   q('#lxBack').onclick = () => { renderLabs(); q('#lxView').hidden = true; q('#lxPick').hidden = false; window.scrollTo({ top: 0 }); };
   q('#lxPick').addEventListener('labs', renderLabs);
+
+  // Tâche en cours (affichée seule au-dessus du terminal sur téléphone)
+  let curF = -2, curN = null, full = false;
+  function curReset() { curF = -2; curN = null; full = !lab.tasks.length; q('#lxView').classList.toggle('full', full); q('#lxAll').textContent = 'Voir toutes les tâches et le schéma'; }
+  function curTask() {
+    const box = q('#lxCur'); if (!lab.tasks.length) { box.hidden = true; return; } box.hidden = false;
+    const res = qa('#lxTasks li[data-i]').map(li => li.classList.contains('ok')), f = res.indexOf(false), n = res.filter(Boolean).length;
+    const gained = curN != null && n > curN; curN = n;
+    q('#lxCurE').textContent = `Lab ${lab.n} · ` + (f < 0 ? 'terminé' : `tâche ${f + 1}/${res.length}`) + (gained ? ' · ✓ tâche validée' : '');
+    if (f === curF) return; curF = f;
+    q('#lxCurT').textContent = f < 0 ? '✓ Lab réussi : toutes les tâches sont validées.' : lab.tasks[f][0];
+    q('#lxCurH').hidden = f < 0; q('#lxCurH').textContent = 'Indice'; q('#lxCurP').hidden = true; q('#lxCurP').textContent = f < 0 ? '' : lab.tasks[f][1];
+  }
+  q('#lxCurH').onclick = () => { const h = q('#lxCurP'); h.hidden = !h.hidden; q('#lxCurH').textContent = h.hidden ? 'Indice' : 'Cacher l\'indice'; };
+  q('#lxAll').onclick = () => { full = !full; q('#lxView').classList.toggle('full', full); q('#lxAll').textContent = full ? 'Masquer le détail' : 'Voir toutes les tâches et le schéma'; };
+  // Clavier ouvert sur téléphone : garder la ligne de saisie visible.
+  inp.addEventListener('focus', () => { if (innerWidth < 1024) setTimeout(() => inp.scrollIntoView({ block: 'center', behavior: 'smooth' }), 350); });
   function renderBrief() {
+    curReset();
     q('#lxTitle').textContent = `Lab ${lab.n} · ${lab.titre}`;
     q('#lxLvl').innerHTML = `Niveau ${lab.niv}<span class="d" aria-hidden="true">${'●'.repeat(lab.niv)}${'○'.repeat(5 - lab.niv)}<\/span>`;
     q('#lxIntro').textContent = lab.intro; q('#lxSrc').textContent = lab.src ? 'Notions : ' + lab.src + ' · commandes : notions générales (hors cours)' : '';
@@ -2722,10 +2800,10 @@ if (typeof document !== 'undefined') (function () {
   function paint() { out.textContent = screen; ps.textContent = S.prompt(st); inp.type = st.pend && st.pend.secret ? 'password' : 'text'; out.scrollTop = out.scrollHeight; }
   function write(s) { screen += s; const L = screen.split('\n'); if (L.length > 600) screen = L.slice(-600).join('\n'); }
   function check() {
-    if (!lab.tasks.length) { q('#lxProg').textContent = ''; q('#lxDone').hidden = true; return; }
+    if (!lab.tasks.length) { q('#lxProg').textContent = ''; q('#lxDone').hidden = true; curTask(); return; }
     let n = 0; lab.tasks.forEach(([, , ok], i) => { let r = false; try { r = !!ok(st); } catch (e) { } if (r) n++; const li = q(`#lxTasks li[data-i="${i}"]`); li.classList.toggle('ok', r); li.querySelector('.mk').textContent = r ? '✓' : '○'; });
     ST.labs[lab.id] = Object.assign(ST.labs[lab.id] || {}, { n });
-    const all = n === lab.tasks.length; q('#lxProg').textContent = `${n}/${lab.tasks.length} tâches` + (all ? ' · Lab réussi ✓' : ''); q('#lxDone').hidden = !all;
+    const all = n === lab.tasks.length; q('#lxProg').textContent = `${n}/${lab.tasks.length} tâches` + (all ? ' · Lab réussi ✓' : ''); q('#lxDone').hidden = !all; curTask();
     if (all && !(ST.labs[lab.id] && ST.labs[lab.id].done)) { ST.labs[lab.id] = Object.assign(ST.labs[lab.id] || {}, { done: true }); renderLabs(); }
   }
   function run(raw) {
@@ -3996,7 +4074,25 @@ if (typeof document !== 'undefined') (function () {
   function openLab() { q('#ciPick').hidden = true; q('#ciView').hidden = false; window.scrollTo({ top: 0 }); paint(); if (matchMedia('(pointer:fine)').matches) inp.focus(); }
   q('#ciBack').onclick = () => { renderLabs(); q('#ciView').hidden = true; q('#ciPick').hidden = false; window.scrollTo({ top: 0 }); };
   q('#ciPick').addEventListener('labs', renderLabs);
+
+  // Tâche en cours (affichée seule au-dessus du terminal sur téléphone)
+  let curF = -2, curN = null, full = false;
+  function curReset() { curF = -2; curN = null; full = !lab.tasks.length; q('#ciView').classList.toggle('full', full); q('#ciAll').textContent = 'Voir toutes les tâches et le schéma'; }
+  function curTask() {
+    const box = q('#ciCur'); if (!lab.tasks.length) { box.hidden = true; return; } box.hidden = false;
+    const res = qa('#ciTasks li[data-i]').map(li => li.classList.contains('ok')), f = res.indexOf(false), n = res.filter(Boolean).length;
+    const gained = curN != null && n > curN; curN = n;
+    q('#ciCurE').textContent = `Lab ${lab.n} · ` + (f < 0 ? 'terminé' : `tâche ${f + 1}/${res.length}`) + (gained ? ' · ✓ tâche validée' : '');
+    if (f === curF) return; curF = f;
+    q('#ciCurT').textContent = f < 0 ? '✓ Lab réussi : toutes les tâches sont validées.' : lab.tasks[f][0];
+    q('#ciCurH').hidden = f < 0; q('#ciCurH').textContent = 'Indice'; q('#ciCurP').hidden = true; q('#ciCurP').textContent = f < 0 ? '' : lab.tasks[f][1];
+  }
+  q('#ciCurH').onclick = () => { const h = q('#ciCurP'); h.hidden = !h.hidden; q('#ciCurH').textContent = h.hidden ? 'Indice' : 'Cacher l\'indice'; };
+  q('#ciAll').onclick = () => { full = !full; q('#ciView').classList.toggle('full', full); q('#ciAll').textContent = full ? 'Masquer le détail' : 'Voir toutes les tâches et le schéma'; };
+  // Clavier ouvert sur téléphone : garder la ligne de saisie visible.
+  inp.addEventListener('focus', () => { if (innerWidth < 1024) setTimeout(() => inp.scrollIntoView({ block: 'center', behavior: 'smooth' }), 350); });
   function renderBrief() {
+    curReset();
     q('#ciTitle').textContent = `Lab ${lab.n} · ${lab.titre}`;
     q('#ciLvl').innerHTML = `Niveau ${lab.niv}<span class="d" aria-hidden="true">${'●'.repeat(lab.niv)}${'○'.repeat(5 - lab.niv)}<\/span>`;
     q('#ciIntro').textContent = lab.intro; q('#ciTopo').textContent = lab.topo;
@@ -4023,13 +4119,13 @@ if (typeof document !== 'undefined') (function () {
   }
   function write(s) { outs[dev] += s; const L = outs[dev].split('\n'); if (L.length > 600) outs[dev] = L.slice(-600).join('\n'); }
   function check() {
-    if (!lab.tasks.length) { q('#ciProg').textContent = ''; return; }
+    if (!lab.tasks.length) { q('#ciProg').textContent = ''; curTask(); return; }
     let n = 0;
     lab.tasks.forEach(([, , ok], i) => { let r = false; try { r = !!ok(N); } catch (e) { } if (r) n++; const li = q(`#ciTasks li[data-i="${i}"]`); li.classList.toggle('ok', r); li.querySelector('.mk').textContent = r ? '✓' : '○'; });
     const all = n === lab.tasks.length;
     q('#ciProg').textContent = `${n}/${lab.tasks.length} tâches` + (all ? ' · Lab réussi ✓' : '');
     ST.labs[lab.id] = Object.assign(ST.labs[lab.id] || {}, { n });
-    q('#ciDone').hidden = !all;
+    q('#ciDone').hidden = !all; curTask();
     if (all && !(ST.labs[lab.id] && ST.labs[lab.id].done)) { ST.labs[lab.id] = Object.assign(ST.labs[lab.id] || {}, { done: true }); renderLabs(); }
   }
   function run(raw) {

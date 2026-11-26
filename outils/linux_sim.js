@@ -566,7 +566,25 @@ if (typeof document !== 'undefined') (function () {
   function openLab() { q('#lxPick').hidden = true; q('#lxView').hidden = false; window.scrollTo({ top: 0 }); paint(); if (matchMedia('(pointer:fine)').matches) inp.focus(); }
   q('#lxBack').onclick = () => { renderLabs(); q('#lxView').hidden = true; q('#lxPick').hidden = false; window.scrollTo({ top: 0 }); };
   q('#lxPick').addEventListener('labs', renderLabs);
+
+  // Tâche en cours (affichée seule au-dessus du terminal sur téléphone)
+  let curF = -2, curN = null, full = false;
+  function curReset() { curF = -2; curN = null; full = !lab.tasks.length; q('#lxView').classList.toggle('full', full); q('#lxAll').textContent = 'Voir toutes les tâches et le schéma'; }
+  function curTask() {
+    const box = q('#lxCur'); if (!lab.tasks.length) { box.hidden = true; return; } box.hidden = false;
+    const res = qa('#lxTasks li[data-i]').map(li => li.classList.contains('ok')), f = res.indexOf(false), n = res.filter(Boolean).length;
+    const gained = curN != null && n > curN; curN = n;
+    q('#lxCurE').textContent = `Lab ${lab.n} · ` + (f < 0 ? 'terminé' : `tâche ${f + 1}/${res.length}`) + (gained ? ' · ✓ tâche validée' : '');
+    if (f === curF) return; curF = f;
+    q('#lxCurT').textContent = f < 0 ? '✓ Lab réussi : toutes les tâches sont validées.' : lab.tasks[f][0];
+    q('#lxCurH').hidden = f < 0; q('#lxCurH').textContent = 'Indice'; q('#lxCurP').hidden = true; q('#lxCurP').textContent = f < 0 ? '' : lab.tasks[f][1];
+  }
+  q('#lxCurH').onclick = () => { const h = q('#lxCurP'); h.hidden = !h.hidden; q('#lxCurH').textContent = h.hidden ? 'Indice' : 'Cacher l\'indice'; };
+  q('#lxAll').onclick = () => { full = !full; q('#lxView').classList.toggle('full', full); q('#lxAll').textContent = full ? 'Masquer le détail' : 'Voir toutes les tâches et le schéma'; };
+  // Clavier ouvert sur téléphone : garder la ligne de saisie visible.
+  inp.addEventListener('focus', () => { if (innerWidth < 1024) setTimeout(() => inp.scrollIntoView({ block: 'center', behavior: 'smooth' }), 350); });
   function renderBrief() {
+    curReset();
     q('#lxTitle').textContent = `Lab ${lab.n} · ${lab.titre}`;
     q('#lxLvl').innerHTML = `Niveau ${lab.niv}<span class="d" aria-hidden="true">${'●'.repeat(lab.niv)}${'○'.repeat(5 - lab.niv)}</span>`;
     q('#lxIntro').textContent = lab.intro; q('#lxSrc').textContent = lab.src ? 'Notions : ' + lab.src + ' · commandes : notions générales (hors cours)' : '';
@@ -577,10 +595,10 @@ if (typeof document !== 'undefined') (function () {
   function paint() { out.textContent = screen; ps.textContent = S.prompt(st); inp.type = st.pend && st.pend.secret ? 'password' : 'text'; out.scrollTop = out.scrollHeight; }
   function write(s) { screen += s; const L = screen.split('\n'); if (L.length > 600) screen = L.slice(-600).join('\n'); }
   function check() {
-    if (!lab.tasks.length) { q('#lxProg').textContent = ''; q('#lxDone').hidden = true; return; }
+    if (!lab.tasks.length) { q('#lxProg').textContent = ''; q('#lxDone').hidden = true; curTask(); return; }
     let n = 0; lab.tasks.forEach(([, , ok], i) => { let r = false; try { r = !!ok(st); } catch (e) { } if (r) n++; const li = q(`#lxTasks li[data-i="${i}"]`); li.classList.toggle('ok', r); li.querySelector('.mk').textContent = r ? '✓' : '○'; });
     ST.labs[lab.id] = Object.assign(ST.labs[lab.id] || {}, { n });
-    const all = n === lab.tasks.length; q('#lxProg').textContent = `${n}/${lab.tasks.length} tâches` + (all ? ' · Lab réussi ✓' : ''); q('#lxDone').hidden = !all;
+    const all = n === lab.tasks.length; q('#lxProg').textContent = `${n}/${lab.tasks.length} tâches` + (all ? ' · Lab réussi ✓' : ''); q('#lxDone').hidden = !all; curTask();
     if (all && !(ST.labs[lab.id] && ST.labs[lab.id].done)) { ST.labs[lab.id] = Object.assign(ST.labs[lab.id] || {}, { done: true }); renderLabs(); }
   }
   function run(raw) {
