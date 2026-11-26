@@ -27,6 +27,7 @@ Ces cours sont dans `outils/quiz/*.json` et `outils/ouvertes/*.json`. Avant d'aj
     - Pratique : Commandes, Cisco, Linux, Sous-réseaux ;
     - Mémo : Ports, OSI, Dépannage.
   - Page d'accueil (`#home`, « Aujourd'hui ») affichée à chaque ouverture. Elle ne répète pas le menu : 4 cartes « quoi faire » : Reprendre (dernière rubrique, `S.pref.lastTab`), À revoir (questions du jour), Point faible (thème le moins réussi, ≥ 3 questions répondues → QCM filtré sur ce thème), Ma progression (questions vues, % de réussite, dernier examen → Mon bilan).
+  - Cisco et Linux : on arrive sur la liste des labs (cartes : n°, niveau, titre, avancement `ST.labs[id].n` ou ✓ Réussi, « dernier ouvert ») ; le lab s'ouvre au clic, avec « ← Tous les labs » pour revenir. `tab()` remet la liste à chaque arrivée par le menu.
   - Thèmes et niveaux du quiz : dans le bouton repliable « Filtres » (`#qFiltres`, résumé des filtres choisis à côté).
   - Ce fragment, sans doctype, est aussi publié en Artifact claude.ai : https://claude.ai/artifact/GXvby1DYXEJd367ti3sapm (republier avec ce `url`).
 - `outils/quiz/*.json` : QCM `{t, s, q, o[4], e, x[3], n}`.

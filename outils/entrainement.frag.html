@@ -280,6 +280,8 @@ details summary{cursor:pointer;font-weight:500}
 .sc{display:flex;flex-direction:column;gap:4px;text-align:left;font:inherit;color:var(--fg);background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:12px;cursor:pointer}
 .sc b{font-weight:600;font-size:15px}
 .sc small{color:var(--muted);font-size:12px}
+.labpick,.labview{display:flex;flex-direction:column;gap:14px}
+.sc[aria-current="true"]{border:2px solid var(--fg)}
 .tag{align-self:flex-start;font:600 11px var(--f-ui);text-transform:uppercase;letter-spacing:.6px;color:var(--accent)}
 .ticket{margin:0;padding:10px 14px;border-left:3px solid var(--accent);background:var(--sunk);border-radius:0 8px 8px 0;font-size:15px}
 .ticket small{display:block;color:var(--muted);font-size:12px;margin-top:4px}
@@ -515,7 +517,14 @@ details summary{cursor:pointer;font-weight:500}
 </section>
 
 <section id="cisco" hidden>
-  <div class="chips" id="ciLabs"></div>
+  <div class="labpick" id="ciPick">
+    <div class="bar"><span class="eyebrow">Labs Cisco</span><span class="empty" id="ciCount"></span></div>
+    <p class="empty" style="margin:0">Choisis un lab : un petit réseau simulé (routeurs, switchs, PC) et des tâches à faire dans le terminal Cisco. Ils vont du plus simple au plus complet.</p>
+    <div class="sclist" id="ciLabs"></div>
+    <p class="foot">Terminal simulé d'un routeur Cisco 1941 et d'un switch 2960 (VLAN, trunk, routage statique, RIP, OSPF, ACL, NAT/PAT) : abréviations (conf t, int g0/0, sh run), « ? » pour l'aide, Tab pour compléter, ↑ ↓ pour l'historique. Clique sur un PC pour tester avec ping. Ta progression est enregistrée sur cet appareil.</p>
+  </div>
+  <div class="labview" id="ciView" hidden>
+    <div class="labnav"><button class="btn" id="ciBack">← Tous les labs</button></div>
   <div class="ci-grid">
     <div class="card ci-brief">
       <div class="bar"><span class="eyebrow" id="ciProg"></span><span class="lvl" id="ciLvl"></span></div>
@@ -535,11 +544,18 @@ details summary{cursor:pointer;font-weight:500}
       <div class="term-keys"><button class="btn" id="ciTab">Tab</button><button class="btn" id="ciHelp">?</button><button class="btn" id="ciUp">↑</button><button class="btn" id="ciCtz">Ctrl+Z</button><button class="btn" id="ciClr">Effacer l'écran</button></div>
     </div>
   </div>
-  <p class="foot">Terminal simulé d'un routeur Cisco 1941 et d'un switch 2960 (VLAN, trunk, routage statique, RIP, OSPF, ACL, NAT/PAT) : abréviations (conf t, int g0/0, sh run), « ? » pour l'aide, Tab pour compléter, ↑ ↓ pour l'historique. Clique sur un PC pour tester avec ping. Ta progression est enregistrée sur cet appareil.</p>
+  </div>
 </section>
 
 <section id="linux" hidden>
-  <div class="chips" id="lxLabs"></div>
+  <div class="labpick" id="lxPick">
+    <div class="bar"><span class="eyebrow">Labs Linux</span><span class="empty" id="lxCount"></span></div>
+    <p class="empty" style="margin:0">Choisis un lab : des tâches à faire dans un terminal Linux simulé. Ils vont du plus simple au plus complet.</p>
+    <div class="sclist" id="lxLabs"></div>
+    <p class="foot">Terminal Linux simulé (bash, Ubuntu) : arborescence, fichiers, droits rwx, utilisateurs et groupes, sudo et su, liens et inodes, processus. Tape help pour la liste des commandes. Les notions viennent de ton cours Initiation à Linux ; les commandes sont des notions générales (hors cours). Ta progression est enregistrée sur cet appareil.</p>
+  </div>
+  <div class="labview" id="lxView" hidden>
+    <div class="labnav"><button class="btn" id="lxBack">← Tous les labs</button></div>
   <div class="ci-grid">
     <div class="card ci-brief">
       <div class="bar"><span class="eyebrow" id="lxProg"></span><span class="lvl" id="lxLvl"></span></div>
@@ -558,7 +574,7 @@ details summary{cursor:pointer;font-weight:500}
       <div class="term-keys"><button class="btn" id="lxTab">Tab</button><button class="btn" id="lxHelp">help</button><button class="btn" id="lxUp">↑</button><button class="btn" id="lxCtc">Ctrl+C</button><button class="btn" id="lxClr">Effacer l'écran</button></div>
     </div>
   </div>
-  <p class="foot">Terminal Linux simulé (bash, Ubuntu) : arborescence, fichiers, droits rwx, utilisateurs et groupes, sudo et su, liens et inodes, processus. Tape help pour la liste des commandes. Les notions viennent de ton cours Initiation à Linux ; les commandes sont des notions générales (hors cours). Ta progression est enregistrée sur cet appareil.</p>
+  </div>
 </section>
 
 <section id="ports" hidden>
@@ -724,7 +740,7 @@ wide.addEventListener?wide.addEventListener('change',sideInit):wide.addListener(
 function navMark(){const t=S.pref.tab,qm=S.pref.qMode||'qcm';let cur=null;
   $$('#sideNav button').forEach(b=>{const on=b.dataset.tab===t&&(!b.dataset.qm||b.dataset.qm===qm);if(on)cur=b;on?b.setAttribute('aria-current','page'):b.removeAttribute('aria-current')});
   $('#curTitle').textContent=cur?'· '+cur.firstChild.textContent.trim():''}
-function tab(t){$$('main section').forEach(s=>s.hidden=s.id!==t);S.pref.tab=t;if(t!=='home')S.pref.lastTab=t;else homeRender();save();navMark();
+function tab(t){$$('main section').forEach(s=>s.hidden=s.id!==t);const pk=$(`#${t} .labpick`);if(pk){pk.hidden=false;$(`#${t} .labview`).hidden=true;pk.dispatchEvent(new Event('labs'))}S.pref.tab=t;if(t!=='home')S.pref.lastTab=t;else homeRender();save();navMark();
   const f=$(`#${t} input[type=text]:not([readonly])`);if(f&&f.offsetParent&&matchMedia('(pointer:fine)').matches)f.focus()}
 $$('#sideNav button').forEach(b=>b.onclick=()=>{if(b.dataset.qm)setQMode(b.dataset.qm);tab(b.dataset.tab);if(!wide.matches)sideSet(false);window.scrollTo({top:0})});
 
@@ -2672,7 +2688,17 @@ if (typeof document !== 'undefined') (function () {
     screen = `Terminal Linux simulé (Ubuntu) : connecté en tant que dimitri sur ${'tssr-pc'}.\nTape help pour la liste des commandes. Tab complète, ↑ rappelle les commandes.\n\n`;
     hpos = st.hist.length; showAll = false; armReset = false; renderLabs(); renderBrief(); paint(); check(); save();
   }
-  function renderLabs() { q('#lxLabs').innerHTML = LABS.map(l => `<button class="chip" data-v="${l.id}" aria-pressed="${l.id === lab.id}">${l.n}. ${esc(l.titre)}${ST.labs[l.id] && ST.labs[l.id].done ? ' ✓' : ''}<\/button>`).join(''); qa('#lxLabs .chip').forEach(b => b.onclick = () => load(b.dataset.v)); }
+  function renderLabs() {
+    const ok = LABS.filter(l => ST.labs[l.id] && ST.labs[l.id].done).length;
+    q('#lxCount').textContent = `${ok}/${LABS.filter(l => l.tasks.length).length} labs réussis`;
+    q('#lxLabs').innerHTML = LABS.map(l => { const s = ST.labs[l.id] || {}, cur = l.id === lab.id;
+      const etat = !l.tasks.length ? 'Terminal libre, sans tâche' : s.done ? '✓ Réussi' : s.n ? `${s.n}/${l.tasks.length} tâches faites` : 'Pas encore fait';
+      return `<button class="sc" data-v="${l.id}"${cur ? ' aria-current="true"' : ''}><span class="tag">Lab ${l.n}${l.niv ? ' · niveau ' + l.niv : ''}${cur ? ' · dernier ouvert' : ''}<\/span><b>${esc(l.titre)}<\/b><small>${etat}<\/small><\/button>`; }).join('');
+    qa('#lxLabs .sc').forEach(b => b.onclick = () => { if (b.dataset.v !== lab.id) load(b.dataset.v); openLab(); });
+  }
+  function openLab() { q('#lxPick').hidden = true; q('#lxView').hidden = false; window.scrollTo({ top: 0 }); paint(); if (matchMedia('(pointer:fine)').matches) inp.focus(); }
+  q('#lxBack').onclick = () => { renderLabs(); q('#lxView').hidden = true; q('#lxPick').hidden = false; window.scrollTo({ top: 0 }); };
+  q('#lxPick').addEventListener('labs', renderLabs);
   function renderBrief() {
     q('#lxTitle').textContent = `Lab ${lab.n} · ${lab.titre}`;
     q('#lxLvl').innerHTML = `Niveau ${lab.niv}<span class="d" aria-hidden="true">${'●'.repeat(lab.niv)}${'○'.repeat(5 - lab.niv)}<\/span>`;
@@ -2686,6 +2712,7 @@ if (typeof document !== 'undefined') (function () {
   function check() {
     if (!lab.tasks.length) { q('#lxProg').textContent = ''; q('#lxDone').hidden = true; return; }
     let n = 0; lab.tasks.forEach(([, , ok], i) => { let r = false; try { r = !!ok(st); } catch (e) { } if (r) n++; const li = q(`#lxTasks li[data-i="${i}"]`); li.classList.toggle('ok', r); li.querySelector('.mk').textContent = r ? '✓' : '○'; });
+    ST.labs[lab.id] = Object.assign(ST.labs[lab.id] || {}, { n });
     const all = n === lab.tasks.length; q('#lxProg').textContent = `${n}/${lab.tasks.length} tâches` + (all ? ' · Lab réussi ✓' : ''); q('#lxDone').hidden = !all;
     if (all && !(ST.labs[lab.id] && ST.labs[lab.id].done)) { ST.labs[lab.id] = Object.assign(ST.labs[lab.id] || {}, { done: true }); renderLabs(); }
   }
@@ -3947,9 +3974,16 @@ if (typeof document !== 'undefined') (function () {
     dev = lab.devs[0]; renderLabs(); renderBrief(); renderDevs(); showDev(dev); check(); save();
   }
   function renderLabs() {
-    q('#ciLabs').innerHTML = LABS.map(l => `<button class="chip" data-v="${l.id}" aria-pressed="${l.id === lab.id}">${l.n}. ${esc(l.titre)}${ST.labs[l.id] && ST.labs[l.id].done ? ' ✓' : ''}<\/button>`).join('');
-    qa('#ciLabs .chip').forEach(b => b.onclick = () => loadLab(b.dataset.v));
+    const ok = LABS.filter(l => ST.labs[l.id] && ST.labs[l.id].done).length;
+    q('#ciCount').textContent = `${ok}/${LABS.filter(l => l.tasks.length).length} labs réussis`;
+    q('#ciLabs').innerHTML = LABS.map(l => { const s = ST.labs[l.id] || {}, cur = l.id === lab.id;
+      const etat = !l.tasks.length ? 'Terminal libre, sans tâche' : s.done ? '✓ Réussi' : s.n ? `${s.n}/${l.tasks.length} tâches faites` : 'Pas encore fait';
+      return `<button class="sc" data-v="${l.id}"${cur ? ' aria-current="true"' : ''}><span class="tag">Lab ${l.n}${l.niv ? ' · niveau ' + l.niv : ''}${cur ? ' · dernier ouvert' : ''}<\/span><b>${esc(l.titre)}<\/b><small>${etat}<\/small><\/button>`; }).join('');
+    qa('#ciLabs .sc').forEach(b => b.onclick = () => { if (b.dataset.v !== lab.id) loadLab(b.dataset.v); openLab(); });
   }
+  function openLab() { q('#ciPick').hidden = true; q('#ciView').hidden = false; window.scrollTo({ top: 0 }); paint(); if (matchMedia('(pointer:fine)').matches) inp.focus(); }
+  q('#ciBack').onclick = () => { renderLabs(); q('#ciView').hidden = true; q('#ciPick').hidden = false; window.scrollTo({ top: 0 }); };
+  q('#ciPick').addEventListener('labs', renderLabs);
   function renderBrief() {
     q('#ciTitle').textContent = `Lab ${lab.n} · ${lab.titre}`;
     q('#ciLvl').innerHTML = `Niveau ${lab.niv}<span class="d" aria-hidden="true">${'●'.repeat(lab.niv)}${'○'.repeat(5 - lab.niv)}<\/span>`;
@@ -3982,6 +4016,7 @@ if (typeof document !== 'undefined') (function () {
     lab.tasks.forEach(([, , ok], i) => { let r = false; try { r = !!ok(N); } catch (e) { } if (r) n++; const li = q(`#ciTasks li[data-i="${i}"]`); li.classList.toggle('ok', r); li.querySelector('.mk').textContent = r ? '✓' : '○'; });
     const all = n === lab.tasks.length;
     q('#ciProg').textContent = `${n}/${lab.tasks.length} tâches` + (all ? ' · Lab réussi ✓' : '');
+    ST.labs[lab.id] = Object.assign(ST.labs[lab.id] || {}, { n });
     q('#ciDone').hidden = !all;
     if (all && !(ST.labs[lab.id] && ST.labs[lab.id].done)) { ST.labs[lab.id] = Object.assign(ST.labs[lab.id] || {}, { done: true }); renderLabs(); }
   }
