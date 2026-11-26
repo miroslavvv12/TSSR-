@@ -92,22 +92,46 @@ button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 .fiche .memo li{list-style:none;margin-left:-20px;border-top:1px solid var(--line);padding-top:6px}
 .fiche .memo .r{font-weight:600}
 @media print{header,nav,#qMode,#qTheme,#qNiv,.niv-aide,#fiTheme,.foot,.actions{display:none!important}.fiche{border:0;box-shadow:none}}
-.exam h2{font-size:20px;margin:0}
-.exam .exbar{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
-.exam .time{font:600 18px var(--f-mono)} .exam .time.low{text-decoration:underline}
+.exam{scroll-margin-top:130px}#exCorr{scroll-margin-top:130px}
+.exam #exBody{display:flex;flex-direction:column;gap:22px}
+.exam .exres{display:flex;flex-direction:column;gap:12px}.exam .exres .exnote,.exam .exres .exstats{margin:0}.exam .exres .actions{margin:0}
+.exam h2{font-size:22px;margin:0}.exam h3{font-size:15px;margin:0 0 10px;font-weight:600}
+.exam .exlead{margin:8px 0 0;line-height:1.55;color:var(--muted)}
+.exam .exline{border-top:1px solid var(--line);padding-top:18px}
+.exam .exchoice{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px}
+.exam .exchoice .chip{display:flex;flex-direction:column;align-items:flex-start;gap:3px;text-align:left;padding:12px 16px;border-radius:12px;height:auto;white-space:normal}
+.exam .exchoice .chip strong{font-size:17px}.exam .exchoice .chip span{font-size:13px;opacity:.8}
+.exam .exbig{font-size:17px;padding:14px 26px}
+.exam .exhead{display:flex;justify-content:space-between;align-items:flex-start;gap:14px;padding-bottom:16px;border-bottom:1px solid var(--line)}
+.exam .exhead>div{flex:1;min-width:0}
+.exam .exnum{font:700 20px var(--f-ui)}.exam .exnum span{font-weight:400;color:var(--muted)}
+.exam .exprog{height:6px;border:1px solid var(--fg);border-radius:4px;margin:8px 0 6px;max-width:420px}.exam .exprog i{display:block;height:100%;background:var(--fg)}
+.exam .exsub{font-size:14px;color:var(--muted);margin:0}
+.exam .time{font:700 22px var(--f-mono);white-space:nowrap;padding:6px 10px;border:1px solid var(--line);border-radius:10px}.exam .time.low{border:2px dashed var(--fg)}
+.exam .q{margin:10px 0 16px}
 .exam .opt[aria-pressed="true"]{border:2px solid var(--fg);font-weight:600}
 .exam .opt[aria-pressed="true"]::before{content:"● "}
-.exam .grid{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0}
-.exam .q{margin:6px 0 12px}
-.exam .grid button{min-width:38px;height:38px;border-radius:8px;border:1px solid var(--line);background:var(--bg);color:var(--fg);font:500 14px var(--f-ui);cursor:pointer}
+.exam .exnav{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:10px}
+.exam .exnav #exPrev{justify-self:start}.exam .exnav #exNext{justify-self:end}
+.exam .exall summary{cursor:pointer;font-weight:600;font-size:15px}
+.exam .grid{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+.exam .grid button{min-width:36px;height:36px;border-radius:8px;border:1px solid var(--line);background:var(--bg);color:var(--fg);font:500 14px var(--f-ui);cursor:pointer;padding:0 4px}
 .exam .grid button.rep{background:var(--fg);color:var(--bg);border-color:var(--fg)}
 .exam .grid button.cur{outline:2px solid var(--fg);outline-offset:2px}
 .exam .grid button.flag::after{content:"?";font-size:11px;margin-left:1px}
-.exam .note{font:700 44px var(--f-ui);line-height:1}
-.exam .res{border-top:1px solid var(--line);padding-top:12px}
+.exam .exlegend{font-size:13px;color:var(--muted);margin:10px 0 0;display:flex;flex-wrap:wrap;align-items:center;gap:6px}
+.exam .sw{display:inline-block;width:14px;height:14px;border:1px solid var(--line);border-radius:3px;font-size:10px;line-height:13px;text-align:center;margin-left:8px}.exam .sw:first-child{margin-left:0}.exam .sw.rep{background:var(--fg);border-color:var(--fg)}
+.exam .exend{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.exam .exnote{display:flex;align-items:baseline;gap:8px;margin:10px 0 14px}.exam .note{font:700 56px var(--f-ui);line-height:1}.exam .sur{font-size:22px;font-weight:600}
+.exam .exstats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-bottom:12px}
+.exam .exstats div{border:1px solid var(--line);border-radius:10px;padding:10px 12px;display:flex;flex-direction:column;gap:2px}.exam .exstats strong{font-size:20px}.exam .exstats span{font-size:13px;color:var(--muted)}
+.exam .res{border-top:1px solid var(--line);padding:16px 0;display:flex;flex-direction:column;gap:6px}.exam .res:first-of-type{border-top:0;padding-top:0}
+.exam .rq{font-weight:600;font-size:16px}
 .exam .res .ans{color:var(--muted);font-size:14px}
-.exam table{border-collapse:collapse;width:100%}.exam td,.exam th{border-top:1px solid var(--line);padding:6px 8px;text-align:left;font-size:14px}
-.exam .hist{color:var(--muted);font-size:14px;margin:0;padding-left:20px}
+.exam table{border-collapse:collapse;width:100%}.exam td,.exam th{border-top:1px solid var(--line);padding:8px;text-align:left;font-size:14px}.exam th{color:var(--muted);font-weight:500}
+.exam .bar{vertical-align:middle}.exam td .bar{display:inline-block;width:60px;height:8px;border:1px solid var(--fg);border-radius:4px;margin-right:6px;background:linear-gradient(to right,var(--fg) var(--p),transparent var(--p))}
+.exam .hist{color:var(--muted);font-size:14px;margin:0;padding-left:20px;display:flex;flex-direction:column;gap:4px}
+@media (max-width:600px){.exam .exnav{grid-template-columns:1fr 1fr}.exam .exnav #exFlag{grid-column:1/-1;grid-row:2;justify-self:center}.exam .grid button{min-width:32px;height:32px;font-size:13px}.exam .note{font-size:46px}.exam .time{font-size:18px}.exam #exOpts{grid-template-columns:1fr}.exam td .bar{display:none}.exam .exstats{grid-template-columns:1fr 1fr 1fr}.exam .exstats div{padding:8px}.exam .exstats strong{font-size:17px}}
 .ptl{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
 .ptl label{display:flex;gap:10px;align-items:flex-start;flex-direction:row;color:var(--fg);font-size:inherit;cursor:pointer}
 .ptl input{width:20px;height:20px;margin:2px 0 0;accent-color:var(--accent);flex:none}
@@ -1784,56 +1808,61 @@ function exPoints(it){const x=KQ.get(it.k);if(it.t==='q')return{p:it.a===0?1:0,m
 function exFinish(auto){const E=S.exam;if(!E||E.done)return;clearInterval(exTimer);E.done=true;E.end=Date.now();E.auto=!!auto;
   for(const it of E.items){const x=KQ.get(it.k);if(!x)continue;const r=exPoints(it),ok=r.p/r.max>=.6,k=it.k;
     S.miss[k]=ok?Math.max(0,(S.miss[k]||0)-1):(S.miss[k]||0)+1;srsMark(k,ok);S.qlast[k]=++S.qn;tally(it.t==='q'?'quiz':'ouv',ok)}
-  S.exams.unshift({d:new Date().toISOString().slice(0,10),note:exNote(),fmt:E.fmt,scope:E.scope});S.exams=S.exams.slice(0,10);save();revCount();exRender();window.scrollTo({top:$('#exCard').offsetTop-80})}
+  S.exams.unshift({d:new Date().toISOString().slice(0,10),note:exNote(),fmt:E.fmt,scope:E.scope});S.exams=S.exams.slice(0,10);save();revCount();exRender();$('#exCard').scrollIntoView({block:'start'})}
 function exNote(){let p=0,m=0;for(const it of S.exam.items){if(!KQ.get(it.k))continue;const r=exPoints(it);p+=r.p;m+=r.max}return m?Math.round(40*p/m)/2:0}
 function exRender(){
-  const B=$('#exBody'),E=S.exam;
+  const B=$('#exBody'),E=S.exam,fr=v=>String(v).replace('.',',');
+  const answered=i=>i.t==='q'?i.a!=null:!!(i.a||'').trim();
   if(!E||(E.done&&E.closed)){clearInterval(exTimer);
-    B.innerHTML=`<h2>Examen blanc</h2>
-    <p style="margin:8px 0">Comme le jour de l'examen : des questions de tous les thèmes, un chronomètre, et <strong>aucune correction avant la fin</strong>. Tu peux revenir sur une question et en marquer pour la revoir. À la fin : une note sur 20, le détail par thème et la correction complète. Les questions ratées passent dans « À revoir aujourd'hui ».</p>
-    <div class="chips" id="exFmt">${Object.entries(EX_FMT).map(([k,v])=>`<button class="chip" data-v="${k}">${v.lab}</button>`).join('')}</div>
-    <div class="chips" id="exScope"><button class="chip" data-v="cours">Mes cours seulement</button><button class="chip" data-v="all">Tout le TSSR (avec le hors cours)</button></div>
-    <div class="actions"><button class="btn primary" id="exGo">Commencer l'examen</button></div>
-    ${S.exams.length?`<p style="margin:12px 0 4px"><strong>Mes derniers examens</strong></p><ul class="hist">${S.exams.slice(0,5).map(h=>`<li>${h.d} — <strong>${String(h.note).replace('.',',')}/20</strong> · ${EX_FMT[h.fmt]?EX_FMT[h.fmt].lab.split(' · ')[0]:''} · ${h.scope==='all'?'tout le TSSR':'mes cours'}</li>`).join('')}</ul>`:''}`;
+    B.innerHTML=`<div class="exsec"><h2>Examen blanc</h2>
+      <p class="exlead">Comme le jour de l'examen : des questions de tous les thèmes, un chronomètre et <strong>aucune correction avant la fin</strong>. À la fin : une note sur 20, le détail par thème et la correction complète.</p></div>
+    <div class="exsec"><h3>1. Durée</h3><div class="exchoice" id="exFmt">${Object.entries(EX_FMT).map(([k,v])=>`<button class="chip" data-v="${k}"><strong>${v.min} min</strong><span>${v.n} QCM + ${v.o} questions ouvertes</span></button>`).join('')}</div></div>
+    <div class="exsec"><h3>2. Questions</h3><div class="exchoice" id="exScope"><button class="chip" data-v="cours"><strong>Mes cours</strong><span>seulement les questions tirées de tes cours</span></button><button class="chip" data-v="all"><strong>Tout le TSSR</strong><span>avec les questions hors cours</span></button></div></div>
+    <div class="exsec"><button class="btn primary exbig" id="exGo">Commencer l'examen</button></div>
+    ${S.exams.length?`<div class="exsec exline"><h3>Mes derniers examens</h3><ul class="hist">${S.exams.slice(0,5).map(h=>`<li><strong>${fr(h.note)}/20</strong> · ${h.d} · ${EX_FMT[h.fmt]?EX_FMT[h.fmt].min+' min':''} · ${h.scope==='all'?'tout le TSSR':'mes cours'}</li>`).join('')}</ul></div>`:''}`;
     chips('exFmt',exPref.fmt,v=>exPref.fmt=v);chips('exScope',exPref.scope,v=>exPref.scope=v);$('#exGo').onclick=exStart;return}
   if(!E.done&&exLeft()<=0){exFinish(true);return}
-  if(!E.done){const it=E.items[E.cur],x=KQ.get(it.k),n=E.items.length,rep=E.items.filter(i=>i.t==='q'?i.a!=null:(i.a||'').trim()).length;
-    B.innerHTML=`<div class="exbar"><span class="eyebrow">Question ${E.cur+1} / ${n} · ${rep} répondue${rep>1?'s':''}</span><span class="time" id="exTime">⏱ ${exMmss(exLeft())}</span></div>
-    <div class="bar"><span class="eyebrow">${esc(x.t)}${isHC(x)?' · hors cours':''}</span><span class="lvl">${lvlHTML(x.n)}</span></div>
+  if(!E.done){const it=E.items[E.cur],x=KQ.get(it.k),n=E.items.length,rep=E.items.filter(answered).length,nf=E.items.filter(i=>i.f).length;
+    B.innerHTML=`<div class="exhead"><div><div class="exnum">Question ${E.cur+1}<span> / ${n}</span></div><div class="exprog"><i style="width:${Math.round(100*rep/n)}%"></i></div><div class="exsub">${rep} répondue${rep>1?'s':''}${nf?` · ${nf} marquée${nf>1?'s':''}`:''}</div></div><span class="time" id="exTime">⏱ ${exMmss(exLeft())}</span></div>
+    <div class="exsec"><div class="bar"><span class="eyebrow">${esc(x.t)}${isHC(x)?' · hors cours':''}${it.t==='o'?' · question ouverte':''}</span><span class="lvl">${lvlHTML(x.n)}</span></div>
     <div class="q">${esc(x.q)}</div>
     ${it.t==='q'?`<div class="opts" id="exOpts">${it.ord.map((i,j)=>`<button class="opt" data-i="${i}" aria-pressed="${it.a===i}"><kbd class="k">${j+1}</kbd>${esc(x.o[i])}</button>`).join('')}</div>`
-      :`<textarea class="oqin" id="exTxt" placeholder="Rédige ta réponse : définis, explique, donne un exemple…" aria-label="Ta réponse">${esc(it.a||'')}</textarea>`}
-    <div class="actions"><button class="btn" id="exPrev" ${E.cur?'':'disabled'}>← Précédente</button><button class="btn" id="exFlag">${it.f?'Ne plus marquer':'Marquer pour revoir'}</button><button class="btn next" id="exNext">${E.cur<n-1?'Suivante →':'Dernière question'}</button></div>
-    <div class="grid" aria-label="Aller à une question">${E.items.map((i,j)=>`<button data-j="${j}" class="${(i.t==='q'?i.a!=null:(i.a||'').trim())?'rep':''} ${j===E.cur?'cur':''} ${i.f?'flag':''}" aria-label="Question ${j+1}">${j+1}</button>`).join('')}</div>
-    <div class="actions"><button class="btn primary" id="exEnd">${exArm?'Confirmer : rendre ma copie':'Rendre ma copie'}</button></div>
-    ${exArm?`<p class="empty" style="margin:0">${n-rep?`Il reste ${n-rep} question${n-rep>1?'s':''} sans réponse. `:''}Clique encore pour rendre ta copie.</p>`:''}`;
+      :`<textarea class="oqin" id="exTxt" placeholder="Rédige ta réponse : définis, explique, donne un exemple…" aria-label="Ta réponse">${esc(it.a||'')}</textarea>`}</div>
+    <div class="exnav"><button class="btn" id="exPrev" ${E.cur?'':'disabled'}>← Précédente</button><button class="link" id="exFlag">${it.f?'✓ Marquée pour revoir':'Marquer pour revoir'}</button><button class="btn ${E.cur<n-1?'primary':''}" id="exNext" ${E.cur<n-1?'':'disabled'}>Suivante →</button></div>
+    <details class="exsec exline exall" ${S.pref.exGrid===false?'':'open'}><summary>Toutes les questions</summary>
+      <div class="grid" aria-label="Aller à une question">${E.items.map((i,j)=>`<button data-j="${j}" class="${answered(i)?'rep':''} ${j===E.cur?'cur':''} ${i.f?'flag':''}" aria-label="Question ${j+1}">${j+1}</button>`).join('')}</div>
+      <p class="exlegend"><span class="sw rep"></span> répondue <span class="sw"></span> sans réponse <span class="sw flag">?</span> marquée</p></details>
+    <div class="exsec exline exend"><p class="exsub">${n-rep?`${n-rep} question${n-rep>1?'s':''} sans réponse.`:'Toutes les questions ont une réponse.'}${exArm?' Clique encore pour confirmer.':''}</p><button class="btn ${exArm||!(n-rep)?'primary':''}" id="exEnd">${exArm?'Confirmer : rendre ma copie':'Rendre ma copie'}</button></div>`;
     $$('#exOpts .opt').forEach(b=>b.onclick=()=>{it.a=+b.dataset.i;save();exRender()});
     const ta=$('#exTxt');if(ta)ta.oninput=()=>{it.a=ta.value;save()};
     const go=j=>{E.cur=Math.max(0,Math.min(n-1,j));exArm=false;save();exRender()};
     $('#exPrev').onclick=()=>go(E.cur-1);$('#exNext').onclick=()=>go(E.cur+1);$('#exFlag').onclick=()=>{it.f=!it.f;save();exRender()};
     $$('#exBody .grid button').forEach(b=>b.onclick=()=>go(+b.dataset.j));
+    $('#exBody .exall').ontoggle=e=>{S.pref.exGrid=e.target.open;save()};
     $('#exEnd').onclick=()=>{if(!exArm){exArm=true;exRender();return}exArm=false;exFinish(false)};
     exTick();return}
   // Résultats
-  const th={};let qok=0,qn=0;
-  for(const it of E.items){const x=KQ.get(it.k);if(!x)continue;const r=exPoints(it);const T=th[x.t]=th[x.t]||{p:0,m:0};T.p+=r.p;T.m+=r.max;if(it.t==='q'){qn++;if(r.p)qok++}}
-  const note=exNote(),used=exMmss(Math.min(E.end-E.start,E.min*60000));
-  B.innerHTML=`<div class="exbar"><h2>Résultat de l'examen blanc</h2><span class="eyebrow">${E.auto?'Temps écoulé : copie rendue automatiquement':'Copie rendue en '+used}</span></div>
-    <p style="margin:10px 0"><span class="note" id="exNote">${String(note).replace('.',',')}</span> <strong>/ 20</strong></p>
-    <p style="margin:0">QCM : ${qok}/${qn} justes. Questions ouvertes : vérifie les points cochés plus bas ; la note se met à jour.</p>
-    <table style="margin-top:12px"><tr><th>Thème</th><th>Points</th><th>Réussite</th></tr>${Object.entries(th).sort((a,b)=>a[1].p/a[1].m-b[1].p/b[1].m).map(([t,v])=>`<tr><td>${esc(t)}</td><td>${(Math.round(v.p*10)/10).toString().replace('.',',')} / ${v.m}</td><td>${Math.round(100*v.p/v.m)} %</td></tr>`).join('')}</table>
-    <div class="actions"><button class="btn primary" id="exNew">Nouvel examen</button></div>
-    <h2 style="margin-top:8px;font-size:18px">Correction</h2>
+  const th={};let qok=0,qn=0,op=0,om=0;
+  for(const it of E.items){const x=KQ.get(it.k);if(!x)continue;const r=exPoints(it);const T=th[x.t]=th[x.t]||{p:0,m:0};T.p+=r.p;T.m+=r.max;if(it.t==='q'){qn++;if(r.p)qok++}else{op+=r.p;om+=r.max}}
+  const note=exNote(),used=exMmss(Math.min(E.end-E.start,E.min*60000)),nbad=E.items.filter(i=>i.t==='q'&&i.a!==0).length;
+  B.innerHTML=`<div class="exsec exres"><div class="eyebrow">Résultat de l'examen blanc · ${E.auto?'temps écoulé, copie rendue automatiquement':'rendu en '+used}</div>
+      <div class="exnote"><span class="note" id="exNote">${fr(note)}</span><span class="sur">/ 20</span></div>
+      <div class="exstats"><div><strong>${qok}/${qn}</strong><span>QCM justes</span></div><div><strong>${fr(Math.round(op*10)/10)}/${om}</strong><span>points en questions ouvertes</span></div><div><strong>${nbad}</strong><span>QCM à revoir</span></div></div>
+      <p class="exsub">Pour les questions ouvertes, vérifie les points cochés dans la correction : la note se met à jour.</p>
+      <div class="actions"><button class="btn primary" id="exNew">Nouvel examen</button><a class="btn" href="#exCorr">Voir la correction ↓</a></div></div>
+    <div class="exsec exline"><h3>Par thème, du plus faible au plus fort</h3>
+      <table><tr><th>Thème</th><th>Points</th><th>Réussite</th></tr>${Object.entries(th).sort((a,b)=>a[1].p/a[1].m-b[1].p/b[1].m).map(([t,v])=>`<tr><td>${esc(t)}</td><td>${fr(Math.round(v.p*10)/10)} / ${v.m}</td><td><span class="bar" style="--p:${Math.round(100*v.p/v.m)}%"></span>${Math.round(100*v.p/v.m)} %</td></tr>`).join('')}</table></div>
+    <div class="exsec exline" id="exCorr"><h3>Correction</h3>
     ${E.items.map((it,j)=>{const x=KQ.get(it.k);if(!x)return'';
-      if(it.t==='q'){const ok=it.a===0;return`<div class="res"><div class="verdict ${ok?'ok':'ko'}">Question ${j+1} — ${ok?'juste':it.a==null?'sans réponse':'fausse'}</div><div class="q" style="font-size:16px;margin:4px 0">${esc(x.q)}</div>
-        ${ok?'':`<div class="ans">Ta réponse : ${it.a==null?'aucune':esc(x.o[it.a])}${it.a?' — '+esc(x.x[it.a-1]||''):''}</div>`}<div>Bonne réponse : <strong>${esc(x.o[0])}</strong></div><div class="ans">${esc(x.e)} · Source : ${esc(x.s)}</div>${repBtn(x)}</div>`}
-      const r=exPoints(it);return`<div class="res" data-j="${j}"><div class="verdict ${r.p/r.max>=.6?'ok':'ko'}">Question ${j+1} (ouverte) — ${(Math.round(r.p*10)/10).toString().replace('.',',')} / 3</div><div class="q" style="font-size:16px;margin:4px 0">${esc(x.q)}</div>
+      if(it.t==='q'){const ok=it.a===0;return`<article class="res"><div class="verdict ${ok?'ok':'ko'}">Question ${j+1} · ${ok?'juste':it.a==null?'sans réponse':'fausse'}</div><div class="rq">${esc(x.q)}</div>
+        ${ok?'':`<div class="ans">Ta réponse : ${it.a==null?'aucune':esc(x.o[it.a])}${it.a?' — '+esc(x.x[it.a-1]||''):''}</div>`}<div>Bonne réponse : <strong>${esc(x.o[0])}</strong></div><div class="ans">${esc(x.e)}</div><div class="ans">Source : ${esc(x.s)}</div>${repBtn(x)}</article>`}
+      const r=exPoints(it);return`<article class="res" data-j="${j}"><div class="verdict ${r.p/r.max>=.6?'ok':'ko'}">Question ${j+1} (ouverte) · ${fr(Math.round(r.p*10)/10)} / 3</div><div class="rq">${esc(x.q)}</div>
         <div class="ans">Ta réponse :</div><p class="modele" style="border-left-style:dashed">${esc(it.a||'(aucune réponse)')}</p>
         <div><strong>Points attendus</strong> <span class="empty">— coche ceux que tu as vraiment expliqués</span></div>
         <ul class="ptl">${x.p.map(([lab],i)=>`<li><label><input type="checkbox" data-j="${j}" data-i="${i}" ${it.chk[i]?'checked':''}>${esc(lab)}</label></li>`).join('')}</ul>
-        <div><strong>Réponse modèle</strong></div><p class="modele">${esc(x.r)}</p><div class="ans">Source : ${esc(x.s)}</div>${repBtn(x)}</div>`}).join('')}`;
-  $$('#exBody .ptl input').forEach(c=>c.onchange=()=>{const it=E.items[+c.dataset.j];it.chk[+c.dataset.i]=c.checked;const n=exNote();if(S.exams[0])S.exams[0].note=n;save();exRender()});
-  $('#exNew').onclick=()=>{E.closed=true;save();exRender()};
+        <div><strong>Réponse modèle</strong></div><p class="modele">${esc(x.r)}</p><div class="ans">Source : ${esc(x.s)}</div>${repBtn(x)}</article>`}).join('')}</div>`;
+  $$('#exBody .ptl input').forEach(c=>c.onchange=()=>{const it=E.items[+c.dataset.j];it.chk[+c.dataset.i]=c.checked;const y=scrollY;const n=exNote();if(S.exams[0])S.exams[0].note=n;save();exRender();scrollTo(0,y)});
+  $('#exNew').onclick=()=>{E.closed=true;save();exRender();$('#exCard').scrollIntoView({block:'start'})};
 }
 /* ---------- Fiches à retenir ----------
    Fiches rédigées à partir des cours (outils/fiches/*.json) + « mémo express » généré à partir des QCM de niveau 0 à 2. */
@@ -1856,7 +1885,7 @@ function fiRender(){
   $('#fiPrint').onclick=()=>window.print();
 }
 function qRefresh(){qMode==='ouv'?oqNew():qMode==='exam'?exRender():qMode==='fiche'?fiRender():qNew()}
-function qApply(){const fi=qMode==='fiche',ex=qMode==='exam'||fi,o=qMode==='ouv',rv=qMode==='rev'||ex;$('#qTheme').hidden=rv;$('#qNiv').hidden=rv;$('#exCard').hidden=qMode!=='exam';$('#fiCard').hidden=!fi;$$('#quiz .niv-aide').forEach(d=>d.hidden=fi);revCount();$('#qcmCard').hidden=o||ex;$('#qCount').hidden=o||ex;$('#quiz .kb').hidden=o||ex;$('#oqCard').hidden=!o;$('#oqCount').hidden=!o;
+function qApply(){const fi=qMode==='fiche',ex=qMode==='exam'||fi,o=qMode==='ouv',rv=qMode==='rev'||ex;$('#qTheme').hidden=rv;$('#qNiv').hidden=rv;$('#exCard').hidden=qMode!=='exam';$('#fiCard').hidden=!fi;$$('#quiz .niv-aide').forEach(d=>d.hidden=fi||qMode==='exam');revCount();$('#qcmCard').hidden=o||ex;$('#qCount').hidden=o||ex;$('#quiz .kb').hidden=o||ex;$('#oqCard').hidden=!o;$('#oqCount').hidden=!o;
   $$('#quiz [data-score="quiz"]').forEach(e=>e.hidden=o);$$('#quiz [data-score="ouv"]').forEach(e=>e.hidden=!o);qRefresh()}
 chips('qMode',qMode,v=>{qMode=S.pref.qMode=v;save();qApply()});$('#qGive').onclick=()=>qAnswer(null);
 renderScore('quiz');renderScore('ouv');
