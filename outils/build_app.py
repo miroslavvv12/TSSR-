@@ -53,7 +53,11 @@ for f in os.listdir('/home/claude/src/pwa/icons'):
 shutil.copy('/home/claude/src/pwa/manifest.webmanifest', DIST + '/manifest.webmanifest')
 open(DIST + '/.nojekyll', 'w').close()
 open(DIST + '/robots.txt', 'w').write('User-agent: *\nDisallow: /\n')
-files = ['./', 'index.html', 'manifest.webmanifest', 'keys.json', 'content.enc'] + ['icons/' + f for f in sorted(os.listdir(DIST + '/icons'))]
+# Page d'entraînement (outils/build_entrainement.py) : copiée dans l'appli et gardée dans le cache hors ligne
+TRAIN = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'entrainement.html')
+if os.path.exists(TRAIN):
+    shutil.copy(TRAIN, DIST + '/entrainement.html')
+files = ['./', 'index.html'] + (['entrainement.html'] if os.path.exists(DIST + '/entrainement.html') else []) + ['manifest.webmanifest', 'keys.json', 'content.enc'] + ['icons/' + f for f in sorted(os.listdir(DIST + '/icons'))]
 h = hashlib.sha1(b''.join(open(DIST + '/' + f, 'rb').read() for f in files if f != './')).hexdigest()[:10]
 sw = f'''const CACHE='tssr-{h}';
 const FILES={json.dumps(files)};

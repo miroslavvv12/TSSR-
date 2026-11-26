@@ -1,0 +1,578 @@
+[
+{
+"t": "DNS",
+"s": "Cours DNS (David Rodriguez)",
+"q": "À quoi sert le DNS (Domain Name System) ?",
+"o": [
+"Traduire un nom de domaine en adresse IP",
+"Attribuer les adresses IP aux postes",
+"Traduire les adresses privées en publiques",
+"Chiffrer les pages web"
+],
+"e": "Les adresses IP sont faites pour les machines ; les noms de domaine sont plus simples à retenir pour nous.",
+"x": [
+"Ça, c'est le DHCP.",
+"Ça, c'est la NAT.",
+"Ça, c'est le HTTPS."
+],
+"n": 0
+},
+{
+"t": "DNS",
+"s": "Cours DNS (David Rodriguez)",
+"q": "Comment le cours décrit-il le système DNS ?",
+"o": [
+"Hiérarchique et distribué",
+"Centralisé sur un seul serveur",
+"Plat, sans hiérarchie",
+"Réservé aux réseaux locaux"
+],
+"e": "Le sommet de la hiérarchie s'appelle la racine.",
+"x": [
+"Il n'y a pas de serveur unique.",
+"Il y a une hiérarchie, avec la racine au sommet.",
+"Le DNS fonctionne aussi sur Internet."
+],
+"n": 1
+},
+{
+"t": "DNS",
+"s": "Cours DNS (David Rodriguez)",
+"q": "Comment représente-t-on la racine du DNS ?",
+"o": [
+"Par un point « . »",
+"Par une barre « / »",
+"Par « www »",
+"Par « root »"
+],
+"e": "Elle n'apparaît pas dans les URL : elle est sous-entendue.",
+"x": [
+"La barre sert aux chemins Linux et aux URL.",
+"www est un nom d'hôte courant.",
+"Ce n'est pas la notation du cours."
+],
+"n": 1
+},
+{
+"t": "DNS",
+"s": "Cours DNS (David Rodriguez)",
+"q": "Qu'est-ce qu'un TLD ?",
+"o": [
+"Un domaine de premier niveau, juste sous la racine (.fr, .de, .co.uk…)",
+"Le nom de la machine",
+"Un serveur DNS secondaire",
+"Un enregistrement de type texte"
+],
+"e": "TLD = Top Level Domain.",
+"x": [
+"Le nom de la machine est tout à gauche.",
+"Rien à voir avec un serveur secondaire.",
+"Ce n'est pas un type d'enregistrement."
+],
+"n": 0
+},
+{
+"t": "DNS",
+"s": "Cours DNS (David Rodriguez)",
+"q": "Qu'est-ce qu'une délégation DNS ?",
+"o": [
+"L'indication que les informations d'un sous-domaine sont sur un autre serveur",
+"La copie d'une zone sur un serveur secondaire",
+"Le transfert d'un nom de domaine à un nouveau propriétaire",
+"Un enregistrement d'alias"
+],
+"e": "Les délégations créent des zones.",
+"x": [
+"Ça, c'est le rôle d'un serveur secondaire.",
+"Rien à voir avec la vente de domaines.",
+"Ça, c'est un CNAME."
+],
+"n": 1
+},
+{
+"t": "DNS",
+"s": "Cours DNS (David Rodriguez)",
+"q": "Qu'est-ce qu'une zone DNS ?",
+"o": [
+"Un ensemble de domaines et sous-domaines non délégués, configurés sur un serveur donné",
+"Une plage d'adresses IP",
+"Un pays",
+"Un VLAN pour le DNS"
+],
+"e": "Le cours prévient : on confond souvent zones et domaines.",
+"x": [
+"Une plage d'adresses, c'est une étendue DHCP.",
+"Rien à voir avec la géographie.",
+"Rien à voir avec les VLAN."
+],
+"n": 2
+},
+{
+"t": "DNS",
+"s": "Cours DNS (David Rodriguez)",
+"q": "Dans quel sens parcourt-on un nom de domaine pour le résoudre ?",
+"o": [
+"De droite à gauche, depuis la racine",
+"De gauche à droite",
+"Au hasard",
+"Du plus court au plus long"
+],
+"e": "Pour defense.gouv.fr. : la racine, puis fr, puis gouv, puis defense.",
+"x": [
+"On part de la racine, à droite.",
+"L'ordre est fixé par la hiérarchie.",
+"La longueur ne compte pas."
+],
+"n": 2
+},
+{
+"t": "DNS",
+"s": "Cours DNS (David Rodriguez)",
+"q": "Combien y a-t-il d'identités de serveurs racine du DNS ?",
+"o": [
+"13, nommées par les lettres A à M",
+"1 seule, aux États-Unis",
+"26, de A à Z",
+"Plusieurs milliers"
+],
+"e": "Chaque identité correspond à plusieurs installations : plus de 130 sites dans 53 pays d'après le cours.",
+"x": [
+"Il y en a 13.",
+"Les lettres vont de A à M.",
+"Ce sont 13 identités, réparties sur de nombreux sites."
+],
+"n": 1
+},
+{
+"t": "DNS",
+"s": "Cours DNS (David Rodriguez)",
+"q": "Que se passerait-il si plus aucun serveur racine ne répondait ?",
+"o": [
+"Les noms deviendraient peu à peu inaccessibles, au fur et à mesure que les caches expirent",
+"Internet s'arrêterait instantanément",
+"Rien du tout",
+"Seuls les sites en .com seraient touchés"
+],
+"e": "Environ 2 % par heure d'indisponibilité totale. Si seulement quelques-uns tombent, les autres prennent la charge.",
+"x": [
+"Les caches permettent de tenir un moment.",
+"Les noms disparaîtraient peu à peu.",
+"Tous les domaines dépendent de la racine."
+],
+"n": 4
+},
+{
+"t": "DNS",
+"s": "Cours DNS (David Rodriguez)",
+"q": "À qui un ordinateur s'adresse-t-il pour résoudre un nom ?",
+"o": [
+"À un serveur DNS récursif",
+"Directement aux serveurs racine",
+"Au serveur DHCP",
+"À son switch"
+],
+"e": "Les hôtes ne connaissent que peu le DNS. L'adresse du serveur récursif vient souvent du DHCP ou est saisie à la main.",
+"x": [
+"C'est le serveur récursif qui interroge la racine.",
+"Le DHCP ne résout pas les noms.",
+"Un switch ne connaît pas le DNS."
+],
+"n": 1
+},
+{
+"t": "DNS",
+"s": "Cours DNS (David Rodriguez)",
+"q": "Citez un exemple de serveur DNS récursif ouvert donné par le cours.",
+"o": [
+"Google Public DNS (ou OpenDNS)",
+"Le serveur racine E de la NASA",
+"Le serveur DHCP de la box",
+"Active Directory"
+],
+"e": "Ouvert = utilisable par tout le monde.",
+"x": [
+"Un serveur racine ne fait pas de récursion pour le public.",
+"La box sert d'abord au DHCP.",
+"Active Directory n'est pas un résolveur public."
+],
+"n": 1
+},
+{
+"t": "DNS",
+"s": "Cours DNS (David Rodriguez)",
+"q": "Un serveur récursif cherche l'IP de afpa.fr. Qui interroge-t-il en premier ?",
+"o": [
+"Les serveurs racine, pour savoir qui gère la zone fr",
+"Le serveur de afpa.fr directement",
+"Le serveur DHCP",
+"Le poste client"
+],
+"e": "Puis un serveur de la zone fr, qui indique les serveurs de afpa.fr, et l'un d'eux donne l'adresse IP.",
+"x": [
+"Il ne connaît pas encore le serveur de afpa.fr.",
+"Le DHCP ne connaît pas les domaines.",
+"Le poste est celui qui a posé la question."
+],
+"n": 3
+},
+{
+"t": "DNS",
+"s": "Cours DNS (David Rodriguez)",
+"q": "Pourquoi les serveurs DNS récursifs gardent-ils les réponses en cache ?",
+"o": [
+"Pour ne pas refaire toute la résolution aux requêtes suivantes",
+"Pour espionner les utilisateurs",
+"Pour faire des sauvegardes",
+"Parce que la loi l'impose"
+],
+"e": "La réponse est gardée pendant une durée appelée TTL (Time to live).",
+"x": [
+"Le cache sert à aller plus vite.",
+"Ce n'est pas une sauvegarde.",
+"Aucune loi ne l'impose."
+],
+"n": 2
+},
+{
+"t": "DNS",
+"s": "Cours DNS (David Rodriguez)",
+"q": "Combien de serveurs DNS utilise généralement un nom de domaine ?",
+"o": [
+"Au moins deux : un primaire et un secondaire",
+"Un seul",
+"Exactement treize",
+"Aucun, c'est le registrar qui répond"
+],
+"e": "Il peut y avoir plusieurs secondaires.",
+"x": [
+"On en prévoit au moins deux.",
+"13, ce sont les identités racine.",
+"Le registrar enregistre le nom, il ne répond pas aux requêtes."
+],
+"n": 1
+},
+{
+"t": "DNS",
+"s": "Cours DNS (David Rodriguez)",
+"q": "Que veut dire « faire autorité » pour un domaine ?",
+"o": [
+"La réponse vient du serveur primaire ou secondaire du domaine, sans passer par un autre serveur ou un cache",
+"Le serveur appartient à l'État",
+"Le serveur est le plus rapide",
+"Le domaine est payant"
+],
+"e": "Un serveur récursif répond souvent depuis son cache : c'est une réponse ne faisant pas autorité (non-authoritative answer).",
+"x": [
+"Rien à voir avec l'État.",
+"La vitesse n'a rien à voir.",
+"Le prix du domaine n'a rien à voir."
+],
+"n": 2
+},
+{
+"t": "DNS",
+"s": "Cours DNS (David Rodriguez)",
+"q": "nslookup affiche « Réponse ne faisant pas autorité » (non-authoritative answer). Pourquoi ?",
+"o": [
+"La réponse vient d'un serveur récursif, peut-être depuis son cache",
+"Le nom de domaine n'existe pas",
+"Le serveur DNS est en panne",
+"Le site est piraté"
+],
+"e": "Ces réponses ne sont pas forcément à jour, à cause du cache.",
+"x": [
+"S'il n'existait pas, il n'y aurait pas de réponse.",
+"Il a bien répondu.",
+"Rien à voir avec un piratage."
+],
+"n": 4
+},
+{
+"t": "DNS",
+"s": "Cours DNS (David Rodriguez)",
+"q": "À quoi sert la résolution inverse ?",
+"o": [
+"Trouver le nom de domaine associé à une adresse IP",
+"Trouver l'adresse IP d'un nom",
+"Trouver l'adresse MAC d'un poste",
+"Supprimer un nom du cache"
+],
+"e": "Elle rend lisibles les résultats de traceroute, ce qui aide au diagnostic.",
+"x": [
+"Ça, c'est la résolution normale.",
+"Ça, c'est ARP.",
+"Rien à voir avec le cache."
+],
+"n": 1
+},
+{
+"t": "DNS",
+"s": "Cours DNS (David Rodriguez)",
+"q": "Quel enregistrement associe une adresse IP à un nom d'hôte (résolution inverse) ?",
+"o": [
+"PTR",
+"A",
+"MX",
+"CNAME"
+],
+"e": "Une même IP peut avoir plusieurs enregistrements PTR. Le PTR fait exactement le contraire du A.",
+"x": [
+"A fait l'inverse : nom vers IP.",
+"MX désigne les serveurs de mail.",
+"CNAME crée un alias."
+],
+"n": 1
+},
+{
+"t": "DNS",
+"s": "Cours DNS (David Rodriguez)",
+"q": "Qu'est-ce qu'un FQDN ?",
+"o": [
+"Un nom de domaine écrit en entier, jusqu'au TLD, terminé par un point (ex. afpa.fr.)",
+"Un nom de machine sans domaine",
+"Une adresse IPv6",
+"Un serveur DNS secondaire"
+],
+"e": "FQDN = Fully Qualified Domain Name, nom de domaine pleinement qualifié.",
+"x": [
+"Il contient tous les domaines jusqu'au TLD.",
+"C'est un nom, pas une adresse.",
+"Rien à voir avec un serveur secondaire."
+],
+"n": 0
+},
+{
+"t": "DNS",
+"s": "Cours DNS (David Rodriguez)",
+"q": "Quel enregistrement relie un nom d'hôte à une adresse IPv4 ?",
+"o": [
+"A",
+"AAAA",
+"PTR",
+"MX"
+],
+"e": "Exemple du cours : nomdedomaine.com A 46.31.192.222.",
+"x": [
+"AAAA, c'est pour IPv6.",
+"PTR fait l'inverse.",
+"MX désigne les serveurs de mail."
+],
+"n": 1
+},
+{
+"t": "DNS",
+"s": "Cours DNS (David Rodriguez)",
+"q": "Quel enregistrement relie un nom d'hôte à une adresse IPv6 ?",
+"o": [
+"AAAA",
+"A",
+"CNAME",
+"PTR"
+],
+"e": "AAAA = IPv6 address record.",
+"x": [
+"A, c'est pour IPv4.",
+"CNAME crée un alias.",
+"PTR fait l'inverse."
+],
+"n": 1
+},
+{
+"t": "DNS",
+"s": "Cours DNS (David Rodriguez)",
+"q": "Quel enregistrement fait d'un nom un alias d'un autre nom ?",
+"o": [
+"CNAME",
+"A",
+"MX",
+"PTR"
+],
+"e": "CNAME = canonical name. L'alias hérite de tous les sous-domaines de l'original.",
+"x": [
+"A pointe vers une IP.",
+"MX désigne les serveurs de mail.",
+"PTR sert à la résolution inverse."
+],
+"n": 1
+},
+{
+"t": "DNS",
+"s": "Cours DNS (David Rodriguez)",
+"q": "Quel enregistrement indique les serveurs de messagerie d'un domaine ?",
+"o": [
+"MX",
+"A",
+"CNAME",
+"AAAA"
+],
+"e": "MX = mail exchange.",
+"x": [
+"A pointe vers une IP.",
+"CNAME crée un alias.",
+"AAAA pointe vers une IPv6."
+],
+"n": 1
+},
+{
+"t": "DNS",
+"s": "Cours DNS (David Rodriguez)",
+"q": "Que fixe le TTL d'un enregistrement DNS ?",
+"o": [
+"Combien de temps il peut rester dans un serveur cache",
+"Le nombre de routeurs traversés",
+"La durée du bail DHCP",
+"Le délai avant que le site s'affiche"
+],
+"e": "Typiquement un jour (86 400 s). Un TTL de 0 interdit la mise en cache.",
+"x": [
+"Ça, c'est le TTL des paquets IP, une autre notion.",
+"Ça, c'est le DHCP.",
+"Le TTL ne règle pas l'affichage."
+],
+"n": 1
+},
+{
+"t": "DNS",
+"s": "Cours DNS (David Rodriguez)",
+"q": "Le cache DNS d'un navigateur web respecte-t-il toujours le TTL ?",
+"o": [
+"Non, il peut garder une réponse jusqu'à 30 minutes quel que soit le TTL",
+"Oui, toujours",
+"Il n'a pas de cache",
+"Il garde les réponses pour toujours"
+],
+"e": "Ce cache d'application est généralement de l'ordre de la minute.",
+"x": [
+"Le cours dit qu'il ne le respecte pas toujours.",
+"Les navigateurs ont bien un cache.",
+"Il garde les réponses un temps limité."
+],
+"n": 5
+},
+{
+"t": "DNS",
+"s": "Cours DNS (David Rodriguez)",
+"q": "Un sous-domaine délégué peut-il lui-même déléguer des sous-domaines ?",
+"o": [
+"Oui, vers d'autres serveurs",
+"Non, une seule délégation est possible",
+"Seulement s'il est un TLD",
+"Seulement en IPv6"
+],
+"e": "C'est ce qui rend le DNS distribué.",
+"x": [
+"Les délégations peuvent s'enchaîner.",
+"Tout domaine peut déléguer.",
+"Rien à voir avec IPv6."
+],
+"n": 2
+},
+{
+"t": "DNS",
+"s": "Cours DNS (David Rodriguez)",
+"q": "Combien d'organisations contrôlent les serveurs racine du DNS ?",
+"o": [
+"12 (dont 9 américaines, 2 européennes, 1 japonaise)",
+"1 seule",
+"13",
+"195, une par pays"
+],
+"e": "Exemple du cours : le serveur E est contrôlé par la NASA.",
+"x": [
+"Il y en a plusieurs.",
+"13, c'est le nombre d'identités de serveurs.",
+"Ce n'est pas un serveur par pays."
+],
+"n": 1
+},
+{
+"t": "DNS",
+"s": "Cours DNS (David Rodriguez)",
+"q": "Comment un poste obtient-il souvent l'adresse de son serveur DNS récursif ?",
+"o": [
+"Par le DHCP (ou saisie à la main)",
+"Par un broadcast DNS",
+"Par la NAT",
+"Par le serveur racine"
+],
+"e": "Exemple : l'option 006 d'une étendue DHCP sous Windows Server.",
+"x": [
+"Le DNS ne fonctionne pas par broadcast.",
+"La NAT traduit des adresses, elle n'en distribue pas.",
+"Le poste ne parle pas directement à la racine."
+],
+"n": 3
+},
+{
+"t": "DNS",
+"s": "Cours DNS (David Rodriguez)",
+"q": "Pendant une résolution, un serveur interrogé ne répond pas. Que fait le serveur récursif ?",
+"o": [
+"Il consulte un autre serveur de la liste",
+"Il abandonne",
+"Il redémarre",
+"Il répond une adresse au hasard"
+],
+"e": "Il y a toujours plusieurs serveurs par zone.",
+"x": [
+"Il a d'autres serveurs à interroger.",
+"Il ne redémarre pas.",
+"Il ne répond jamais au hasard."
+],
+"n": 2
+},
+{
+"t": "DNS",
+"s": "Cours DNS (David Rodriguez)",
+"q": "Une adresse IP peut-elle avoir plusieurs noms en résolution inverse ?",
+"o": [
+"Oui, avec plusieurs enregistrements PTR",
+"Non, un seul nom par IP",
+"Seulement en IPv6",
+"Seulement avec un CNAME"
+],
+"e": "Un PTR associe une IP à un nom d'hôte.",
+"x": [
+"Le cours dit le contraire.",
+"Rien à voir avec IPv6.",
+"Le CNAME sert aux alias de noms."
+],
+"n": 4
+},
+{
+"t": "DNS",
+"s": "Cours DNS (David Rodriguez)",
+"q": "Que veut dire un TTL de 0 sur un enregistrement ?",
+"o": [
+"Il ne doit pas être mis en cache",
+"Il est gardé pour toujours",
+"Il est supprimé du serveur",
+"Il est réservé à IPv6"
+],
+"e": "Le TTL habituel est d'un jour (86 400 secondes).",
+"x": [
+"C'est l'inverse.",
+"Il reste sur le serveur qui fait autorité.",
+"Rien à voir avec IPv6."
+],
+"n": 4
+},
+{
+"t": "DNS",
+"s": "Cours DNS (David Rodriguez)",
+"q": "Quel est un exemple de TLD donné par le cours ?",
+"o": [
+".co.uk",
+"afpa",
+"www",
+"defense.gouv"
+],
+"e": "Les autres exemples du cours : .fr et .de.",
+"x": [
+"afpa est un domaine sous .fr.",
+"www est un nom d'hôte.",
+"defense.gouv est un sous-domaine sous gouv.fr."
+],
+"n": 3
+}
+]

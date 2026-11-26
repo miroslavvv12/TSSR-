@@ -1,0 +1,560 @@
+[
+ {
+  "t": "Linux",
+  "s": "Cours Initiation à Linux (David Rodriguez), p. 2",
+  "q": "Quel est le plus important des programmes d'un ordinateur selon le cours ?",
+  "o": [
+   "Le système d'exploitation",
+   "Le navigateur web",
+   "Le traitement de texte",
+   "L'antivirus"
+  ],
+  "e": "Il pilote les périphériques, gère la mémoire, organise les fichiers et permet l'exécution des autres programmes.",
+  "x": [
+   "Non.",
+   "Non.",
+   "Non."
+  ],
+  "n": 0
+ },
+ {
+  "t": "Linux",
+  "s": "Cours Initiation à Linux (David Rodriguez), p. 3-4",
+  "q": "Où et quand le projet UNIX est-il né ?",
+  "o": [
+   "En 1969, aux laboratoires Bell (Ken Thompson et Dennis Ritchie)",
+   "En 1991, à l'université d'Helsinki",
+   "En 1983, au MIT",
+   "En 2007, chez Google"
+  ],
+  "e": "L'équipe venait du projet Multics, jugé trop complexe. Unics devint ensuite UNIX.",
+  "x": [
+   "C'est la naissance du noyau Linux.",
+   "C'est le projet GNU (voir la question sur GNU).",
+   "C'est Android."
+  ],
+  "n": 1
+ },
+ {
+  "t": "Linux",
+  "s": "Cours Initiation à Linux (David Rodriguez), p. 4",
+  "q": "Quel principe a guidé la création d'UNIX ?",
+  "o": [
+   "Chaque tâche est prise en charge par un seul programme qui fait une seule chose, mais bien",
+   "Un seul gros programme qui fait tout",
+   "Chaque programme doit avoir une interface graphique",
+   "Les programmes ne doivent pas communiquer"
+  ],
+  "e": "C'est la philosophie UNIX, reprise par Linux (p. 13) : des petits programmes qui travaillent ensemble par des flux de texte.",
+  "x": [
+   "C'était le défaut de Multics.",
+   "Non.",
+   "Au contraire, ils travaillent ensemble."
+  ],
+  "n": 2
+ },
+ {
+  "t": "Linux",
+  "s": "Cours Initiation à Linux (David Rodriguez), p. 6",
+  "q": "Que permet une licence BSD ?",
+  "o": [
+   "Consulter, modifier et redistribuer le code sous la licence de son choix, en citant l'auteur",
+   "Rien : le code est secret",
+   "Uniquement utiliser le logiciel",
+   "Redistribuer seulement sous la même licence"
+  ],
+  "e": "La licence propriétaire interdit de voir ou modifier le code. Les licences copyleft (GPL, CDDL) imposent de garder la même licence.",
+  "x": [
+   "C'est la licence propriétaire.",
+   "C'est la licence propriétaire.",
+   "C'est le copyleft (GPL, CDDL)."
+  ],
+  "n": 2
+ },
+ {
+  "t": "Linux",
+  "s": "Cours Initiation à Linux (David Rodriguez), p. 6 et 8",
+  "q": "Qu'est-ce qu'une licence « copyleft » comme la GPL ?",
+  "o": [
+   "Une licence libre qui oblige à redistribuer une version modifiée sous la même licence",
+   "Une licence qui interdit la copie",
+   "Une licence payante",
+   "Une licence qui interdit la modification"
+  ],
+  "e": "La GPL fixe les conditions de copie, modification et distribution des logiciels libres.",
+  "x": [
+   "C'est l'inverse.",
+   "Libre ne veut pas dire gratuit, mais ce n'est pas la définition.",
+   "La modification est permise."
+  ],
+  "n": 3
+ },
+ {
+  "t": "Linux",
+  "s": "Cours Initiation à Linux (David Rodriguez), p. 8",
+  "q": "Que veut dire « libre » pour un logiciel ?",
+  "o": [
+   "Pouvoir l'exécuter, le copier, le distribuer, l'étudier, le modifier et l'améliorer",
+   "Qu'il est forcément gratuit",
+   "Qu'il n'a pas de licence",
+   "Qu'il n'a pas de bug"
+  ],
+  "e": "Le cours insiste : liberté ne veut pas forcément dire gratuité.",
+  "x": [
+   "Libre ne veut pas dire gratuit.",
+   "Il a une licence (la GPL, par exemple).",
+   "Non."
+  ],
+  "n": 1
+ },
+ {
+  "t": "Linux",
+  "s": "Cours Initiation à Linux (David Rodriguez), p. 8",
+  "q": "Qui a lancé le projet GNU ?",
+  "o": [
+   "Richard Stallman",
+   "Linus Torvalds",
+   "Ken Thompson",
+   "Bill Gates"
+  ],
+  "e": "Objectif initial : créer un système d'exploitation libre. Le cours indique 1978 au MIT ; hors cours, la date retenue en général est 1983 (point à vérifier avec ton formateur).",
+  "x": [
+   "Il a créé le noyau Linux.",
+   "Il a créé UNIX.",
+   "Non."
+  ],
+  "n": 2
+ },
+ {
+  "t": "Linux",
+  "s": "Cours Initiation à Linux (David Rodriguez), p. 10",
+  "q": "Qui a créé le noyau Linux, et quand l'a-t-il annoncé ?",
+  "o": [
+   "Linus Torvalds, le 25 août 1991",
+   "Richard Stallman, en 1978",
+   "Ken Thompson, en 1969",
+   "Google, en 2005"
+  ],
+  "e": "Étudiant finlandais, il a publié son noyau sous licence GPL.",
+  "x": [
+   "C'est GNU.",
+   "C'est UNIX.",
+   "C'est Android."
+  ],
+  "n": 1
+ },
+ {
+  "t": "Linux",
+  "s": "Cours Initiation à Linux (David Rodriguez), p. 11",
+  "q": "De quoi est composé GNU/Linux ?",
+  "o": [
+   "Du noyau Linux et des applications GNU",
+   "Uniquement du noyau Linux",
+   "D'UNIX et de Windows",
+   "Du BIOS et de GRUB"
+  ],
+  "e": "D'où le nom GNU/Linux, souvent abrégé « Linux ».",
+  "x": [
+   "Le noyau seul ne suffit pas.",
+   "Non.",
+   "Non."
+  ],
+  "n": 2
+ },
+ {
+  "t": "Linux",
+  "s": "Cours Initiation à Linux (David Rodriguez), p. 12",
+  "q": "Quel principe résume la façon dont Linux voit les ressources ?",
+  "o": [
+   "Tout est fichier",
+   "Tout est programme",
+   "Tout est réseau",
+   "Tout est dossier"
+  ],
+  "e": "Programmes, données, flux réseau, périphériques : tout est fichier. Linux est multitâche et multi-utilisateur.",
+  "x": [
+   "Non.",
+   "Non.",
+   "Non."
+  ],
+  "n": 1
+ },
+ {
+  "t": "Linux",
+  "s": "Cours Initiation à Linux (David Rodriguez), p. 14",
+  "q": "Qu'est-ce qu'une distribution Linux ?",
+  "o": [
+   "Un ensemble cohérent : système de base, outils d'administration, logiciels et installateur",
+   "Le noyau seul",
+   "Une version de Windows",
+   "Un antivirus"
+  ],
+  "e": "Exemples : Debian, Ubuntu, Red Hat, Fedora, SUSE.",
+  "x": [
+   "Non.",
+   "Non.",
+   "Non."
+  ],
+  "n": 1
+ },
+ {
+  "t": "Linux",
+  "s": "Cours Initiation à Linux (David Rodriguez), p. 16",
+  "q": "Quelles sont les couches de l'architecture GNU/Linux, du haut vers le bas ?",
+  "o": [
+   "Programmes utilisateur, shell, bibliothèque système (GLIBC), noyau Linux",
+   "Noyau, programmes, shell, BIOS",
+   "Shell, noyau, programmes, GLIBC",
+   "Programmes, noyau, shell, GLIBC"
+  ],
+  "e": "Le shell peut être en ligne de commande (bash) ou graphique (GNOME, KDE).",
+  "x": [
+   "Le BIOS n'en fait pas partie.",
+   "L'ordre est faux.",
+   "L'ordre est faux."
+  ],
+  "n": 2
+ },
+ {
+  "t": "Linux",
+  "s": "Cours Initiation à Linux (David Rodriguez), p. 18",
+  "q": "Que contient /home ?",
+  "o": [
+   "Les répertoires personnels des utilisateurs",
+   "La configuration du système",
+   "Les périphériques",
+   "Les fichiers temporaires"
+  ],
+  "e": "/etc = configuration, /dev = périphériques, /tmp = fichiers temporaires, /boot = démarrage.",
+  "x": [
+   "C'est /etc.",
+   "C'est /dev.",
+   "C'est /tmp."
+  ],
+  "n": 1
+ },
+ {
+  "t": "Linux",
+  "s": "Cours Initiation à Linux (David Rodriguez), p. 18",
+  "q": "Dans quel dossier se trouve la configuration du système ?",
+  "o": [
+   "/etc",
+   "/bin",
+   "/media",
+   "/proc"
+  ],
+  "e": "/bin = exécutables de base, /media = médias amovibles, /proc = informations sur le noyau.",
+  "x": [
+   "Exécutables de base.",
+   "Clés USB, CD…",
+   "Informations noyau."
+  ],
+  "n": 2
+ },
+ {
+  "t": "Linux",
+  "s": "Cours Initiation à Linux (David Rodriguez), p. 18",
+  "q": "Où sont montés les médias amovibles (clé USB, CD) ?",
+  "o": [
+   "/media",
+   "/mnt",
+   "/opt",
+   "/usr"
+  ],
+  "e": "/mnt sert aux points de montage, /opt aux programmes optionnels, /usr aux programmes et bibliothèques des utilisateurs.",
+  "x": [
+   "Points de montage manuels.",
+   "Programmes optionnels.",
+   "Programmes et bibliothèques."
+  ],
+  "n": 2
+ },
+ {
+  "t": "Linux",
+  "s": "Cours Initiation à Linux (David Rodriguez), p. 20",
+  "q": "Quelle est la différence entre un lien physique et un lien symbolique ?",
+  "o": [
+   "Le lien physique est un nom qui référence un inode ; le symbolique référence un chemin",
+   "Aucune",
+   "Le lien symbolique copie le fichier",
+   "Le lien physique fonctionne sur le réseau"
+  ],
+  "e": "Un fichier est identifié par un inode. Un répertoire ne peut avoir qu'un lien physique, pour éviter les boucles.",
+  "x": [
+   "Il y en a une.",
+   "Aucun ne copie.",
+   "Non."
+  ],
+  "n": 3
+ },
+ {
+  "t": "Linux",
+  "s": "Cours Initiation à Linux (David Rodriguez), p. 21",
+  "q": "Quelle différence entre un tube (pipe) et une socket ?",
+  "o": [
+   "La socket fonctionne à travers le réseau et peut être bidirectionnelle",
+   "Le tube fonctionne à travers le réseau",
+   "La socket est un dossier",
+   "Aucune"
+  ],
+  "e": "Un tube : un programme écrit à un bout, un autre lit à l'autre bout.",
+  "x": [
+   "C'est la socket.",
+   "Non.",
+   "Il y en a une."
+  ],
+  "n": 3
+ },
+ {
+  "t": "Linux",
+  "s": "Cours Initiation à Linux (David Rodriguez), p. 22",
+  "q": "Quel UID a le super-utilisateur root ?",
+  "o": [
+   "0",
+   "1",
+   "1000",
+   "100"
+  ],
+  "e": "Chaque utilisateur est identifié par un numéro, l'UID.",
+  "x": [
+   "Non.",
+   "C'est souvent le premier utilisateur normal.",
+   "Non."
+  ],
+  "n": 1
+ },
+ {
+  "t": "Linux",
+  "s": "Cours Initiation à Linux (David Rodriguez), p. 23",
+  "q": "Quel fichier peut contenir les mots de passe, à la place de /etc/passwd ?",
+  "o": [
+   "/etc/shadow",
+   "/etc/group",
+   "/etc/home",
+   "/var/passwd"
+  ],
+  "e": "/etc/passwd liste les utilisateurs, /etc/group les groupes. Ils peuvent aussi être dans un annuaire (NIS, LDAP).",
+  "x": [
+   "Il liste les groupes.",
+   "N'existe pas.",
+   "N'existe pas."
+  ],
+  "n": 2
+ },
+ {
+  "t": "Linux",
+  "s": "Cours Initiation à Linux (David Rodriguez), p. 24",
+  "q": "À qui s'appliquent les trois groupes de droits d'un fichier (UGO) ?",
+  "o": [
+   "Au propriétaire, au groupe du propriétaire, aux autres",
+   "À root, aux administrateurs, aux invités",
+   "Au lecteur, à l'écrivain, à l'exécutant",
+   "Au noyau, au shell, aux programmes"
+  ],
+  "e": "Pour chacun : r (lecture), w (écriture), x (exécution).",
+  "x": [
+   "Non.",
+   "Ce sont les droits, pas les personnes.",
+   "Non."
+  ],
+  "n": 2
+ },
+ {
+  "t": "Linux",
+  "s": "Cours Initiation à Linux (David Rodriguez), p. 24-25",
+  "q": "Que vaut en octal le triplet de droits 101 ?",
+  "o": [
+   "5 (lecture et exécution)",
+   "3",
+   "6",
+   "1"
+  ],
+  "e": "Chaque droit est un bit : r = 4, w = 2, x = 1. 101 = 4 + 1 = 5.",
+  "x": [
+   "011 = 3 (écriture et exécution).",
+   "110 = 6 (lecture et écriture).",
+   "001 = 1 (exécution)."
+  ],
+  "n": 3
+ },
+ {
+  "t": "Linux",
+  "s": "Cours Initiation à Linux (David Rodriguez), p. 25",
+  "q": "Le propriétaire a 111, le groupe 100, les autres 101. Quel est le droit en octal ?",
+  "o": [
+   "745",
+   "754",
+   "777",
+   "711"
+  ],
+  "e": "111 = 7, 100 = 4, 101 = 5. C'est l'exemple du cours.",
+  "x": [
+   "Le groupe et les autres sont inversés.",
+   "Tout le monde aurait tous les droits.",
+   "Non."
+  ],
+  "n": 4
+ },
+ {
+  "t": "Linux",
+  "s": "Cours Initiation à Linux (David Rodriguez), p. 26",
+  "q": "Quel est le processus numéro 1 ?",
+  "o": [
+   "init",
+   "bash",
+   "root",
+   "kernel"
+  ],
+  "e": "Les processus forment une arborescence (voir pstree). Un processus orphelin est rattaché à init.",
+  "x": [
+   "Non.",
+   "C'est un utilisateur.",
+   "Non."
+  ],
+  "n": 2
+ },
+ {
+  "t": "Linux",
+  "s": "Cours Initiation à Linux (David Rodriguez), p. 26",
+  "q": "Qu'est-ce qu'un processus zombie ?",
+  "o": [
+   "Un processus qui ne fait plus rien mais n'a pas été correctement terminé",
+   "Un virus",
+   "Un processus de root",
+   "Un processus réseau"
+  ],
+  "e": "Seul le propriétaire ou root peut tuer un processus.",
+  "x": [
+   "Non.",
+   "Non.",
+   "Non."
+  ],
+  "n": 3
+ },
+ {
+  "t": "Linux",
+  "s": "Cours Initiation à Linux (David Rodriguez), p. 27",
+  "q": "Qu'est-ce qu'un daemon sous Linux ?",
+  "o": [
+   "Un programme qui tourne en arrière-plan, sans contrôle direct de l'utilisateur",
+   "Un virus",
+   "Un dossier système",
+   "Un utilisateur caché"
+  ],
+  "e": "Équivalent sous Windows : les services.",
+  "x": [
+   "Non.",
+   "Non.",
+   "Non."
+  ],
+  "n": 1
+ },
+ {
+  "t": "Linux",
+  "s": "Cours Initiation à Linux (David Rodriguez), p. 28",
+  "q": "Sur Red Hat, que signifie le niveau d'exécution 1 ?",
+  "o": [
+   "Le mode mono-utilisateur, pour l'administration",
+   "L'arrêt",
+   "Le redémarrage",
+   "L'interface graphique X11"
+  ],
+  "e": "0 = arrêt, 1 = mono-utilisateur, 3 = multi-utilisateur avec réseau, 5 = X11, 6 = redémarrage. Le niveau par défaut est dans /etc/inittab. Hors cours : les distributions récentes utilisent systemd et ses « targets ».",
+  "x": [
+   "C'est 0.",
+   "C'est 6.",
+   "C'est 5."
+  ],
+  "n": 3
+ },
+ {
+  "t": "Linux",
+  "s": "Cours Initiation à Linux (David Rodriguez), p. 30",
+  "q": "Sur quelle distribution Ubuntu est-elle basée ?",
+  "o": [
+   "Debian",
+   "Red Hat",
+   "Slackware",
+   "Android"
+  ],
+  "e": "Ubuntu vise une interface conviviale, aussi stable que Debian. Elle est gratuite, même pour les entreprises.",
+  "x": [
+   "CentOS est basé sur Red Hat.",
+   "Non.",
+   "Non."
+  ],
+  "n": 2
+ },
+ {
+  "t": "Linux",
+  "s": "Cours Initiation à Linux (David Rodriguez), p. 31",
+  "q": "Quel est l'inconvénient de la grande stabilité de Debian selon le cours ?",
+  "o": [
+   "Environ deux ans entre deux versions",
+   "Elle est payante",
+   "Elle n'a pas d'interface graphique",
+   "Elle ne fonctionne que sur serveur"
+  ],
+  "e": "Le cours cite Stretch comme version actuelle ; hors cours, c'est dépassé : les versions suivantes sont Buster, Bullseye, Bookworm puis Trixie.",
+  "x": [
+   "Elle est gratuite.",
+   "Non.",
+   "Non."
+  ],
+  "n": 4
+ },
+ {
+  "t": "Linux",
+  "s": "Cours Initiation à Linux (David Rodriguez), p. 33",
+  "q": "Quel est le modèle économique de Red Hat ?",
+  "o": [
+   "La souscription : le client paie le support technique",
+   "La vente du code source",
+   "La publicité",
+   "Une licence propriétaire fermée"
+  ],
+  "e": "Red Hat publie ses codes sources, ce qui a permis à CentOS d'exister légalement.",
+  "x": [
+   "Le code est publié.",
+   "Non.",
+   "Non."
+  ],
+  "n": 4
+ },
+ {
+  "t": "Linux",
+  "s": "Cours Initiation à Linux (David Rodriguez), p. 34",
+  "q": "Pourquoi CentOS pouvait-il légalement copier Red Hat Enterprise Linux ?",
+  "o": [
+   "Les sources de Red Hat sont sous licence libre ; CentOS les a recompilées en retirant les logos",
+   "Red Hat l'a racheté",
+   "La copie est toujours légale",
+   "CentOS a payé une licence"
+  ],
+  "e": "Hors cours : CentOS Linux a pris fin en 2024 ; Rocky Linux et AlmaLinux ont pris le relais.",
+  "x": [
+   "Ce n'est pas la raison donnée.",
+   "Non : c'est la licence qui le permet.",
+   "Non."
+  ],
+  "n": 5
+ },
+ {
+  "t": "Linux",
+  "s": "Cours Initiation à Linux (David Rodriguez), p. 7",
+  "q": "Le cours dit que les Linux sont plus adaptés aux particuliers qu'aux entreprises. Qu'en penser ?",
+  "o": [
+   "Le cours nuance lui-même : Debian ou Red Hat atteignent une stabilité digne des UNIX ; en pratique, Linux est très utilisé sur les serveurs d'entreprise",
+   "Linux est interdit en entreprise",
+   "Linux ne fonctionne pas sur serveur",
+   "Seul Windows est stable"
+  ],
+  "e": "Point à vérifier avec ton formateur. Le cours lui-même cite Red Hat comme leader de Linux en entreprise (p. 33).",
+  "x": [
+   "Non.",
+   "Non.",
+   "Non."
+  ],
+  "n": 5
+ }
+]

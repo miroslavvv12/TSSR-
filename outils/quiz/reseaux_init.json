@@ -1,0 +1,506 @@
+[
+ {
+  "t": "Initiation aux réseaux",
+  "s": "Cours Initiation aux réseaux informatiques (David Rodriguez), p. 2",
+  "q": "Qu'est-ce qu'un réseau selon le cours ?",
+  "o": [
+   "Un groupe d'entités autonomes en communication",
+   "Un seul ordinateur",
+   "Un câble",
+   "Un logiciel"
+  ],
+  "e": "Exemple du cours : deux ordinateurs reliés pour échanger des informations forment un réseau.",
+  "x": [
+   "Il faut au moins deux entités.",
+   "Non.",
+   "Non."
+  ],
+  "n": 0
+ },
+ {
+  "t": "Initiation aux réseaux",
+  "s": "Cours Initiation aux réseaux informatiques (David Rodriguez), p. 3",
+  "q": "Qu'est-ce qu'un nœud ?",
+  "o": [
+   "Toute entité du réseau adressable par un numéro unique",
+   "Uniquement un serveur",
+   "Un câble de raccordement",
+   "Un logiciel"
+  ],
+  "e": "Station de travail, imprimante, serveur, équipement…",
+  "x": [
+   "Pas seulement.",
+   "Non.",
+   "Non."
+  ],
+  "n": 1
+ },
+ {
+  "t": "Initiation aux réseaux",
+  "s": "Cours Initiation aux réseaux informatiques (David Rodriguez), p. 4",
+  "q": "Laquelle de ces finalités des réseaux n'est PAS citée par le cours ?",
+  "o": [
+   "Augmenter la consommation électrique",
+   "Partager les ressources",
+   "Accroître la résistance aux pannes",
+   "Diminuer les coûts"
+  ],
+  "e": "Les trois autres sont citées.",
+  "x": [
+   "Citée.",
+   "Citée.",
+   "Citée."
+  ],
+  "n": 1
+ },
+ {
+  "t": "Initiation aux réseaux",
+  "s": "Cours Initiation aux réseaux informatiques (David Rodriguez), p. 6",
+  "q": "Que veut dire LAN ?",
+  "o": [
+   "Local Area Network",
+   "Large Access Network",
+   "Linked Area Node",
+   "Long Area Network"
+  ],
+  "e": "PAN = personnel, LAN = local, MAN = métropolitain, WAN = étendu.",
+  "x": [
+   "Non.",
+   "Non.",
+   "Non."
+  ],
+  "n": 0
+ },
+ {
+  "t": "Initiation aux réseaux",
+  "s": "Cours Initiation aux réseaux informatiques (David Rodriguez), p. 7",
+  "q": "Quelle est la portée d'un PAN ?",
+  "o": [
+   "Une dizaine de mètres",
+   "Quelques kilomètres",
+   "Une ville",
+   "La planète"
+  ],
+  "e": "On l'appelle aussi réseau domestique ou individuel.",
+  "x": [
+   "Non.",
+   "C'est un MAN.",
+   "C'est un WAN."
+  ],
+  "n": 1
+ },
+ {
+  "t": "Initiation aux réseaux",
+  "s": "Cours Initiation aux réseaux informatiques (David Rodriguez), p. 8",
+  "q": "Sur quel périmètre s'étend un LAN selon le cours ?",
+  "o": [
+   "Quelques centaines de mètres",
+   "Une dizaine de mètres",
+   "Une ville",
+   "Plusieurs pays"
+  ],
+  "e": "Il repose en général sur une infrastructure filaire et permet de partager des ressources.",
+  "x": [
+   "C'est un PAN.",
+   "C'est un MAN.",
+   "C'est un WAN."
+  ],
+  "n": 1
+ },
+ {
+  "t": "Initiation aux réseaux",
+  "s": "Cours Initiation aux réseaux informatiques (David Rodriguez), p. 10",
+  "q": "Quel est le WAN le plus connu ?",
+  "o": [
+   "Internet",
+   "Le Wi-Fi de la maison",
+   "Le réseau d'une école",
+   "Le Bluetooth"
+  ],
+  "e": "Un WAN couvre un ou plusieurs pays, voire la planète.",
+  "x": [
+   "C'est un LAN.",
+   "C'est un LAN ou un MAN.",
+   "C'est un PAN."
+  ],
+  "n": 1
+ },
+ {
+  "t": "Initiation aux réseaux",
+  "s": "Cours Initiation aux réseaux informatiques (David Rodriguez), p. 9",
+  "q": "Comment appelle-t-on aussi l'interconnexion de plusieurs LAN par des dorsales ?",
+  "o": [
+   "Un réseau de campus (MAN)",
+   "Un PAN",
+   "Un VLAN",
+   "Un réseau en anneau"
+  ],
+  "e": "Le MAN couvre une ville ou une région.",
+  "x": [
+   "Non.",
+   "Un VLAN est un réseau virtuel.",
+   "C'est une topologie."
+  ],
+  "n": 2
+ },
+ {
+  "t": "Initiation aux réseaux",
+  "s": "Cours Initiation aux réseaux informatiques (David Rodriguez), p. 12-13",
+  "q": "Le téléphone permet de parler et d'écouter en même temps. Quel mode ?",
+  "o": [
+   "Full-duplex",
+   "Half-duplex",
+   "Simplex",
+   "Broadcast"
+  ],
+  "e": "Full-duplex : les deux en même temps. Half-duplex : chacun son tour. Simplex : un seul sens.",
+  "x": [
+   "Chacun son tour (talkie-walkie).",
+   "Un seul sens.",
+   "Ce n'est pas un mode de communication."
+  ],
+  "n": 1
+ },
+ {
+  "t": "Initiation aux réseaux",
+  "s": "Cours Initiation aux réseaux informatiques (David Rodriguez), p. 14",
+  "q": "Quel risque existe en half-duplex si les deux parlent en même temps ?",
+  "o": [
+   "Une collision",
+   "Une surchauffe",
+   "Une perte d'adresse IP",
+   "Aucun"
+  ],
+  "e": "Il faut savoir qui a le droit de parler. Le basculement de sens ajoute aussi un délai.",
+  "x": [
+   "Non.",
+   "Non.",
+   "Il y en a un."
+  ],
+  "n": 2
+ },
+ {
+  "t": "Initiation aux réseaux",
+  "s": "Cours Initiation aux réseaux informatiques (David Rodriguez), p. 15",
+  "q": "Un capteur envoie régulièrement ses mesures sans attendre de réponse. Quel mode ?",
+  "o": [
+   "Simplex",
+   "Full-duplex",
+   "Half-duplex",
+   "Maillé"
+  ],
+  "e": "Exemple du cours.",
+  "x": [
+   "Pas besoin de réponse.",
+   "Pas besoin de réponse.",
+   "C'est une topologie."
+  ],
+  "n": 2
+ },
+ {
+  "t": "Initiation aux réseaux",
+  "s": "Cours Initiation aux réseaux informatiques (David Rodriguez), p. 17",
+  "q": "Quelle différence entre le mode diffusion et le mode point à point ?",
+  "o": [
+   "Diffusion : un seul support partagé, tout le monde voit le message ; point à point : chaque support relie seulement deux unités",
+   "Aucune",
+   "La diffusion utilise des routeurs",
+   "Le point à point utilise un bus"
+  ],
+  "e": "Bus et anneau = diffusion ; étoile et maillé = point à point.",
+  "x": [
+   "Il y en a une.",
+   "Non.",
+   "Le bus est en diffusion."
+  ],
+  "n": 2
+ },
+ {
+  "t": "Initiation aux réseaux",
+  "s": "Cours Initiation aux réseaux informatiques (David Rodriguez), p. 20",
+  "q": "Dans une topologie en bus, que se passe-t-il si le câble principal est coupé ?",
+  "o": [
+   "Tout le réseau tombe",
+   "Seule une station est coupée",
+   "Rien",
+   "Le réseau passe en étoile"
+  ],
+  "e": "Une station en panne ne perturbe pas le bus, mais une panne du support arrête tout. Le bus est fermé par des bouchons.",
+  "x": [
+   "C'est le cas d'une station en panne.",
+   "Non.",
+   "Non."
+  ],
+  "n": 3
+ },
+ {
+  "t": "Initiation aux réseaux",
+  "s": "Cours Initiation aux réseaux informatiques (David Rodriguez), p. 21-22",
+  "q": "Quel est le principal inconvénient d'une topologie en étoile ?",
+  "o": [
+   "Si l'équipement central tombe, tout le réseau est en panne",
+   "On ne peut pas ajouter de poste",
+   "Les pannes sont difficiles à localiser",
+   "Débrancher un câble coupe tout le réseau"
+  ],
+  "e": "Avantages : ajout facile, pannes faciles à localiser, un câble débranché ne paralyse pas le reste.",
+  "x": [
+   "C'est un avantage : l'ajout est facile.",
+   "C'est un avantage : la localisation est facile.",
+   "Faux : seul ce poste est coupé."
+  ],
+  "n": 3
+ },
+ {
+  "t": "Initiation aux réseaux",
+  "s": "Cours Initiation aux réseaux informatiques (David Rodriguez), p. 18",
+  "q": "Comment évite-t-on qu'une panne coupe un réseau en anneau ?",
+  "o": [
+   "Avec deux anneaux contra-rotatifs",
+   "Avec un bouchon",
+   "Avec un hub",
+   "Avec le Wi-Fi"
+  ],
+  "e": "Si la communication est à sens unique, une seule station en panne rompt l'anneau.",
+  "x": [
+   "Le bouchon, c'est pour le bus.",
+   "Non.",
+   "Non."
+  ],
+  "n": 2
+ },
+ {
+  "t": "Initiation aux réseaux",
+  "s": "Cours Initiation aux réseaux informatiques (David Rodriguez), p. 23",
+  "q": "Quel est l'avantage d'un réseau maillé ?",
+  "o": [
+   "Pas de point sensible : si un hôte tombe, ses voisins passent par une autre route",
+   "Il est le moins cher",
+   "Il n'utilise qu'un câble",
+   "Il n'a pas besoin de routage"
+  ],
+  "e": "Les données sont relayées par inondation ou par des routes prédéfinies.",
+  "x": [
+   "C'est souvent le plus cher.",
+   "Non.",
+   "Il faut des routes ou l'inondation."
+  ],
+  "n": 3
+ },
+ {
+  "t": "Initiation aux réseaux",
+  "s": "Cours Initiation aux réseaux informatiques (David Rodriguez), p. 19",
+  "q": "Quel est le point faible d'un réseau hiérarchique (en arbre) ?",
+  "o": [
+   "Le nœud « père » : s'il tombe, les deux moitiés ne communiquent plus",
+   "Les feuilles",
+   "Les bouchons",
+   "Il n'en a pas"
+  ],
+  "e": "Le réseau est divisé en niveaux, comme un arbre.",
+  "x": [
+   "Non.",
+   "C'est le bus.",
+   "Il en a un."
+  ],
+  "n": 3
+ },
+ {
+  "t": "Initiation aux réseaux",
+  "s": "Cours Initiation aux réseaux informatiques (David Rodriguez), p. 26",
+  "q": "Que mesure la latence ?",
+  "o": [
+   "Le temps entre l'émission et la réception d'un bit",
+   "Le nombre de bits par seconde",
+   "La longueur du câble",
+   "Le nombre d'ordinateurs"
+  ],
+  "e": "Le débit, c'est le nombre de bits par seconde. Le RTT est le temps aller-retour.",
+  "x": [
+   "C'est le débit.",
+   "Non.",
+   "Non."
+  ],
+  "n": 2
+ },
+ {
+  "t": "Initiation aux réseaux",
+  "s": "Cours Initiation aux réseaux informatiques (David Rodriguez), p. 29",
+  "q": "Qu'est-ce qu'une adresse IP ?",
+  "o": [
+   "Le numéro qui identifie une interface sur un réseau IP",
+   "Le nom d'un ordinateur",
+   "L'adresse physique de la carte",
+   "Un mot de passe"
+  ],
+  "e": "Exemple IPv4 : 212.85.150.133, quatre nombres de 0 à 255.",
+  "x": [
+   "C'est le nom d'hôte.",
+   "C'est l'adresse MAC.",
+   "Non."
+  ],
+  "n": 0
+ },
+ {
+  "t": "Initiation aux réseaux",
+  "s": "Cours Initiation aux réseaux informatiques (David Rodriguez), p. 31",
+  "q": "Sur combien de bits est codée une adresse IPv4 ?",
+  "o": [
+   "32",
+   "48",
+   "64",
+   "128"
+  ],
+  "e": "Elle a une partie réseau (net-ID) à gauche et une partie hôte (host-ID) à droite.",
+  "x": [
+   "C'est l'adresse MAC.",
+   "Non.",
+   "C'est IPv6."
+  ],
+  "n": 1
+ },
+ {
+  "t": "Initiation aux réseaux",
+  "s": "Cours Initiation aux réseaux informatiques (David Rodriguez), p. 33",
+  "q": "Comment obtient-on l'adresse du réseau à partir d'une IP et de son masque ?",
+  "o": [
+   "On garde les bits de l'adresse là où le masque vaut 1 (ET logique)",
+   "On additionne l'adresse et le masque",
+   "On inverse tous les bits",
+   "On garde les bits là où le masque vaut 0"
+  ],
+  "e": "Les bits restants, à droite, forment la partie hôte.",
+  "x": [
+   "Non.",
+   "Non.",
+   "Ce serait la partie hôte."
+  ],
+  "n": 2
+ },
+ {
+  "t": "Initiation aux réseaux",
+  "s": "Cours Initiation aux réseaux informatiques (David Rodriguez), p. 34",
+  "q": "Combien de classes d'adresses IP le cours cite-t-il ?",
+  "o": [
+   "5 : A, B, C, D et E",
+   "3 : A, B et C",
+   "4",
+   "2 : publique et privée"
+  ],
+  "e": "Les classes permettent d'adapter l'adressage à la taille du réseau.",
+  "x": [
+   "A, B et C sont les classes d'adresses de machines, mais il y en a 5.",
+   "Non.",
+   "Ce n'est pas la notion de classe."
+  ],
+  "n": 1
+ },
+ {
+  "t": "Initiation aux réseaux",
+  "s": "Cours Initiation aux réseaux informatiques (David Rodriguez), p. 35",
+  "q": "Quelle plage est privée en classe B ?",
+  "o": [
+   "172.16.0.0 à 172.31.255.255",
+   "172.0.0.0 à 172.255.255.255",
+   "10.0.0.0 à 10.255.255.255",
+   "192.168.0.0 à 192.168.255.255"
+  ],
+  "e": "Classe A : 10.0.0.0/8 ; classe B : 172.16.0.0 à 172.31.255.255 ; classe C : 192.168.0.0/16.",
+  "x": [
+   "Trop large : 172.32.x.x est public.",
+   "C'est la classe A.",
+   "C'est la classe C."
+  ],
+  "n": 2
+ },
+ {
+  "t": "Initiation aux réseaux",
+  "s": "Cours Initiation aux réseaux informatiques (David Rodriguez), p. 35-36",
+  "q": "L'adresse 172.40.1.1 est-elle privée ?",
+  "o": [
+   "Non : la plage privée de classe B s'arrête à 172.31.255.255",
+   "Oui, toutes les adresses en 172 sont privées",
+   "Oui, car elle est de classe B",
+   "Non, car 172 est de classe A"
+  ],
+  "e": "Une adresse publique est unique dans le monde ; une privée n'est unique que dans son réseau local.",
+  "x": [
+   "Seulement 172.16 à 172.31.",
+   "Toute la classe B n'est pas privée.",
+   "172 est bien de classe B."
+  ],
+  "n": 3
+ },
+ {
+  "t": "Initiation aux réseaux",
+  "s": "Cours Initiation aux réseaux informatiques (David Rodriguez), p. 37",
+  "q": "À quoi sert le réseau 127.0.0.0 ?",
+  "o": [
+   "Aux tests de boucle locale (127.0.0.1 = localhost)",
+   "À la route par défaut",
+   "Au réseau privé de classe A",
+   "Au multicast"
+  ],
+  "e": "Le réseau 0.0.0.0 est lui aussi réservé et sert notamment à la route par défaut.",
+  "x": [
+   "C'est 0.0.0.0.",
+   "C'est 10.0.0.0.",
+   "C'est la classe D."
+  ],
+  "n": 2
+ },
+ {
+  "t": "Initiation aux réseaux",
+  "s": "Cours Initiation aux réseaux informatiques (David Rodriguez), p. 38",
+  "q": "Qu'est-ce qu'une passerelle (gateway) ?",
+  "o": [
+   "Un dispositif qui relie deux réseaux de types différents, par exemple le LAN et Internet",
+   "Un câble croisé",
+   "Une adresse de broadcast",
+   "Un serveur DNS"
+  ],
+  "e": "Sur un poste, la passerelle par défaut est l'adresse du routeur de son réseau.",
+  "x": [
+   "Non.",
+   "Non.",
+   "Non."
+  ],
+  "n": 1
+ },
+ {
+  "t": "Initiation aux réseaux",
+  "s": "Cours Initiation aux réseaux informatiques (David Rodriguez), p. 30",
+  "q": "Le cours dit que l'ICANN « remplace l'IANA, Internet Assigned Numbers Agency ». Qu'en est-il ?",
+  "o": [
+   "IANA veut dire Internet Assigned Numbers Authority ; elle fonctionne au sein de l'ICANN, et les adresses sont distribuées par les registres régionaux comme le RIPE NCC",
+   "C'est exact tel quel",
+   "L'IANA a été supprimée",
+   "Les adresses sont distribuées par Microsoft"
+  ],
+  "e": "Hors cours, point à vérifier avec ton formateur. L'idée importante du cours reste juste : les adresses publiques sont attribuées par un organisme central.",
+  "x": [
+   "Le nom et le rôle sont à corriger.",
+   "Elle existe toujours.",
+   "Non."
+  ],
+  "n": 4
+ },
+ {
+  "t": "Initiation aux réseaux",
+  "s": "Cours Initiation aux réseaux informatiques (David Rodriguez), p. 22",
+  "q": "Le cours cite « utilisation de multiples routeurs ou switchs » comme inconvénient de l'étoile. Quel autre inconvénient cite-t-il ?",
+  "o": [
+   "Elle coûte plus cher qu'un bus (équipement central et un câble par nœud)",
+   "Elle ne supporte pas Ethernet",
+   "Elle est impossible en Wi-Fi",
+   "Elle interdit les serveurs"
+  ],
+  "e": "Plus de câbles et un équipement central : c'est le prix de la simplicité de dépannage.",
+  "x": [
+   "Non.",
+   "Non.",
+   "Non."
+  ],
+  "n": 5
+ }
+]

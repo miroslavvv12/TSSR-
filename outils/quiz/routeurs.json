@@ -1,0 +1,452 @@
+[
+{
+"t": "Routeurs",
+"s": "Cours Les routeurs (David Rodriguez)",
+"q": "D'après le cours, qu'est-ce qu'un routeur ?",
+"o": [
+"Un ordinateur spécialisé dans l'envoi de paquets à travers le réseau",
+"Un simple câble intelligent",
+"Un switch avec plus de ports",
+"Un serveur DNS"
+],
+"e": "Il interconnecte les réseaux en choisissant le meilleur chemin pour chaque paquet.",
+"x": [
+"C'est un vrai ordinateur : CPU, mémoires, système (IOS).",
+"Le switch travaille en couche 2 avec les adresses MAC.",
+"Le DNS traduit des noms en adresses IP."
+],
+"n": 0
+},
+{
+"t": "Routeurs",
+"s": "Cours Les routeurs (David Rodriguez)",
+"q": "Combien de connexions un routeur a-t-il au minimum ?",
+"o": [
+"Deux",
+"Une",
+"Quatre",
+"Vingt-quatre"
+],
+"e": "Il relie au moins deux réseaux, sinon il n'a rien à router.",
+"x": [
+"Avec une seule connexion, il ne relierait aucun réseau.",
+"Ce n'est pas le minimum du cours.",
+"C'est un nombre de ports typique d'un switch."
+],
+"n": 1
+},
+{
+"t": "Routeurs",
+"s": "Cours Les routeurs (David Rodriguez)",
+"q": "Quel équipement est le seul capable de transférer les paquets d'un réseau à un autre ?",
+"o": [
+"Le routeur",
+"Le switch",
+"Le hub",
+"Le répéteur"
+],
+"e": "Le switch reste dans un même réseau ; le routeur passe d'un réseau IP à un autre.",
+"x": [
+"Il commute les trames dans un même réseau.",
+"Il répète le signal à tous ses ports.",
+"Il régénère le signal, couche 1."
+],
+"n": 1
+},
+{
+"t": "Routeurs",
+"s": "Cours Les routeurs (David Rodriguez)",
+"q": "Sur quoi le routeur se base-t-il pour transférer un paquet ?",
+"o": [
+"L'adresse IP de destination, comparée à sa table de routage",
+"L'adresse MAC source",
+"Le nom de la machine",
+"Le port TCP"
+],
+"e": "Il choisit le meilleur chemin parmi les entrées de sa table.",
+"x": [
+"L'adresse MAC sert dans le réseau local, pas pour router.",
+"Le routeur ne connaît pas les noms.",
+"Le port sert à la couche transport, pas au routage."
+],
+"n": 2
+},
+{
+"t": "Routeurs",
+"s": "Cours Les routeurs (David Rodriguez)",
+"q": "Que fait un routeur des domaines de broadcast ?",
+"o": [
+"Il les limite : chaque interface est un domaine de broadcast séparé",
+"Il les fusionne",
+"Il les étend à Internet",
+"Il n'a aucun effet dessus"
+],
+"e": "C'est pour ça qu'un DHCP sur un autre réseau a besoin d'un agent de relais.",
+"x": [
+"C'est l'inverse : il les sépare.",
+"Les broadcasts ne passent jamais un routeur.",
+"Il a un effet : il les arrête."
+],
+"n": 2
+},
+{
+"t": "Routeurs",
+"s": "Cours Les routeurs (David Rodriguez)",
+"q": "Grâce à quoi les routeurs s'échangent-ils les réseaux qu'ils connaissent ?",
+"o": [
+"Les protocoles de routage",
+"Le DHCP",
+"Le DNS",
+"La NAT"
+],
+"e": "Exemple du cours : RIP.",
+"x": [
+"Le DHCP donne des adresses aux postes.",
+"Le DNS traduit des noms.",
+"La NAT traduit des adresses, elle n'échange pas de routes."
+],
+"n": 1
+},
+{
+"t": "Routeurs",
+"s": "Cours Les routeurs (David Rodriguez)",
+"q": "Quelle est la première étape du démarrage d'un routeur ?",
+"o": [
+"Le POST (test automatique de mise sous tension)",
+"Le chargement de l'IOS",
+"Le chargement de la startup-config",
+"La lecture du registre de configuration"
+],
+"e": "Ordre : POST, bootstrap, registre de configuration, IOS, startup-config.",
+"x": [
+"L'IOS se charge en 4e.",
+"La startup-config se charge en dernier.",
+"Le registre se lit en 3e."
+],
+"n": 1
+},
+{
+"t": "Routeurs",
+"s": "Cours Les routeurs (David Rodriguez)",
+"q": "Que vérifie le POST ?",
+"o": [
+"Le fonctionnement de base du processeur, de la mémoire et des ports d'interface",
+"Les mots de passe",
+"La table de routage",
+"La connexion à Internet"
+],
+"e": "Ses diagnostics sont en mémoire ROM.",
+"x": [
+"Les mots de passe sont dans la configuration.",
+"La table de routage se construit après le démarrage.",
+"Il ne teste pas Internet."
+],
+"n": 1
+},
+{
+"t": "Routeurs",
+"s": "Cours Les routeurs (David Rodriguez)",
+"q": "Qu'est-ce que le bootstrap ?",
+"o": [
+"Un jeu d'instructions simple en ROM qui teste le matériel et lance l'IOS",
+"Le fichier de configuration",
+"Un protocole de routage",
+"Le câble console"
+],
+"e": "Il vient juste après le POST.",
+"x": [
+"La configuration est la startup-config.",
+"RIP et OSPF sont des protocoles de routage.",
+"Le câble console sert à se connecter au routeur."
+],
+"n": 0
+},
+{
+"t": "Routeurs",
+"s": "Cours Les routeurs (David Rodriguez)",
+"q": "Quelle est la dernière étape du démarrage d'un routeur ?",
+"o": [
+"Le chargement de la startup-config",
+"Le POST",
+"Le bootstrap",
+"La lecture du registre de configuration"
+],
+"e": "Elle devient alors la running-config en RAM.",
+"x": [
+"Le POST est la première étape.",
+"Le bootstrap est la 2e étape.",
+"Le registre est lu en 3e."
+],
+"n": 1
+},
+{
+"t": "Routeurs",
+"s": "Cours Les routeurs (David Rodriguez)",
+"q": "Dans quelle mémoire est stocké l'IOS ?",
+"o": [
+"La mémoire flash",
+"La RAM",
+"La NVRAM",
+"La ROM"
+],
+"e": "Schéma « Anatomie d'un routeur Cisco ».",
+"x": [
+"La RAM contient la running-config et la table de routage.",
+"La NVRAM contient la startup-config et le registre.",
+"La ROM contient le POST et le bootstrap."
+],
+"n": 1
+},
+{
+"t": "Routeurs",
+"s": "Cours Les routeurs (David Rodriguez)",
+"q": "Où se trouve la startup-config ?",
+"o": [
+"En NVRAM",
+"En RAM",
+"En flash",
+"En ROM"
+],
+"e": "La NVRAM garde ses données quand le routeur est éteint.",
+"x": [
+"La RAM perd tout à l'extinction : elle contient la running-config.",
+"La flash contient l'IOS.",
+"La ROM contient le POST et le bootstrap."
+],
+"n": 1
+},
+{
+"t": "Routeurs",
+"s": "Cours Les routeurs (David Rodriguez)",
+"q": "Que contient la RAM d'un routeur ?",
+"o": [
+"La running-config et la table de routage",
+"L'IOS d'origine et le POST",
+"La startup-config",
+"Le registre de configuration"
+],
+"e": "Tout ce qui est en RAM est perdu à l'extinction : d'où copy running-config startup-config.",
+"x": [
+"L'IOS est en flash, le POST en ROM.",
+"Elle est en NVRAM.",
+"Il est en NVRAM."
+],
+"n": 2
+},
+{
+"t": "Routeurs",
+"s": "Cours Les routeurs (David Rodriguez)",
+"q": "Quel câble utilise-t-on pour se connecter au port console d'un routeur ?",
+"o": [
+"Un câble à paire inversée avec un adaptateur RJ45 / DB9",
+"Un câble Ethernet droit",
+"Un câble coaxial",
+"Une fibre optique"
+],
+"e": "Le port console sert à la configuration en ligne de commande.",
+"x": [
+"Le câble droit sert aux interfaces LAN.",
+"Rien à voir avec le coaxial.",
+"La fibre sert aux liaisons réseau rapides."
+],
+"n": 1
+},
+{
+"t": "Routeurs",
+"s": "Cours Les routeurs (David Rodriguez)",
+"q": "Sur le schéma du cours, de quel type sont les interfaces WAN ?",
+"o": [
+"Série (serial)",
+"Ethernet",
+"Wi-Fi",
+"USB"
+],
+"e": "Les interfaces LAN sont en Ethernet.",
+"x": [
+"Ce sont les interfaces LAN.",
+"Pas sur ce schéma.",
+"Ce n'est pas une interface réseau du schéma."
+],
+"n": 1
+},
+{
+"t": "Routeurs",
+"s": "Cours Les routeurs (David Rodriguez)",
+"q": "Quelles sont les deux façons de configurer le routage ?",
+"o": [
+"Statique ou dynamique",
+"Local ou distant",
+"Primaire ou secondaire",
+"Access ou trunk"
+],
+"e": "Statique : à la main. Dynamique : par un protocole de routage.",
+"x": [
+"Ce ne sont pas les termes du cours.",
+"Ce sont des types de serveurs DNS.",
+"Ce sont des modes de ports de switch."
+],
+"n": 1
+},
+{
+"t": "Routeurs",
+"s": "Cours Les routeurs (David Rodriguez)",
+"q": "Qui renseigne les routes statiques ?",
+"o": [
+"L'administrateur, à la main",
+"Le protocole RIP",
+"Le serveur DHCP",
+"Le routeur tout seul au démarrage"
+],
+"e": "Elles sont ensuite stockées dans la table de routage.",
+"x": [
+"RIP remplit les tables de façon dynamique.",
+"Le DHCP ne touche pas aux routes des routeurs.",
+"Seuls les réseaux directement connectés sont connus tout seuls."
+],
+"n": 1
+},
+{
+"t": "Routeurs",
+"s": "Cours Les routeurs (David Rodriguez)",
+"q": "Exemple du cours : PC1 (192.168.1.0/24) derrière R1 veut joindre PC2 (192.168.2.0/24) derrière R2. Combien de routes statiques faut-il ajouter ?",
+"o": [
+"2 : une sur R1 vers 192.168.2.0, une sur R2 vers 192.168.1.0 pour le retour",
+"1 seule sur R1",
+"Aucune, les routeurs se débrouillent",
+"4, une par interface"
+],
+"e": "R1 ne connaît pas nativement 192.168.2.0/24, et R2 ne connaît pas 192.168.1.0/24.",
+"x": [
+"Sans route sur R2, la réponse ne revient pas.",
+"Sans protocole de routage, il faut les routes à la main.",
+"Les réseaux directement connectés n'ont pas besoin de route."
+],
+"n": 4
+},
+{
+"t": "Routeurs",
+"s": "Cours Les routeurs (David Rodriguez)",
+"q": "Pourquoi R1 connaît-il déjà 192.168.1.0/24 sans route statique ?",
+"o": [
+"Ce réseau est directement connecté à une de ses interfaces",
+"Le DHCP le lui a donné",
+"PC1 le lui a envoyé",
+"Tous les routeurs connaissent les réseaux privés"
+],
+"e": "Dans show ip route, il apparaît avec la lettre C (connected).",
+"x": [
+"Le DHCP ne donne pas de routes aux routeurs.",
+"Les PC n'annoncent pas de réseaux.",
+"Il ne connaît que ses réseaux connectés et ses routes."
+],
+"n": 3
+},
+{
+"t": "Routeurs",
+"s": "Cours Les routeurs (David Rodriguez)",
+"q": "Pour quels réseaux le routage statique est-il adapté ?",
+"o": [
+"Les petits réseaux et les réseaux d'extrémité",
+"Les très grands réseaux d'opérateurs",
+"Les réseaux qui changent souvent",
+"Internet tout entier"
+],
+"e": "Sur les grands réseaux, on utilise un protocole de routage dynamique.",
+"x": [
+"Trop de routes à saisir à la main.",
+"Une route statique ne s'adapte pas toute seule.",
+"Impossible à gérer à la main."
+],
+"n": 2
+},
+{
+"t": "Routeurs",
+"s": "Cours Les routeurs (David Rodriguez)",
+"q": "Que fait le routage dynamique quand un lien entre routeurs est coupé ?",
+"o": [
+"Il modifie automatiquement les tables de routage",
+"Rien, il faut intervenir à la main",
+"Il éteint le routeur",
+"Il supprime toutes les routes"
+],
+"e": "Il choisit aussi la meilleure route disponible.",
+"x": [
+"Ça, c'est le routage statique.",
+"Le routeur reste allumé.",
+"Il ne supprime que ce qui ne marche plus."
+],
+"n": 2
+},
+{
+"t": "Routeurs",
+"s": "Cours Les routeurs (David Rodriguez)",
+"q": "Que veut dire RIP ?",
+"o": [
+"Routing Information Protocol",
+"Router Internet Path",
+"Remote IP Protocol",
+"Routing Interface Port"
+],
+"e": "C'est le protocole de routage dynamique présenté dans le cours.",
+"x": [
+"Ce n'est pas le bon développé.",
+"Ce n'est pas le bon développé.",
+"Ce n'est pas le bon développé."
+],
+"n": 0
+},
+{
+"t": "Routeurs",
+"s": "Cours Les routeurs (David Rodriguez)",
+"q": "Quelle différence entre RIP version 1 et version 2 ?",
+"o": [
+"La v1 ne gère que les classes (classful), la v2 gère le CIDR (classless)",
+"La v2 est plus ancienne",
+"La v1 est pour IPv6",
+"Aucune"
+],
+"e": "Classful : A en /8, B en /16, C en /24. Avec le CIDR, on peut utiliser n'importe quel masque.",
+"x": [
+"C'est l'inverse.",
+"Aucune des deux n'est pour IPv6.",
+"La gestion des masques change."
+],
+"n": 2
+},
+{
+"t": "Routeurs",
+"s": "Cours Les routeurs (David Rodriguez)",
+"q": "Quelles commandes activent RIP version 2 ?",
+"o": [
+"conf t, puis router rip, puis version 2",
+"enable rip 2",
+"ip rip v2 on",
+"rip start version 2"
+],
+"e": "Il faut ensuite déclarer les réseaux avec la commande network.",
+"x": [
+"Cette commande n'existe pas.",
+"Cette commande n'existe pas.",
+"Cette commande n'existe pas."
+],
+"n": 3
+},
+{
+"t": "Routeurs",
+"s": "Notion générale (pas dans les cours que j'ai pu lire)",
+"q": "À quelle famille de protocoles RIP appartient-il ?",
+"o": [
+"À vecteur de distance (il compte les sauts)",
+"À état de lien",
+"Protocole de couche 2",
+"Protocole de transport"
+],
+"e": "Attention : ton cours écrit « à état de lien ». En réalité, RIP est un protocole à vecteur de distance, et OSPF est à état de lien. Vérifie avec ton formateur.",
+"x": [
+"C'est OSPF qui est à état de lien.",
+"RIP travaille sur les routes IP, couche 3.",
+"Ce n'est pas TCP ou UDP."
+],
+"n": 5
+}
+]

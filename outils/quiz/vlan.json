@@ -1,0 +1,758 @@
+[
+{
+"t": "VLAN",
+"s": "Cours VLAN (David Rodriguez)",
+"q": "Qu'est-ce qu'un VLAN ?",
+"o": [
+"Un réseau local qui regroupe des machines de façon logique et non physique",
+"Un réseau virtualisé dans une machine virtuelle",
+"Un réseau Wi-Fi",
+"Un tunnel VPN entre deux sites"
+],
+"e": "Attention, le cours insiste : un VLAN n'est pas un réseau virtualisé. Il peut s'étendre sur plusieurs switchs.",
+"x": [
+"Le cours insiste : un VLAN n'est pas un réseau virtualisé.",
+"Le Wi-Fi est un support, pas un VLAN.",
+"Un VPN relie des sites à travers Internet."
+],
+"n": 0
+},
+{
+"t": "VLAN",
+"s": "Cours VLAN (David Rodriguez)",
+"q": "De quelles limites de l'architecture physique les VLAN permettent-ils de s'affranchir ?",
+"o": [
+"Les contraintes de localisation et d'adressage",
+"Les limites de débit des câbles",
+"La distance maximale d'un câble Ethernet",
+"Le nombre de ports du switch"
+],
+"e": "On définit une segmentation logique (logicielle) selon des critères : adresses MAC, numéros de port, protocole…",
+"x": [
+"Le débit dépend des câbles et des équipements.",
+"La longueur d'un câble reste la même.",
+"Le nombre de ports ne change pas."
+],
+"n": 2
+},
+{
+"t": "VLAN",
+"s": "Cours VLAN (David Rodriguez)",
+"q": "Quels sont les trois avantages des VLAN cités par le cours ?",
+"o": [
+"Souplesse, sécurité, réduction de la diffusion",
+"Vitesse, chiffrement, sauvegarde",
+"Gratuité, simplicité, compatibilité Wi-Fi",
+"Moins de câbles, moins de switchs, moins d'IP"
+],
+"e": "Souplesse : l'architecture change par simple paramétrage des switchs. Réduction de la diffusion : les broadcasts restent dans leur VLAN.",
+"x": [
+"Pas de chiffrement ni de sauvegarde avec les VLAN.",
+"Ce ne sont pas les avantages cités.",
+"On garde les mêmes câbles, switchs et adresses."
+],
+"n": 1
+},
+{
+"t": "VLAN",
+"s": "Cours VLAN (David Rodriguez)",
+"q": "Comment s'appelle un VLAN défini selon le port du switch où l'appareil est branché ?",
+"o": [
+"VLAN de niveau 1 (VLAN par port)",
+"VLAN de niveau 2 (VLAN MAC)",
+"VLAN de niveau 3 (VLAN par sous-réseau)",
+"VLAN natif"
+],
+"e": "L'appartenance de chaque port à un VLAN est configurée manuellement.",
+"x": [
+"Le niveau 2 se base sur l'adresse MAC.",
+"Le niveau 3 se base sur l'IP ou le protocole.",
+"Le VLAN natif est le VLAN par défaut du switch."
+],
+"n": 1
+},
+{
+"t": "VLAN",
+"s": "Cours VLAN (David Rodriguez)",
+"q": "Comment s'appelle un VLAN défini selon l'adresse MAC des stations ?",
+"o": [
+"VLAN de niveau 2 (VLAN MAC)",
+"VLAN de niveau 1 (VLAN par port)",
+"VLAN de niveau 3 (VLAN par protocole)",
+"VLAN de management"
+],
+"e": "Plus souple que le VLAN par port : le réseau ne dépend pas de l'endroit où la station est branchée.",
+"x": [
+"Le niveau 1 se base sur le port.",
+"Le niveau 3 se base sur le protocole ou l'IP.",
+"Le VLAN de management porte l'IP du switch."
+],
+"n": 1
+},
+{
+"t": "VLAN",
+"s": "Cours VLAN (David Rodriguez)",
+"q": "Quel est le problème du VLAN par port quand on remplace un appareil par un autre sur le même port ?",
+"o": [
+"Le nouvel appareil hérite automatiquement du VLAN de l'ancien",
+"Le port se désactive",
+"Le switch refuse le nouvel appareil",
+"Le VLAN est supprimé"
+],
+"e": "Le VLAN est lié au port, pas à la machine. C'est ce que règle le VLAN par adresse MAC.",
+"x": [
+"Le port ne se désactive pas.",
+"Le switch accepte le nouvel appareil.",
+"Le VLAN existe toujours."
+],
+"n": 3
+},
+{
+"t": "VLAN",
+"s": "Cours VLAN (David Rodriguez)",
+"q": "Quels sont les deux types de VLAN de niveau 3 ?",
+"o": [
+"Le VLAN par sous-réseau et le VLAN par protocole",
+"Le VLAN par port et le VLAN MAC",
+"Le VLAN natif et le VLAN voix",
+"Le VLAN d'accès et le VLAN trunk"
+],
+"e": "Par sous-réseau : selon l'IP source. Par protocole : selon le protocole de couche 3 transporté (TCP/IP, IPX…).",
+"x": [
+"Ce sont les niveaux 1 et 2.",
+"Ce sont des VLAN particuliers, pas des types de niveau 3.",
+"Ce sont des types de ports."
+],
+"n": 1
+},
+{
+"t": "VLAN",
+"s": "Cours VLAN (David Rodriguez)",
+"q": "Inconvénient du VLAN par sous-réseau (niveau 3) ?",
+"o": [
+"Une légère baisse de performances, car les paquets doivent être analysés plus finement",
+"Il ne marche qu'avec IPX",
+"Il faut reconfigurer chaque port à la main",
+"Il ne supporte que 2 VLAN"
+],
+"e": "En contrepartie, la configuration suit automatiquement une station qui se déplace.",
+"x": [
+"Il marche avec IP.",
+"C'est l'inconvénient du VLAN par port.",
+"Il n'y a pas de limite à 2 VLAN."
+],
+"n": 2
+},
+{
+"t": "VLAN",
+"s": "Cours VLAN (David Rodriguez)",
+"q": "Quelle norme IEEE le cours met-il en avant pour l'étiquetage des VLAN ?",
+"o": [
+"802.1Q",
+"802.3",
+"802.11",
+"802.1X"
+],
+"e": "802.1Q est un standard : les trames étiquetées passent entre des switchs de constructeurs différents.",
+"x": [
+"802.3, c'est Ethernet.",
+"802.11, c'est le Wi-Fi.",
+"802.1X, c'est l'authentification sur un port."
+],
+"n": 1
+},
+{
+"t": "VLAN",
+"s": "Cours VLAN (David Rodriguez)",
+"q": "À quel moment l'étiquette VLAN est-elle ajoutée à la trame ?",
+"o": [
+"Quand la trame entre dans un port de switch appartenant à un VLAN",
+"Quand le PC envoie la trame",
+"Quand la trame arrive au routeur",
+"Jamais, elle est dans l'adresse MAC"
+],
+"e": "Elle est retirée quand la trame sort par le port d'accès de destination : les PC ne voient jamais l'étiquette.",
+"x": [
+"Le PC envoie une trame sans étiquette.",
+"Le switch l'ajoute dès l'entrée.",
+"L'étiquette est un champ à part, pas dans la MAC."
+],
+"n": 2
+},
+{
+"t": "VLAN",
+"s": "Cours VLAN (David Rodriguez)",
+"q": "Quelle différence entre un port d'accès et un port de liaison (trunk) ?",
+"o": [
+"Le trunk ne retire pas l'étiquette VLAN quand il envoie la trame",
+"Le port d'accès garde l'étiquette, le trunk la retire",
+"Le trunk est réservé aux PC",
+"Aucune"
+],
+"e": "Grâce à l'étiquette, le switch qui reçoit sait à quel VLAN appartient la trame.",
+"x": [
+"C'est l'inverse.",
+"Les PC sont sur des ports d'accès.",
+"Ils traitent l'étiquette différemment."
+],
+"n": 2
+},
+{
+"t": "VLAN",
+"s": "Cours VLAN (David Rodriguez)",
+"q": "Quelle est la taille du tag 802.1Q ajouté à la trame Ethernet ?",
+"o": [
+"4 octets",
+"2 octets",
+"8 octets",
+"12 octets"
+],
+"e": "Il contient notamment l'identifiant de VLAN, codé sur 12 bits.",
+"x": [
+"Trop petit : le numéro de VLAN fait déjà 12 bits.",
+"Trop grand.",
+"12, c'est le nombre de bits du numéro de VLAN."
+],
+"n": 1
+},
+{
+"t": "VLAN",
+"s": "Cours VLAN (David Rodriguez)",
+"q": "Où se place l'étiquette 802.1Q dans la trame ?",
+"o": [
+"Insérée dans la trame, après les adresses MAC",
+"Au tout début de la trame, avant tout",
+"À la fin de la trame, après le FCS",
+"Dans l'en-tête IP"
+],
+"e": "Ordre : adresse MAC destination, adresse MAC source, 8100, priorité, CFI, VLAN, EtherType, données, FCS.",
+"x": [
+"Le cours précise : pas en début de trame.",
+"Le FCS est le dernier champ.",
+"L'en-tête IP est à l'intérieur des données."
+],
+"n": 2
+},
+{
+"t": "VLAN",
+"s": "Cours VLAN (David Rodriguez)",
+"q": "Sur combien de bits est codé l'identifiant de VLAN dans le tag 802.1Q ?",
+"o": [
+"12 bits",
+"8 bits",
+"16 bits",
+"48 bits"
+],
+"e": "D'où les numéros de VLAN jusqu'à 4094.",
+"x": [
+"8 bits ne donneraient que 256 VLAN.",
+"16 bits, c'est le champ 8100 ou l'EtherType.",
+"48 bits, c'est une adresse MAC."
+],
+"n": 1
+},
+{
+"t": "VLAN",
+"s": "Cours VLAN (David Rodriguez)",
+"q": "Un téléphone IP est branché au switch et le PC est branché derrière le téléphone. Comment configure-t-on le port ?",
+"o": [
+"En mode access, avec en plus un VLAN voix (voice vlan)",
+"En mode trunk sans VLAN",
+"Dans le VLAN 1 uniquement",
+"Il faut deux câbles"
+],
+"e": "Le port a deux VLAN : un pour les données (ex. VLAN 10), un pour la voix (ex. VLAN 20).",
+"x": [
+"Le cours garde le mode access avec un VLAN voix.",
+"Le téléphone a son propre VLAN voix.",
+"Un seul câble suffit : le PC passe par le téléphone."
+],
+"n": 3
+},
+{
+"t": "VLAN",
+"s": "Cours VLAN (David Rodriguez)",
+"q": "Qu'est-ce que le VLAN de management ?",
+"o": [
+"Un VLAN qui porte l'adresse IP d'administration et de supervision du switch",
+"Le VLAN des PC de la direction",
+"Le VLAN natif",
+"Un VLAN réservé au Wi-Fi"
+],
+"e": "Il peut n'être affecté à aucun port. Sur un switch de liaison, on déclare aussi les VLAN qui doivent le traverser.",
+"x": [
+"Le nom n'a rien à voir avec la direction.",
+"Le VLAN natif est le VLAN par défaut, non étiqueté.",
+"Rien à voir avec le Wi-Fi."
+],
+"n": 1
+},
+{
+"t": "VLAN",
+"s": "Cours VLAN (David Rodriguez)",
+"q": "D'après le cours, qu'est-ce que le VLAN natif ?",
+"o": [
+"Le VLAN par défaut du switch (en général le VLAN 1), qui n'est pas étiqueté même sur un trunk",
+"Le premier VLAN créé par l'administrateur",
+"Le VLAN de la téléphonie",
+"Le VLAN qui porte VTP"
+],
+"e": "Sans configuration, tous les ports du switch sont dans ce VLAN.",
+"x": [
+"L'ordre de création ne compte pas.",
+"La voix a son propre VLAN.",
+"VTP passe par les trunks, pas par un VLAN dédié."
+],
+"n": 4
+},
+{
+"t": "VLAN",
+"s": "Cours VLAN (David Rodriguez)",
+"q": "Quelle est la plage des VLAN « normal-range » ?",
+"o": [
+"1 à 1005",
+"1 à 4094",
+"1006 à 4094",
+"0 à 255"
+],
+"e": "Utilisée dans les petites et moyennes entreprises. Les VLAN 1002 à 1005 sont réservés à Token Ring et FDDI.",
+"x": [
+"4094 est la fin des VLAN étendus.",
+"Ça, c'est la plage étendue.",
+"Pas de plage de 0 à 255."
+],
+"n": 1
+},
+{
+"t": "VLAN",
+"s": "Cours VLAN (David Rodriguez)",
+"q": "Quelle est la plage des VLAN « extended » ?",
+"o": [
+"1006 à 4094",
+"1 à 1005",
+"1002 à 1005",
+"4095 à 8191"
+],
+"e": "Ils supportent moins de fonctionnalités que les VLAN normal-range.",
+"x": [
+"Ça, c'est la plage normale.",
+"Ce sont les VLAN réservés Token Ring et FDDI.",
+"Les numéros s'arrêtent à 4094."
+],
+"n": 1
+},
+{
+"t": "VLAN",
+"s": "Cours VLAN (David Rodriguez)",
+"q": "Lequel de ces VLAN existe par défaut et ne peut pas être supprimé ?",
+"o": [
+"VLAN 1",
+"VLAN 10",
+"VLAN 99",
+"VLAN 1006"
+],
+"e": "Les VLAN réservés de la plage 1002 à 1005 ne peuvent pas non plus être supprimés.",
+"x": [
+"Le VLAN 10 se crée à la main.",
+"Le VLAN 99 se crée à la main.",
+"Les VLAN étendus ne sont pas créés par défaut."
+],
+"n": 1
+},
+{
+"t": "VLAN",
+"s": "Cours VLAN (David Rodriguez)",
+"q": "Dans quel fichier un switch Cisco stocke-t-il la configuration des VLAN ?",
+"o": [
+"vlan.dat, en mémoire flash",
+"running-config, en RAM",
+"startup-config, en NVRAM",
+"vtp.cfg, sur un serveur TFTP"
+],
+"e": "C'est pour ça que les VLAN restent après un redémarrage même sans copy run start.",
+"x": [
+"La running-config ne garde pas les VLAN.",
+"Les VLAN ne sont pas dans la startup-config.",
+"Ce fichier n'existe pas."
+],
+"n": 1
+},
+{
+"t": "VLAN",
+"s": "Cours VLAN (David Rodriguez)",
+"q": "Combien de VLAN au maximum supportent les switchs Catalyst 2950 et 2960 ?",
+"o": [
+"255",
+"4094",
+"1005",
+"64"
+],
+"e": "Le cours précise aussi que plus il y a de VLAN, plus les performances du switch baissent.",
+"x": [
+"4094 est le numéro maximum, pas le nombre supporté par ces switchs.",
+"1005 est la fin de la plage normale.",
+"Ce n'est pas le chiffre du cours."
+],
+"n": 1
+},
+{
+"t": "VLAN",
+"s": "Cours VLAN (David Rodriguez)",
+"q": "Comment un port peut-il être associé dynamiquement à un VLAN ?",
+"o": [
+"Grâce à l'adresse MAC connue d'un serveur VMPS",
+"Grâce au DHCP",
+"Grâce au DNS",
+"Grâce au protocole VTP"
+],
+"e": "VMPS = VLAN Membership Policy Server.",
+"x": [
+"Le DHCP donne des adresses IP, pas des VLAN.",
+"Le DNS résout des noms.",
+"VTP propage la liste des VLAN, pas l'affectation des ports."
+],
+"n": 2
+},
+{
+"t": "VLAN",
+"s": "Cours VLAN (David Rodriguez)",
+"q": "Quel protocole Cisco évite de configurer les VLAN sur chaque switch séparément ?",
+"o": [
+"VTP (VLAN Trunk Protocol)",
+"STP",
+"CDP",
+"DTP"
+],
+"e": "Sans point central, l'administrateur doit configurer les VLAN switch par switch.",
+"x": [
+"STP évite les boucles.",
+"CDP découvre les voisins.",
+"DTP négocie le mode trunk."
+],
+"n": 1
+},
+{
+"t": "VLAN",
+"s": "Cours VLAN (David Rodriguez)",
+"q": "Laquelle de ces affirmations sur VTP est vraie ?",
+"o": [
+"C'est un protocole propriétaire Cisco de niveau 2, échangé uniquement par les ports trunk",
+"C'est un standard IEEE qui passe par les ports d'accès",
+"Il fonctionne en couche 3",
+"Il distribue les adresses IP"
+],
+"e": "Jusqu'à la version 2, il ne gère que les VLAN 1 à 1005.",
+"x": [
+"VTP est propriétaire Cisco et passe par les trunks.",
+"Il fonctionne en couche 2.",
+"Ça, c'est le DHCP."
+],
+"n": 3
+},
+{
+"t": "VLAN",
+"s": "Cours VLAN (David Rodriguez)",
+"q": "Dans quel mode VTP peut-on créer, supprimer et modifier des VLAN et les propager à tous les switchs ?",
+"o": [
+"Server",
+"Client",
+"Transparent",
+"Off"
+],
+"e": "Le client reçoit la configuration du serveur, s'y synchronise et la propage.",
+"x": [
+"Le client ne peut rien créer.",
+"Le transparent ne propage pas.",
+"Ce mode n'est pas dans le cours."
+],
+"n": 1
+},
+{
+"t": "VLAN",
+"s": "Cours VLAN (David Rodriguez)",
+"q": "Que ne peut PAS faire un switch en mode VTP client ?",
+"o": [
+"Créer, supprimer ou modifier des VLAN",
+"Recevoir les messages VTP",
+"Transmettre les messages VTP aux voisins",
+"Se synchroniser avec le serveur"
+],
+"e": "Il traite les messages reçus et les transmet aux voisins.",
+"x": [
+"Il les reçoit bien.",
+"Il les transmet bien.",
+"Il se synchronise bien."
+],
+"n": 2
+},
+{
+"t": "VLAN",
+"s": "Cours VLAN (David Rodriguez)",
+"q": "Quel mode VTP permet de modifier les VLAN localement sans les propager ?",
+"o": [
+"Transparent",
+"Server",
+"Client",
+"Domaine"
+],
+"e": "Il ne se synchronise pas mais transmet les messages VTP aux voisins. Très pratique pour des maquettes.",
+"x": [
+"Le serveur propage ses modifications.",
+"Le client ne peut rien modifier.",
+"Ce n'est pas un mode VTP."
+],
+"n": 1
+},
+{
+"t": "VLAN",
+"s": "Cours VLAN (David Rodriguez)",
+"q": "Que se passe-t-il à chaque création ou modification de VLAN quand VTP est en place ?",
+"o": [
+"Le numéro de révision VTP augmente",
+"Le switch redémarre",
+"Le mot de passe VTP change",
+"Le VLAN natif change"
+],
+"e": "Exemple du cours : ajout du VLAN 2, la révision passe de 33 à 34, puis les clients se synchronisent.",
+"x": [
+"Le switch ne redémarre pas.",
+"Le mot de passe ne change pas.",
+"Le VLAN natif ne change pas."
+],
+"n": 2
+},
+{
+"t": "VLAN",
+"s": "Cours VLAN (David Rodriguez)",
+"q": "Combien de domaines VTP un switch peut-il rejoindre ?",
+"o": [
+"Un seul",
+"Deux",
+"Autant que de VLAN",
+"Aucun"
+],
+"e": "Les mises à jour VTP ne sont échangées qu'entre switchs du même domaine, qui doivent tous avoir la même version VTP.",
+"x": [
+"Un seul domaine par switch.",
+"Le nombre de VLAN n'a rien à voir.",
+"Il peut en rejoindre un."
+],
+"n": 1
+},
+{
+"t": "VLAN",
+"s": "Cours VLAN (David Rodriguez)",
+"q": "Que préconise le cours pour l'adressage avec les VLAN ?",
+"o": [
+"Un sous-réseau par VLAN, des IP continues et éviter les masques variables",
+"Tous les VLAN dans un même sous-réseau",
+"Un masque différent pour chaque poste",
+"Des adresses publiques dans chaque VLAN"
+],
+"e": "Éviter les masques variables limite les erreurs d'administration.",
+"x": [
+"Un sous-réseau par VLAN.",
+"Le cours demande d'éviter les masques variables.",
+"Les VLAN internes utilisent des adresses privées."
+],
+"n": 2
+},
+{
+"t": "VLAN",
+"s": "Cours VLAN (David Rodriguez)",
+"q": "Dans une configuration type, comment sont configurés les ports ?",
+"o": [
+"Liaison entre switchs en trunk, les autres ports en access",
+"Tous les ports en trunk",
+"Tous les ports en access",
+"Les ports des PC en trunk"
+],
+"e": "On ajoute le VLAN voix sur les ports des téléphones, et un VLAN dédié à l'administration du switch.",
+"x": [
+"Les PC ne sont pas en trunk.",
+"Les liaisons entre switchs doivent être en trunk.",
+"C'est l'inverse."
+],
+"n": 2
+},
+{
+"t": "VLAN",
+"s": "Cours Architecture d'un réseau",
+"q": "Un réseau en /16 a 65 534 postes possibles. Que conseille le cours pour garder de bonnes performances ?",
+"o": [
+"Segmenter avec des VLAN",
+"Passer en Wi-Fi",
+"Mettre un hub",
+"Augmenter le masque à /8"
+],
+"e": "Chaque VLAN est un domaine de diffusion séparé : les broadcasts ne vont pas partout.",
+"x": [
+"Le Wi-Fi ne réduit pas les broadcasts.",
+"Un hub envoie tout à tout le monde : c'est pire.",
+"Un /8 ferait un réseau encore plus grand."
+],
+"n": 3
+},
+{
+"t": "VLAN",
+"s": "Notion générale (pas dans les cours que j'ai pu lire)",
+"q": "Deux PC sont branchés sur le même switch, l'un dans le VLAN 10, l'autre dans le VLAN 20. Peuvent-ils communiquer directement ?",
+"o": [
+"Non, il faut un routeur ou un switch de niveau 3 (routage inter-VLAN)",
+"Oui, ils sont sur le même switch",
+"Oui, si leurs IP se suivent",
+"Seulement en broadcast"
+],
+"e": "Chaque VLAN est un réseau à part. Pour passer de l'un à l'autre, il faut du routage (couche 3).",
+"x": [
+"Le même switch ne suffit pas : les VLAN les séparent.",
+"Les IP ne suffisent pas sans routage.",
+"Les broadcasts restent dans leur VLAN."
+],
+"n": 4
+},
+{
+"t": "VLAN",
+"s": "Notion générale (pas dans les cours que j'ai pu lire)",
+"q": "Qu'est-ce qu'un « router-on-a-stick » ?",
+"o": [
+"Un routeur relié au switch par un seul trunk, avec une sous-interface par VLAN",
+"Un routeur Wi-Fi",
+"Un routeur avec une seule route par défaut",
+"Un switch sans VLAN"
+],
+"e": "Chaque sous-interface (G0/0.10, G0/0.20…) a « encapsulation dot1Q » et sert de passerelle à son VLAN.",
+"x": [
+"Rien à voir avec le Wi-Fi.",
+"Rien à voir avec la route par défaut.",
+"Il faut au contraire des VLAN."
+],
+"n": 5
+},
+{
+"t": "VLAN",
+"s": "Notion générale (pas dans les cours que j'ai pu lire)",
+"q": "Un seul serveur DHCP doit servir les VLAN 10 et 20. Que faut-il sur le routeur ?",
+"o": [
+"Une étendue par VLAN sur le serveur et ip helper-address sur l'interface de chaque VLAN",
+"Rien, le broadcast DHCP traverse les VLAN",
+"Un serveur DHCP par switch",
+"Mettre les deux VLAN dans le même sous-réseau"
+],
+"e": "Le Discover est un broadcast : il reste dans son VLAN sans agent de relais.",
+"x": [
+"Le broadcast reste dans son VLAN.",
+"Un seul serveur suffit avec un relais.",
+"Le cours conseille un sous-réseau par VLAN."
+],
+"n": 5
+},
+{
+"t": "VLAN",
+"s": "Cours VLAN (David Rodriguez)",
+"q": "Quand l'étiquette VLAN est-elle retirée de la trame ?",
+"o": [
+"Quand la trame sort par le port d'accès de destination",
+"Quand elle passe sur un trunk",
+"Jamais",
+"Quand elle arrive au routeur Internet"
+],
+"e": "Les PC qui envoient et reçoivent ne savent même pas qu'une étiquette a été utilisée.",
+"x": [
+"Le trunk garde l'étiquette.",
+"Elle est retirée en sortie d'un port d'accès.",
+"C'est le switch qui la retire."
+],
+"n": 2
+},
+{
+"t": "VLAN",
+"s": "Cours VLAN (David Rodriguez)",
+"q": "À quoi sert un port trunk, en plus des liaisons entre switchs ?",
+"o": [
+"À relier un équipement ou serveur dont l'interface appartient à plusieurs VLAN",
+"À brancher un PC simple",
+"À brancher une imprimante",
+"À relier le switch à une prise électrique"
+],
+"e": "Le trunk transporte plusieurs VLAN sur un même lien.",
+"x": [
+"Un PC simple est en access.",
+"Une imprimante est en access.",
+"Rien à voir avec l'électricité."
+],
+"n": 3
+},
+{
+"t": "VLAN",
+"s": "Cours VLAN (David Rodriguez)",
+"q": "Le VLAN par protocole est-il pratique sur un réseau presque entièrement en IP ?",
+"o": [
+"Non, il n'est pas très pratique sur un réseau à prédominance IP",
+"Oui, c'est le plus utilisé",
+"Il est obligatoire avec IP",
+"Il ne marche qu'en IPv6"
+],
+"e": "Il est utile quand plusieurs protocoles de couche 3 cohabitent (TCP/IP, IPX…).",
+"x": [
+"Le plus courant est le VLAN par port.",
+"Rien ne l'impose.",
+"Le cours ne parle pas d'IPv6 ici."
+],
+"n": 4
+},
+{
+"t": "VLAN",
+"s": "Cours VLAN (David Rodriguez)",
+"q": "Jusqu'à la version 2, sur quels VLAN VTP fonctionne-t-il ?",
+"o": [
+"Les VLAN 1 à 1005",
+"Les VLAN 1006 à 4094",
+"Tous les VLAN de 1 à 4094",
+"Seulement le VLAN 1"
+],
+"e": "C'est la plage normale.",
+"x": [
+"La plage étendue n'est pas gérée par VTP v1 et v2.",
+"Pas avant la version 3.",
+"Il gère bien plus que le VLAN 1."
+],
+"n": 2
+},
+{
+"t": "VLAN",
+"s": "Cours VLAN (David Rodriguez)",
+"q": "Que fait un switch VTP transparent des messages VTP qu'il reçoit ?",
+"o": [
+"Il ne les traite pas mais les transmet à ses voisins",
+"Il les applique",
+"Il les supprime",
+"Il les renvoie au serveur"
+],
+"e": "Il ne se synchronise pas avec les autres switchs.",
+"x": [
+"Ça, c'est le client.",
+"Il ne bloque pas les autres switchs.",
+"Il ne répond pas au serveur."
+],
+"n": 3
+},
+{
+"t": "VLAN",
+"s": "Cours VLAN (David Rodriguez)",
+"q": "Que se passe-t-il quand on ajoute beaucoup de VLAN sur un switch ?",
+"o": [
+"Ses performances baissent",
+"Il devient plus rapide",
+"Rien du tout",
+"Il passe en mode VTP serveur"
+],
+"e": "C'est une remarque du cours sur les VLAN IDs.",
+"x": [
+"C'est l'inverse.",
+"Le cours dit le contraire.",
+"Le mode VTP ne change pas tout seul."
+],
+"n": 2
+}
+]

@@ -1,0 +1,67 @@
+# Outil de révision TSSR — consignes pour Claude
+
+## Objectif
+Rendre l'outil de révision TSSR de Dimitri optimal pour sa formation, et utilisable **100 % en local et hors réseau** :
+- sur PC (Windows, grand écran) ;
+- sur iPhone (appli installée depuis GitHub Pages).
+
+## Règles (dans tout le travail)
+- Répondre en **français, simplement** : Dimitri est débutant. Chaque terme technique employé dans un message doit avoir une définition de 2-3 phrases.
+- **Ne jamais committer les cours ni les TP** : le dépôt est public. S'il faut les copier sur le disque, les mettre dans `cours_prives/`, qui est listé dans `.gitignore`.
+- Contenu **uniquement tiré des cours et TP joints**. Ne rien inventer.
+  - Chaque nouvelle question indique sa source dans le champ `s` : nom du fichier + page ou partie.
+  - Une définition absente des cours doit être vérifiée en croisant plusieurs sources fiables, sources notées. Jamais de définition inventée. Ces questions sont marquées « hors cours ».
+- **Noir et blanc doux** (palette existante). Juste/faux se distinguent par la forme, jamais par la couleur.
+- **Git** : jamais de force-push ni de réécriture d'historique. Merge et push normaux. Pas d'identifiant de modèle dans les commits.
+- N'utiliser **aucun document personnel** (santé, administratif, jeux).
+- Lancer `python3 outils/build_entrainement.py` **après chaque modification**.
+
+## Cours déjà exploités (à ne pas refaire)
+VLAN, NAT/PAT, DHCP, DNS, Routeurs, Droits NTFS, Systèmes Windows (cours avancé), Partitionnement, Machines virtuelles, Veille technologique, Câblage réseau, Hardware + Poste de travail Hardware, Introduction à Linux, Initiation aux réseaux, Modèle OSI, Prise en main Windows 11. Les TP sont ignorés (consigne de Dimitri).
+Ces cours sont dans `outils/quiz/*.json` et `outils/ouvertes/*.json`. Avant d'ajouter un fichier, comparer son thème au champ `t` et sa source au champ `s` des JSON.
+
+## Fichiers du projet
+- `outils/entrainement.frag.html` : source de la page (HTML, CSS et JS en un seul fichier).
+  - Onglets : Cours (QCM + questions ouvertes, filtres de thème et de niveau, tableau « Couverture TSSR »), Sous-réseaux, Commandes, Cisco, Ports, OSI, Dépannage.
+  - Ce fragment, sans doctype, est aussi publié en Artifact claude.ai : https://claude.ai/artifact/GXvby1DYXEJd367ti3sapm (republier avec ce `url`).
+- `outils/quiz/*.json` : QCM `{t, s, q, o[4], e, x[3], n}`.
+  - `o[0]` est la bonne réponse ; elle est mélangée à l'affichage.
+  - `e` est l'explication, `x` explique chaque mauvaise réponse.
+  - `n` est le niveau, de 0 à 5.
+- `outils/ouvertes/*.json` : questions ouvertes `{t, s, q, r, p:[[libellé, [mots-clés]]], n}`.
+  - `r` est la réponse modèle.
+  - Les mots-clés sont cherchés dans la réponse en minuscules et sans accents. Éviter les mots trop courants.
+- Questions hors cours : `s` = « Notion générale (pas dans les cours que j'ai pu lire) ». Elles sont dans `outils/quiz/hors_cours.json` et `outils/ouvertes/hors_cours.json`. Elles s'affichent avec la mention « hors cours » et sont exclues du filtre « Mes cours seulement ». Quand un cours sur le même sujet arrive, remplacer ces questions par des questions tirées du cours.
+- `outils/cisco_sim.js` : simulateur Cisco IOS (`CiscoSim`), labs (`CiscoLabs.LABS`) et interface du terminal. On peut le charger sous Node pour les tests.
+- `outils/build_entrainement.py` :
+  - injecte les JSON et le simulateur dans le fragment, entre les marqueurs `/*QUIZ_DEBUT*/…/*QUIZ_FIN*/`, `/*OUV_DEBUT*/…/*OUV_FIN*/` et `/*CISCO_DEBUT*/…/*CISCO_FIN*/` ;
+  - génère `entrainement.html` ;
+  - met à jour le nom du cache de `sw.js` (PWA hors ligne).
+
+## Contenu actuel
+- **571 QCM** :
+  - 426 tirés des cours ;
+  - 139 hors cours (AD et GPO, Windows Server et PowerShell, Linux, scripts, sauvegarde/RAID/PRA, supervision, sécurité, ITIL, virtualisation et cloud, Wi-Fi/VoIP/IPv6, messagerie et web) ;
+  - 6 notions générales réparties dans les thèmes des cours.
+- **62 questions ouvertes**.
+- **Tirage des questions** :
+  - une question ratée revient 8 questions plus tard ;
+  - sinon, une question jamais vue, en commençant par le niveau le plus bas ;
+  - sinon, une question parmi le quart le plus ancien.
+- Clés `localStorage` : `tssr-entrainement` (quiz) et `tssr-cisco` (labs).
+- **Simulateur Cisco** :
+  - modes, abréviations, `?`, Tab ;
+  - VLAN, trunks, sous-interfaces ;
+  - routes statiques, RIP, OSPF ;
+  - ACL standard et étendues, NAT et PAT ;
+  - serveur DHCP et relais ;
+  - SSH et Telnet (`login local`, `transport input`, `access-class`) ;
+  - port-security, STP (affichage seulement), CDP, table MAC ;
+  - PC : `ipconfig /renew` et `/release`, `ping`, `curl`, `ssh` et `telnet` avec session distante.
+- **13 labs** : base, if, vlan, trunk, static, rip, ros, ospf, acl, nat, dhcp, secu, libre (bac à sable). Tous les labs qui ont des tâches se valident avec leur solution.
+
+## Tests
+- **Node** : `require('./outils/cisco_sim.js')`, puis exécuter la solution de chaque lab et vérifier ses tâches.
+- **Playwright** (Chromium préinstallé) sur `entrainement.html` :
+  - aucune erreur de page ;
+  - en 1366×768 et sur iPhone 13, pas de défilement horizontal.

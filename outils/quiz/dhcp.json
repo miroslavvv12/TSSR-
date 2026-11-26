@@ -1,0 +1,542 @@
+[
+{
+"t": "DHCP",
+"s": "Cours DHCP (David Rodriguez)",
+"q": "Que signifie DHCP ?",
+"o": [
+"Dynamic Host Configuration Protocol",
+"Domain Host Control Protocol",
+"Dynamic Hypertext Communication Protocol",
+"Data Host Connection Process"
+],
+"e": "Il permet à un ordinateur qui se connecte au réseau local d'obtenir sa configuration IP automatiquement.",
+"x": [
+"Rien à voir avec un domaine.",
+"Rien à voir avec l'hypertexte (HTTP).",
+"Ce n'est pas un « process »."
+],
+"n": 0
+},
+{
+"t": "DHCP",
+"s": "Cours DHCP (David Rodriguez)",
+"q": "Quel est le but principal du DHCP ?",
+"o": [
+"Simplifier l'administration du réseau",
+"Chiffrer les échanges",
+"Traduire les noms en adresses IP",
+"Bloquer les machines inconnues"
+],
+"e": "Plus besoin de configurer chaque poste à la main : l'administration des adresses est centralisée.",
+"x": [
+"Le DHCP ne chiffre rien.",
+"Ça, c'est le DNS.",
+"Il donne des adresses, il ne bloque pas."
+],
+"n": 1
+},
+{
+"t": "DHCP",
+"s": "Cours DHCP (David Rodriguez)",
+"q": "De quoi un hôte a-t-il besoin au minimum pour communiquer sur son propre réseau ?",
+"o": [
+"Une adresse IP et un masque",
+"Une passerelle et un DNS",
+"Seulement une adresse MAC",
+"Un nom de domaine"
+],
+"e": "Pour joindre d'autres réseaux il faut en plus une passerelle, et pour naviguer sur Internet, un serveur DNS.",
+"x": [
+"Ils servent à sortir du réseau et à résoudre les noms.",
+"Sans IP, il ne peut pas envoyer de paquets IP.",
+"Le nom de domaine n'est pas indispensable."
+],
+"n": 1
+},
+{
+"t": "DHCP",
+"s": "Cours DHCP (David Rodriguez)",
+"q": "Pourquoi dit-on que les adresses distribuées par DHCP sont « dynamiques » ?",
+"o": [
+"Elles peuvent changer d'une fois à l'autre",
+"Elles changent toutes les minutes",
+"Elles sont publiques",
+"Elles sont chiffrées"
+],
+"e": "Par opposition aux adresses statiques, saisies directement sur l'ordinateur.",
+"x": [
+"Elles ne changent pas sans arrêt : elles durent le temps du bail.",
+"Elles sont souvent privées.",
+"Rien n'est chiffré."
+],
+"n": 2
+},
+{
+"t": "DHCP",
+"s": "Cours DHCP (David Rodriguez)",
+"q": "Le serveur DHCP donne-t-il une adresse à tous les ordinateurs qui se branchent sur le réseau ?",
+"o": [
+"Non, uniquement à ceux qui en font la demande",
+"Oui, à tous automatiquement",
+"Seulement aux serveurs",
+"Seulement aux ordinateurs Windows"
+],
+"e": "Il délivre un bail DHCP à l'ordinateur qui le demande, et n'attribue que des adresses non utilisées.",
+"x": [
+"Il ne répond qu'aux demandes.",
+"Les serveurs ont souvent une IP fixe.",
+"Tous les systèmes peuvent être clients DHCP."
+],
+"n": 2
+},
+{
+"t": "DHCP",
+"s": "Cours DHCP (David Rodriguez)",
+"q": "Pourquoi le serveur DHCP doit-il avoir une adresse IP fixe ?",
+"o": [
+"Il reçoit toutes les requêtes DHCP et y répond : il sert de base au service",
+"Parce que Windows l'impose",
+"Pour aller plus vite",
+"Pour être joignable depuis Internet"
+],
+"e": "Il ne peut pas obtenir sa propre adresse par DHCP.",
+"x": [
+"Windows ne l'impose pas en soi : c'est une question de logique.",
+"Ce n'est pas une question de vitesse.",
+"Il sert le réseau local."
+],
+"n": 2
+},
+{
+"t": "DHCP",
+"s": "Cours DHCP (David Rodriguez)",
+"q": "Qu'est-ce qu'un bail DHCP ?",
+"o": [
+"Une configuration IP donnée avec une date de début et une date de fin de validité",
+"Le contrat entre l'entreprise et son FAI",
+"Une adresse IP réservée pour toujours",
+"La liste des serveurs DNS"
+],
+"e": "Un bail, des baux. La durée peut aller de quelques heures à plusieurs mois.",
+"x": [
+"Rien à voir avec le contrat du FAI.",
+"Un bail a une fin de validité.",
+"Les DNS ne sont qu'une option du bail."
+],
+"n": 0
+},
+{
+"t": "DHCP",
+"s": "Cours DHCP (David Rodriguez)",
+"q": "Quel est l'intérêt de limiter les baux dans le temps ?",
+"o": [
+"Une adresse non utilisée redevient disponible pour un autre ordinateur",
+"Forcer les utilisateurs à redémarrer",
+"Changer les mots de passe",
+"Économiser l'électricité"
+],
+"e": "Si l'hôte est toujours connecté, il renouvelle son bail avant l'expiration, de façon transparente.",
+"x": [
+"Le renouvellement est transparent pour l'utilisateur.",
+"Les mots de passe n'ont rien à voir.",
+"Aucun effet sur l'électricité."
+],
+"n": 2
+},
+{
+"t": "DHCP",
+"s": "Cours DHCP (David Rodriguez)",
+"q": "Sans configuration IP, comment un hôte peut-il contacter le serveur DHCP ?",
+"o": [
+"Il envoie un DHCPDISCOVER en broadcast, à l'adresse MAC ff:ff:ff:ff:ff:ff",
+"Il envoie un paquet à l'adresse IP du serveur",
+"Il demande au DNS",
+"Il attend que le serveur le contacte"
+],
+"e": "Il ne connaît ni l'adresse IP ni l'adresse MAC du serveur, mais il a sa propre adresse MAC : il peut envoyer des trames.",
+"x": [
+"Il ne connaît pas l'adresse IP du serveur.",
+"Sans IP, pas de DNS.",
+"Le serveur ne contacte pas les clients en premier."
+],
+"n": 2
+},
+{
+"t": "DHCP",
+"s": "Cours DHCP (David Rodriguez)",
+"q": "Quel message le serveur renvoie-t-il après avoir reçu un DHCPDISCOVER ?",
+"o": [
+"DHCPOFFER",
+"DHCPACK",
+"DHCPREQUEST",
+"DHCPNAK"
+],
+"e": "L'offre contient l'adresse IP du serveur, l'adresse IP et le masque proposés au client.",
+"x": [
+"Le ACK vient en dernier.",
+"Le Request vient du client.",
+"Ce message n'est pas dans le cours."
+],
+"n": 1
+},
+{
+"t": "DHCP",
+"s": "Cours DHCP (David Rodriguez)",
+"q": "Plusieurs serveurs DHCP ont fait une offre. Laquelle le client retient-il ?",
+"o": [
+"La première qui lui parvient",
+"La plus petite adresse IP",
+"Celle du serveur le plus proche",
+"Il les refuse toutes"
+],
+"e": "Son DHCPREQUEST, envoyé en broadcast, prévient aussi les autres serveurs que leur offre n'est pas retenue.",
+"x": [
+"Le client ne compare pas les adresses.",
+"Il ne mesure pas la distance.",
+"Il en accepte une."
+],
+"n": 3
+},
+{
+"t": "DHCP",
+"s": "Cours DHCP (David Rodriguez)",
+"q": "Comment le DHCPREQUEST est-il envoyé ?",
+"o": [
+"En broadcast",
+"Directement au serveur choisi, en unicast",
+"Au routeur",
+"Au serveur DNS"
+],
+"e": "Il sert à annoncer quelle offre est acceptée.",
+"x": [
+"Le cours précise : en broadcast, pour prévenir tous les serveurs.",
+"Le routeur ne transmet pas les broadcasts.",
+"Le DNS n'intervient pas."
+],
+"n": 2
+},
+{
+"t": "DHCP",
+"s": "Cours DHCP (David Rodriguez)",
+"q": "Quel message valide l'attribution du bail ?",
+"o": [
+"DHCPACK",
+"DHCPOFFER",
+"DHCPDISCOVER",
+"DHCPREQUEST"
+],
+"e": "Il donne l'adresse, le masque, la durée du bail (d'où T1 et T2) et éventuellement d'autres paramètres.",
+"x": [
+"L'Offer n'est qu'une proposition.",
+"Le Discover est la recherche du serveur.",
+"Le Request est la demande du client."
+],
+"n": 1
+},
+{
+"t": "DHCP",
+"s": "Cours DHCP (David Rodriguez)",
+"q": "Dans quel ordre se déroule l'échange DHCP ?",
+"o": [
+"Discover, Offer, Request, Ack",
+"Request, Offer, Discover, Ack",
+"Offer, Discover, Ack, Request",
+"Discover, Request, Offer, Ack"
+],
+"e": "On le retient avec DORA.",
+"x": [
+"Le client cherche d'abord un serveur.",
+"L'offre vient après la découverte.",
+"La demande vient après l'offre."
+],
+"n": 1
+},
+{
+"t": "DHCP",
+"s": "Cours DHCP (David Rodriguez)",
+"q": "Dans quel protocole de transport le DHCP est-il encapsulé ?",
+"o": [
+"UDP",
+"TCP",
+"ICMP",
+"ARP"
+],
+"e": "Le serveur écoute sur le port 67, le client sur le port 68.",
+"x": [
+"DHCP n'utilise pas TCP.",
+"ICMP sert au ping.",
+"ARP n'est pas un protocole de transport."
+],
+"n": 1
+},
+{
+"t": "DHCP",
+"s": "Cours DHCP (David Rodriguez)",
+"q": "Sur quel port écoute le client DHCP ?",
+"o": [
+"68",
+"67",
+"53",
+"80"
+],
+"e": "Il émet vers le port 67 (serveur) et écoute sur le port 68.",
+"x": [
+"67, c'est le serveur.",
+"53, c'est le DNS.",
+"80, c'est HTTP."
+],
+"n": 1
+},
+{
+"t": "DHCP",
+"s": "Cours DHCP (David Rodriguez)",
+"q": "Le serveur DHCP n'est pas sur le même réseau que les clients. Pourquoi les Discover ne lui arrivent-ils pas ?",
+"o": [
+"Les routeurs ne transmettent pas les broadcasts",
+"Le serveur est trop loin",
+"Le DNS bloque les requêtes",
+"Les switchs filtrent le port 67"
+],
+"e": "Solution : un agent de relais DHCP.",
+"x": [
+"La distance ne compte pas.",
+"Le DNS n'a rien à voir.",
+"Les switchs transmettent les broadcasts dans leur réseau."
+],
+"n": 4
+},
+{
+"t": "DHCP",
+"s": "Cours DHCP (David Rodriguez)",
+"q": "Que fait un agent de relais DHCP ?",
+"o": [
+"Il transmet les Discover reçus sur le port 67 à un serveur DHCP dont on lui a donné l'adresse, puis diffuse les réponses",
+"Il distribue lui-même les adresses",
+"Il traduit les adresses privées en publiques",
+"Il remplace le serveur DNS"
+],
+"e": "Sur un routeur Cisco, c'est la commande ip helper-address.",
+"x": [
+"Il ne distribue pas d'adresses lui-même.",
+"Ça, c'est la NAT.",
+"Ça, c'est le DNS."
+],
+"n": 2
+},
+{
+"t": "DHCP",
+"s": "Cours DHCP (David Rodriguez)",
+"q": "Sous Windows Server, comment met-on en place le service DHCP ?",
+"o": [
+"En donnant le rôle DHCP au serveur",
+"En installant un logiciel tiers obligatoire",
+"En modifiant le registre",
+"Il est actif par défaut"
+],
+"e": "Une fois le rôle installé, on crée une ou plusieurs étendues.",
+"x": [
+"Aucun logiciel tiers n'est nécessaire.",
+"On n'installe pas un rôle par le registre.",
+"Il faut l'installer."
+],
+"n": 1
+},
+{
+"t": "DHCP",
+"s": "Cours DHCP (David Rodriguez)",
+"q": "Qu'est-ce qu'une étendue DHCP ?",
+"o": [
+"Une plage d'adresses IP que le serveur peut distribuer (pool d'adresses)",
+"La durée d'un bail",
+"La zone couverte par le Wi-Fi",
+"Une liste de serveurs DNS"
+],
+"e": "Ces adresses donnent droit à une configuration IP pour la durée du bail.",
+"x": [
+"La durée, c'est le bail.",
+"Rien à voir avec le Wi-Fi.",
+"Les DNS sont une option de l'étendue."
+],
+"n": 0
+},
+{
+"t": "DHCP",
+"s": "Cours DHCP (David Rodriguez)",
+"q": "Qu'est-ce qu'une réservation DHCP ?",
+"o": [
+"L'association d'une adresse MAC à une adresse IP",
+"Une adresse retirée de l'étendue",
+"Un bail sans fin pour tous les postes",
+"Une adresse gardée pour le serveur DNS"
+],
+"e": "Le client qui présente cette adresse MAC reçoit toujours la même IP, et cette IP ne peut être donnée qu'à lui.",
+"x": [
+"Ça, c'est une exclusion.",
+"Une réservation concerne un seul poste.",
+"Rien à voir avec le DNS."
+],
+"n": 1
+},
+{
+"t": "DHCP",
+"s": "Cours DHCP (David Rodriguez)",
+"q": "Le serveur DHCP peut-il envoyer autre chose que l'adresse IP et le masque ?",
+"o": [
+"Oui, d'autres informations sur le réseau (passerelle, DNS…)",
+"Non, seulement l'adresse IP",
+"Seulement le nom de l'ordinateur",
+"Seulement l'heure"
+],
+"e": "C'est un des avantages du DHCP cités par le cours.",
+"x": [
+"Il peut envoyer d'autres informations.",
+"Il donne bien plus que le nom.",
+"L'heure n'est pas l'exemple du cours."
+],
+"n": 1
+},
+{
+"t": "DHCP",
+"s": "Cours DHCP (David Rodriguez)",
+"q": "Un ordinateur est toujours connecté quand son bail arrive à expiration. Que se passe-t-il ?",
+"o": [
+"Il reçoit un nouveau bail, de façon transparente (le renouvellement est fait avant l'expiration)",
+"Il perd le réseau",
+"Il doit redémarrer",
+"Il garde l'adresse pour toujours"
+],
+"e": "Si l'ordinateur n'est plus là, l'adresse redevient disponible.",
+"x": [
+"Le renouvellement est fait avant la fin.",
+"Aucun redémarrage n'est nécessaire.",
+"Un bail a toujours une fin."
+],
+"n": 2
+},
+{
+"t": "DHCP",
+"s": "Cours DHCP (David Rodriguez)",
+"q": "Que contient l'offre DHCP (DHCPOFFER) ?",
+"o": [
+"L'adresse IP du serveur, l'adresse IP et le masque proposés au client",
+"Seulement l'adresse MAC du client",
+"La liste de tous les postes",
+"Le mot de passe du réseau"
+],
+"e": "Elle est envoyée au client, identifié par son adresse physique, sur le port 68.",
+"x": [
+"La MAC sert à identifier le client, mais l'offre contient l'IP.",
+"Le serveur ne diffuse pas sa liste.",
+"Aucun mot de passe."
+],
+"n": 2
+},
+{
+"t": "DHCP",
+"s": "Cours DHCP (David Rodriguez)",
+"q": "Pourquoi l'hôte envoie-t-il son Discover en broadcast ?",
+"o": [
+"Il ne connaît pas l'adresse MAC du serveur DHCP",
+"Pour aller plus vite",
+"Parce qu'il a déjà une IP",
+"Pour joindre Internet"
+],
+"e": "Il envoie donc à ff:ff:ff:ff:ff:ff, à tout le réseau.",
+"x": [
+"Ce n'est pas une question de vitesse.",
+"Il n'a pas encore d'IP.",
+"Le Discover reste dans le réseau local."
+],
+"n": 2
+},
+{
+"t": "DHCP",
+"s": "Cours DHCP (David Rodriguez)",
+"q": "À quoi sert le DHCPREQUEST pour les autres serveurs qui ont fait une offre ?",
+"o": [
+"Il les informe que leur offre n'est pas retenue",
+"Il leur demande une deuxième adresse",
+"Il les éteint",
+"Il ne leur sert à rien"
+],
+"e": "C'est pour ça qu'il est envoyé en broadcast.",
+"x": [
+"Le client ne prend qu'une adresse.",
+"Il ne coupe aucun serveur.",
+"Il leur sert : ils libèrent l'adresse proposée."
+],
+"n": 4
+},
+{
+"t": "DHCP",
+"s": "Cours DHCP (David Rodriguez)",
+"q": "De la durée du bail, quelles valeurs découlent pour le comportement du client en fin de bail ?",
+"o": [
+"T1 et T2",
+"TTL et MTU",
+"RX et TX",
+"UDP et TCP"
+],
+"e": "Elles sont transmises dans le DHCPACK.",
+"x": [
+"Le TTL est lié aux paquets et au DNS.",
+"RX et TX désignent la réception et l'émission.",
+"Ce sont des protocoles de transport."
+],
+"n": 2
+},
+{
+"t": "DHCP",
+"s": "Cours DHCP (David Rodriguez)",
+"q": "Quel exemple de réseau en adressage dynamique le cours cite-t-il ?",
+"o": [
+"La box des particuliers",
+"Un serveur de fichiers",
+"Un routeur Cisco de cœur de réseau",
+"Un contrôleur de domaine"
+],
+"e": "C'est la méthode la plus simple pour obtenir une configuration réseau.",
+"x": [
+"Un serveur garde une IP fixe.",
+"Ses interfaces sont configurées à la main.",
+"Un contrôleur de domaine a une IP fixe."
+],
+"n": 1
+},
+{
+"t": "DHCP",
+"s": "Cours DHCP (David Rodriguez)",
+"q": "Deux serveurs DHCP sur le même réseau distribuent des plages qui se chevauchent. Quel risque ?",
+"o": [
+"Ils peuvent donner la même adresse à deux postes : conflit d'adresses",
+"Aucun, le client prend la première offre",
+"Les postes reçoivent deux adresses chacun",
+"Le réseau devient plus rapide"
+],
+"e": "Chaque serveur ne connaît que ses propres baux : il ne sait pas ce que l'autre a déjà donné.",
+"x": [
+"Prendre la première offre n'empêche pas les doublons entre serveurs.",
+"Un client n'accepte qu'une offre.",
+"Rien à voir avec la vitesse."
+],
+"n": 5
+},
+{
+"t": "DHCP",
+"s": "Cours DHCP (David Rodriguez)",
+"q": "Un poste reçoit une adresse en 169.254.x.x. Que peux-tu en conclure ?",
+"o": [
+"Aucun serveur DHCP ne lui a répondu (adresse APIPA)",
+"Il a reçu une réservation",
+"Il est connecté à Internet",
+"Il a une adresse publique"
+],
+"e": "Vérifie le serveur DHCP, l'étendue, le câble, ou l'agent de relais si le serveur est sur un autre réseau.",
+"x": [
+"Une réservation donne une adresse de l'étendue.",
+"169.254 ne sort pas du réseau local.",
+"Ce n'est pas une adresse publique."
+],
+"n": 3
+}
+]

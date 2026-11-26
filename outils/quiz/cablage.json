@@ -1,0 +1,488 @@
+[
+ {
+  "t": "Câblage réseau",
+  "s": "Cours Le câblage réseau (David Rodriguez), p. 2",
+  "q": "Qu'est-ce que le câblage réseau ?",
+  "o": [
+   "La base physique qui permet au réseau de fonctionner en assurant la connectivité",
+   "Le logiciel qui gère les adresses IP",
+   "Le plan d'adressage du réseau",
+   "La liste des utilisateurs du réseau"
+  ],
+  "e": "Le cours le définit comme la base physique du réseau. Il est régi par des normes d'usage et de sécurité, et doit être cohérent, organisé et sûr.",
+  "x": [
+   "C'est un service logiciel, pas le câblage.",
+   "Le plan d'adressage est logique, pas physique.",
+   "Rien à voir avec le câblage."
+  ],
+  "n": 0
+ },
+ {
+  "t": "Câblage réseau",
+  "s": "Cours Le câblage réseau (David Rodriguez), p. 3",
+  "q": "Lequel de ces critères n'est PAS cité par le cours pour choisir son câblage ?",
+  "o": [
+   "La couleur des câbles",
+   "Les contraintes du bâtiment",
+   "Les perturbations électromagnétiques",
+   "Les besoins en débit"
+  ],
+  "e": "Le cours cite : les contraintes et particularités du bâtiment, les difficultés d'installation, les perturbations électromagnétiques et les besoins en débit.",
+  "x": [
+   "C'est un critère du cours.",
+   "C'est un critère du cours.",
+   "C'est un critère du cours."
+  ],
+  "n": 1
+ },
+ {
+  "t": "Câblage réseau",
+  "s": "Cours Le câblage réseau (David Rodriguez), p. 4",
+  "q": "Quel câblage relie les bâtiments entre eux ?",
+  "o": [
+   "Le câblage primaire (fédérateur)",
+   "Le câblage secondaire (vertical)",
+   "Le câblage tertiaire (horizontal)",
+   "Le câblage VDI"
+  ],
+  "e": "Primaire = entre bâtiments, en général en fibre optique. Secondaire = entre les étages. Tertiaire = de l'armoire de brassage aux postes d'un étage.",
+  "x": [
+   "Le secondaire relie les étages d'un même immeuble.",
+   "Le tertiaire relie les zones de travail d'un étage à l'armoire de brassage.",
+   "VDI désigne un réseau courants faibles, pas un niveau de câblage."
+  ],
+  "n": 1
+ },
+ {
+  "t": "Câblage réseau",
+  "s": "Cours Le câblage réseau (David Rodriguez), p. 4",
+  "q": "Avec quoi réalise-t-on en principe le câblage tertiaire (horizontal) ?",
+  "o": [
+   "En paire torsadée",
+   "En fibre optique monomode",
+   "En câble coaxial",
+   "Par Wi-Fi"
+  ],
+  "e": "Le câblage tertiaire relie les salles d'un étage à l'armoire de brassage du local technique, en paire torsadée. Les niveaux primaire et secondaire sont plutôt en fibre.",
+  "x": [
+   "La fibre est réservée en principe aux niveaux primaire et secondaire.",
+   "Le cours ne parle pas de coaxial ici.",
+   "Le câblage est physique."
+  ],
+  "n": 1
+ },
+ {
+  "t": "Câblage réseau",
+  "s": "Cours Le câblage réseau (David Rodriguez), p. 4",
+  "q": "Comment appelle-t-on aussi le câblage secondaire, qui relie les étages d'un immeuble ?",
+  "o": [
+   "Vertical, ou backbone",
+   "Capillaire",
+   "Fédérateur",
+   "Horizontal"
+  ],
+  "e": "Secondaire = vertical = backbone. Primaire = fédérateur. Tertiaire = horizontal = capillaire.",
+  "x": [
+   "Capillaire désigne le tertiaire.",
+   "Fédérateur désigne le primaire.",
+   "Horizontal désigne le tertiaire."
+  ],
+  "n": 2
+ },
+ {
+  "t": "Câblage réseau",
+  "s": "Cours Le câblage réseau (David Rodriguez), p. 5",
+  "q": "Que veut dire VDI dans « réseau VDI » ?",
+  "o": [
+   "Voix, Données, Images",
+   "Virtual Desktop Infrastructure",
+   "Vitesse, Débit, Intensité",
+   "VLAN, DHCP, IP"
+  ],
+  "e": "Un réseau VDI utilise les courants faibles. Il fait circuler téléphone, Internet, télévision et réseau local, distribués par des prises RJ45.",
+  "x": [
+   "C'est un autre sens du sigle (bureaux virtuels), pas celui du cours.",
+   "Ce n'est pas ce que veut dire le sigle.",
+   "Ce ne sont pas les mots du sigle."
+  ],
+  "n": 0
+ },
+ {
+  "t": "Câblage réseau",
+  "s": "Cours Le câblage réseau (David Rodriguez), p. 5",
+  "q": "Quelle norme impose un coffret VDI dans les logements neufs en France depuis 2010 ?",
+  "o": [
+   "NF C 15-100",
+   "ISO 9001",
+   "IEEE 802.3",
+   "RFC 1918"
+  ],
+  "e": "Le cours cite la norme NF C 15-100, qui encadre les installations électriques des logements.",
+  "x": [
+   "C'est une norme de management de la qualité.",
+   "C'est la norme Ethernet.",
+   "C'est le document des adresses IP privées."
+  ],
+  "n": 2
+ },
+ {
+  "t": "Câblage réseau",
+  "s": "Cours Le câblage réseau (David Rodriguez), p. 7",
+  "q": "Pourquoi les fils d'un câble à paires torsadées sont-ils entrelacés ?",
+  "o": [
+   "Pour supprimer les bruits (diaphonie) dus aux paires voisines et aux sources externes",
+   "Pour que le câble soit plus solide",
+   "Pour pouvoir le couper plus facilement",
+   "Pour doubler le débit"
+  ],
+  "e": "L'entrelacement réduit la diaphonie (bruit d'une paire sur l'autre) et les perturbations des moteurs, relais et transformateurs.",
+  "x": [
+   "Ce n'est pas le but.",
+   "Ça n'a aucun rapport.",
+   "Le débit dépend de la catégorie du câble."
+  ],
+  "n": 1
+ },
+ {
+  "t": "Câblage réseau",
+  "s": "Cours Le câblage réseau (David Rodriguez), p. 8",
+  "q": "Que veut dire UTP ?",
+  "o": [
+   "Unshielded Twisted Pair : paire torsadée non blindée",
+   "Universal Transfer Protocol",
+   "Paire torsadée blindée par une tresse",
+   "Un type de fibre optique"
+  ],
+  "e": "U = Unshielded (non blindé). Le FTP a une feuille d'aluminium, le STP blinde chaque paire.",
+  "x": [
+   "Ce n'est pas un protocole.",
+   "C'est le blindage S (tresse).",
+   "C'est un câble en cuivre."
+  ],
+  "n": 1
+ },
+ {
+  "t": "Câblage réseau",
+  "s": "Cours Le câblage réseau (David Rodriguez), p. 8",
+  "q": "Quel câble a un blindage général par une feuille d'aluminium ?",
+  "o": [
+   "FTP (Foiled Twisted Pair)",
+   "UTP",
+   "STP",
+   "S/STP"
+  ],
+  "e": "FTP : feuille d'aluminium autour de toutes les paires. STP : chaque paire est blindée. S/FTP : feuille + tresse. S/STP : chaque paire blindée + blindage général.",
+  "x": [
+   "UTP n'est pas blindé.",
+   "Dans le STP, ce sont les paires qui sont blindées.",
+   "Le S/STP a un blindage par paire plus un blindage général."
+  ],
+  "n": 2
+ },
+ {
+  "t": "Câblage réseau",
+  "s": "Cours Le câblage réseau (David Rodriguez), p. 8",
+  "q": "Le câble passe près de moteurs, sur une grande longueur. Quel câble conseille le cours ?",
+  "o": [
+   "S/STP : chaque paire blindée, plus un blindage général",
+   "UTP",
+   "FTP",
+   "Un câble croisé"
+  ],
+  "e": "Le cours réserve le S/FTP et le S/STP aux longueurs importantes et aux parasites. Le S/STP est le plus protégé.",
+  "x": [
+   "Il n'a aucun blindage.",
+   "Le cours le dit suffisant seulement en l'absence de parasites.",
+   "Croisé ou droit, c'est le câblage des fils, pas le blindage."
+  ],
+  "n": 3
+ },
+ {
+  "t": "Câblage réseau",
+  "s": "Cours Le câblage réseau (David Rodriguez), p. 9",
+  "q": "Quel est le débit maximal d'un câble de catégorie 6a selon le cours ?",
+  "o": [
+   "10 Gbit/s",
+   "100 Mbit/s",
+   "1 Gbit/s",
+   "40 Gbit/s"
+  ],
+  "e": "Tableau du cours : Cat5 100 Mbit/s, Cat5e et Cat6 1 Gbit/s, Cat6a et Cat7 10 Gbit/s, Cat8 25 ou 40 Gbit/s.",
+  "x": [
+   "C'est la Cat5.",
+   "C'est la Cat5e ou la Cat6.",
+   "C'est la Cat8."
+  ],
+  "n": 1
+ },
+ {
+  "t": "Câblage réseau",
+  "s": "Cours Le câblage réseau (David Rodriguez), p. 9",
+  "q": "Quelle est la bande passante maximale d'un câble Cat6a ?",
+  "o": [
+   "500 MHz",
+   "100 MHz",
+   "250 MHz",
+   "2000 MHz"
+  ],
+  "e": "Cat5 et Cat5e : 100 MHz. Cat6 : plus de 250 MHz. Cat6a : 500 MHz. Cat7 : 600 MHz. Cat8 : 2000 MHz.",
+  "x": [
+   "C'est la Cat5 ou la Cat5e.",
+   "C'est la Cat6.",
+   "C'est la Cat8."
+  ],
+  "n": 2
+ },
+ {
+  "t": "Câblage réseau",
+  "s": "Cours Le câblage réseau (David Rodriguez), p. 9",
+  "q": "Quelle longueur maximale le cours donne-t-il pour un segment en paire torsadée ?",
+  "o": [
+   "De 30 à 100 mètres",
+   "1 kilomètre",
+   "10 mètres",
+   "Il n'y a pas de limite"
+  ],
+  "e": "Au-delà, le signal s'affaiblit. La valeur dépend de la catégorie : environ 30 m pour la Cat8.",
+  "x": [
+   "C'est un ordre de grandeur pour la fibre.",
+   "C'est beaucoup trop court.",
+   "Il y a une limite."
+  ],
+  "n": 2
+ },
+ {
+  "t": "Câblage réseau",
+  "s": "Cours Le câblage réseau (David Rodriguez), p. 10",
+  "q": "Qu'est-ce que RJ45 ?",
+  "o": [
+   "Le connecteur couramment utilisé pour les connexions Ethernet",
+   "Un type de câble en fibre",
+   "Un protocole de routage",
+   "Une catégorie de câble"
+  ],
+  "e": "Par abus de langage, on appelle « câble RJ45 » les câbles qui utilisent ce connecteur.",
+  "x": [
+   "La fibre utilise d'autres connecteurs.",
+   "Ce n'est pas un protocole.",
+   "Les catégories sont Cat5, Cat6, etc."
+  ],
+  "n": 0
+ },
+ {
+  "t": "Câblage réseau",
+  "s": "Cours Le câblage réseau (David Rodriguez), p. 11",
+  "q": "Selon le schéma du cours, quel câble pour relier un switch à un PC ?",
+  "o": [
+   "Un câble droit",
+   "Un câble croisé",
+   "Un câble de fibre monomode",
+   "Aucun câble, c'est impossible"
+  ],
+  "e": "Câble droit entre équipements différents (switch–routeur, switch–PC). Câble croisé entre équipements semblables (switch–switch, routeur–routeur, PC–PC) et entre routeur et PC.",
+  "x": [
+   "Le croisé sert entre équipements du même type.",
+   "Ce n'est pas la question.",
+   "C'est le cas le plus courant."
+  ],
+  "n": 3
+ },
+ {
+  "t": "Câblage réseau",
+  "s": "Cours Le câblage réseau (David Rodriguez), p. 11",
+  "q": "Selon le schéma du cours, quel câble pour relier deux switchs ?",
+  "o": [
+   "Un câble croisé",
+   "Un câble droit",
+   "Un câble UTP uniquement",
+   "Un câble série"
+  ],
+  "e": "Deux équipements du même type se relient en croisé. Remarque hors cours : la plupart des équipements récents s'adaptent seuls (Auto-MDIX).",
+  "x": [
+   "Le droit relie des équipements différents.",
+   "Le blindage n'est pas la question.",
+   "Le série sert aux liaisons WAN entre routeurs."
+  ],
+  "n": 3
+ },
+ {
+  "t": "Câblage réseau",
+  "s": "Cours Le câblage réseau (David Rodriguez), p. 12",
+  "q": "Que conseille le cours au moment de la recette d'une installation ?",
+  "o": [
+   "Tester les connexions",
+   "Repeindre les goulottes",
+   "Débrancher tous les câbles",
+   "Changer les prises"
+  ],
+  "e": "La recette, c'est la vérification finale avant de valider l'installation. On teste chaque prise avec un testeur de câble.",
+  "x": [
+   "Rien à voir.",
+   "On les teste, on ne les débranche pas.",
+   "Rien à voir."
+  ],
+  "n": 1
+ },
+ {
+  "t": "Câblage réseau",
+  "s": "Cours Le câblage réseau (David Rodriguez), p. 12",
+  "q": "Lequel de ces gestes est à éviter selon les bonnes pratiques du cours ?",
+  "o": [
+   "Serrer trop fort les colliers ou agrafer les câbles",
+   "Utiliser des bandes Velcro",
+   "Respecter le rayon de courbure",
+   "Limiter la traction au minimum"
+  ],
+  "e": "À éviter : angles trop fermés, serrage trop fort, traction de plus de 15 kg sur le câble, trop de torsion.",
+  "x": [
+   "C'est conseillé.",
+   "C'est conseillé.",
+   "C'est conseillé."
+  ],
+  "n": 2
+ },
+ {
+  "t": "Câblage réseau",
+  "s": "Cours Le câblage réseau (David Rodriguez), p. 13",
+  "q": "Comment la fibre optique transmet-elle les données ?",
+  "o": [
+   "Sous forme de lumière (photons)",
+   "Sous forme de courant électrique",
+   "Par ondes radio",
+   "Par champ magnétique"
+  ],
+  "e": "Le cœur et la gaine ont des indices de réfraction différents. La lumière rebondit le long du câble : c'est la réflexion totale.",
+  "x": [
+   "C'est la paire torsadée.",
+   "C'est le Wi-Fi.",
+   "Non."
+  ],
+  "n": 1
+ },
+ {
+  "t": "Câblage réseau",
+  "s": "Cours Le câblage réseau (David Rodriguez), p. 13",
+  "q": "Comment s'appelle le phénomène qui guide la lumière dans la fibre ?",
+  "o": [
+   "La réflexion totale",
+   "La diaphonie",
+   "L'effet Joule",
+   "La modulation"
+  ],
+  "e": "Le signal rebondit sur la limite entre le cœur et la gaine optique, qui ont des indices de réfraction différents.",
+  "x": [
+   "C'est le bruit entre paires de cuivre.",
+   "C'est l'échauffement dû au courant.",
+   "Ce n'est pas le guidage de la lumière."
+  ],
+  "n": 2
+ },
+ {
+  "t": "Câblage réseau",
+  "s": "Cours Le câblage réseau (David Rodriguez), p. 14",
+  "q": "Quelle fibre est faite pour les gros débits sur de longues distances ?",
+  "o": [
+   "La fibre monomode",
+   "La fibre multimode à saut d'indice",
+   "La fibre multimode à gradient d'indice",
+   "Le câble UTP"
+  ],
+  "e": "En monomode, une seule longueur d'onde suit un trajet unique : bande passante plus large et pas de chevauchement.",
+  "x": [
+   "La multimode porte moins loin.",
+   "La multimode porte moins loin.",
+   "Le cuivre est limité à 100 m."
+  ],
+  "n": 2
+ },
+ {
+  "t": "Câblage réseau",
+  "s": "Cours Le câblage réseau (David Rodriguez), p. 15",
+  "q": "Quelle est la différence entre fibre multimode à saut d'indice et à gradient d'indice ?",
+  "o": [
+   "Saut d'indice : le rayon change brutalement de trajet ; gradient d'indice : il s'incurve progressivement",
+   "Le saut d'indice est monomode",
+   "Le gradient d'indice n'utilise pas la lumière",
+   "Aucune différence"
+  ],
+  "e": "Les deux sont multimodes : plusieurs longueurs d'onde traversent le cœur.",
+  "x": [
+   "Les deux sont multimodes.",
+   "Les deux utilisent la lumière.",
+   "Le trajet de la lumière diffère."
+  ],
+  "n": 3
+ },
+ {
+  "t": "Câblage réseau",
+  "s": "Cours Le câblage réseau (David Rodriguez), p. 17",
+  "q": "D'après le tableau du cours, quelle distance en 10 Gbit/s (10GBase-SR) avec une fibre multimode OM4 ?",
+  "o": [
+   "400 m",
+   "10 km",
+   "300 m",
+   "100 m"
+  ],
+  "e": "Tableau du cours : OM3 = 300 m et OM4 = 400 m en 10GBase-SR. La monomode OS2 atteint 10 km.",
+  "x": [
+   "C'est la monomode OS2.",
+   "C'est l'OM3.",
+   "C'est l'OM4 en 25 Gbit/s."
+  ],
+  "n": 4
+ },
+ {
+  "t": "Câblage réseau",
+  "s": "Cours Le câblage réseau (David Rodriguez), p. 18",
+  "q": "Pourquoi faut-il respecter le rayon de courbure d'une fibre ?",
+  "o": [
+   "Un angle trop fermé empêche la lumière de rester guidée et peut abîmer la fibre",
+   "Pour économiser du câble",
+   "Parce que la fibre est trop lourde",
+   "Pour éviter la diaphonie"
+  ],
+  "e": "Le cours montre un mauvais rayon (angle droit dans un coin) et un bon rayon (courbe arrondie).",
+  "x": [
+   "Ça demande même un peu plus de câble.",
+   "Ce n'est pas la raison.",
+   "La diaphonie concerne le cuivre."
+  ],
+  "n": 4
+ },
+ {
+  "t": "Câblage réseau",
+  "s": "Cours Le câblage réseau (David Rodriguez), p. 8 et 11",
+  "q": "Un technicien relie deux switchs récents avec un câble droit UTP près d'un gros moteur, et le lien est instable. Quelle correction le cours permet-il de justifier ?",
+  "o": [
+   "Passer à un câble blindé (S/FTP ou S/STP) à cause des parasites",
+   "Remplacer par un câble croisé UTP",
+   "Raccourcir le câble à 5 m",
+   "Passer en Cat5"
+  ],
+  "e": "Les parasites d'un moteur demandent un câble blindé. Le croisé ou le droit ne change rien aux perturbations, et les switchs récents s'adaptent seuls (Auto-MDIX, hors cours).",
+  "x": [
+   "Le type de câblage ne protège pas des parasites.",
+   "Ce n'est pas le problème.",
+   "Une catégorie plus ancienne ne protège pas mieux."
+  ],
+  "n": 5
+ },
+ {
+  "t": "Câblage réseau",
+  "s": "Cours Le câblage réseau (David Rodriguez), p. 8",
+  "q": "Le cours dit de ne pas utiliser l'UTP sur les réseaux informatiques. Est-ce la pratique courante ?",
+  "o": [
+   "Non : l'UTP est très utilisé en entreprise là où il n'y a pas de parasites ; c'est un point à revoir avec ton formateur",
+   "Oui, l'UTP est interdit en entreprise",
+   "Oui, l'UTP ne marche qu'en téléphonie",
+   "Oui, l'UTP ne supporte pas Ethernet"
+  ],
+  "e": "Hors cours : beaucoup de réseaux Ethernet sont câblés en U/UTP Cat6. Le blindage devient utile en présence de parasites.",
+  "x": [
+   "Il n'est pas interdit.",
+   "Il sert aussi à Ethernet.",
+   "Il supporte Ethernet."
+  ],
+  "n": 5
+ }
+]
