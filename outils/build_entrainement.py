@@ -59,6 +59,10 @@ for f in sorted(glob.glob(p('outils', 'fiches', '*.json'))):
 data_fi = json.dumps(fiches, ensure_ascii=False, separators=(',', ':')).replace('</', '<\\/')
 frag = re.sub(r'/\*FICHES_DEBUT\*/.*?/\*FICHES_FIN\*/', lambda m: '/*FICHES_DEBUT*/' + data_fi + '/*FICHES_FIN*/', frag, count=1, flags=re.S)
 print(len(fiches), 'fiches')
+# Bibliothèques QR (outils/vendor/qrcode.js MIT, outils/vendor/jsQR.js Apache 2.0), injectées entre /*QRLIB_DEBUT*/ et /*QRLIB_FIN*/.
+qrlib = '\n'.join(open(p('outils', 'vendor', f), encoding='utf-8').read() for f in ('qrcode.js', 'jsQR.js')).replace('</', '<\\/')
+assert '/*QRLIB_DEBUT*/' in frag and '/*QRLIB_FIN*/' in frag
+frag = re.sub(r'/\*QRLIB_DEBUT\*/.*?/\*QRLIB_FIN\*/', lambda m: '/*QRLIB_DEBUT*/\n' + qrlib + '\n/*QRLIB_FIN*/', frag, count=1, flags=re.S)
 # Terminal Linux (outils/linux_sim.js), injecté entre /*LINUX_DEBUT*/ et /*LINUX_FIN*/.
 lx = open(p('outils', 'linux_sim.js'), encoding='utf-8').read().replace('</', '<\\/')
 assert '/*LINUX_DEBUT*/' in frag and '/*LINUX_FIN*/' in frag
