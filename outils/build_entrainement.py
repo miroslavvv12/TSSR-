@@ -12,6 +12,8 @@ HEAD = """<!DOCTYPE html>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="robots" content="noindex, nofollow">
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="manifest" href="manifest-entrainement.webmanifest">
+<meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="theme-color" content="#121212">
 <style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}</style>
@@ -63,11 +65,26 @@ assert '/*LINUX_DEBUT*/' in frag and '/*LINUX_FIN*/' in frag
 frag = re.sub(r'/\*LINUX_DEBUT\*/.*?/\*LINUX_FIN\*/', lambda m: '/*LINUX_DEBUT*/\n' + lx + '\n/*LINUX_FIN*/', frag, count=1, flags=re.S)
 open(fp, 'w', encoding='utf-8').write(frag)
 print(len(quiz), 'questions de cours,', len(ouv), 'questions ouvertes')
-open(p('entrainement.html'), 'w', encoding='utf-8').write(HEAD + frag + '\n</body>\n</html>\n')
+# Appli installable seule (PC : Edge / Chrome → « Installer ») et hors ligne : la page enregistre elle-même le service worker,
+# et propose « Mettre à jour » quand une nouvelle version est arrivée.
+SWJS = """<div id="updE" hidden style="position:fixed;bottom:calc(14px + env(safe-area-inset-bottom,0px));left:50%;transform:translateX(-50%);z-index:60;background:var(--accent);color:var(--accent-ink);padding:10px 14px;border-radius:10px;font:15px var(--f-ui);white-space:nowrap">Nouvelle version disponible · <a href="#" id="updEgo" style="color:inherit;font-weight:600">Mettre à jour</a></div>
+<script>
+if('serviceWorker' in navigator&&location.protocol!=='file:'){navigator.serviceWorker.register('sw.js').then(reg=>{
+ const show=()=>{document.getElementById('updE').hidden=false};
+ if(reg.waiting&&navigator.serviceWorker.controller)show();
+ reg.addEventListener('updatefound',()=>{const w=reg.installing;w&&w.addEventListener('statechange',()=>{if(w.state==='installed'&&navigator.serviceWorker.controller)show()})});
+ document.getElementById('updEgo').onclick=e=>{e.preventDefault();if(reg.waiting)reg.waiting.postMessage('skip');else location.reload()};
+ reg.update();setInterval(()=>reg.update(),3600000);
+}).catch(()=>{});
+ let r=false;navigator.serviceWorker.addEventListener('controllerchange',()=>{if(!r&&!document.getElementById('updE').hidden){r=true;location.reload()}});}
+</script>"""
+open(p('entrainement.html'), 'w', encoding='utf-8').write(HEAD + frag + '\n' + SWJS + '\n</body>\n</html>\n')
 
 sw = open(p('sw.js'), encoding='utf-8').read()
 if '"entrainement.html"' not in sw:
     sw = sw.replace('"index.html", ', '"index.html", "entrainement.html", ', 1)
+if '"manifest-entrainement.webmanifest"' not in sw:
+    sw = sw.replace('"manifest.webmanifest", ', '"manifest.webmanifest", "manifest-entrainement.webmanifest", ', 1)
 h = hashlib.sha1(b''.join(open(p(f), 'rb').read() for f in ('entrainement.html', 'index.html', 'content.enc'))).hexdigest()[:10]
 sw = re.sub(r"tssr-[0-9a-f]+", "tssr-" + h, sw, count=1)
 open(p('sw.js'), 'w', encoding='utf-8').write(sw)
