@@ -112,6 +112,69 @@ h1 small{font-weight:400;color:var(--muted);font-size:13px;margin-left:6px}
 .ti-links{display:flex;flex-wrap:wrap;gap:6px}
 .ti-links .btn{font-size:13.5px;padding:6px 11px}
 .ti-src{font-size:13px;color:var(--muted)}.ti-src a{color:inherit}
+
+/* ===== Apparence « Couleurs » (par défaut ; « Noir et blanc » reste au choix dans le menu) =====
+   Fonds chaleureux, une couleur douce par rubrique : violet = accueil et titre, bleu = Cours, vert = Pratique, orange = Mémo.
+   Juste / faux gardent leur forme (✓ ✗, trait plein / pointillé) : la couleur n'est qu'un plus. */
+:root[data-look="warm"]{
+  --bg:#1c1a17; --surface:#262320; --sunk:#201d1a; --line:#3b3631; --fg:#efe8de; --muted:#ab9f90;
+  --c-titre:#b39cf2; --c-cours:#7fb0ee; --c-prat:#6fcf9c; --c-memo:#f2a765;
+  --accent:#b39cf2; --accent-ink:#1c1a17; --ok:#6fcf9c; --ko:#f08c74; --okbg:rgba(111,207,156,.12); --kobg:rgba(240,140,116,.08);
+  --shadow:none; color-scheme:dark}
+@media (prefers-color-scheme: light){:root[data-look="warm"]:not([data-theme="dark"]){
+  --bg:#f7f3ec; --surface:#fffdf8; --sunk:#f2ece2; --line:#e3d9ca; --fg:#2d2823; --muted:#73685c;
+  --c-titre:#6e52c0; --c-cours:#2c6bba; --c-prat:#1f7f54; --c-memo:#b85a14;
+  --accent:#6e52c0; --accent-ink:#fffdf8; --ok:#1f7f54; --ko:#c0432b; --okbg:rgba(31,127,84,.09); --kobg:rgba(192,67,43,.06);
+  --shadow:0 1px 2px rgba(70,45,20,.05),0 6px 18px rgba(70,45,20,.07); color-scheme:light}}
+:root[data-look="warm"][data-theme="light"]{
+  --bg:#f7f3ec; --surface:#fffdf8; --sunk:#f2ece2; --line:#e3d9ca; --fg:#2d2823; --muted:#73685c;
+  --c-titre:#6e52c0; --c-cours:#2c6bba; --c-prat:#1f7f54; --c-memo:#b85a14;
+  --accent:#6e52c0; --accent-ink:#fffdf8; --ok:#1f7f54; --ko:#c0432b; --okbg:rgba(31,127,84,.09); --kobg:rgba(192,67,43,.06);
+  --shadow:0 1px 2px rgba(70,45,20,.05),0 6px 18px rgba(70,45,20,.07); color-scheme:light}
+:root[data-look="warm"][data-theme="dark"]{
+  --bg:#1c1a17; --surface:#262320; --sunk:#201d1a; --line:#3b3631; --fg:#efe8de; --muted:#ab9f90;
+  --c-titre:#b39cf2; --c-cours:#7fb0ee; --c-prat:#6fcf9c; --c-memo:#f2a765;
+  --accent:#b39cf2; --accent-ink:#1c1a17; --ok:#6fcf9c; --ko:#f08c74; --okbg:rgba(111,207,156,.12); --kobg:rgba(240,140,116,.08);
+  --shadow:none; color-scheme:dark}
+/* couleur de la rubrique en cours (sur body) et de chaque entrée du menu */
+[data-look="warm"] body{--accent:var(--c-titre)}
+[data-look="warm"] body[data-sec="cours"]{--accent:var(--c-cours)}
+[data-look="warm"] body[data-sec="prat"]{--accent:var(--c-prat)}
+[data-look="warm"] body[data-sec="memo"]{--accent:var(--c-memo)}
+[data-look="warm"] .side [data-sec="titre"]{--accent:var(--c-titre)}
+[data-look="warm"] .side [data-sec="cours"]{--accent:var(--c-cours)}
+[data-look="warm"] .side [data-sec="prat"]{--accent:var(--c-prat)}
+[data-look="warm"] .side [data-sec="memo"]{--accent:var(--c-memo)}
+[data-look="warm"] .side .grp{color:var(--accent)}
+[data-look="warm"] header{border-bottom:3px solid var(--accent)}
+[data-look="warm"] .card,[data-look="warm"] .sc,[data-look="warm"] .htile{border-radius:14px;box-shadow:var(--shadow)}
+[data-look="warm"] .eyebrow{color:var(--accent)}
+[data-look="warm"] .serbar .track,[data-look="warm"] .ti-meter .track{border-color:var(--line);background:var(--sunk)}
+[data-look="warm"] .serbar .track i,[data-look="warm"] .ti-meter .track i{background:var(--accent)}
+[data-look="warm"] .fb.ok{background:var(--okbg)} [data-look="warm"] .fb.ko{background:var(--kobg)}
+[data-look="warm"] .opt.ok{background:var(--okbg)} [data-look="warm"] .opt.ko{background:var(--kobg)}
+[data-look="warm"] .verdict.ok{color:var(--ok)} [data-look="warm"] .verdict.ko{color:var(--ko)}
+[data-look="warm"] .ti-gap{border-left-color:var(--accent)}
+.side .ic{width:1.5em;flex:none;text-align:center;font-size:16px}
+.side nav button .lb{flex:1}
+.side nav button{justify-content:flex-start}
+.looks{border-top:1px solid var(--line);margin-top:14px;padding:6px 4px 0;display:flex;flex-direction:column;gap:6px}
+.looks .grp{padding:8px 6px 0}
+.seg{display:flex;gap:4px;flex-wrap:wrap}
+.seg button{flex:1 1 auto;font:500 13px var(--f-ui);border:1px solid var(--line);background:var(--surface);color:var(--fg);border-radius:8px;padding:6px 8px;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--fg);color:var(--bg);border-color:var(--fg)}
+/* Accueil plus chaleureux */
+.hello2{display:flex;flex-direction:column;gap:2px}
+.hello2 .hi{font-size:26px;font-weight:600;margin:0}
+.hello2 .sub{color:var(--muted)}
+[data-look="warm"] .hcard{border-top:4px solid var(--hc,var(--accent))}
+.hcard .hic{font-size:22px;line-height:1}
+/* Encouragements */
+.streak{font-size:14px;font-weight:600}
+.cheer{font-size:28px;line-height:1}
+.confetti{position:fixed;inset:0;pointer-events:none;z-index:80;overflow:hidden}
+.confetti i{position:absolute;top:-12px;width:9px;height:14px;border-radius:2px;animation:conf 2.4s ease-in forwards}
+@keyframes conf{to{transform:translateY(105vh) rotate(540deg);opacity:.6}}
 /* Filtres du quiz (thèmes et niveaux), repliables */
 .qtop{align-items:flex-start}
 .filtres{flex:1 1 260px;min-width:0}
@@ -399,6 +462,7 @@ details summary{cursor:pointer;font-weight:500}
 }
 @media (prefers-reduced-motion:no-preference){.fb{animation:in .18s ease-out}@keyframes in{from{opacity:.4;transform:translateY(3px)}to{opacity:1;transform:none}}}
 </style>
+<script>try{const P=(JSON.parse(localStorage.getItem('tssr-entrainement')||'{}')||{}).pref||{};document.documentElement.dataset.look=P.look||'warm';if(P.theme&&P.theme!=='auto')document.documentElement.dataset.theme=P.theme}catch(e){document.documentElement.dataset.look='warm'}</script>
 
 <header><div class="hbar">
   <button id="menuBtn" class="menubtn" aria-label="Ouvrir ou fermer le menu" aria-controls="side" aria-expanded="false">☰</button>
@@ -408,32 +472,37 @@ details summary{cursor:pointer;font-weight:500}
 <aside id="side" class="side" aria-label="Menu">
   <div class="sidetop"><span>Menu</span><button id="sideClose" class="sideclose" aria-label="Fermer le menu">✕</button></div>
   <nav id="sideNav">
-    <button data-tab="home">Accueil</button>
-    <button data-tab="titre">Mon titre TSSR</button>
-    <div class="grp">Cours</div>
-    <button data-tab="quiz" data-qm="qcm">QCM</button>
-    <button data-tab="quiz" data-qm="ouv">Questions ouvertes</button>
-    <button data-tab="quiz" data-qm="rev">À revoir <span class="cnt" id="revCnt"></span></button>
-    <button data-tab="quiz" data-qm="exam">Examen blanc</button>
-    <button data-tab="quiz" data-qm="fiche">Fiches</button>
-    <button data-tab="quiz" data-qm="bilan">Mon bilan</button>
-    <div class="grp">Pratique</div>
-    <button data-tab="cmd">Commandes</button>
-    <button data-tab="cisco">Cisco</button>
-    <button data-tab="linux">Linux</button>
-    <button data-tab="sr">Sous-réseaux</button>
-    <div class="grp">Mémo</div>
-    <button data-tab="ports">Ports</button>
-    <button data-tab="ordre">OSI</button>
-    <button data-tab="dep">Dépannage</button>
+    <button data-tab="home" data-sec="titre"><span class="ic" aria-hidden="true">🏠</span><span class="lb">Accueil</span></button>
+    <button data-tab="titre" data-sec="titre"><span class="ic" aria-hidden="true">🎓</span><span class="lb">Mon titre TSSR</span></button>
+    <div class="grp" data-sec="cours">Cours</div>
+    <button data-tab="quiz" data-qm="qcm" data-sec="cours"><span class="ic" aria-hidden="true">📝</span><span class="lb">QCM</span></button>
+    <button data-tab="quiz" data-qm="ouv" data-sec="cours"><span class="ic" aria-hidden="true">✍️</span><span class="lb">Questions ouvertes</span></button>
+    <button data-tab="quiz" data-qm="rev" data-sec="cours"><span class="ic" aria-hidden="true">🔁</span><span class="lb">À revoir</span> <span class="cnt" id="revCnt"></span></button>
+    <button data-tab="quiz" data-qm="exam" data-sec="cours"><span class="ic" aria-hidden="true">⏱️</span><span class="lb">Examen blanc</span></button>
+    <button data-tab="quiz" data-qm="fiche" data-sec="cours"><span class="ic" aria-hidden="true">📒</span><span class="lb">Fiches</span></button>
+    <button data-tab="quiz" data-qm="bilan" data-sec="cours"><span class="ic" aria-hidden="true">📊</span><span class="lb">Mon bilan</span></button>
+    <div class="grp" data-sec="prat">Pratique</div>
+    <button data-tab="cmd" data-sec="prat"><span class="ic" aria-hidden="true">⌨️</span><span class="lb">Commandes</span></button>
+    <button data-tab="cisco" data-sec="prat"><span class="ic" aria-hidden="true">🔌</span><span class="lb">Cisco</span></button>
+    <button data-tab="linux" data-sec="prat"><span class="ic" aria-hidden="true">🐧</span><span class="lb">Linux</span></button>
+    <button data-tab="sr" data-sec="prat"><span class="ic" aria-hidden="true">🧮</span><span class="lb">Sous-réseaux</span></button>
+    <div class="grp" data-sec="memo">Mémo</div>
+    <button data-tab="ports" data-sec="memo"><span class="ic" aria-hidden="true">🔢</span><span class="lb">Ports</span></button>
+    <button data-tab="ordre" data-sec="memo"><span class="ic" aria-hidden="true">🧱</span><span class="lb">OSI</span></button>
+    <button data-tab="dep" data-sec="memo"><span class="ic" aria-hidden="true">🛠️</span><span class="lb">Dépannage</span></button>
   </nav>
+  <div class="looks">
+    <div class="grp">Apparence</div>
+    <div class="seg" id="lookSeg"><button data-v="warm">🎨 Couleurs</button><button data-v="nb">◐ Noir et blanc</button></div>
+    <div class="seg" id="themeSeg"><button data-v="auto">Auto</button><button data-v="light">☀️ Clair</button><button data-v="dark">🌙 Sombre</button></div>
+  </div>
 </aside>
 <div id="scrim" class="scrim" hidden></div>
 
 <main><div class="wrap">
 
 <section id="home" hidden>
-  <h2 class="hh">Aujourd'hui</h2>
+  <div class="hello2"><h2 class="hi" id="homeHi">Bonjour</h2><span class="sub">Voici ce que je te propose aujourd'hui.</span></div>
   <div class="hgrid" id="homeCards"></div>
   <p class="foot" id="homeTip">Toutes les rubriques sont dans le menu <b>☰</b> en haut à gauche.</p>
 </section>
@@ -807,10 +876,15 @@ const sideInit=()=>{document.body.classList.remove('side-open');$('#scrim').hidd
 wide.addEventListener?wide.addEventListener('change',sideInit):wide.addListener(sideInit);sideInit();
 // Glisser vers la gauche ferme le tiroir.
 {let x0=null;$('#side').addEventListener('touchstart',e=>{x0=e.touches[0].clientX},{passive:true});$('#side').addEventListener('touchend',e=>{if(x0!=null&&x0-e.changedTouches[0].clientX>60&&!wide.matches)sideSet(false);x0=null},{passive:true})}
+function lookApply(){const R=document.documentElement,L=S.pref.look||'warm',T=S.pref.theme||'auto';R.dataset.look=L;if(T==='auto')delete R.dataset.theme;else R.dataset.theme=T;
+  $$('#lookSeg button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.v===L));$$('#themeSeg button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.v===T))}
+$$('#lookSeg button').forEach(b=>b.onclick=()=>{S.pref.look=b.dataset.v;save();lookApply()});
+$$('#themeSeg button').forEach(b=>b.onclick=()=>{S.pref.theme=b.dataset.v;save();lookApply()});
+lookApply();
 function navMark(){const t=S.pref.tab,qm=S.pref.qMode||'qcm';let cur=null;
   $$('#sideNav button').forEach(b=>{const on=b.dataset.tab===t&&(!b.dataset.qm||b.dataset.qm===qm);if(on)cur=b;on?b.setAttribute('aria-current','page'):b.removeAttribute('aria-current')});
-  $('#curTitle').textContent=cur?'· '+cur.firstChild.textContent.trim():''}
-function tab(t){$$('main section').forEach(s=>s.hidden=s.id!==t);const pk=$(`#${t} .labpick`);if(pk){pk.hidden=false;$(`#${t} .labview`).hidden=true;pk.dispatchEvent(new Event('labs'))}S.pref.tab=t;if(t!=='home')S.pref.lastTab=t;else homeRender();if(t==='titre')tiRender();save();navMark();
+  $('#curTitle').textContent=cur?'· '+cur.querySelector('.lb').textContent.trim():''}
+function tab(t){$$('main section').forEach(s=>s.hidden=s.id!==t);document.body.dataset.sec=({quiz:'cours',cmd:'prat',cisco:'prat',linux:'prat',sr:'prat',ports:'memo',ordre:'memo',dep:'memo'})[t]||'titre';const pk=$(`#${t} .labpick`);if(pk){pk.hidden=false;$(`#${t} .labview`).hidden=true;pk.dispatchEvent(new Event('labs'))}S.pref.tab=t;if(t!=='home')S.pref.lastTab=t;else homeRender();if(t==='titre')tiRender();save();navMark();
   const f=$(`#${t} input[type=text]:not([readonly])`);if(f&&f.offsetParent&&matchMedia('(pointer:fine)').matches)f.focus()}
 $$('#sideNav button').forEach(b=>b.onclick=()=>{if(b.dataset.qm)setQMode(b.dataset.qm);tab(b.dataset.tab);if(!wide.matches)sideSet(false);window.scrollTo({top:0})});
 
@@ -1028,12 +1102,20 @@ function serEnd(m,card,end,desc,again){
   const x=ser(m),E=$(end);$(card).hidden=true;E.hidden=false;
   const p=x.ok/Math.max(1,x.n),msg=p>=.8?'Très bien !':p>=.5?'Pas mal. Revois tes erreurs pour bien les retenir.':'Courage : revois tes erreurs, puis relis la fiche du thème (menu → Fiches).';
   const bad=x.bad.map(desc).filter(Boolean);
-  E.innerHTML=`<span class="eyebrow">${x.rev?'Révision des erreurs terminée':'Série terminée'}</span><div class="drend">${x.ok}/${x.n}</div><p style="margin:0">${msg}</p>
+  E.innerHTML=`<span class="eyebrow">${x.rev?'Révision des erreurs terminée':'Série terminée'}</span><div class="cheer" aria-hidden="true">${p>=.8?'🏆':p>=.5?'👍':'💪'}</div><div class="drend">${x.ok}/${x.n}</div><p style="margin:0">${msg}</p>
    ${bad.length?`<div><strong>À retravailler :</strong></div><ol class="serbad">${bad.map(([q,r])=>`<li>${esc(q)}<br><span class="empty">→ ${esc(r)}</span></li>`).join('')}</ol>`:'<p style="margin:0">Aucune erreur sur cette série.</p>'}
    <div class="actions">${bad.length?`<button class="btn primary" data-s="rev">Revoir mes ${bad.length} erreur${bad.length>1?'s':''}</button>`:''}<button class="btn${bad.length?'':' primary'}" data-s="next">Série suivante</button></div>`;
   E.querySelectorAll('[data-s]').forEach(b=>b.onclick=()=>{const r=b.dataset.s==='rev'&&x.bad.length>0;S.serRev[m]=r?x.bad.slice():[];S.ser[m]={n:0,ok:0,bad:[],len:r?x.bad.length:SER_N,rev:r};save();E.hidden=true;$(card).hidden=false;again();window.scrollTo({top:0})});
-  window.scrollTo({top:0});const f=E.querySelector('.btn.primary');if(f&&E.offsetParent)f.focus({preventScroll:true})}
+  if(p>=.8&&E.offsetParent)confetti();window.scrollTo({top:0});const f=E.querySelector('.btn.primary');if(f&&E.offsetParent)f.focus({preventScroll:true})}
 const cut=(t,n)=>{t=String(t);return t.length>n?t.slice(0,n-1)+'…':t};
+
+/* Encouragements : un mot gentil quand c'est juste, une série de bonnes réponses d'affilée */
+const BRAVO=['Bravo !','Bien joué !','Exact !','Parfait !','Bien vu !','Excellent !','Top !'];
+const ALLEZ=['Pas grave : c\'est en se trompant qu\'on retient.','Pas cette fois : lis l\'explication, elle reviendra.','Presque ! Regarde bien la correction.'];
+function cheer(ok){S.streak=ok?(S.streak||0)+1:0;save();if(!ok)return pick(ALLEZ);const n=S.streak;return pick(BRAVO)+(n>=3?` 🔥 ${n} de suite`:'')}
+function confetti(){if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;const C=['--c-titre','--c-cours','--c-prat','--c-memo'],cs=getComputedStyle(document.documentElement),d=document.createElement('div');d.className='confetti';d.setAttribute('aria-hidden','true');
+  for(let i=0;i<40;i++){const e=document.createElement('i');e.style.left=Math.random()*100+'%';e.style.background=cs.getPropertyValue(C[i%4]).trim()||'#999';e.style.animationDelay=(Math.random()*.6)+'s';e.style.transform=`rotate(${Math.random()*180}deg)`;d.appendChild(e)}
+  document.body.appendChild(d);setTimeout(()=>d.remove(),3200)}
 
 /* =========================================================
    2. COMMANDES
@@ -1253,7 +1335,7 @@ function cmdShow(ok,given){
   if(!cmdDone){cmdDone=true;tally('cmd',ok);serRec('cmd',ok,cmdCur);S.miss[cmdCur]=ok?Math.max(0,(S.miss[cmdCur]||0)-1):(S.miss[cmdCur]||0)+1;save()}
   $('#cmdConsole').className='console '+(ok?'ok':'ko');
   const fb=$('#cmdFb');fb.className='fb '+(ok?'ok':'ko');fb.hidden=false;
-  fb.innerHTML=`<span class="verdict ${ok?'ok':'ko'}">${ok?'Correct.':given?'Réponse :':'Pas tout à fait.'}</span>
+  fb.innerHTML=`<span class="verdict ${ok?'ok':'ko'}">${ok?cheer(true):given?'Réponse :':'Pas tout à fait.'}</span>
     <div>Réponse attendue : <code>${esc(ans[0])}</code>${ans.length>1?`<br><span class="empty">Aussi accepté : ${ans.slice(1).map(a=>`<code>${esc(a)}</code>`).join(' ')}</span>`:''}</div>
     ${why?`<div>${esc(why)}</div>`:''}
     ${hc?`<div class="empty">Hors cours : cette commande n'est pas encore dans tes cours. ${hc===2?'Syntaxe Cisco IOS standard, à comparer avec ton cours quand tu l\'auras.':'Sa syntaxe a été vérifiée sur la documentation Microsoft (learn.microsoft.com).'}</div>`:''}`;
@@ -2057,7 +2139,7 @@ function qAnswer(btn){
     if(i===0)b.classList.add('ok');else if(b===btn)b.classList.add('ko');
     b.insertAdjacentHTML('beforeend',`<span class="ox">${i===0?'Bonne réponse.':esc((qCur.x||[])[i-1]||'')}</span>`)});
   const fb=$('#qFb');fb.className='fb '+(ok?'ok':btn?'ko':'');fb.hidden=false;
-  fb.innerHTML=`<span class="verdict ${ok?'ok':btn?'ko':''}">${ok?(aid?'Correct, avec indice.':'Correct.'):btn?'Raté.':'Voici la réponse.'}</span>${ok&&aid?'<div class="empty">Trouvée avec un indice : elle reviendra demain dans « À revoir aujourd\'hui » pour confirmer.</div>':''}${ok?'':`<div>Bonne réponse : <strong>${esc(qCur.o[0])}</strong></div>`}<div>${esc(qCur.e)}</div><div class="empty">Source : ${esc(qCur.s)}</div>${repBtn(qCur)}`;
+  fb.innerHTML=`<span class="verdict ${ok?'ok':btn?'ko':''}">${ok?(aid?'Correct, avec indice.':cheer(true)):btn?'Raté.':'Voici la réponse.'}</span>${!ok&&btn?`<div class="empty">${cheer(false)}</div>`:''}${ok&&aid?'<div class="empty">Trouvée avec un indice : elle reviendra demain dans « À revoir aujourd\'hui » pour confirmer.</div>':''}${ok?'':`<div>Bonne réponse : <strong>${esc(qCur.o[0])}</strong></div>`}<div>${esc(qCur.e)}</div><div class="empty">Source : ${esc(qCur.s)}</div>${repBtn(qCur)}`;
 }
 $('#qNext').onclick=qNew;
 
@@ -2254,10 +2336,10 @@ document.addEventListener('keydown',ev=>{
   }
 });
 
-function homeRender(){const n=revCount(),C=[];
+function homeRender(){const n=revCount(),C=[],h=new Date().getHours();$('#homeHi').textContent=h<5||h>=18?'Bonsoir 🌙':h<12?'Bonjour ☀️':'Bon après-midi 🌤️';
   // 1. Reprendre là où on s'était arrêté
   const lt=S.pref.lastTab,rb=lt&&$(`#sideNav button[data-tab="${lt}"]`+(lt==='quiz'?`[data-qm="${qMode}"]`:''));
-  if(rb)C.push(['go','Reprendre',`<p>Tu t'étais arrêté sur <strong>${esc(rb.firstChild.textContent.trim())}</strong>.</p>`,'Continuer →']);
+  if(rb)C.push(['go','Reprendre',`<p>Tu t'étais arrêté sur <strong>${esc(rb.querySelector('.lb').textContent.trim())}</strong>.</p>`,'Continuer →']);
   // 2. Révision espacée
   C.push(['rev','À revoir',n?`<div class="big">${n}</div><p>question${n>1?'s':''} à revoir aujourd'hui pour ne pas les oublier.</p>`:`<p>Rien à revoir aujourd'hui. Les questions déjà vues reviendront ici au bon moment.</p>`,n?'Réviser maintenant':'']);
   // 3. Point faible : le thème le moins réussi (au moins 3 questions répondues)
@@ -2268,7 +2350,8 @@ function homeRender(){const n=revCount(),C=[];
   // 4. Progression
   const sc=S.score.quiz,seen=QUIZ.filter(x=>S.qlast[qKey(x)]!=null).length,ex=S.exams&&S.exams[0];
   C.push(['prog','Ma progression',`<p>${seen} question${seen>1?'s':''} vue${seen>1?'s':''} sur ${QUIZ.length}${sc&&sc.n?` · ${Math.round(100*sc.ok/sc.n)} % de bonnes réponses`:''}.</p>${ex?`<p>Dernier examen blanc : <strong>${String(ex.note).replace('.',',')}/20</strong> (${ex.d}).</p>`:'<p>Pas encore d\'examen blanc.</p>'}`,'Voir mon bilan']);
-  $('#homeCards').innerHTML=C.map(([k,h,body,btn])=>`<div class="card hcard"><span class="eyebrow">${h}</span>${body}${btn?`<div class="actions"><button class="btn${k==='go'||k==='rev'&&n?' primary':''}" data-h="${k}">${btn}</button></div>`:''}</div>`).join('');
+  const HC={go:['▶️','--c-titre'],rev:['🔁','--c-cours'],weak:['🎯','--c-memo'],prog:['📈','--c-prat']};
+  $('#homeCards').innerHTML=C.map(([k,h,body,btn])=>`<div class="card hcard" style="--hc:var(${HC[k][1]})"><div class="bar"><span class="eyebrow" style="color:var(${HC[k][1]})">${h}</span><span class="hic" aria-hidden="true">${HC[k][0]}</span></div>${body}${btn?`<div class="actions"><button class="btn${k==='go'||k==='rev'&&n?' primary':''}" data-h="${k}">${btn}</button></div>`:''}</div>`).join('');
   const nav=(t,qm)=>$(`#sideNav button[data-tab="${t}"]`+(qm?`[data-qm="${qm}"]`:'')).click();
   $$('#homeCards [data-h]').forEach(b=>b.onclick=()=>{const k=b.dataset.h;
     if(k==='go')rb.click();else if(k==='rev')nav('quiz','rev');else if(k==='prog')nav('quiz','bilan');

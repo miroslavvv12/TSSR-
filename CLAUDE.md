@@ -11,7 +11,7 @@ Rendre l'outil de révision TSSR de Dimitri optimal pour sa formation, et utilis
 - Contenu **uniquement tiré des cours et TP joints**. Ne rien inventer.
   - Chaque nouvelle question indique sa source dans le champ `s` : nom du fichier + page ou partie.
   - Une définition absente des cours doit être vérifiée en croisant plusieurs sources fiables, sources notées. Jamais de définition inventée. Ces questions sont marquées « hors cours ».
-- **Noir et blanc doux** (palette existante). Juste/faux se distinguent par la forme, jamais par la couleur.
+- **Apparence « Couleurs » par défaut** (demande de Dimitri du 27/11/2026 : moins froid, plus accueillant) : fonds chaleureux (crème en clair, brun doux en sombre) et une couleur douce par rubrique (`--c-titre` violet = Accueil et Mon titre, `--c-cours` bleu, `--c-prat` vert, `--c-memo` orange ; `body[data-sec]` règle `--accent`). « Noir et blanc » (l'ancienne palette) et Clair / Sombre / Auto restent au choix dans le menu (« Apparence », `S.pref.look`, `S.pref.theme`, appliqués avant l'affichage par un petit script). Juste/faux se distinguent toujours par la forme (✓ ✗, trait plein / pointillé) ; la couleur n'est qu'un plus.
 - **Git** : jamais de force-push ni de réécriture d'historique. Merge et push normaux. Pas d'identifiant de modèle dans les commits.
 - N'utiliser **aucun document personnel** (santé, administratif, jeux).
 - Lancer `python3 outils/build_entrainement.py` **après chaque modification**.
@@ -33,6 +33,7 @@ Ces cours sont dans `outils/quiz/*.json` et `outils/ouvertes/*.json`. Avant d'aj
   - Cisco et Linux : on arrive sur la liste des labs (cartes : n°, niveau, titre, avancement `ST.labs[id].n` ou ✓ Réussi, « dernier ouvert ») ; le lab s'ouvre au clic, avec « ← Tous les labs » pour revenir. `tab()` remet la liste à chaque arrivée par le menu.
   - Dans un lab, sur téléphone et petit écran (< 1024 px) : seule la tâche en cours s'affiche au-dessus du terminal (`#ciCur` / `#lxCur`, avec Indice) ; « Voir toutes les tâches et le schéma » déplie le détail (classe `full` sur `.labview`). Le terminal est moins haut et la ligne de saisie reste visible quand le clavier s'ouvre (elle passe à la ligne si l'invite est longue, ex. « Destination filename »). Liens : Indice, Voir toutes les tâches, Recommencer ce lab. Sur PC, rien ne change.
   - **Séries de 10** (QCM, Questions ouvertes, Commandes « De mémoire ») : barre « Série · 4/10 », puis un bilan (note, erreurs avec la bonne réponse, boutons « Revoir mes N erreurs » et « Série suivante »). État dans `S.ser[mode]`, erreurs à revoir dans `S.serRev[mode]` (modes `qcm`, `ouv`, `cmd`). « À revoir » et l'examen blanc ont déjà leur propre fin.
+  - Côté ludique : icône devant chaque entrée du menu, salutation selon l'heure sur l'accueil, mot d'encouragement quand c'est juste (`cheer()`, série « 🔥 N de suite » dans `S.streak`), trophée et confettis (`confetti()`, désactivés si l'appareil demande moins d'animations) quand une série de 10 est réussie à 80 % ou plus.
   - Thèmes et niveaux du quiz : dans le bouton repliable « Filtres » (`#qFiltres`, résumé des filtres choisis à côté).
   - Ce fragment, sans doctype, est aussi publié en Artifact claude.ai : https://claude.ai/artifact/GXvby1DYXEJd367ti3sapm (republier avec ce `url`).
 - `outils/quiz/*.json` : QCM `{t, s, q, o[4], e, x[3], n}`.
