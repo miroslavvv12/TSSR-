@@ -196,6 +196,13 @@ h1 small{font-weight:400;color:var(--muted);font-size:13px;margin-left:6px}
 .glterm{scroll-margin-top:80px}
 .glterm .def{font-size:15.5px}
 #glLet .chip{min-width:34px}
+/* Dossier professionnel */
+.dpform{display:flex;flex-direction:column;gap:10px}
+.dpform label{font-size:14px;color:var(--fg);font-weight:600}
+.dpform label span{font-weight:400;color:var(--muted);display:block}
+.dpform textarea{min-height:90px}
+.dpform input[type=text]{font:16px var(--f-ui)}
+.dpex{display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap}
 /* Filtres du quiz (thèmes et niveaux), repliables */
 .qtop{align-items:flex-start}
 .filtres{flex:1 1 260px;min-width:0}
@@ -496,6 +503,7 @@ details summary{cursor:pointer;font-weight:500}
     <button data-tab="home" data-sec="titre"><span class="ic" aria-hidden="true">🏠</span><span class="lb">Accueil</span> <span class="cnt" id="goalCnt"></span></button>
     <button data-tab="titre" data-sec="titre"><span class="ic" aria-hidden="true">🎓</span><span class="lb">Mon titre TSSR</span></button>
     <button data-tab="search" data-sec="titre"><span class="ic" aria-hidden="true">🔍</span><span class="lb">Rechercher</span></button>
+    <button data-tab="dp" data-sec="titre"><span class="ic" aria-hidden="true">📁</span><span class="lb">Dossier professionnel</span></button>
     <div class="grp" data-sec="cours">Cours</div>
     <button data-tab="quiz" data-qm="qcm" data-sec="cours"><span class="ic" aria-hidden="true">📝</span><span class="lb">QCM</span></button>
     <button data-tab="quiz" data-qm="ouv" data-sec="cours"><span class="ic" aria-hidden="true">✍️</span><span class="lb">Questions ouvertes</span></button>
@@ -546,6 +554,10 @@ details summary{cursor:pointer;font-weight:500}
     <div class="chips" id="glLet"></div>
   </div>
   <div id="glList" class="gllist"></div>
+</section>
+
+<section id="dp" hidden>
+  <div id="dpBody" style="display:flex;flex-direction:column;gap:14px"></div>
 </section>
 
 <section id="titre" hidden>
@@ -939,7 +951,7 @@ lookApply();
 function navMark(){const t=S.pref.tab,qm=S.pref.qMode||'qcm';let cur=null;
   $$('#sideNav button').forEach(b=>{const on=b.dataset.tab===t&&(!b.dataset.qm||b.dataset.qm===qm);if(on)cur=b;on?b.setAttribute('aria-current','page'):b.removeAttribute('aria-current')});
   $('#curTitle').textContent=cur?'· '+cur.querySelector('.lb').textContent.trim():''}
-function tab(t){$$('main section').forEach(s=>s.hidden=s.id!==t);document.body.dataset.sec=({glo:'memo',quiz:'cours',cmd:'prat',cisco:'prat',linux:'prat',sr:'prat',ports:'memo',ordre:'memo',dep:'memo'})[t]||'titre';const pk=$(`#${t} .labpick`);if(pk){pk.hidden=false;$(`#${t} .labview`).hidden=true;pk.dispatchEvent(new Event('labs'))}S.pref.tab=t;if(t!=='home')S.pref.lastTab=t;else homeRender();if(t==='titre')tiRender();if(t==='glo')gloRender();if(t==='search'){const i=$('#seIn');setTimeout(()=>i.focus(),50)}save();navMark();
+function tab(t){$$('main section').forEach(s=>s.hidden=s.id!==t);document.body.dataset.sec=({glo:'memo',quiz:'cours',cmd:'prat',cisco:'prat',linux:'prat',sr:'prat',ports:'memo',ordre:'memo',dep:'memo'})[t]||'titre';const pk=$(`#${t} .labpick`);if(pk){pk.hidden=false;$(`#${t} .labview`).hidden=true;pk.dispatchEvent(new Event('labs'))}S.pref.tab=t;if(t!=='home')S.pref.lastTab=t;else homeRender();if(t==='titre')tiRender();if(t==='dp')dpRender();if(t==='glo')gloRender();if(t==='search'){const i=$('#seIn');setTimeout(()=>i.focus(),50)}save();navMark();
   const f=$(`#${t} input[type=text]:not([readonly])`);if(f&&f.offsetParent&&matchMedia('(pointer:fine)').matches)f.focus()}
 $$('#sideNav button').forEach(b=>b.onclick=()=>{if(b.dataset.qm)setQMode(b.dataset.qm);tab(b.dataset.tab);if(!wide.matches)sideSet(false);window.scrollTo({top:0})});
 
@@ -2102,7 +2114,7 @@ function tiRender(){
    <p><strong>Mise en situation professionnelle</strong> : des tâches à réaliser sur des machines virtuelles. Tu notes ce que tu fais (traçabilité), puis tu le présentes à l'oral au jury.</p>
    <p><strong>Questionnaire professionnel</strong> : des questions écrites. Dans chaque bloc, au moins une question porte sur une documentation technique <strong>en anglais</strong>.</p><div class="ti-links"><button class="btn" data-q="Anglais technique" data-m="qcm">S'entraîner à l'anglais technique</button></div>
    <p><strong>Entretien technique</strong> : le jury te questionne sur ce que tu as fait.</p><div class="ti-links"><button class="btn" data-tab="quiz" data-qm2="oral">🎤 S'entraîner à l'entretien technique</button></div>
-   <p><strong>Entretien final</strong> (15 min) : le jury échange avec toi sur ton parcours et ton <strong>dossier professionnel</strong> (des exemples réels de ton travail que tu as rédigés).</p>
+   <p><strong>Entretien final</strong> (15 min) : le jury échange avec toi sur ton parcours et ton <strong>dossier professionnel</strong> (des exemples réels de ton travail que tu as rédigés).</p><div class="ti-links"><button class="btn" data-tab="dp">📁 Préparer mon dossier professionnel</button></div>
    <p>Durée totale annoncée pour le titre complet : <strong>7 h</strong>. Durées indiquées pour chaque bloc :</p>
    <table class="ti-ep"><tr><th>Bloc</th><th>Mise en situation</th><th>Entretien technique</th><th>Questionnaire</th><th>Total</th></tr>${ep.map(r=>`<tr>${r.map(c=>`<td>${c}</td>`).join('')}</tr>`).join('')}</table>
    <p class="ti-src">Les horaires de ta session sont sur ta convocation : demande confirmation à ton centre de formation.</p></div>
@@ -2468,6 +2480,56 @@ function seRun(){const raw=$('#seIn').value.trim(),q=nk(raw),W=q.split(/\s+/).fi
   $$('#seRes [data-show]').forEach(b=>b.onclick=()=>{const a=b.nextElementSibling;a.hidden=!a.hidden;b.textContent=a.hidden?'Voir la réponse':'Cacher la réponse'});
   $$('#seRes [data-go]').forEach(b=>b.onclick=()=>keep[+b.dataset.go].go())}
 let seT=null;$('#seIn').oninput=()=>{clearTimeout(seT);seT=setTimeout(seRun,150)};
+
+/* ---------- Dossier professionnel (DP) ----------
+   Rubriques du modèle officiel des titres professionnels : 1. tâches et conditions ; 2. moyens utilisés ; 3. avec qui ;
+   4. contexte (entreprise / organisme, période) ; 5. informations complémentaires (facultatif). Exemples rangés par bloc du titre, dans S.dp. */
+S.dp=S.dp||[];let dpCur=null;
+const DP_R=[['taches','1. Décris les tâches ou opérations que tu as effectuées, et dans quelles conditions','Au « je », dans l\'ordre : la demande, ce que tu as fait étape par étape, comment tu as vérifié, le résultat.'],
+ ['moyens','2. Précise les moyens utilisés','Matériel, logiciels, outils, commandes, documentation technique…'],
+ ['avec','3. Avec qui as-tu travaillé ?','Tuteur, collègues, utilisateurs, prestataires… et le rôle de chacun.'],
+ ['contexte','4. Contexte','Nom de l\'entreprise ou de l\'organisme, service, période (dates).'],
+ ['infos','5. Informations complémentaires (facultatif)','Difficultés rencontrées, ce que tu ferais autrement, documents produits…']];
+function dpIdeas(){const I=[];const st=k=>{try{return JSON.parse(localStorage.getItem(k)||'{}').labs||{}}catch(e){return{}}};
+  const C=st('tssr-cisco'),L=st('tssr-linux');
+  (typeof CiscoLabs!=='undefined'?CiscoLabs.LABS:[]).forEach(l=>{if(l.tasks.length&&C[l.id]&&C[l.id].done)I.push({b:1,t:'Lab Cisco · '+l.titre,taches:l.tasks.map(t=>`- ${t[0]} (${t[1].split('\n')[0]})`).join('\n'),moyens:'Routeur Cisco 1941 / switch Cisco 2960 (simulateur), câble console, commandes Cisco IOS, documentation.'})});
+  (typeof LinuxLabs!=='undefined'?LinuxLabs.LABS:[]).forEach(l=>{if(l.tasks.length&&L[l.id]&&L[l.id].done)I.push({b:1,t:'Lab Linux · '+l.titre,taches:l.tasks.map(t=>`- ${t[0]} (${t[1].split('\n')[0]})`).join('\n'),moyens:'Terminal Linux (bash), commandes du système, documentation (man).'})});
+  if(typeof DEP!=='undefined')DEP.forEach(d=>{if(S.depBest&&S.depBest[d.id]!=null)I.push({b:0,t:'Ticket · '+d.t,taches:`Demande de l'utilisateur : « ${d.user} »\n- Tests réalisés : ${d.tests.filter(x=>x[3]).map(x=>x[0]).join(' ; ')}\n- Cause trouvée : ${(d.cause.find(c=>c[1])||[''])[0]}\n- Action : ${(d.fix.find(c=>c[1])||[''])[0]}\n- Vérification avec l'utilisateur, ticket clôturé.`,moyens:'Poste utilisateur, commandes de diagnostic, consoles d\'administration, outil de tickets.'})});
+  return I}
+function dpText(e){return `${TITRE.blocs[e.b].code} · ${TITRE.blocs[e.b].n}\nExemple : ${e.titre||'(sans titre)'}\n\n`+DP_R.map(([k,l])=>`${l}\n${(e[k]||'').trim()||'…'}\n`).join('\n')}
+function dpRender(){const B=$('#dpBody');
+  if(dpCur){const e=S.dp.find(x=>x.id===dpCur);if(!e){dpCur=null;return dpRender()}
+    B.innerHTML=`<div><button class="link" id="dpBack">← Tous mes exemples</button></div>
+    <div class="card dpform"><span class="eyebrow">Bloc ${e.b+1} · ${esc(TITRE.blocs[e.b].n)}</span>
+     <label>Titre de l'exemple<span>Ex. : « Mise en place d'un switch pour le service Compta »</span><input type="text" data-k="titre" value="${esc(e.titre||'')}"></label>
+     <label>Bloc du titre<select data-k="b" class="sein" style="font-size:15px;padding:8px">${TITRE.blocs.map((b,i)=>`<option value="${i}" ${i===e.b?'selected':''}>Bloc ${i+1} · ${esc(b.n)}</option>`).join('')}</select></label>
+     ${DP_R.map(([k,l,h])=>`<label>${esc(l)}<span>${esc(h)}</span><textarea class="oqin" data-k="${k}">${esc(e[k]||'')}</textarea></label>`).join('')}
+     <p class="empty" id="dpSaved">Enregistré automatiquement sur cet appareil.</p>
+     <div class="actions"><button class="btn primary" id="dpCopy">Copier cet exemple</button><button class="btn" id="dpDel">Supprimer</button></div></div>`;
+    $('#dpBack').onclick=()=>{dpCur=null;dpRender();window.scrollTo({top:0})};
+    $$('#dpBody [data-k]').forEach(f=>f.oninput=f.onchange=()=>{const k=f.dataset.k;e[k]=k==='b'?+f.value:f.value;e.d=new Date().toISOString().slice(0,10);save();if(k==='b')$('#dpBody .eyebrow').textContent=`Bloc ${e.b+1} · ${TITRE.blocs[e.b].n}`});
+    $('#dpCopy').onclick=async()=>{let ok=false;try{await navigator.clipboard.writeText(dpText(e));ok=true}catch(x){}$('#dpSaved').textContent=ok?'Copié : colle-le dans le modèle officiel de ton dossier.':'Copie impossible ici : sélectionne le texte à la main.'};
+    let arm=false;$('#dpDel').onclick=()=>{if(!arm){arm=true;$('#dpDel').textContent='Confirmer la suppression';return}S.dp=S.dp.filter(x=>x!==e);save();dpCur=null;dpRender()};return}
+  const ideas=dpIdeas();
+  B.innerHTML=`<div class="card"><span class="eyebrow">Dossier professionnel</span><h2 style="margin:0;font-size:22px">📁 Mon dossier professionnel</h2>
+    <p style="margin:0">Le dossier professionnel (DP) fait partie du titre : tu y décris <strong>des exemples réels de ton travail</strong> pour chaque bloc. Le jury le lit et en parle avec toi à l'entretien final. Écris au « je » et appuie-toi sur <strong>tes propres réalisations</strong> (stage, entreprise).</p>
+    <p class="empty" style="margin:0">Chaque exemple suit les 5 rubriques du modèle officiel. Prépare-les ici, puis copie-les dans le modèle remis par ton centre de formation (vérifie avec lui la version à utiliser).</p></div>
+   ${TITRE.blocs.map((b,i)=>{const L=S.dp.filter(e=>e.b===i);return `<div class="card"><span class="eyebrow">Bloc ${i+1} · ${b.code}</span><h3 style="margin:0;font-size:17px">${esc(b.n)}</h3>
+     ${L.length?L.map(e=>`<div class="dpex"><span><b>${esc(e.titre||'(sans titre)')}</b> <span class="empty">· ${e.d||''} · ${DP_R.filter(([k],j)=>j<4&&(e[k]||'').trim()).length}/4 rubriques remplies</span></span><button class="btn" data-open="${e.id}">Modifier</button></div>`).join(''):'<p class="empty" style="margin:0">Aucun exemple pour l\'instant.</p>'}
+     <div class="actions"><button class="btn primary" data-new="${i}">+ Nouvel exemple</button></div></div>`}).join('')}
+   <div class="card"><span class="eyebrow">Idées pour démarrer</span>
+    ${ideas.length?`<p style="margin:0">Tirées de ce que tu as réussi dans l'appli. <strong>Attention :</strong> le jury attend ton travail réel. Utilise-les pour t'aider à formuler, puis remplace par ton cas de stage ou d'entreprise.</p>
+     ${ideas.map((x,j)=>`<div class="dpex"><span>${esc(x.t)} <span class="empty">· bloc ${x.b+1}</span></span><button class="btn" data-idea="${j}">Partir de cette idée</button></div>`).join('')}`
+     :'<p class="empty" style="margin:0">Réussis des labs Cisco ou Linux, ou des scénarios de dépannage : ils apparaîtront ici comme idées de départ.</p>'}</div>
+   ${S.dp.length?`<div class="actions"><button class="btn" id="dpAll">Copier tout mon dossier</button><button class="btn" id="dpDl">Télécharger (.txt)</button></div><p class="empty" id="dpMsg"></p>`:''}`;
+  const mk=(b,o)=>{const e=Object.assign({id:'dp'+Date.now(),b,titre:'',taches:'',moyens:'',avec:'',contexte:'',infos:'',d:new Date().toISOString().slice(0,10)},o||{});S.dp.push(e);save();dpCur=e.id;dpRender();window.scrollTo({top:0})};
+  $$('#dpBody [data-new]').forEach(b=>b.onclick=()=>mk(+b.dataset.new));
+  $$('#dpBody [data-open]').forEach(b=>b.onclick=()=>{dpCur=b.dataset.open;dpRender();window.scrollTo({top:0})});
+  $$('#dpBody [data-idea]').forEach(b=>b.onclick=()=>{const x=ideas[+b.dataset.idea];mk(x.b,{titre:x.t.replace(/^[^·]+· /,''),taches:'(À reformuler au « je » avec ton cas réel)\n'+x.taches,moyens:x.moyens})});
+  const all=()=>S.dp.slice().sort((a,b)=>a.b-b.b).map(dpText).join('\n————————————\n\n');
+  if($('#dpAll'))$('#dpAll').onclick=async()=>{let ok=false;try{await navigator.clipboard.writeText(all());ok=true}catch(x){}$('#dpMsg').textContent=ok?'Tout est copié.':'Copie impossible ici : utilise « Télécharger ».'};
+  if($('#dpDl'))$('#dpDl').onclick=()=>{const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([all()],{type:'text/plain'}));a.download='dossier-professionnel-tssr.txt';document.body.appendChild(a);a.click();a.remove()};
+}
 function qRefresh(){qFiltSum();qMode==='ouv'?oqNew():qMode==='exam'?exRender():qMode==='fiche'?fiRender():qMode==='bilan'?(bilan(),couverture()):qMode==='oral'?orRender():qNew()}
 function qFiltSum(){const th=qTheme==='all'?'Tout le TSSR':qTheme==='cours'?'Mes cours seulement':selName(qTheme);$('#qFiltSum').textContent=th+' · '+(qNiv==='all'?'tous niveaux':'niveau '+qNiv)}
 function setQMode(v){if(v===qMode)return;qMode=S.pref.qMode=v;save();qApply();navMark()}
