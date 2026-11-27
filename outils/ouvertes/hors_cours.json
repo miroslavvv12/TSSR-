@@ -641,5 +641,192 @@
    ]
   ],
   "n": 3
+ },
+ {
+  "t": "Intelligence artificielle",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire) — vérifié : ANSSI, « Recommandations de sécurité pour un système d'IA générative » (2024) ; ANSSI et BSI, « AI Coding Assistants » (2024) ; règlement (UE) 2024/1689 sur l'IA ; OQLF, fiche « hallucination d'IA »",
+  "n": 3,
+  "q": "Un utilisateur te demande s'il peut utiliser une IA en ligne pour rédiger un mail à un client et résumer un contrat. Que lui conseilles-tu ?",
+  "r": "Il peut s'en servir pour gagner du temps, avec des règles. Utiliser un outil d'IA autorisé par l'entreprise. Ne jamais y mettre de données sensibles ou personnelles (contrat, données client) dans un outil en ligne non autorisé : elles partent vers un service externe et peuvent fuiter ; au besoin, anonymiser. Relire et vérifier la réponse, car l'IA peut se tromper (hallucination). L'utilisateur reste responsable de ce qu'il envoie.",
+  "p": [
+   [
+    "Utiliser un outil autorisé par l'entreprise",
+    [
+     "autorise",
+     "valide",
+     "charte"
+    ]
+   ],
+   [
+    "Pas de données sensibles ou personnelles",
+    [
+     "sensible",
+     "personnel",
+     "confidentiel"
+    ]
+   ],
+   [
+    "Anonymiser si besoin",
+    [
+     "anonym"
+    ]
+   ],
+   [
+    "Vérifier / relire la réponse (hallucinations)",
+    [
+     "verifi",
+     "relire",
+     "hallucin"
+    ]
+   ],
+   [
+    "La responsabilité reste humaine",
+    [
+     "responsab"
+    ]
+   ]
+  ]
+ },
+ {
+  "t": "Environnement hybride (Entra ID)",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire) — vérifié : Microsoft Learn, « What is Microsoft Entra Connect? », « Hybrid scenarios », « Build resilience in your hybrid architecture », « How it works: Microsoft Entra multifactor authentication »",
+  "n": 3,
+  "q": "Explique ce qu'est une identité hybride et présente les trois façons de connecter les utilisateurs au cloud avec leur compte Active Directory.",
+  "r": "Une identité hybride permet d'utiliser le même compte sur le réseau de l'entreprise (Active Directory local) et dans le cloud (Microsoft Entra ID). Microsoft Entra Connect synchronise les comptes. Trois méthodes : la synchronisation de hachage de mot de passe (PHS), recommandée par défaut, qui copie un hachage du mot de passe et fonctionne même si l'AD local est injoignable ; l'authentification directe (PTA), où un agent local vérifie le mot de passe auprès d'un contrôleur de domaine ; la fédération (AD FS), où Entra ID confie la vérification au service de fédération de l'entreprise.",
+  "p": [
+   [
+    "Même compte en local (AD) et dans le cloud (Entra ID)",
+    [
+     "entra",
+     "cloud"
+    ]
+   ],
+   [
+    "Synchronisation par Entra Connect",
+    [
+     "connect",
+     "synchronis"
+    ]
+   ],
+   [
+    "PHS : hachage du mot de passe",
+    [
+     "phs",
+     "hachage",
+     "hash"
+    ]
+   ],
+   [
+    "PTA : agent local qui vérifie",
+    [
+     "pta",
+     "agent",
+     "authentification directe"
+    ]
+   ],
+   [
+    "Fédération : AD FS",
+    [
+     "federation",
+     "ad fs",
+     "adfs"
+    ]
+   ]
+  ]
+ },
+ {
+  "t": "Déploiement et outils collaboratifs",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire) — vérifié : Microsoft Learn, « Sysprep (System Preparation) Overview », « Sysprep Command-Line Options », « Overview of Windows Autopilot », « Set up file storage and sharing in Microsoft 365 », « Intro to file collaboration in Microsoft 365 »",
+  "n": 3,
+  "q": "Compare le déploiement de postes par image (avec Sysprep) et le déploiement avec Windows Autopilot.",
+  "r": "Par image : on prépare un poste de référence (système, pilotes, applications), on le généralise avec sysprep /generalize pour retirer ses informations propres (dont le SID), on capture l'image puis on la déploie sur les autres postes ; il faut maintenir les images. Avec Autopilot : pas de réimage, le PC garde le Windows installé en usine ; à la première connexion, l'utilisateur choisit la langue, se connecte au réseau et s'identifie, puis le service cloud applique paramètres et applications et inscrit le PC dans Intune.",
+  "p": [
+   [
+    "Poste de référence et image",
+    [
+     "reference",
+     "image"
+    ]
+   ],
+   [
+    "sysprep /generalize et SID",
+    [
+     "sysprep",
+     "generalis",
+     "sid"
+    ]
+   ],
+   [
+    "Capture puis déploiement de l'image",
+    [
+     "captur",
+     "deplo"
+    ]
+   ],
+   [
+    "Autopilot : pas de réimage, Windows d'usine",
+    [
+     "autopilot",
+     "usine",
+     "reimag"
+    ]
+   ],
+   [
+    "Paramètres et applications via le cloud / Intune",
+    [
+     "intune",
+     "cloud",
+     "application"
+    ]
+   ]
+  ]
+ },
+ {
+  "t": "Mises à jour",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire) — vérifié : Microsoft Learn, « Update release cycle for Windows clients », « Configure Windows Update client policies », « Windows Server Update Services (WSUS) overview », « Deploy Windows client updates using WSUS » ; Debian, manuel apt(8)",
+  "n": 3,
+  "q": "Décris comment tu organises les mises à jour Windows dans une PME.",
+  "r": "Je suis le calendrier : Microsoft publie ses mises à jour de sécurité le 2e mardi du mois, et des correctifs urgents peuvent sortir à tout moment. Je centralise la gestion (WSUS avec une GPO, ou les stratégies Windows Update / Intune). Je teste d'abord sur un petit groupe de postes, puis je déploie progressivement au reste du parc (report possible jusqu'à 30 jours). Avant les mises à jour importantes, je m'assure d'avoir une sauvegarde. Ensuite je vérifie que tout est installé et qu'il n'y a pas d'incident, et je sais revenir en arrière si besoin.",
+  "p": [
+   [
+    "Calendrier : 2e mardi du mois (Patch Tuesday)",
+    [
+     "mardi",
+     "patch tuesday"
+    ]
+   ],
+   [
+    "Outil centralisé : WSUS / GPO / Intune",
+    [
+     "wsus",
+     "gpo",
+     "intune",
+     "strategie"
+    ]
+   ],
+   [
+    "Groupe de test d'abord",
+    [
+     "test",
+     "pilote"
+    ]
+   ],
+   [
+    "Déploiement progressif",
+    [
+     "progressi",
+     "report",
+     "etape"
+    ]
+   ],
+   [
+    "Sauvegarde et vérification / retour arrière",
+    [
+     "sauvegard",
+     "verifi",
+     "retour"
+    ]
+   ]
+  ]
  }
 ]
