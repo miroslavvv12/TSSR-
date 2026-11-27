@@ -183,6 +183,19 @@ h1 small{font-weight:400;color:var(--muted);font-size:13px;margin-left:6px}
 /* Message bref (objectif atteint) */
 .toast{position:fixed;left:50%;bottom:calc(70px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:70;background:var(--fg);color:var(--bg);padding:10px 16px;border-radius:12px;font:600 15px var(--f-ui);box-shadow:0 6px 20px rgba(0,0,0,.25);max-width:calc(100vw - 32px);text-align:center}
 #homeCards .big{font:600 30px/1.1 var(--f-ui)}
+/* Recherche et glossaire */
+.sein{font:17px var(--f-ui);width:100%;padding:12px 14px;border-radius:10px;border:1px solid var(--line);background:var(--sunk);color:var(--fg);outline:none}
+.sein:focus-visible{border-color:var(--accent)}
+.seres,.gllist{display:flex;flex-direction:column;gap:10px}
+.segrp{font:600 12px var(--f-ui);text-transform:uppercase;letter-spacing:.9px;color:var(--muted);margin:8px 0 0}
+.sehit{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 14px;display:flex;flex-direction:column;gap:6px;box-shadow:var(--shadow,none)}
+.sehit b{font-size:15.5px}
+.sehit .meta{font-size:13px;color:var(--muted)}
+.sehit .ans{border-left:3px solid var(--accent);padding-left:10px}
+.sehit mark{background:none;color:inherit;text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:2px}
+.glterm{scroll-margin-top:80px}
+.glterm .def{font-size:15.5px}
+#glLet .chip{min-width:34px}
 /* Filtres du quiz (thèmes et niveaux), repliables */
 .qtop{align-items:flex-start}
 .filtres{flex:1 1 260px;min-width:0}
@@ -482,6 +495,7 @@ details summary{cursor:pointer;font-weight:500}
   <nav id="sideNav">
     <button data-tab="home" data-sec="titre"><span class="ic" aria-hidden="true">🏠</span><span class="lb">Accueil</span> <span class="cnt" id="goalCnt"></span></button>
     <button data-tab="titre" data-sec="titre"><span class="ic" aria-hidden="true">🎓</span><span class="lb">Mon titre TSSR</span></button>
+    <button data-tab="search" data-sec="titre"><span class="ic" aria-hidden="true">🔍</span><span class="lb">Rechercher</span></button>
     <div class="grp" data-sec="cours">Cours</div>
     <button data-tab="quiz" data-qm="qcm" data-sec="cours"><span class="ic" aria-hidden="true">📝</span><span class="lb">QCM</span></button>
     <button data-tab="quiz" data-qm="ouv" data-sec="cours"><span class="ic" aria-hidden="true">✍️</span><span class="lb">Questions ouvertes</span></button>
@@ -499,6 +513,7 @@ details summary{cursor:pointer;font-weight:500}
     <button data-tab="ports" data-sec="memo"><span class="ic" aria-hidden="true">🔢</span><span class="lb">Ports</span></button>
     <button data-tab="ordre" data-sec="memo"><span class="ic" aria-hidden="true">🧱</span><span class="lb">OSI</span></button>
     <button data-tab="dep" data-sec="memo"><span class="ic" aria-hidden="true">🛠️</span><span class="lb">Dépannage</span></button>
+    <button data-tab="glo" data-sec="memo"><span class="ic" aria-hidden="true">📖</span><span class="lb">Glossaire</span></button>
   </nav>
   <div class="looks">
     <div class="grp">Apparence</div>
@@ -514,6 +529,23 @@ details summary{cursor:pointer;font-weight:500}
   <div class="hello2"><h2 class="hi" id="homeHi">Bonjour</h2><span class="sub">Voici ce que je te propose aujourd'hui.</span></div>
   <div class="hgrid" id="homeCards"></div>
   <p class="foot" id="homeTip">Toutes les rubriques sont dans le menu <b>☰</b> en haut à gauche.</p>
+</section>
+
+<section id="search" hidden>
+  <div class="card"><span class="eyebrow">Rechercher dans toute l'appli</span>
+    <input type="text" id="seIn" class="sein" placeholder="Ex. : VLAN, DHCP, clock rate, APIPA…" autocomplete="off" autocapitalize="off" spellcheck="false" enterkeyhint="search" aria-label="Rechercher">
+    <p class="empty" id="seInfo">Tape un mot : tu verras le glossaire, les fiches, les questions, les commandes, les labs et les scénarios de dépannage qui en parlent.</p>
+  </div>
+  <div id="seRes" class="seres"></div>
+</section>
+
+<section id="glo" hidden>
+  <div class="card"><span class="eyebrow">Glossaire</span><h2 style="margin:0;font-size:22px">📖 Les mots à connaître</h2>
+    <p class="empty" style="margin:0">Les sigles et mots de tes cours, avec la définition donnée dans les questions de vocabulaire (source indiquée).</p>
+    <input type="text" id="glIn" class="sein" placeholder="Filtrer : DHCP, VLAN, BIOS…" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Filtrer le glossaire">
+    <div class="chips" id="glLet"></div>
+  </div>
+  <div id="glList" class="gllist"></div>
 </section>
 
 <section id="titre" hidden>
@@ -907,7 +939,7 @@ lookApply();
 function navMark(){const t=S.pref.tab,qm=S.pref.qMode||'qcm';let cur=null;
   $$('#sideNav button').forEach(b=>{const on=b.dataset.tab===t&&(!b.dataset.qm||b.dataset.qm===qm);if(on)cur=b;on?b.setAttribute('aria-current','page'):b.removeAttribute('aria-current')});
   $('#curTitle').textContent=cur?'· '+cur.querySelector('.lb').textContent.trim():''}
-function tab(t){$$('main section').forEach(s=>s.hidden=s.id!==t);document.body.dataset.sec=({quiz:'cours',cmd:'prat',cisco:'prat',linux:'prat',sr:'prat',ports:'memo',ordre:'memo',dep:'memo'})[t]||'titre';const pk=$(`#${t} .labpick`);if(pk){pk.hidden=false;$(`#${t} .labview`).hidden=true;pk.dispatchEvent(new Event('labs'))}S.pref.tab=t;if(t!=='home')S.pref.lastTab=t;else homeRender();if(t==='titre')tiRender();save();navMark();
+function tab(t){$$('main section').forEach(s=>s.hidden=s.id!==t);document.body.dataset.sec=({glo:'memo',quiz:'cours',cmd:'prat',cisco:'prat',linux:'prat',sr:'prat',ports:'memo',ordre:'memo',dep:'memo'})[t]||'titre';const pk=$(`#${t} .labpick`);if(pk){pk.hidden=false;$(`#${t} .labview`).hidden=true;pk.dispatchEvent(new Event('labs'))}S.pref.tab=t;if(t!=='home')S.pref.lastTab=t;else homeRender();if(t==='titre')tiRender();if(t==='glo')gloRender();if(t==='search'){const i=$('#seIn');setTimeout(()=>i.focus(),50)}save();navMark();
   const f=$(`#${t} input[type=text]:not([readonly])`);if(f&&f.offsetParent&&matchMedia('(pointer:fine)').matches)f.focus()}
 $$('#sideNav button').forEach(b=>b.onclick=()=>{if(b.dataset.qm)setQMode(b.dataset.qm);tab(b.dataset.tab);if(!wide.matches)sideSet(false);window.scrollTo({top:0})});
 
@@ -2386,6 +2418,56 @@ function orRender(){const B=$('#orBody');clearInterval(orTimer);
    <div class="actions"><button class="btn primary" id="orNext">${OR.i+1<OR.items.length?'Question suivante →':'Voir mon bilan'}</button></div>`;
   $('#orNext').onclick=()=>{dayCount();save();const c=$$('#orBody .ptl input');OR.res.push({q:x.q,n:c.filter(z=>z.checked).length,t:c.length});OR.i++;OR.phase='q';OR.q0=0;OR.notes='';orRender();window.scrollTo({top:0})};
 }
+
+/* ---------- Glossaire : construit à partir des questions de vocabulaire (niveau 0 à 2) ----------
+   « Que veut dire X ? », « Qu'est-ce qu'un X ? », « À quoi sert X ? » → terme X, définition = bonne réponse, avec explication et source. */
+let GLO=null;
+function gloBuild(){if(GLO)return GLO;const P=[/^Que (?:veut dire|signifie|désigne) (?:le sigle |l'acronyme |le terme |le mot )?« ?(.+?) ?» ?\?$/,/^Que (?:veut dire|signifie|désigne) (?:le sigle |l'acronyme |le terme )?([A-Za-z0-9/\-. ]{2,25}) ?\?$/,
+  /^Qu'est-ce (?:qu'une |qu'un |que le |que la |que l'|que les |qu'|que )(.{2,45}?) ?\?$/,/^À quoi sert (?:le |la |l'|un |une )?(.{2,30}?) ?\?$/];
+  const m=new Map();
+  for(const x of QUIZ){if(x.n>2)continue;for(const re of P){const r=x.q.match(re);if(!r)continue;
+    let t=r[1].replace(/[«»"]/g,'').replace(/\s+selon le cours$/,'').replace(/^(?:un|une|le|la|l') /,'').trim();if(!t)break;t=t[0].toUpperCase()+t.slice(1);
+    const k=nk(t);if(!m.has(k))m.set(k,{t,d:x.o[0],e:x.e,s:x.s,th:x.t,hc:isHC(x),k});break}}
+  return GLO=[...m.values()].sort((a,b)=>a.t.localeCompare(b.t,'fr',{sensitivity:'base'}))}
+const gloLetter=t=>{const c=nk(t)[0]||'#';return /[a-z]/.test(c)?c.toUpperCase():'#'};
+let glQ='';
+function gloRender(){const L=gloBuild(),q=nk(glQ.trim()),F=q?L.filter(g=>nk(g.t+' '+g.d).includes(q)):L;
+  const lets=[...new Set(L.map(g=>gloLetter(g.t)))];
+  $('#glLet').innerHTML=lets.map(l=>`<button class="chip" data-l="${l}">${l}</button>`).join('');
+  $$('#glLet .chip').forEach(b=>b.onclick=()=>{const e=$(`#glList [data-l="${b.dataset.l}"]`);e&&e.scrollIntoView({behavior:'smooth',block:'start'})});
+  let last='';$('#glList').innerHTML=F.length?F.map(g=>{const l=gloLetter(g.t),h=l!==last?`<div class="segrp" data-l="${l}">${l}</div>`:'';last=l;
+    return h+`<div class="sehit glterm"><b>${esc(g.t)}</b><div class="def">${esc(g.d)}</div><div class="meta">${esc(g.e)}</div><div class="meta">${esc(g.th)}${g.hc?' · hors cours':''} · ${esc(g.s)}</div></div>`}).join('')
+    :'<p class="empty">Aucun mot ne correspond.</p>';
+  $('#glList').insertAdjacentHTML('beforeend',`<p class="empty">${L.length} mots. Il en manque un ? Signale-le-moi : je l'ajouterai à partir de tes cours.</p>`)}
+$('#glIn').oninput=e=>{glQ=e.target.value;gloRender()};
+
+/* ---------- Recherche dans toute l'appli ---------- */
+let SIDX=null;
+function seIndex(){if(SIDX)return SIDX;const I=[];
+  for(const g of gloBuild())I.push({ty:'Glossaire',ti:g.t,tx:g.t+' '+g.d,body:g.d,meta:g.th+(g.hc?' · hors cours':'')});
+  for(const f of FICHES)I.push({ty:'Fiche',ti:'Fiche · '+f.t,tx:f.t+' '+f.intro+' '+f.blocs.map(([h,L])=>h+' '+L.join(' ')).join(' '),body:f.intro,go:()=>{fiTheme=S.pref.fiTheme=f.t;save();$('#sideNav button[data-qm="fiche"]').click();setTimeout(fiRender,0)},gl:'Ouvrir la fiche'});
+  CMDS.forEach(c=>I.push({ty:'Commande',ti:c[1],tx:c[1]+' '+c[2].join(' ')+' '+c[3],body:c[2][0]+(c[3]?' — '+c[3]:''),code:1,meta:CATS[c[0]].n}));
+  const labs=(L,sys,tab,pf)=>(L||[]).forEach(l=>I.push({ty:'Lab '+sys,ti:`Lab ${l.n} · ${l.titre}`,tx:l.titre+' '+l.intro+' '+l.tasks.map(t=>t[0]+' '+t[1]).join(' '),body:l.intro,go:()=>{$(`#sideNav button[data-tab="${tab}"]`).click();const b=$(`#${pf}Labs .sc[data-v="${l.id}"]`);b&&b.click()},gl:'Ouvrir le lab'}));
+  labs(typeof CiscoLabs!=='undefined'?CiscoLabs.LABS:[],'Cisco','cisco','ci');labs(typeof LinuxLabs!=='undefined'?LinuxLabs.LABS:[],'Linux','linux','lx');
+  if(typeof DEP!=='undefined')DEP.forEach((d,i)=>I.push({ty:'Dépannage',ti:d.t,tx:d.t+' '+d.user+' '+d.lesson,body:'« '+d.user+' »',go:()=>{$('#sideNav button[data-tab="dep"]').click();depStart(i)},gl:'Faire ce scénario'}));
+  for(const x of QUIZ)I.push({ty:'QCM',ti:x.q,tx:x.q+' '+x.o[0]+' '+x.e,body:'Réponse : '+x.o[0]+'. '+x.e,meta:x.t+(isHC(x)?' · hors cours':''),go:()=>goQuiz(x.t,'qcm'),gl:"S'entraîner sur ce thème",hide:1});
+  for(const x of OUV)I.push({ty:'Question ouverte',ti:x.q,tx:x.q+' '+x.r,body:x.r,meta:x.t+(isHC(x)?' · hors cours':''),go:()=>goQuiz(x.t,'ouv'),gl:"S'entraîner sur ce thème",hide:1});
+  I.forEach(e=>e.n=nk(e.tx));return SIDX=I}
+const ORD=['Glossaire','Fiche','Commande','Lab Cisco','Lab Linux','Dépannage','QCM','Question ouverte'];
+function seRun(){const raw=$('#seIn').value.trim(),q=nk(raw),W=q.split(/\s+/).filter(w=>w.length>1);
+  if(!W.length){$('#seRes').innerHTML='';$('#seInfo').hidden=false;return}$('#seInfo').hidden=true;
+  const H=seIndex().filter(e=>W.every(w=>e.n.includes(w))),by={};H.forEach(e=>(by[e.ty]=by[e.ty]||[]).push(e));
+  const hl=t=>{let h=esc(t);for(const w of W){const re=new RegExp('('+w.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+')','gi');h=h.replace(re,'<mark>$1</mark>')}return h};
+  let html='',k=0;const keep=[];
+  for(const ty of ORD){const L=by[ty];if(!L)continue;html+=`<div class="segrp">${ty} · ${L.length}</div>`;
+    L.slice(0,ty==='QCM'?15:8).forEach(e=>{keep.push(e);html+=`<div class="sehit"><b>${hl(e.ti)}</b>${e.meta?`<span class="meta">${esc(e.meta)}</span>`:''}
+      ${e.hide?`<button class="link" data-show="${k}">Voir la réponse</button><div class="ans" hidden>${hl(e.body)}</div>`:`<div class="ans">${e.code?`<code>${esc(e.body)}</code>`:hl(e.body.length>260?e.body.slice(0,259)+'…':e.body)}</div>`}
+      ${e.go?`<div><button class="btn" data-go="${k}">${esc(e.gl)}</button></div>`:''}</div>`;k++});
+    if(L.length>(ty==='QCM'?15:8))html+=`<p class="empty">… et ${L.length-(ty==='QCM'?15:8)} autre(s) : précise ta recherche.</p>`}
+  $('#seRes').innerHTML=H.length?`<p class="empty">${H.length} résultat${H.length>1?'s':''}</p>`+html:'<p class="empty">Aucun résultat. Essaie un autre mot (ou un sigle : DHCP, VLAN, NAT…).</p>';
+  $$('#seRes [data-show]').forEach(b=>b.onclick=()=>{const a=b.nextElementSibling;a.hidden=!a.hidden;b.textContent=a.hidden?'Voir la réponse':'Cacher la réponse'});
+  $$('#seRes [data-go]').forEach(b=>b.onclick=()=>keep[+b.dataset.go].go())}
+let seT=null;$('#seIn').oninput=()=>{clearTimeout(seT);seT=setTimeout(seRun,150)};
 function qRefresh(){qFiltSum();qMode==='ouv'?oqNew():qMode==='exam'?exRender():qMode==='fiche'?fiRender():qMode==='bilan'?(bilan(),couverture()):qMode==='oral'?orRender():qNew()}
 function qFiltSum(){const th=qTheme==='all'?'Tout le TSSR':qTheme==='cours'?'Mes cours seulement':selName(qTheme);$('#qFiltSum').textContent=th+' · '+(qNiv==='all'?'tous niveaux':'niveau '+qNiv)}
 function setQMode(v){if(v===qMode)return;qMode=S.pref.qMode=v;save();qApply();navMark()}
