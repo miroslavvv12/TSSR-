@@ -569,7 +569,7 @@ if (typeof document !== 'undefined') (function () {
 
   // Tâche en cours (affichée seule au-dessus du terminal sur téléphone)
   let curF = -2, curN = null, full = false;
-  function curReset() { curF = -2; curN = null; full = !lab.tasks.length; q('#lxView').classList.toggle('full', full); q('#lxAll').textContent = 'Voir toutes les tâches et le schéma'; }
+  function curReset() { curF = -2; curN = null; full = !lab.tasks.length; q('#lxCurR').textContent = 'Recommencer ce lab'; q('#lxView').classList.toggle('full', full); q('#lxAll').textContent = 'Voir toutes les tâches et le schéma'; }
   function curTask() {
     const box = q('#lxCur'); if (!lab.tasks.length) { box.hidden = true; return; } box.hidden = false;
     const res = qa('#lxTasks li[data-i]').map(li => li.classList.contains('ok')), f = res.indexOf(false), n = res.filter(Boolean).length;
@@ -580,6 +580,7 @@ if (typeof document !== 'undefined') (function () {
     q('#lxCurH').hidden = f < 0; q('#lxCurH').textContent = 'Indice'; q('#lxCurP').hidden = true; q('#lxCurP').textContent = f < 0 ? '' : lab.tasks[f][1];
   }
   q('#lxCurH').onclick = () => { const h = q('#lxCurP'); h.hidden = !h.hidden; q('#lxCurH').textContent = h.hidden ? 'Indice' : 'Cacher l\'indice'; };
+  q('#lxCurR').onclick = () => { q('#lxReset').click(); q('#lxCurR').textContent = q('#lxReset').textContent; };
   q('#lxAll').onclick = () => { full = !full; q('#lxView').classList.toggle('full', full); q('#lxAll').textContent = full ? 'Masquer le détail' : 'Voir toutes les tâches et le schéma'; };
   // Clavier ouvert sur téléphone : garder la ligne de saisie visible.
   inp.addEventListener('focus', () => { if (innerWidth < 1024) setTimeout(() => inp.scrollIntoView({ block: 'center', behavior: 'smooth' }), 350); });
