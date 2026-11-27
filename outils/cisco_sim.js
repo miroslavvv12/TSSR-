@@ -420,6 +420,9 @@ const SHOWS = [
   ['show ip nat translations', (N, d) => sNat(N, d), 'router'],
 ];
 for (const [p, f, k] of SHOWS) { add(p === 'show users' ? 'user priv' : 'priv', p, (N, d) => { d.seen[p] = true; return f(N, d); }, k); }
+add('priv', 'show controllers IF', (N, d, [n]) => { const pf = parseIf(n); const nm = pf && pf.base; const i = nm && d.ifs[nm]; if (!i || !nm.startsWith('Serial')) return '% Invalid input detected at \'^\' marker.'; d.seen['show controllers'] = true;
+  const l = N.links.find(([a, ia, b, ib]) => (a === d.id && ia === nm) || (b === d.id && ib === nm)); if (!l) return `Interface ${nm}\nHardware is GT96K\nNo serial cable attached`;
+  const dce = l[0] === d.id; return `Interface ${nm}\nHardware is GT96K\n${dce ? 'DCE' : 'DTE'} V.35, ${dce ? (i.clock ? 'clock rate ' + i.clock : 'no clock') : 'clocks stopped (l\'horloge vient du côté DCE)'}`; }, 'router');
 add('priv', 'show port-security interface IF', (N, d, [n]) => { const pf = parseIf(n); const nm = pf && pf.base; const i = nm && d.ifs[nm]; if (!i) return '% Invalid input detected at \'^\' marker.'; d.seen['show port-security interface'] = true; const p = i.ps; if (!p || !p.on) return 'Port Security              : Disabled\nPort Status                : Secure-down'; return `Port Security              : Enabled\nPort Status                : ${physUp(N, d.id, nm) ? 'Secure-up' : 'Secure-down'}\nViolation Mode             : ${p.viol[0].toUpperCase() + p.viol.slice(1)}\nAging Time                 : 0 mins\nAging Type                 : Absolute\nSecureStatic Address Aging : Disabled\nMaximum MAC Addresses      : ${p.max}\nTotal MAC Addresses        : ${p.macs.length}\nConfigured MAC Addresses   : 0\nSticky MAC Addresses       : ${p.sticky ? p.macs.length : 0}\nLast Source Address:Vlan   : ${p.macs[0] || '0000.0000.0000'}:${i.vlan}\nSecurity Violation Count   : ${p.count}`; }, 'switch');
 add('priv', 'show spanning-tree vlan N', (N, d, [v]) => { d.seen['show spanning-tree'] = true; return sStp(N, d, +v); }, 'switch');
 for (const [p, f, k] of SHOWS.filter(s => /ip interface brief|version|history/.test(s[0]))) add('user', p, (N, d) => { d.seen[p] = true; return f(N, d); }, k);
@@ -485,12 +488,13 @@ add('router', 'no auto-summary', (N, d) => { d.rip.noauto = true; return ''; });
 add('router', 'auto-summary', (N, d) => { d.rip.noauto = false; return ''; });
 add('router', 'passive-interface IF', (N, d, [n]) => { const p = parseIf(n); if (p && !d.rip.passive.includes(p.base)) d.rip.passive.push(p.base); return ''; });
 add('conf', 'line console N', (N, d, [n]) => { if (n !== '0') return '% Invalid input detected at \'^\' marker.'; d.cur = 'con'; setMode(d, 'line'); return ''; });
-add('conf', 'line vty N N', (N, d, [a, b]) => { if (+a > +b || +b > 15) return '% Invalid input detected at \'^\' marker.'; d.cur = 'vty'; setMode(d, 'line'); return ''; });
+add('conf', 'line vty N N', (N, d, [a, b]) => { if (+a > +b || +b > 15) return '% Invalid input detected at \'^\' marker.'; d.cur = 'vty'; d.vty.last = +b; setMode(d, 'line'); return ''; });
 add('line', 'password WORD', (N, d, [p]) => { d[d.cur].pw = p; return ''; });
 add('line', 'no password', (N, d) => { d[d.cur].pw = null; return ''; });
 add('line', 'login', (N, d) => { const l = d[d.cur]; l.login = true; return l.pw ? '' : '% Login disabled on line, until \'password\' is set'; });
 add('line', 'no login', (N, d) => { d[d.cur].login = false; return ''; });
-add('line', 'logging synchronous', () => '');
+add('line', 'logging synchronous', (N, d) => { d[d.cur].sync = true; return ''; });
+add('line', 'no logging synchronous', (N, d) => { d[d.cur].sync = false; return ''; });
 add('line', 'exec-timeout N N', () => '');
 
 /* --- OSPF --- */
@@ -691,8 +695,8 @@ function runCfg(N, d, startup) {
   if (d.kind === 'router') { p('ip classless'); for (const r of d.routes) p('ip route ' + n2ip(r.net) + ' ' + n2ip(r.mask) + ' ' + (r.nh != null ? n2ip(r.nh) : r.ifn)); p('!'); }
   if (d.kind === 'router' && d.acls) { for (const [n, a] of Object.entries(d.acls)) { const rl = r => r.remark != null ? 'remark ' + r.remark : r.act + ' ' + (a.ext ? r.proto + ' ' + fmtAddr(r.src) + ' ' + fmtAddr(r.dst) + (r.port != null ? ' eq ' + (PNAME[r.port] || r.port) : '') : (r.src.any ? 'any' : r.src.w === 0 ? 'host ' + n2ip(r.src.ip) : n2ip(r.src.ip) + ' ' + n2ip(r.src.w))); if (/^\d+$/.test(n) && !a.named) { for (const r of a.rules) p('access-list ' + n + ' ' + rl(r)); } else { p('ip access-list ' + (a.ext ? 'extended ' : 'standard ') + n); for (const r of a.rules) p(' ' + rl(r)); } } p('!'); }
   if (d.banner) { p('banner motd ^C' + d.banner + '^C'); p('!'); }
-  const line = (name, l) => { p(name); if (l.acl) p(' access-class ' + l.acl + ' in'); if (l.pw) p(' password ' + (d.pwenc ? '7 ' + encPw(l.pw) : l.pw)); if (l.login) p(l.login === 'local' ? ' login local' : ' login'); if (l.transport && l.transport !== 'all' && name.startsWith('line vty')) p(' transport input ' + l.transport); };
-  line('line con 0', d.con); p('!'); line('line vty 0 4', d.vty); p('!'); p('end');
+  const line = (name, l) => { p(name); if (l.acl) p(' access-class ' + l.acl + ' in'); if (l.pw) p(' password ' + (d.pwenc ? '7 ' + encPw(l.pw) : l.pw)); if (l.sync) p(' logging synchronous'); if (l.login) p(l.login === 'local' ? ' login local' : ' login'); if (l.transport && l.transport !== 'all' && name.startsWith('line vty')) p(' transport input ' + l.transport); };
+  line('line con 0', d.con); p('!'); line('line vty 0 ' + (d.vty.last != null ? d.vty.last : (d.kind === 'switch' ? 15 : 4)), d.vty); p('!'); p('end');
   return L.join('\n').replace('Current configuration : 1 bytes', 'Current configuration : ' + (L.join('\n').length) + ' bytes');
 }
 function sipib(N, d) {
@@ -888,6 +892,54 @@ const rules = (N, id, n) => (dv(N, id).acls[n] || { rules: [] }).rules.filter(r 
 const isHost = (a, x) => a && !a.any && a.w === 0 && a.ip === ip(x);
 const curlOk = (N, from, to) => S.ping(N, from, to, { proto: 'tcp', dport: 80 }).ok;
 
+/* ---------- Configuration de base d'un switch et d'un routeur (fiches de Dimitri) ---------- */
+const SW_FICHE = { name: 'S1', ip: '192.168.1.11', mask: '255.255.255.0', gw: '192.168.1.1', pc: '192.168.1.10', en: 'class', con: 'cisco', vty: 'cisco' };
+const RT_FICHE = { name: 'R1', lan: '192.168.1.1', lmask: '255.255.255.0', ser: '10.1.1.1', smask: '255.255.255.252', peer: '10.1.1.2', clock: 128000, pc: '192.168.1.10', en: 'class', con: 'cisco', vty: 'cisco' };
+const rnd = (a, b) => a + Math.floor(Math.random() * (b - a + 1)), pk = a => a[rnd(0, a.length - 1)];
+const PWS = ['class', 'cisco', 'tssr', 'admin', 'secret', 'reseau', 'Cisco123', 'Tssr2026', 'console', 'distant'];
+const pws = () => { const a = [...PWS].sort(() => Math.random() - .5); return { en: a[0], con: a[1], vty: a[2] }; };
+function swRandom() { const x = rnd(2, 250), g = pk([1, 254]); let h = rnd(2, 200); if (h === g) h++; let pc = rnd(2, 200); if (pc === h || pc === g) pc = h + 1 === g ? h + 2 : h + 1;
+  return Object.assign({ name: pk(['S2', 'S3', 'SW1', 'SW2', 'SW-COMPTA', 'SW-RH', 'SW-ETAGE1']), ip: `192.168.${x}.${h}`, mask: '255.255.255.0', gw: `192.168.${x}.${g}`, pc: `192.168.${x}.${pc}` }, pws()); }
+function rtRandom() { const x = rnd(2, 250), g = pk([1, 254]), a = rnd(1, 254), b = 4 * rnd(0, 63);
+  return Object.assign({ name: pk(['R2', 'R3', 'RT1', 'RT-SIEGE', 'RT-AGENCE', 'R-PARIS']), lan: `192.168.${x}.${g}`, lmask: '255.255.255.0', ser: `10.${a}.${b}.${b + 1}`, smask: '255.255.255.252', peer: `10.${a}.${b}.${b + 2}`, clock: pk([64000, 128000, 56000]), pc: `192.168.${x}.${g === 1 ? 10 : 20}` }, pws()); }
+const swTopo = p => `   PC1 ${p.pc} ── Fa0/1 [ switch ] G0/1 ── G0/1 [ routeur ${p.gw} ]\n   Adresse de gestion du switch : ${p.ip} / ${p.mask} (interface vlan 1)`;
+const rtTopo = p => `   PC1 ${p.pc} ── G0/1 [ ${p.name} ] S0/0/0 (DCE) ═══ S0/0/0 [ voisin ${p.peer} ]\n   LAN : ${p.lan} / ${p.lmask}   ·   WAN : ${p.ser} / ${p.smask}`;
+function swNet(p) { const N = S.mkNet([S.SW('S1'), S.R('GW'), S.newPC('PC1', p.pc, p.mask, p.gw)], [['PC1', '', 'S1', 'f0/1'], ['S1', 'g0/1', 'GW', 'g0/1']]);
+  S.preset(N, 'GW', ['conf t', 'hostname GW', 'int g0/1', 'ip address ' + p.gw + ' ' + p.mask, 'no shut', 'end']); N.params = p; return N; }
+function rtNet(p) { const N = S.mkNet([S.R('R1'), S.R('VOISIN'), S.newPC('PC1', p.pc, p.lmask, p.lan)], [['PC1', '', 'R1', 'g0/1'], ['R1', 's0/0/0', 'VOISIN', 's0/0/0']]);
+  S.preset(N, 'VOISIN', ['conf t', 'hostname VOISIN', 'int s0/0/0', 'ip address ' + p.peer + ' ' + p.smask, 'no shut', 'end']); N.params = p; return N; }
+const lineOk = (l, pw, last) => l.pw === pw && l.login === true && !!l.sync && (last == null || l.last === last);
+// Tâches communes : nom, DNS, mots de passe, chiffrement, sauvegarde, vérification
+function baseTasks(id, p, kind, middle, vtyLast) { const D = N => dv(N, id), T = [
+  ['Passe en mode privilégié, puis en mode de configuration globale.', 'enable\nconfigure terminal  (abrégé : conf t)', N => !!D(N).seen.conf],
+  [`Nomme ${kind === 'switch' ? 'le switch' : 'le routeur'} ${p.name}.`, `hostname ${p.name}`, N => D(N).hostname === p.name],
+  ['Désactive la recherche DNS (sinon, une faute de frappe bloque le terminal quelques secondes).', 'no ip domain-lookup', N => !D(N).dl],
+  ...middle,
+  [`Mot de passe chiffré du mode privilégié : « ${p.en} ».`, `enable secret ${p.en}`, N => D(N).secret === p.en],
+  [`Console : mot de passe « ${p.con} », demande du mot de passe, et messages du système qui ne coupent plus ta saisie.`, `line console 0\npassword ${p.con}\nlogin\nlogging synchronous\nexit`, N => lineOk(D(N).con, p.con)],
+  [`Accès à distance (lignes vty 0 à ${vtyLast}) : mot de passe « ${p.vty} », login, logging synchronous.`, `line vty 0 ${vtyLast}\npassword ${p.vty}\nlogin\nlogging synchronous\nexit`, N => lineOk(D(N).vty, p.vty, vtyLast)],
+  ['Chiffre les mots de passe console et vty dans la configuration, puis reviens en mode privilégié.', 'service password-encryption\nend', N => D(N).pwenc],
+ ];
+ const cfg = T.slice(1);
+ T.push(['Sauvegarde la configuration.', 'copy running-config startup-config\n(puis Entrée à « Destination filename [startup-config]? »)', N => S.saved(D(N)) && cfg.every(t => { try { return t[2](N); } catch (e) { return false; } })]);
+ T.push(['Vérifie : show ip interface brief, puis show running-config.', 'show ip interface brief\nshow running-config', N => !!D(N).seen['show ip interface brief'] && !!D(N).seen['show running-config']]);
+ return T; }
+function swTasks(p) { return [...baseTasks('S1', p, 'switch', [
+  [`Adresse de gestion : ${p.ip} / ${p.mask} sur l'interface VLAN 1, puis active-la.`, `interface vlan 1\nip address ${p.ip} ${p.mask}\nno shutdown\nexit`, N => hasIp(N, 'S1', 'Vlan1', p.ip, p.mask) && !I(N, 'S1', 'Vlan1').shut],
+  [`Passerelle par défaut : l'adresse du routeur, ${p.gw}.`, `ip default-gateway ${p.gw}`, N => dv(N, 'S1').gw === ip(p.gw)],
+ ], 15),
+  [`Teste : depuis le switch, pingue le routeur (${p.gw}).`, `ping ${p.gw}  (en mode privilégié)`, N => !!dv(N, 'S1').seen['ping ' + p.gw] && pingOk(N, 'S1', p.gw)],
+  [`Depuis PC1, connecte-toi au switch à distance : telnet ${p.ip}, mot de passe « ${p.vty} ».`, `Clique sur PC1 : telnet ${p.ip}\nmot de passe : ${p.vty}\n(exit pour te déconnecter)`, N => dv(N, 'PC1').seen['telnet ' + p.ip] === true],
+ ]; }
+function rtTasks(p) { return [...baseTasks('R1', p, 'routeur', [
+  [`Interface LAN G0/1 : ${p.lan} / ${p.lmask}, puis active-la.`, `interface g0/1\nip address ${p.lan} ${p.lmask}\nno shutdown\nexit`, N => hasIp(N, 'R1', 'GigabitEthernet0/1', p.lan, p.lmask) && !I(N, 'R1', 'GigabitEthernet0/1').shut],
+  [`Interface série S0/0/0 (WAN, côté DCE) : ${p.ser} / ${p.smask}, horloge à ${p.clock}, puis active-la.`, `interface s0/0/0\nip address ${p.ser} ${p.smask}\nclock rate ${p.clock}\nno shutdown\nexit`, N => hasIp(N, 'R1', 'Serial0/0/0', p.ser, p.smask) && I(N, 'R1', 'Serial0/0/0').clock === p.clock && !I(N, 'R1', 'Serial0/0/0').shut],
+ ], 4),
+  ['Vérifie que R1 est bien du côté DCE du câble série (c\'est lui qui donne l\'horloge).', 'show controllers s0/0/0\n(la ligne « DCE V.35, clock rate … » le confirme)', N => !!dv(N, 'R1').seen['show controllers']],
+  [`Teste le lien série : depuis le routeur, pingue le voisin (${p.peer}).`, `ping ${p.peer}`, N => !!dv(N, 'R1').seen['ping ' + p.peer] && pingOk(N, 'R1', p.peer)],
+  [`Depuis PC1, connecte-toi au routeur à distance : telnet ${p.lan}, mot de passe « ${p.vty} ».`, `Clique sur PC1 : telnet ${p.lan}\nmot de passe : ${p.vty}\n(exit pour te déconnecter)`, N => dv(N, 'PC1').seen['telnet ' + p.lan] === true],
+ ]; }
+
 const LABS = [
 {
  id: 'base', n: 1, niv: 1, titre: 'Premiers pas sur un routeur',
@@ -923,6 +975,34 @@ const LABS = [
   ['Depuis R1, pingue R2.', 'ping 10.0.0.2', N => !!dv(N, 'R1').seen['ping 10.0.0.2']],
   ['Sauvegarde la configuration de R1.', 'copy run start', N => S.saved(dv(N, 'R1'))],
  ],
+},
+{
+ id: 'swbase', niv: 1, titre: 'Configurer un switch (ta fiche)', p: null,
+ get intro() { return "D'après ta fiche « configuration de base d'un switch » : nom, adresse de gestion sur le VLAN 1, passerelle, mots de passe, sauvegarde. À retenir : l'adresse IP du switch sert seulement à le joindre (ping, telnet) et à l'administrer ; pas de clock rate sur un switch ; line vty 0 15 sur un 2960 (16 connexions). Fais les tâches dans l'ordre de la fiche."; },
+ get topo() { return swTopo(this.p || SW_FICHE); },
+ devs: ['S1', 'PC1'], make() { this.p = SW_FICHE; return swNet(this.p); },
+ get tasks() { return swTasks(this.p || SW_FICHE); },
+},
+{
+ id: 'rtbase', niv: 2, titre: 'Configurer un routeur (ta fiche)', p: null,
+ get intro() { return "D'après ta fiche « configuration de base d'un routeur » : nom, interface LAN, interface série (WAN) avec l'horloge côté DCE, mots de passe, sauvegarde. À retenir : clock rate seulement côté DCE (vérifie avec show controllers s0/0/0) ; line vty 0 4 sur un routeur ; sans login, le mot de passe de la ligne n'est jamais demandé."; },
+ get topo() { return rtTopo(this.p || RT_FICHE); },
+ devs: ['R1', 'PC1'], make() { this.p = RT_FICHE; return rtNet(this.p); },
+ get tasks() { return rtTasks(this.p || RT_FICHE); },
+},
+{
+ id: 'swdefi', niv: 2, titre: 'Défi : un switch, valeurs au hasard', p: null,
+ get intro() { return "Même configuration que ta fiche switch, mais le nom, les adresses et les mots de passe changent à chaque fois : impossible de recopier, il faut savoir faire. « Recommencer ce lab » tire de nouvelles valeurs. Lis bien chaque tâche."; },
+ get topo() { return swTopo(this.p || SW_FICHE); },
+ devs: ['S1', 'PC1'], make() { this.p = swRandom(); return swNet(this.p); },
+ get tasks() { return swTasks(this.p || SW_FICHE); },
+},
+{
+ id: 'rtdefi', niv: 3, titre: 'Défi : un routeur, valeurs au hasard', p: null,
+ get intro() { return "Même configuration que ta fiche routeur, mais le nom, les adresses, l'horloge et les mots de passe changent à chaque fois. « Recommencer ce lab » tire de nouvelles valeurs."; },
+ get topo() { return rtTopo(this.p || RT_FICHE); },
+ devs: ['R1', 'PC1'], make() { this.p = rtRandom(); return rtNet(this.p); },
+ get tasks() { return rtTasks(this.p || RT_FICHE); },
 },
 {
  id: 'vlan', n: 3, niv: 2, titre: 'Switch et VLAN',
@@ -1194,6 +1274,7 @@ const LABS = [
  tasks: [],
 },
 ];
+LABS.forEach((l, i) => { l.n = i + 1; });
 // La tâche finale « Sauvegarde » ne compte que si toutes les autres tâches sont réussies
 // (sinon elle paraîtrait validée dès le départ : la configuration de départ est déjà sauvegardée).
 for (const L of LABS) { const T = L.tasks, last = T[T.length - 1]; if (last && /copy run start/.test(last[1])) { const ok = last[2], prev = T.slice(0, -1); last[2] = N => ok(N) && prev.every(t => { try { return !!t[2](N); } catch (e) { return false; } }); } }
@@ -1226,6 +1307,7 @@ if (typeof document !== 'undefined') (function () {
     const s = !fresh && ST.labs[lab.id] && ST.labs[lab.id].net;
     N = null; if (s) { try { N = JSON.parse(s); } catch (e) { N = null; } }
     if (!N) N = lab.make(); else { try { S.fixup(N); } catch (e) { N = lab.make(); } }
+    if (N.params && 'p' in lab) lab.p = N.params;
     for (const d of Object.values(N.devs)) d.pend = null;
     outs = {}; hpos = {}; showAll = false; armReset = false;
     dev = lab.devs[0]; renderLabs(); renderBrief(); renderDevs(); showDev(dev); check(); save();
@@ -1244,7 +1326,7 @@ if (typeof document !== 'undefined') (function () {
 
   // Tâche en cours (affichée seule au-dessus du terminal sur téléphone)
   let curF = -2, curN = null, full = false;
-  function curReset() { curF = -2; curN = null; full = !lab.tasks.length; q('#ciView').classList.toggle('full', full); q('#ciAll').textContent = 'Voir toutes les tâches et le schéma'; }
+  function curReset() { curF = -2; curN = null; full = !lab.tasks.length; q('#ciCurR').textContent = 'Recommencer ce lab'; q('#ciView').classList.toggle('full', full); q('#ciAll').textContent = 'Voir toutes les tâches et le schéma'; }
   function curTask() {
     const box = q('#ciCur'); if (!lab.tasks.length) { box.hidden = true; return; } box.hidden = false;
     const res = qa('#ciTasks li[data-i]').map(li => li.classList.contains('ok')), f = res.indexOf(false), n = res.filter(Boolean).length;
@@ -1255,6 +1337,7 @@ if (typeof document !== 'undefined') (function () {
     q('#ciCurH').hidden = f < 0; q('#ciCurH').textContent = 'Indice'; q('#ciCurP').hidden = true; q('#ciCurP').textContent = f < 0 ? '' : lab.tasks[f][1];
   }
   q('#ciCurH').onclick = () => { const h = q('#ciCurP'); h.hidden = !h.hidden; q('#ciCurH').textContent = h.hidden ? 'Indice' : 'Cacher l\'indice'; };
+  q('#ciCurR').onclick = () => { q('#ciReset').click(); q('#ciCurR').textContent = q('#ciReset').textContent; };
   q('#ciAll').onclick = () => { full = !full; q('#ciView').classList.toggle('full', full); q('#ciAll').textContent = full ? 'Masquer le détail' : 'Voir toutes les tâches et le schéma'; };
   // Clavier ouvert sur téléphone : garder la ligne de saisie visible.
   inp.addEventListener('focus', () => { if (innerWidth < 1024) setTimeout(() => inp.scrollIntoView({ block: 'center', behavior: 'smooth' }), 350); });
