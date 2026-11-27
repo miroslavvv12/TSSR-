@@ -94,6 +94,24 @@ h1 small{font-weight:400;color:var(--muted);font-size:13px;margin-left:6px}
 .hcard .big{font:600 30px/1.1 var(--f-ui)}
 .hcard .actions{margin-top:auto}
 @media (min-width:1000px){body:not(.side-off) #homeTip{display:none}}
+/* Mon titre TSSR */
+#tiBody{display:flex;flex-direction:column;gap:14px}
+#tiBody h2{font-size:22px;margin:0}
+#tiBody h3{font-size:17px;margin:0}
+#tiBody p{margin:0}
+.ti-ep{border-collapse:collapse;width:100%;font-size:14px}
+.ti-ep th,.ti-ep td{border-top:1px solid var(--line);padding:7px 8px;text-align:left;vertical-align:top}
+.ti-ep th{color:var(--muted);font-weight:500;font-size:13px}
+.ti-bloc{display:flex;flex-direction:column;gap:12px}
+.ti-c{border-top:1px solid var(--line);padding-top:12px;display:flex;flex-direction:column;gap:6px}
+.ti-c b{font-size:15.5px}
+.ti-meter{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--muted)}
+.ti-meter .track{flex:0 0 120px;height:8px;border:1px solid var(--fg);border-radius:4px;overflow:hidden}
+.ti-meter .track i{display:block;height:100%;background:var(--fg)}
+.ti-gap{font-size:13.5px;color:var(--muted);border-left:2px dashed var(--fg);padding-left:10px}
+.ti-links{display:flex;flex-wrap:wrap;gap:6px}
+.ti-links .btn{font-size:13.5px;padding:6px 11px}
+.ti-src{font-size:13px;color:var(--muted)}.ti-src a{color:inherit}
 /* Filtres du quiz (thèmes et niveaux), repliables */
 .qtop{align-items:flex-start}
 .filtres{flex:1 1 260px;min-width:0}
@@ -391,6 +409,7 @@ details summary{cursor:pointer;font-weight:500}
   <div class="sidetop"><span>Menu</span><button id="sideClose" class="sideclose" aria-label="Fermer le menu">✕</button></div>
   <nav id="sideNav">
     <button data-tab="home">Accueil</button>
+    <button data-tab="titre">Mon titre TSSR</button>
     <div class="grp">Cours</div>
     <button data-tab="quiz" data-qm="qcm">QCM</button>
     <button data-tab="quiz" data-qm="ouv">Questions ouvertes</button>
@@ -419,6 +438,10 @@ details summary{cursor:pointer;font-weight:500}
   <p class="foot" id="homeTip">Toutes les rubriques sont dans le menu <b>☰</b> en haut à gauche.</p>
 </section>
 
+<section id="titre" hidden>
+  <div id="tiBody"></div>
+</section>
+
 <section id="quiz" hidden>
   <div class="bar qtop">
     <details class="filtres" id="qFiltres"><summary><span class="fl">Filtres</span> <span class="fsum" id="qFiltSum"></span></summary>
@@ -444,8 +467,8 @@ details summary{cursor:pointer;font-weight:500}
   </div>
   <div class="card bilanv" id="biCard" hidden>
     <h2>Mon bilan : points forts et points faibles</h2><div class="niv-aide bilan" id="bilanT"></div>
-    <h2>Couverture du titre TSSR : où réviser chaque domaine ?</h2><div class="niv-aide couv" id="couvT"></div>
-    <p style="margin:8px 0 0">Les questions marquées <strong>hors cours</strong> sont des notions générales du métier, pas tirées de tes cours. Envoie-moi tes cours sur ces sujets et je les remplacerai par des questions de tes cours. Ce tableau regroupe les domaines par thème ; il ne reprend pas le découpage officiel du référentiel.</p>
+    <h2>Couverture du titre TSSR : où réviser chaque compétence ?</h2><div class="niv-aide couv" id="couvT"></div>
+    <p style="margin:8px 0 0">Les questions marquées <strong>hors cours</strong> sont des notions générales du métier, pas tirées de tes cours. Envoie-moi tes cours sur ces sujets et je les remplacerai par des questions de tes cours. Ce tableau suit les 3 blocs et les 10 compétences du titre RNCP 42463 (détail et examen : menu → Mon titre TSSR).</p>
   </div>
   <div class="card" id="qcmCard">
     <div class="serbar" id="qSer" hidden></div>
@@ -787,7 +810,7 @@ wide.addEventListener?wide.addEventListener('change',sideInit):wide.addListener(
 function navMark(){const t=S.pref.tab,qm=S.pref.qMode||'qcm';let cur=null;
   $$('#sideNav button').forEach(b=>{const on=b.dataset.tab===t&&(!b.dataset.qm||b.dataset.qm===qm);if(on)cur=b;on?b.setAttribute('aria-current','page'):b.removeAttribute('aria-current')});
   $('#curTitle').textContent=cur?'· '+cur.firstChild.textContent.trim():''}
-function tab(t){$$('main section').forEach(s=>s.hidden=s.id!==t);const pk=$(`#${t} .labpick`);if(pk){pk.hidden=false;$(`#${t} .labview`).hidden=true;pk.dispatchEvent(new Event('labs'))}S.pref.tab=t;if(t!=='home')S.pref.lastTab=t;else homeRender();save();navMark();
+function tab(t){$$('main section').forEach(s=>s.hidden=s.id!==t);const pk=$(`#${t} .labpick`);if(pk){pk.hidden=false;$(`#${t} .labview`).hidden=true;pk.dispatchEvent(new Event('labs'))}S.pref.tab=t;if(t!=='home')S.pref.lastTab=t;else homeRender();if(t==='titre')tiRender();save();navMark();
   const f=$(`#${t} input[type=text]:not([readonly])`);if(f&&f.offsetParent&&matchMedia('(pointer:fine)').matches)f.focus()}
 $$('#sideNav button').forEach(b=>b.onclick=()=>{if(b.dataset.qm)setQMode(b.dataset.qm);tab(b.dataset.tab);if(!wide.matches)sideSet(false);window.scrollTo({top:0})});
 
@@ -1879,34 +1902,73 @@ const nivOk=x=>qNiv==='all'||x.n===+qNiv;
 const lvlHTML=n=>`Niveau ${n}<span class="d" aria-hidden="true">${'●'.repeat(n)}${'○'.repeat(5-n)}</span>`;
 const isHC=x=>/^Notion générale/.test(x.s);
 const HCT=QTHEMES.filter(t=>[...QUIZ,...OUV].filter(x=>x.t===t).every(isHC)), CT=QTHEMES.filter(t=>!HCT.includes(t));
-const tOk=x=>qTheme==='all'||(qTheme==='cours'?!isHC(x):x.t===qTheme);
-const tLabel=()=>qTheme==='all'?'tout le TSSR':qTheme==='cours'?'tes cours':'ce thème';
-let qTheme=(QTHEMES.includes(S.pref.qTheme)||S.pref.qTheme==='cours')?S.pref.qTheme:'all', qCur=null, qLast=null, qDone=false;
+
+/* ---------- Titre professionnel TSSR, RNCP 42463 (arrêté du 16 juin 2026, parcours commencés à partir du 1er septembre 2026) ----------
+   Blocs et compétences : fiche RNCP42463 (France compétences) ; t = thèmes de l'appli qui préparent la compétence ;
+   go = exercices pratiques ; gap = ce qui manque encore (à compléter avec les cours de Dimitri). */
+const TITRE={blocs:[
+ {code:'RNCP42463BC01',n:'Assurer le support aux utilisateurs',court:'Support',c:[
+  {n:'Exploiter l\'intelligence artificielle et encadrer son usage',t:[],go:[],gap:'Pas encore dans l\'appli : aucun de tes cours ne traite de l\'IA. Envoie-moi ce cours dès que tu l\'as.'},
+  {n:'Assurer le déploiement des équipements numériques et accompagner à l\'utilisation des outils collaboratifs',t:['Hardware','Câblage réseau','Prise en main Windows 11','Systèmes Windows','Partitionnement','Messagerie et web'],go:[['cmd','Commandes']],gap:'Peu de choses encore sur le déploiement de postes en série et sur les outils collaboratifs.'},
+  {n:'Apporter une assistance technique',t:['ITIL et support','Veille technologique'],go:[['dep','Dépannage'],['cmd','Commandes']]},
+ ]},
+ {code:'RNCP42463BC02',n:'Exploiter les éléments de l\'infrastructure',court:'Infrastructure',c:[
+  {n:'Exploiter un réseau IP',t:['Initiation aux réseaux','Modèle OSI','VLAN','Routeurs','NAT / PAT','DHCP','DNS','Wi-Fi, VoIP et IPv6'],go:[['cisco','Labs Cisco'],['sr','Sous-réseaux'],['ports','Ports'],['ordre','OSI']]},
+  {n:'Installer et assurer l\'exploitation de serveurs Windows et Linux',t:['Windows Server et PowerShell','Active Directory et GPO','Droits NTFS et partage','Linux'],go:[['linux','Labs Linux'],['cmd','Commandes']]},
+  {n:'Exploiter des serveurs dans une infrastructure virtualisée',t:['Machines virtuelles','Virtualisation, stockage et cloud'],go:[]},
+  {n:'Gérer les accès et la sécurité dans un environnement hybride',t:['Sécurité','Active Directory et GPO','Droits NTFS et partage'],go:[['cisco','Labs Cisco (ACL, SSH)']],gap:'Peu de choses encore sur l\'environnement hybride (comptes et accès entre serveurs locaux et cloud).'},
+ ]},
+ {code:'RNCP42463BC03',n:'Maintenir en conditions opérationnelles l\'infrastructure',court:'Maintien',c:[
+  {n:'Optimiser des scripts à l\'aide de l\'intelligence artificielle',t:['Scripts (Bash, PowerShell)'],go:[['cmd','Commandes']],gap:'La partie « avec l\'IA » n\'est pas encore dans l\'appli.'},
+  {n:'Assurer la continuité et la reprise de l\'infrastructure',t:['Sauvegarde, RAID et PRA'],go:[]},
+  {n:'Mettre à jour et superviser les éléments de l\'infrastructure',t:['Supervision et journaux'],go:[['dep','Dépannage']],gap:'Peu de choses encore sur la gestion des mises à jour.'},
+ ]},
+]};
+const TCOMP=TITRE.blocs.flatMap((b,i)=>b.c.map(c=>Object.assign({b:i},c)));
+const selThemes=v=>typeof v!=='string'?null:v.startsWith('bc:')?TITRE.blocs[+v.slice(3)].c.flatMap(c=>c.t):v.startsWith('cp:')?TCOMP[+v.slice(3)].t:null;
+const selName=v=>v.startsWith('bc:')?`Bloc ${+v.slice(3)+1} · ${TITRE.blocs[+v.slice(3)].court}`:v.startsWith('cp:')?TCOMP[+v.slice(3)].n:v;
+const validSel=v=>/^(bc:[0-2]|cp:\d+)$/.test(v||'')&&(v[0]==='b'||!!TCOMP[+v.slice(3)])&&selThemes(v).length>0;
+const tOk=x=>{if(qTheme==='all')return true;if(qTheme==='cours')return !isHC(x);const L=selThemes(qTheme);return L?L.includes(x.t):x.t===qTheme};
+const tLabel=()=>qTheme==='all'?'tout le TSSR':qTheme==='cours'?'tes cours':qTheme.startsWith('bc:')?'ce bloc':qTheme.startsWith('cp:')?'cette compétence':'ce thème';
+let qTheme=(QTHEMES.includes(S.pref.qTheme)||S.pref.qTheme==='cours'||validSel(S.pref.qTheme))?S.pref.qTheme:'all', qCur=null, qLast=null, qDone=false;
 const chipH=([k,n])=>`<button class="chip" data-v="${esc(k)}">${esc(n)}</button>`;
-$('#qTheme').innerHTML=[['all','Tout le TSSR'],['cours','Mes cours seulement'],...CT.map(t=>[t,t])].map(chipH).join('')+'<span class="nivlab">Hors cours</span>'+HCT.map(t=>chipH([t,t])).join('');
+$('#qTheme').innerHTML=[['all','Tout le TSSR'],['cours','Mes cours seulement']].map(chipH).join('')+'<span class="nivlab">Blocs du titre</span>'+TITRE.blocs.map((b,i)=>chipH(['bc:'+i,`Bloc ${i+1} · ${b.court}`])).join('')+'<span class="nivlab">Thèmes de tes cours</span>'+CT.map(t=>chipH([t,t])).join('')+'<span class="nivlab">Hors cours</span>'+HCT.map(t=>chipH([t,t])).join('');
 chips('qTheme',qTheme,v=>{qTheme=S.pref.qTheme=v;save();qRefresh()});
+
+// Réussite sur une liste de thèmes : questions répondues (dernière réponse) et % de réussite
+function tStats(ts){const last=x=>{const c=S.srs[qKey(x)];if(c)return c[0]>0;return (S.miss[qKey(x)]||0)>0?false:null};
+  const L=[...QUIZ,...OUV].filter(x=>ts.includes(x.t)),v=L.map(last).filter(r=>r!=null);return{n:L.length,v:v.length,p:v.length?Math.round(100*v.filter(Boolean).length/v.length):null}}
+const meter=st=>!st.n?'':`<div class="ti-meter"><span class="track" aria-hidden="true"><i style="width:${st.p||0}%"></i></span><span>${st.v?`${st.p} % de réussite · ${st.v}/${st.n} questions faites`:`0/${st.n} questions faites`}</span></div>`;
+function goQuiz(sel,mode){if(mode==='exam'){exPref.scope=sel;if(qMode==='exam')exRender();$('#sideNav button[data-tab="quiz"][data-qm="exam"]').click();return}
+  qTheme=S.pref.qTheme=sel;qNiv=S.pref.qNiv='all';chips('qTheme',qTheme,v=>{qTheme=S.pref.qTheme=v;save();qRefresh()});chips('qNiv',qNiv,v=>{qNiv=S.pref.qNiv=v;save();qRefresh()});save();
+  if(qMode===mode)qRefresh();$(`#sideNav button[data-tab="quiz"][data-qm="${mode}"]`).click()}
+function tiRender(){
+  const ep=[['Bloc 1 · Support','2 h 15','30 min','30 min','3 h 15'],['Bloc 2 · Infrastructure','2 h 15','30 min','45 min','3 h 30'],['Bloc 3 · Maintien','1 h 45','30 min','45 min','3 h 00']];
+  $('#tiBody').innerHTML=`<div class="card"><span class="eyebrow">Mon titre</span><h2>Technicien supérieur systèmes et réseaux</h2>
+   <p>Titre professionnel de niveau 5 (bac + 2), <strong>RNCP 42463</strong>. C'est la nouvelle version du titre (arrêté du 16 juin 2026), pour les formations commencées à partir du 1<sup>er</sup> septembre 2026. Il compte <strong>3 blocs de compétences</strong>. Chaque bloc peut être validé à part ; il faut les 3 pour avoir le titre.</p></div>
+  <div class="card"><span class="eyebrow">L'examen</span><h3>Ce qui t'attend devant le jury</h3>
+   <p><strong>Mise en situation professionnelle</strong> : des tâches à réaliser sur des machines virtuelles. Tu notes ce que tu fais (traçabilité), puis tu le présentes à l'oral au jury.</p>
+   <p><strong>Questionnaire professionnel</strong> : des questions écrites. Dans chaque bloc, au moins une question porte sur une documentation technique <strong>en anglais</strong>.</p>
+   <p><strong>Entretien technique</strong> : le jury te questionne sur ce que tu as fait.</p>
+   <p><strong>Entretien final</strong> (15 min) : le jury échange avec toi sur ton parcours et ton <strong>dossier professionnel</strong> (des exemples réels de ton travail que tu as rédigés).</p>
+   <p>Durée totale annoncée pour le titre complet : <strong>7 h</strong>. Durées indiquées pour chaque bloc :</p>
+   <table class="ti-ep"><tr><th>Bloc</th><th>Mise en situation</th><th>Entretien technique</th><th>Questionnaire</th><th>Total</th></tr>${ep.map(r=>`<tr>${r.map(c=>`<td>${c}</td>`).join('')}</tr>`).join('')}</table>
+   <p class="ti-src">Les horaires de ta session sont sur ta convocation : demande confirmation à ton centre de formation.</p></div>
+  ${TITRE.blocs.map((b,i)=>{const all=b.c.flatMap(c=>c.t);return `<div class="card ti-bloc"><span class="eyebrow">Bloc ${i+1} · ${b.code}</span><h3>${esc(b.n)}</h3>${meter(tStats(all))}
+    <div class="ti-links"><button class="btn primary" data-q="bc:${i}" data-m="qcm">QCM sur ce bloc</button><button class="btn" data-q="bc:${i}" data-m="exam">Examen blanc de ce bloc</button></div>
+    ${b.c.map(c=>{const k=TCOMP.indexOf(TCOMP.find(x=>x.n===c.n)),st=tStats(c.t);return `<div class="ti-c"><b>${esc(c.n)}</b>
+      ${c.t.length?`<span class="ti-src">Dans l'appli : ${c.t.map(esc).join(', ')}</span>`:''}${meter(st)}
+      ${c.gap?`<div class="ti-gap">${esc(c.gap)}</div>`:''}
+      <div class="ti-links">${c.t.length?`<button class="btn" data-q="cp:${k}" data-m="qcm">S'entraîner (QCM)</button>`:''}${c.go.map(([t,l])=>`<button class="btn" data-tab="${t}">${esc(l)}</button>`).join('')}</div></div>`}).join('')}</div>`}).join('')}
+  <p class="ti-src">Sources : fiche <a href="https://www.francecompetences.fr/recherche/rncp/42463" target="_blank" rel="noopener">RNCP 42463 (France compétences)</a> · <a href="https://www.legifrance.gouv.fr/jorf/id/JORFTEXT000054273839" target="_blank" rel="noopener">arrêté du 16 juin 2026 (Légifrance)</a>. La réussite affichée vient de ta dernière réponse à chaque question.</p>`;
+  $$('#tiBody [data-q]').forEach(b=>b.onclick=()=>goQuiz(b.dataset.q,b.dataset.m));
+  $$('#tiBody [data-tab]').forEach(b=>b.onclick=()=>$(`#sideNav button[data-tab="${b.dataset.tab}"]`).click());
+}
 function couverture(){
   const nb=t=>{const q=QUIZ.filter(x=>x.t===t).length,o=OUV.filter(x=>x.t===t).length;return q||o?`${t} : ${q} QCM${o?' + '+o+' ouvertes':''}${HCT.includes(t)?' <span class="hc">(hors cours)</span>':''}`:''};
   const cmd=c=>{const n=CMDS.filter(x=>x[0]===c).length;return n?`Commandes ${CATS[c].n} : ${n}`:''};
   const lab=(...ids)=>{const L=(typeof CiscoLabs!=='undefined'?CiscoLabs.LABS:[]).filter(l=>ids.includes(l.id));return L.length?(L.length>1?'Labs':'Lab')+' Cisco '+L.map(l=>l.n).join(', '):''};
-  const R=[
-    ['Réseau : notions de base, modèle OSI, adressage IPv4, sous-réseaux, ports',[nb('Initiation aux réseaux'),nb('Modèle OSI'),'Onglets Sous-réseaux, OSI, Ports', nb('Wi-Fi, VoIP et IPv6')]],
-    ['Câblage et matériel du poste de travail',[nb('Câblage réseau'),nb('Hardware')]],
-    ['Commutation : VLAN, trunk, spanning-tree, sécurité des ports',[nb('VLAN'),lab('vlan','trunk','secu','dep2')]],
-    ['Routage : statique, RIP, OSPF, inter-VLAN',[nb('Routeurs'),lab('base','if','static','rip','ros','ospf','dep1'),cmd('cisco')]],
-    ['Services réseau : DHCP, DNS',[nb('DHCP'),nb('DNS'),lab('dhcp','dep3')]],
-    ['NAT/PAT et ACL',[nb('NAT / PAT'),lab('acl','nat','dep4')]],
-    ['Postes Windows : prise en main, systèmes, partitionnement, NTFS et partages',[nb('Prise en main Windows 11'),nb('Systèmes Windows'),nb('Partitionnement'),nb('Droits NTFS et partage'),cmd('cmd')]],
-    ['Active Directory et GPO',[nb('Active Directory et GPO'),cmd('ad')]],
-    ['Windows Server, PowerShell et scripts',[nb('Windows Server et PowerShell'),nb('Scripts (Bash, PowerShell)'),cmd('ps')]],
-    ['Linux',[nb('Linux'),'Onglet Linux : 6 labs (arborescence, fichiers, droits, utilisateurs, liens, processus)',cmd('linux')]],
-    ['Virtualisation, stockage, cloud',[nb('Machines virtuelles'),nb('Virtualisation, stockage et cloud')]],
-    ['Sauvegarde, RAID, PRA',[nb('Sauvegarde, RAID et PRA')]],
-    ['Supervision et journaux',[nb('Supervision et journaux')]],
-    ['Sécurité : hygiène, pare-feu, VPN, chiffrement, accès distant SSH',[nb('Sécurité'),lab('secu')]],
-    ['Support : ITIL, tickets, veille',[nb('ITIL et support'),nb('Veille technologique'),'Onglet Dépannage']],
-    ['Messagerie et web',[nb('Messagerie et web')]],
-  ];
+  const R=TCOMP.map(c=>[`Bloc ${c.b+1} · ${c.n}`,[...c.t.map(nb),...c.go.map(([,l])=>'Exercices : '+l),c.gap?'<span class="hc">'+esc(c.gap)+'</span>':'']]);
   $('#couvT').innerHTML='<table>'+R.map(([d,w])=>`<tr><td>${esc(d)}</td><td>${w.filter(Boolean).join('<br>')}</td></tr>`).join('')+'</table>';
 }
 /* Bilan : pour chaque thème, questions vues, réussite à la dernière réponse, questions à revoir ; puis les plus ratées */
@@ -1918,8 +1980,9 @@ function bilan(){
   const seen=rows.filter(r=>r.v).sort((a,b)=>(a.v<3)-(b.v<3)||a.p-b.p), unseen=rows.filter(r=>!r.v);
   const miss=[...QUIZ,...OUV].filter(x=>(S.miss[qKey(x)]||0)>0).sort((a,b)=>S.miss[qKey(b)]-S.miss[qKey(a)]).slice(0,10);
   const tot=rows.reduce((a,r)=>a+r.v,0);
+  const byB=TITRE.blocs.map((b,i)=>{const st=tStats(b.c.flatMap(c=>c.t));return `<tr><td>Bloc ${i+1} · ${esc(b.court)}</td><td>${st.v}/${st.n}</td><td>${st.p==null?'—':st.p+' %'}</td></tr>`}).join('');
   $('#bilanT').innerHTML=!tot?'<p>Pas encore de réponse enregistrée : fais quelques questions, ton bilan apparaîtra ici.</p>':
-   `<p>Les thèmes sont classés du plus faible au plus fort (réussite à ta dernière réponse sur chaque question).</p>
+   `<p><strong>Par bloc du titre</strong></p><table><tr><th>Bloc</th><th>Faites</th><th>Réussite</th></tr>${byB}</table><p style="margin-top:10px">Les thèmes sont classés du plus faible au plus fort (réussite à ta dernière réponse sur chaque question).</p>
    <table><tr><th>Thème</th><th>Vues</th><th>Réussite</th><th>À revoir</th></tr>${seen.map(r=>`<tr><td>${esc(r.t)}${r.hc?' <span class="hc">(hors cours)</span>':''}${r.v<3?' <span class="hc">(trop tôt pour juger)</span>':''}</td><td>${r.v}/${r.n}</td><td><span class="bar" style="--p:${r.p}%"></span>${r.p} %</td><td>${r.due||''}</td></tr>`).join('')}</table>
    ${unseen.length?`<p style="margin-top:10px"><strong>Jamais travaillés :</strong> ${unseen.map(r=>esc(r.t)).join(', ')}.</p>`:''}
    ${miss.length?`<p style="margin-top:10px"><strong>Tes questions les plus ratées :</strong></p><ol>${miss.map(x=>`<li>${esc(x.q)} <span class="hc">— ${esc(x.t)}, ratée ${S.miss[qKey(x)]} fois</span></li>`).join('')}</ol>`:''}`;
@@ -2063,7 +2126,7 @@ const EX_FMT={court:{n:20,o:2,min:30,lab:'20 QCM + 2 questions ouvertes · 30 mi
 S.exams=S.exams||[];let exPref={fmt:'court',scope:'cours'},exTimer=null,exArm=false;
 function exDraw(pool,n){const by={};for(const x of shuffle(pool))(by[x.t]=by[x.t]||[]).push(x);const ts=shuffle(Object.keys(by)),out=[];
   while(out.length<n&&ts.some(t=>by[t].length))for(const t of ts){if(by[t].length&&out.length<n)out.push(by[t].pop())}return shuffle(out)}
-function exStart(){const F=EX_FMT[exPref.fmt],ok=x=>exPref.scope==='all'||!isHC(x);
+function exStart(){const F=EX_FMT[exPref.fmt],L=selThemes(exPref.scope),ok=x=>L?L.includes(x.t):exPref.scope==='all'||!isHC(x);
   const q=exDraw(QUIZ.filter(ok),F.n).map(x=>({k:qKey(x),t:'q',ord:shuffle([0,1,2,3]),a:null,f:false}));
   const o=exDraw(OUV.filter(ok),F.o).map(x=>({k:qKey(x),t:'o',a:'',f:false}));
   S.exam={start:Date.now(),min:F.min,fmt:exPref.fmt,scope:exPref.scope,items:[...q,...o],cur:0,done:false};save();exRender()}
@@ -2085,9 +2148,9 @@ function exRender(){
     B.innerHTML=`<div class="exsec"><h2>Examen blanc</h2>
       <p class="exlead">Comme le jour de l'examen : des questions de tous les thèmes, un chronomètre et <strong>aucune correction avant la fin</strong>. À la fin : une note sur 20, le détail par thème et la correction complète.</p></div>
     <div class="exsec"><h3>1. Durée</h3><div class="exchoice" id="exFmt">${Object.entries(EX_FMT).map(([k,v])=>`<button class="chip" data-v="${k}"><strong>${v.min} min</strong><span>${v.n} QCM + ${v.o} questions ouvertes</span></button>`).join('')}</div></div>
-    <div class="exsec"><h3>2. Questions</h3><div class="exchoice" id="exScope"><button class="chip" data-v="cours"><strong>Mes cours</strong><span>seulement les questions tirées de tes cours</span></button><button class="chip" data-v="all"><strong>Tout le TSSR</strong><span>avec les questions hors cours</span></button></div></div>
+    <div class="exsec"><h3>2. Questions</h3><div class="exchoice" id="exScope"><button class="chip" data-v="cours"><strong>Mes cours</strong><span>seulement les questions tirées de tes cours</span></button><button class="chip" data-v="all"><strong>Tout le TSSR</strong><span>avec les questions hors cours</span></button>${TITRE.blocs.map((b,i)=>`<button class="chip" data-v="bc:${i}"><strong>Bloc ${i+1}</strong><span>${esc(b.n)}</span></button>`).join('')}</div></div>
     <div class="exsec"><button class="btn primary exbig" id="exGo">Commencer l'examen</button></div>
-    ${S.exams.length?`<div class="exsec exline"><h3>Mes derniers examens</h3><ul class="hist">${S.exams.slice(0,5).map(h=>`<li><strong>${fr(h.note)}/20</strong> · ${h.d} · ${EX_FMT[h.fmt]?EX_FMT[h.fmt].min+' min':''} · ${h.scope==='all'?'tout le TSSR':'mes cours'}</li>`).join('')}</ul></div>`:''}`;
+    ${S.exams.length?`<div class="exsec exline"><h3>Mes derniers examens</h3><ul class="hist">${S.exams.slice(0,5).map(h=>`<li><strong>${fr(h.note)}/20</strong> · ${h.d} · ${EX_FMT[h.fmt]?EX_FMT[h.fmt].min+' min':''} · ${h.scope==='all'?'tout le TSSR':h.scope&&h.scope.startsWith('bc:')?'bloc '+(+h.scope.slice(3)+1):'mes cours'}</li>`).join('')}</ul></div>`:''}`;
     chips('exFmt',exPref.fmt,v=>exPref.fmt=v);chips('exScope',exPref.scope,v=>exPref.scope=v);$('#exGo').onclick=exStart;return}
   if(!E.done&&exLeft()<=0){exFinish(true);return}
   if(!E.done){const it=E.items[E.cur],x=KQ.get(it.k),n=E.items.length,rep=E.items.filter(answered).length,nf=E.items.filter(i=>i.f).length;
@@ -2153,7 +2216,7 @@ function fiRender(){
   $('#fiPrint').onclick=()=>window.print();
 }
 function qRefresh(){qFiltSum();qMode==='ouv'?oqNew():qMode==='exam'?exRender():qMode==='fiche'?fiRender():qMode==='bilan'?(bilan(),couverture()):qNew()}
-function qFiltSum(){const th=qTheme==='all'?'Tout le TSSR':qTheme==='cours'?'Mes cours seulement':qTheme;$('#qFiltSum').textContent=th+' · '+(qNiv==='all'?'tous niveaux':'niveau '+qNiv)}
+function qFiltSum(){const th=qTheme==='all'?'Tout le TSSR':qTheme==='cours'?'Mes cours seulement':selName(qTheme);$('#qFiltSum').textContent=th+' · '+(qNiv==='all'?'tous niveaux':'niveau '+qNiv)}
 function setQMode(v){if(v===qMode)return;qMode=S.pref.qMode=v;save();qApply();navMark()}
 function qApply(){const bi=qMode==='bilan',fi=qMode==='fiche'||bi,ex=qMode==='exam'||fi,o=qMode==='ouv',rv=qMode==='rev'||ex;$('#quiz .qtop').hidden=bi||qMode==='fiche';$('#qFiltres').hidden=rv;$('#exCard').hidden=qMode!=='exam';$('#fiCard').hidden=qMode!=='fiche';$('#biCard').hidden=!bi;$('#qEnd').hidden=true;$('#oqEnd').hidden=true;revCount();$('#qcmCard').hidden=o||ex;$('#qCount').hidden=o||ex;$('#quiz .kb').hidden=o||ex;$('#oqCard').hidden=!o;$('#oqCount').hidden=!o;
   $$('#quiz [data-score="quiz"]').forEach(e=>e.hidden=o);$$('#quiz [data-score="ouv"]').forEach(e=>e.hidden=!o);qRefresh()}
