@@ -28,7 +28,7 @@ Ces cours sont dans `outils/quiz/*.json` et `outils/ouvertes/*.json`. Avant d'aj
     - Mémo : Ports, OSI, Dépannage.
   - **Mon titre TSSR** (`#titre`, 1er lien du menu après Accueil) : Dimitri passe le **nouveau titre RNCP 42463** (arrêté du 16 juin 2026, parcours commencés à partir du 1er septembre 2026 ; il a commencé après cette date). Constante `TITRE` : 3 blocs (BC01 Support aux utilisateurs, BC02 Exploiter les éléments de l'infrastructure, BC03 Maintenir en conditions opérationnelles) et 10 compétences, chacune avec `t` (thèmes du quiz qui la préparent), `go` (exercices pratiques) et `gap` (ce qui manque). La page affiche l'examen (mise en situation sur VM + traçabilité + oral, questionnaire avec au moins une question sur une doc technique en anglais par bloc, entretien technique, entretien final 15 min avec le dossier professionnel ; 7 h au total ; durées par bloc 3 h 15 / 3 h 30 / 3 h), la réussite par compétence (`tStats`) et des boutons QCM / examen blanc ciblés (`goQuiz`). Sources : fiche France compétences RNCP 42463 et Légifrance JORFTEXT000054273839 (lues via la recherche web : les sites ne sont pas joignables depuis l'environnement).
   - Filtre de thème `qTheme` : aussi `bc:0..2` (un bloc) et `cp:N` (une compétence de `TCOMP`) ; l'examen blanc accepte aussi `bc:N` comme périmètre. « Mon bilan » commence par un tableau par bloc ; « Couverture TSSR » est rangée par compétence du titre.
-  - **Manques à combler** (cours à demander à Dimitri, ou questions hors cours vérifiées) : IA (usage et encadrement ; optimisation de scripts avec l'IA), anglais technique (questionnaire), environnement hybride, déploiement de postes et outils collaboratifs, gestion des mises à jour.
+  - **Manques comblés provisoirement par des questions hors cours vérifiées** (à remplacer par les cours de Dimitri dès qu'il les envoie) : IA (usage, encadrement, scripts avec l'IA), anglais technique (bouton dans la carte « L'examen »), environnement hybride, déploiement de postes et outils collaboratifs, gestion des mises à jour.
   - Page d'accueil (`#home`, « Aujourd'hui ») affichée à chaque ouverture. Elle ne répète pas le menu : 4 cartes « quoi faire » : Reprendre (dernière rubrique, `S.pref.lastTab`), À revoir (questions du jour), Point faible (thème le moins réussi, ≥ 3 questions répondues → QCM filtré sur ce thème), Ma progression (questions vues, % de réussite, dernier examen → Mon bilan).
   - Cisco et Linux : on arrive sur la liste des labs (cartes : n°, niveau, titre, avancement `ST.labs[id].n` ou ✓ Réussi, « dernier ouvert ») ; le lab s'ouvre au clic, avec « ← Tous les labs » pour revenir. `tab()` remet la liste à chaque arrivée par le menu.
   - Dans un lab, sur téléphone et petit écran (< 1024 px) : seule la tâche en cours s'affiche au-dessus du terminal (`#ciCur` / `#lxCur`, avec Indice) ; « Voir toutes les tâches et le schéma » déplie le détail (classe `full` sur `.labview`). Le terminal est moins haut et la ligne de saisie reste visible quand le clavier s'ouvre (elle passe à la ligne si l'invite est longue, ex. « Destination filename »). Liens : Indice, Voir toutes les tâches, Recommencer ce lab. Sur PC, rien ne change.
@@ -55,11 +55,11 @@ Ces cours sont dans `outils/quiz/*.json` et `outils/ouvertes/*.json`. Avant d'aj
   - met à jour le nom du cache de `sw.js` (PWA hors ligne).
 
 ## Contenu actuel
-- **571 QCM** :
+- **620 QCM** :
   - 426 tirés des cours ;
-  - 139 hors cours (AD et GPO, Windows Server et PowerShell, Linux, scripts, sauvegarde/RAID/PRA, supervision, sécurité, ITIL, virtualisation et cloud, Wi-Fi/VoIP/IPv6, messagerie et web) ;
+  - 188 hors cours (AD et GPO, Windows Server et PowerShell, Linux, scripts, sauvegarde/RAID/PRA, supervision, sécurité, ITIL, virtualisation et cloud, Wi-Fi/VoIP/IPv6, messagerie et web ; et, ajoutés le 27/11/2026 pour couvrir le titre RNCP 42463 : Intelligence artificielle 12, Environnement hybride (Entra ID) 9, Déploiement et outils collaboratifs 9, Mises à jour 10, Anglais technique 9 — le champ `s` de ces 49 questions commence par « Notion générale… » puis cite les sources vérifiées : ANSSI, ANSSI/BSI, règlement UE 2024/1689, OQLF, Microsoft Learn, Debian) ;
   - 6 notions générales réparties dans les thèmes des cours.
-- **62 questions ouvertes**.
+- **66 questions ouvertes** (dont 4 hors cours ajoutées le 27/11/2026 : IA, identité hybride, déploiement, mises à jour).
 - **Tirage des questions** :
   - une question ratée revient 8 questions plus tard ;
   - sinon, une question jamais vue, en commençant par le niveau le plus bas ;

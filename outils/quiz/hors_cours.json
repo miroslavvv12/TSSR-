@@ -2500,5 +2500,887 @@
    "Non."
   ],
   "n": 5
+ },
+ {
+  "t": "Intelligence artificielle",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire) — vérifié : ANSSI, « Recommandations de sécurité pour un système d'IA générative » (2024) ; ANSSI et BSI, « AI Coding Assistants » (2024) ; règlement (UE) 2024/1689 sur l'IA ; OQLF, fiche « hallucination d'IA »",
+  "q": "Qu'est-ce qu'une IA générative ?",
+  "o": [
+   "Une IA qui produit un contenu nouveau (texte, image, code…) à partir d'une consigne",
+   "Un antivirus qui apprend tout seul",
+   "Un moteur de recherche qui affiche seulement une liste de liens",
+   "Un tableur qui fait des calculs automatiques"
+  ],
+  "e": "Elle crée du contenu (réponse écrite, résumé, script, image) en réponse à une demande. Exemples d'usage : rédiger un mail, résumer un document, proposer un script.",
+  "x": [
+   "Un antivirus détecte des programmes malveillants, il ne crée pas de contenu.",
+   "Un moteur de recherche classique renvoie des pages existantes.",
+   "Un tableur calcule, il ne génère pas de texte."
+  ],
+  "n": 0
+ },
+ {
+  "t": "Intelligence artificielle",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire) — vérifié : ANSSI, « Recommandations de sécurité pour un système d'IA générative » (2024) ; ANSSI et BSI, « AI Coding Assistants » (2024) ; règlement (UE) 2024/1689 sur l'IA ; OQLF, fiche « hallucination d'IA »",
+  "q": "Que veut dire « prompt » quand on utilise une IA générative ?",
+  "o": [
+   "La consigne (question ou instruction) que l'on écrit à l'IA",
+   "La réponse donnée par l'IA",
+   "Le serveur qui héberge l'IA",
+   "Le mot de passe du compte"
+  ],
+  "e": "Le prompt est ce que tu demandes. Plus il est précis (contexte, format attendu, contraintes), plus la réponse est utile.",
+  "x": [
+   "C'est l'inverse : le prompt est la question, pas la réponse.",
+   "Le serveur n'a rien à voir avec ce mot.",
+   "Un mot de passe n'est pas un prompt."
+  ],
+  "n": 0
+ },
+ {
+  "t": "Intelligence artificielle",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire) — vérifié : ANSSI, « Recommandations de sécurité pour un système d'IA générative » (2024) ; ANSSI et BSI, « AI Coding Assistants » (2024) ; règlement (UE) 2024/1689 sur l'IA ; OQLF, fiche « hallucination d'IA »",
+  "q": "Qu'appelle-t-on une « hallucination » d'une IA générative ?",
+  "o": [
+   "Une réponse fausse ou inventée, présentée comme si elle était vraie",
+   "Une panne du serveur de l'IA",
+   "Une image floue produite par l'IA",
+   "Un virus caché dans la réponse"
+  ],
+  "e": "L'IA peut inventer une commande, une option ou une source avec beaucoup d'assurance. D'où la règle : toujours vérifier avant d'appliquer.",
+  "x": [
+   "Une panne n'est pas une hallucination : l'IA répond, mais faux.",
+   "Une image floue n'est pas le sens de ce mot.",
+   "Ce n'est pas un virus : c'est une erreur de contenu."
+  ],
+  "n": 1
+ },
+ {
+  "t": "Intelligence artificielle",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire) — vérifié : ANSSI, « Recommandations de sécurité pour un système d'IA générative » (2024) ; ANSSI et BSI, « AI Coding Assistants » (2024) ; règlement (UE) 2024/1689 sur l'IA ; OQLF, fiche « hallucination d'IA »",
+  "q": "Un collègue veut coller l'export de la base clients dans une IA en ligne publique pour le trier. Que lui dis-tu ?",
+  "o": [
+   "Non : on ne met pas de données sensibles ou personnelles dans un outil d'IA en ligne non autorisé",
+   "Oui, si le fichier fait moins de 1 000 lignes",
+   "Oui, à condition de supprimer la conversation ensuite",
+   "Oui, l'IA ne garde jamais rien"
+  ],
+  "e": "Les données envoyées partent vers un service externe : risque de fuite. L'ANSSI recommande d'interdire l'usage professionnel des outils d'IA générative accessibles sur Internet pour des données sensibles. Il faut un outil autorisé par l'entreprise, ou des données anonymisées.",
+  "x": [
+   "La taille du fichier ne change rien au risque.",
+   "Supprimer la conversation ne garantit pas que les données n'ont pas été conservées ou réutilisées.",
+   "On ne peut pas l'affirmer : les données quittent l'entreprise."
+  ],
+  "n": 1
+ },
+ {
+  "t": "Intelligence artificielle",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire) — vérifié : ANSSI, « Recommandations de sécurité pour un système d'IA générative » (2024) ; ANSSI et BSI, « AI Coding Assistants » (2024) ; règlement (UE) 2024/1689 sur l'IA ; OQLF, fiche « hallucination d'IA »",
+  "q": "Selon l'ANSSI, pour quel usage faut-il interdire les outils d'IA générative accessibles sur Internet ?",
+  "o": [
+   "Le traitement de données sensibles dans un cadre professionnel",
+   "La recherche d'une définition simple",
+   "La traduction d'une phrase banale",
+   "Tout usage, sans exception"
+  ],
+  "e": "Recommandation du guide ANSSI 2024 sur l'IA générative : pas de données sensibles dans des outils d'IA en ligne. Pour le reste, l'usage peut être autorisé et encadré.",
+  "x": [
+   "Une définition simple ne contient pas de données sensibles.",
+   "Une phrase banale non plus.",
+   "Le guide vise les données sensibles, pas tout usage."
+  ],
+  "n": 2
+ },
+ {
+  "t": "Intelligence artificielle",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire) — vérifié : ANSSI, « Recommandations de sécurité pour un système d'IA générative » (2024) ; ANSSI et BSI, « AI Coding Assistants » (2024) ; règlement (UE) 2024/1689 sur l'IA ; OQLF, fiche « hallucination d'IA »",
+  "q": "L'IA te propose une procédure pour réparer un serveur. Que fais-tu avant de l'appliquer ?",
+  "o": [
+   "Je la vérifie (documentation officielle, test sur une machine de test) avant de l'appliquer",
+   "Je l'applique tout de suite : l'IA ne se trompe pas",
+   "Je la demande deux fois : si la réponse est la même, elle est juste",
+   "Je l'applique de nuit pour gêner moins de monde"
+  ],
+  "e": "L'IA peut halluciner. Tu restes responsable de ce que tu fais sur le système : vérifie, teste, puis applique.",
+  "x": [
+   "Elle peut se tromper (hallucination).",
+   "Deux réponses identiques peuvent être fausses toutes les deux.",
+   "L'heure ne rend pas une procédure plus juste."
+  ],
+  "n": 1
+ },
+ {
+  "t": "Intelligence artificielle",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire) — vérifié : ANSSI, « Recommandations de sécurité pour un système d'IA générative » (2024) ; ANSSI et BSI, « AI Coding Assistants » (2024) ; règlement (UE) 2024/1689 sur l'IA ; OQLF, fiche « hallucination d'IA »",
+  "q": "Comment le règlement européen sur l'IA classe-t-il les systèmes d'IA ?",
+  "o": [
+   "Selon leur niveau de risque (inacceptable, élevé, transparence, minimal)",
+   "Selon leur prix",
+   "Selon le pays du fabricant",
+   "Selon la taille du modèle uniquement"
+  ],
+  "e": "Règlement (UE) 2024/1689, entré en vigueur le 1er août 2024. Plus le risque est élevé, plus les obligations sont fortes ; les usages à risque inacceptable sont interdits.",
+  "x": [
+   "Le prix ne compte pas.",
+   "Le pays du fabricant non plus : c'est l'usage dans l'UE qui compte.",
+   "La taille n'est pas le critère de classement général."
+  ],
+  "n": 1
+ },
+ {
+  "t": "Intelligence artificielle",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire) — vérifié : ANSSI, « Recommandations de sécurité pour un système d'IA générative » (2024) ; ANSSI et BSI, « AI Coding Assistants » (2024) ; règlement (UE) 2024/1689 sur l'IA ; OQLF, fiche « hallucination d'IA »",
+  "q": "Que prévoit le règlement européen sur l'IA pour les usages à « risque inacceptable » ?",
+  "o": [
+   "Ils sont interdits",
+   "Ils sont autorisés avec un simple avertissement",
+   "Ils sont autorisés aux entreprises seulement",
+   "Ils doivent juste être déclarés à la CNIL"
+  ],
+  "e": "Le niveau « inacceptable » correspond à des pratiques interdites dans l'UE. Les autres niveaux ont des obligations plus ou moins fortes.",
+  "x": [
+   "Un avertissement concerne le niveau « transparence », pas l'inacceptable.",
+   "Interdit pour tous.",
+   "Ce n'est pas une simple déclaration."
+  ],
+  "n": 2
+ },
+ {
+  "t": "Intelligence artificielle",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire) — vérifié : ANSSI, « Recommandations de sécurité pour un système d'IA générative » (2024) ; ANSSI et BSI, « AI Coding Assistants » (2024) ; règlement (UE) 2024/1689 sur l'IA ; OQLF, fiche « hallucination d'IA »",
+  "q": "L'IA t'a aidé à optimiser un script PowerShell. Que fais-tu avant de le lancer en production ?",
+  "o": [
+   "Je le relis ligne par ligne, je comprends chaque commande et je le teste sur une machine de test",
+   "Je le lance directement, il a été écrit par une IA",
+   "Je le lance avec un compte administrateur pour éviter les erreurs",
+   "Je le partage à toute l'équipe pour qu'elle le lance"
+  ],
+  "e": "L'ANSSI et le BSI rappellent que les assistants de code ne garantissent pas un code de qualité et ne remplacent pas un professionnel : on relit et on teste.",
+  "x": [
+   "Un code généré peut contenir des erreurs.",
+   "Un compte administrateur augmente les dégâts en cas d'erreur.",
+   "Le diffuser avant de le tester multiplie le risque."
+  ],
+  "n": 2
+ },
+ {
+  "t": "Intelligence artificielle",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire) — vérifié : ANSSI, « Recommandations de sécurité pour un système d'IA générative » (2024) ; ANSSI et BSI, « AI Coding Assistants » (2024) ; règlement (UE) 2024/1689 sur l'IA ; OQLF, fiche « hallucination d'IA »",
+  "q": "Pourquoi ne faut-il pas coller dans une IA en ligne un script qui contient des mots de passe ou des clés ?",
+  "o": [
+   "Ces secrets partent vers un service externe et peuvent fuiter",
+   "Parce que l'IA ne sait pas lire les mots de passe",
+   "Parce que le script deviendrait plus lent",
+   "Parce que c'est interdit par PowerShell"
+  ],
+  "e": "Tout ce que tu colles est envoyé à l'éditeur du service. Retire les secrets (remplace-les par des valeurs fictives) avant de demander de l'aide.",
+  "x": [
+   "L'IA les lit très bien : c'est justement le problème.",
+   "La vitesse du script n'a rien à voir.",
+   "PowerShell n'interdit rien de tel."
+  ],
+  "n": 3
+ },
+ {
+  "t": "Intelligence artificielle",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire) — vérifié : ANSSI, « Recommandations de sécurité pour un système d'IA générative » (2024) ; ANSSI et BSI, « AI Coding Assistants » (2024) ; règlement (UE) 2024/1689 sur l'IA ; OQLF, fiche « hallucination d'IA »",
+  "q": "L'IA te conseille d'installer un module « Get-SuperBackup » pour ton script. Quelle est la bonne réaction ?",
+  "o": [
+   "Vérifier que ce module existe vraiment et vient d'une source officielle avant de l'installer",
+   "L'installer tout de suite",
+   "L'installer seulement sur le serveur de production",
+   "Copier le nom dans un autre script"
+  ],
+  "e": "L'ANSSI et le BSI signalent les paquets « hallucinés » : l'IA peut citer un module qui n'existe pas, ou dont le nom a été réservé par un attaquant.",
+  "x": [
+   "Risque d'installer un module piégé.",
+   "La production est le pire endroit pour tester.",
+   "Le problème reste entier."
+  ],
+  "n": 3
+ },
+ {
+  "t": "Intelligence artificielle",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire) — vérifié : ANSSI, « Recommandations de sécurité pour un système d'IA générative » (2024) ; ANSSI et BSI, « AI Coding Assistants » (2024) ; règlement (UE) 2024/1689 sur l'IA ; OQLF, fiche « hallucination d'IA »",
+  "q": "Que peut faire un technicien pour encadrer l'usage de l'IA dans l'entreprise ?",
+  "o": [
+   "Faire connaître des règles écrites : outils autorisés, données interdites, vérification des réponses",
+   "Bloquer tout Internet",
+   "Laisser chacun utiliser l'outil de son choix",
+   "Donner son propre compte à tous les utilisateurs"
+  ],
+  "e": "Encadrer = permettre un usage utile et sûr : une liste d'outils validés, ce qu'on n'y met jamais (données sensibles ou personnelles), et l'habitude de vérifier.",
+  "x": [
+   "Bloquer Internet empêche de travailler.",
+   "Sans règles, les données sensibles finissent dans n'importe quel outil.",
+   "Partager un compte est une faute de sécurité."
+  ],
+  "n": 2
+ },
+ {
+  "t": "Environnement hybride (Entra ID)",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire) — vérifié : Microsoft Learn, « What is Microsoft Entra Connect? », « Hybrid scenarios », « Build resilience in your hybrid architecture », « How it works: Microsoft Entra multifactor authentication »",
+  "q": "Qu'est-ce que Microsoft Entra ID ?",
+  "o": [
+   "Le service d'identité dans le cloud de Microsoft (anciennement Azure AD)",
+   "Un antivirus",
+   "Le nouveau nom de Windows Server",
+   "Un logiciel de sauvegarde"
+  ],
+  "e": "Entra ID gère les comptes et la connexion aux services cloud (Microsoft 365, applications SaaS…).",
+  "x": [
+   "Ce n'est pas un antivirus.",
+   "Windows Server est un système d'exploitation.",
+   "Ce n'est pas un outil de sauvegarde."
+  ],
+  "n": 0
+ },
+ {
+  "t": "Environnement hybride (Entra ID)",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire) — vérifié : Microsoft Learn, « What is Microsoft Entra Connect? », « Hybrid scenarios », « Build resilience in your hybrid architecture », « How it works: Microsoft Entra multifactor authentication »",
+  "q": "Que veut dire « identité hybride » ?",
+  "o": [
+   "Les mêmes comptes servent sur le réseau de l'entreprise (AD local) et dans le cloud (Entra ID)",
+   "Un compte partagé par deux personnes",
+   "Un poste avec deux systèmes d'exploitation",
+   "Un serveur à moitié physique, à moitié virtuel"
+  ],
+  "e": "Microsoft : l'authentification hybride permet d'accéder aux ressources cloud avec des identités qui viennent de l'Active Directory local.",
+  "x": [
+   "Un compte doit rester personnel.",
+   "Le double démarrage n'a rien à voir.",
+   "Ce n'est pas une question de serveur."
+  ],
+  "n": 1
+ },
+ {
+  "t": "Environnement hybride (Entra ID)",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire) — vérifié : Microsoft Learn, « What is Microsoft Entra Connect? », « Hybrid scenarios », « Build resilience in your hybrid architecture », « How it works: Microsoft Entra multifactor authentication »",
+  "q": "Quel outil synchronise les comptes de l'Active Directory local vers Microsoft Entra ID ?",
+  "o": [
+   "Microsoft Entra Connect",
+   "Windows Update",
+   "WSUS",
+   "Gestionnaire des tâches"
+  ],
+  "e": "Entra Connect crée les utilisateurs et groupes dans le cloud et les garde à jour, avec la synchronisation des hachages de mots de passe si elle est choisie.",
+  "x": [
+   "Windows Update installe des mises à jour.",
+   "WSUS distribue des mises à jour.",
+   "Le Gestionnaire des tâches montre les processus."
+  ],
+  "n": 1
+ },
+ {
+  "t": "Environnement hybride (Entra ID)",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire) — vérifié : Microsoft Learn, « What is Microsoft Entra Connect? », « Hybrid scenarios », « Build resilience in your hybrid architecture », « How it works: Microsoft Entra multifactor authentication »",
+  "q": "Avec la synchronisation de hachage de mot de passe (PHS), que se passe-t-il ?",
+  "o": [
+   "Un hachage du mot de passe AD est copié dans Entra ID : l'utilisateur garde le même mot de passe partout",
+   "Le mot de passe est envoyé en clair dans le cloud",
+   "L'utilisateur a deux mots de passe différents",
+   "Le mot de passe n'est plus nécessaire"
+  ],
+  "e": "Le mot de passe n'est jamais envoyé ni stocké en clair dans Entra ID. Microsoft recommande PHS comme méthode par défaut.",
+  "x": [
+   "Jamais en clair : seulement un hachage de hachage.",
+   "Le but est justement un seul mot de passe.",
+   "Le mot de passe reste nécessaire."
+  ],
+  "n": 2
+ },
+ {
+  "t": "Environnement hybride (Entra ID)",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire) — vérifié : Microsoft Learn, « What is Microsoft Entra Connect? », « Hybrid scenarios », « Build resilience in your hybrid architecture », « How it works: Microsoft Entra multifactor authentication »",
+  "q": "Avec l'authentification directe (PTA), où le mot de passe est-il vérifié ?",
+  "o": [
+   "Sur l'Active Directory local, grâce à un agent installé dans le réseau de l'entreprise",
+   "Dans Entra ID uniquement",
+   "Sur le poste de l'utilisateur",
+   "Chez le fournisseur d'accès Internet"
+  ],
+  "e": "PTA : Entra ID transmet la demande à un agent local qui vérifie le mot de passe auprès d'un contrôleur de domaine. Aucun hachage n'est stocké dans le cloud.",
+  "x": [
+   "C'est le cas de PHS, pas de PTA.",
+   "Le poste ne valide pas le mot de passe.",
+   "Le FAI n'intervient pas."
+  ],
+  "n": 2
+ },
+ {
+  "t": "Environnement hybride (Entra ID)",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire) — vérifié : Microsoft Learn, « What is Microsoft Entra Connect? », « Hybrid scenarios », « Build resilience in your hybrid architecture », « How it works: Microsoft Entra multifactor authentication »",
+  "q": "Dans une authentification fédérée, qui vérifie l'identité de l'utilisateur ?",
+  "o": [
+   "Un service de fédération de l'entreprise, par exemple AD FS",
+   "Microsoft Entra ID seul",
+   "Le pare-feu",
+   "Le serveur DHCP"
+  ],
+  "e": "Entra ID redirige l'utilisateur vers le fournisseur d'identité de l'entreprise (AD FS), puis accepte sa réponse.",
+  "x": [
+   "En fédération, Entra ID délègue la vérification.",
+   "Le pare-feu filtre le trafic.",
+   "Le DHCP distribue des adresses IP."
+  ],
+  "n": 2
+ },
+ {
+  "t": "Environnement hybride (Entra ID)",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire) — vérifié : Microsoft Learn, « What is Microsoft Entra Connect? », « Hybrid scenarios », « Build resilience in your hybrid architecture », « How it works: Microsoft Entra multifactor authentication »",
+  "q": "Les contrôleurs de domaine locaux sont injoignables. Avec quelle méthode les utilisateurs peuvent-ils encore se connecter aux services cloud ?",
+  "o": [
+   "La synchronisation de hachage de mot de passe (PHS)",
+   "L'authentification directe (PTA)",
+   "La fédération AD FS",
+   "Aucune"
+  ],
+  "e": "Microsoft : PHS ne dépend de l'AD que pendant la synchronisation, pas pendant la connexion. PTA et la fédération ont besoin de l'infrastructure locale au moment de la connexion.",
+  "x": [
+   "PTA doit joindre un contrôleur de domaine.",
+   "La fédération dépend du service AD FS local.",
+   "PHS fonctionne encore."
+  ],
+  "n": 3
+ },
+ {
+  "t": "Environnement hybride (Entra ID)",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire) — vérifié : Microsoft Learn, « What is Microsoft Entra Connect? », « Hybrid scenarios », « Build resilience in your hybrid architecture », « How it works: Microsoft Entra multifactor authentication »",
+  "q": "Laquelle de ces connexions utilise vraiment deux facteurs différents ?",
+  "o": [
+   "Un mot de passe et un code reçu sur le téléphone",
+   "Un mot de passe et un code PIN",
+   "Deux mots de passe différents",
+   "Un mot de passe et une question secrète"
+  ],
+  "e": "Mot de passe = ce que je sais ; téléphone = ce que j'ai. Les autres réponses combinent deux éléments de la même famille (ce que je sais).",
+  "x": [
+   "PIN et mot de passe : deux choses que je sais.",
+   "Deux mots de passe : même facteur.",
+   "Question secrète : encore ce que je sais."
+  ],
+  "n": 2
+ },
+ {
+  "t": "Environnement hybride (Entra ID)",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire) — vérifié : Microsoft Learn, « What is Microsoft Entra Connect? », « Hybrid scenarios », « Build resilience in your hybrid architecture », « How it works: Microsoft Entra multifactor authentication »",
+  "q": "À quoi sert l'accès conditionnel dans Microsoft Entra ID ?",
+  "o": [
+   "À exiger des vérifications selon le contexte, par exemple la MFA hors du réseau de l'entreprise",
+   "À bloquer définitivement les comptes inactifs",
+   "À attribuer des adresses IP",
+   "À chiffrer les disques durs"
+  ],
+  "e": "Microsoft : on peut autoriser une connexion simple sur le réseau de l'entreprise ou un appareil enregistré, et demander un facteur de plus à distance ou sur un appareil personnel.",
+  "x": [
+   "Ce n'est pas son rôle.",
+   "C'est le rôle du DHCP.",
+   "C'est le rôle de BitLocker."
+  ],
+  "n": 3
+ },
+ {
+  "t": "Déploiement et outils collaboratifs",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire) — vérifié : Microsoft Learn, « Sysprep (System Preparation) Overview », « Sysprep Command-Line Options », « Overview of Windows Autopilot », « Set up file storage and sharing in Microsoft 365 », « Intro to file collaboration in Microsoft 365 »",
+  "q": "Qu'est-ce que le SID d'un ordinateur Windows ?",
+  "o": [
+   "Un identifiant de sécurité unique propre à cette installation",
+   "Le numéro de série du disque",
+   "L'adresse IP du poste",
+   "Le nom de l'utilisateur"
+  ],
+  "e": "Deux PC clonés sans préparation auraient le même SID : c'est pour cela qu'on généralise l'image avec Sysprep.",
+  "x": [
+   "Le numéro de série est autre chose.",
+   "L'adresse IP est réseau.",
+   "Le nom d'utilisateur n'est pas un SID d'ordinateur."
+  ],
+  "n": 0
+ },
+ {
+  "t": "Déploiement et outils collaboratifs",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire) — vérifié : Microsoft Learn, « Sysprep (System Preparation) Overview », « Sysprep Command-Line Options », « Overview of Windows Autopilot », « Set up file storage and sharing in Microsoft 365 », « Intro to file collaboration in Microsoft 365 »",
+  "q": "À quoi sert « sysprep /generalize » avant de capturer une image Windows ?",
+  "o": [
+   "À retirer les informations propres au PC (SID, journaux…) pour réutiliser l'image sur d'autres postes",
+   "À installer les mises à jour",
+   "À formater le disque",
+   "À activer Windows"
+  ],
+  "e": "Au démarrage suivant, Windows recrée un nouveau SID (phase « specialize »).",
+  "x": [
+   "Sysprep n'installe pas de mises à jour.",
+   "Il ne formate rien.",
+   "L'activation est un autre sujet."
+  ],
+  "n": 1
+ },
+ {
+  "t": "Déploiement et outils collaboratifs",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire) — vérifié : Microsoft Learn, « Sysprep (System Preparation) Overview », « Sysprep Command-Line Options », « Overview of Windows Autopilot », « Set up file storage and sharing in Microsoft 365 », « Intro to file collaboration in Microsoft 365 »",
+  "q": "Copier une image Windows sur un autre PC sans avoir lancé « sysprep /generalize » : qu'en dit Microsoft ?",
+  "o": [
+   "Ce n'est pas pris en charge, même si le matériel est identique",
+   "C'est conseillé pour gagner du temps",
+   "C'est possible si les deux PC ont la même marque",
+   "C'est obligatoire pour les serveurs"
+  ],
+  "e": "Microsoft : déplacer ou copier une image sans « Sysprep /generalize » n'est pas supporté, quelle que soit la méthode (image, duplication de disque…).",
+  "x": [
+   "C'est le contraire.",
+   "Même avec un matériel identique, il faut généraliser.",
+   "Rien de tel."
+  ],
+  "n": 2
+ },
+ {
+  "t": "Déploiement et outils collaboratifs",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire) — vérifié : Microsoft Learn, « Sysprep (System Preparation) Overview », « Sysprep Command-Line Options », « Overview of Windows Autopilot », « Set up file storage and sharing in Microsoft 365 », « Intro to file collaboration in Microsoft 365 »",
+  "q": "Qu'est-ce que Windows Autopilot ?",
+  "o": [
+   "Un service cloud qui prépare un PC neuf pour l'entreprise sans le réimager : l'utilisateur l'allume et reçoit applis et paramètres",
+   "Un pilote automatique pour les imprimantes",
+   "Le nouveau nom de Sysprep",
+   "Un antivirus"
+  ],
+  "e": "Le PC garde le Windows installé en usine ; Autopilot le rend « prêt pour l'entreprise » (paramètres, applications, inscription dans Intune).",
+  "x": [
+   "Rien à voir avec les imprimantes.",
+   "Sysprep sert à généraliser une image.",
+   "Ce n'est pas un antivirus."
+  ],
+  "n": 1
+ },
+ {
+  "t": "Déploiement et outils collaboratifs",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire) — vérifié : Microsoft Learn, « Sysprep (System Preparation) Overview », « Sysprep Command-Line Options », « Overview of Windows Autopilot », « Set up file storage and sharing in Microsoft 365 », « Intro to file collaboration in Microsoft 365 »",
+  "q": "Avec Windows Autopilot, que doit faire l'utilisateur sur son nouveau PC ?",
+  "o": [
+   "Choisir langue et région, se connecter au réseau et saisir ses identifiants : le reste est automatique",
+   "Installer lui-même toutes les applications",
+   "Apporter le PC au service informatique pour une image",
+   "Rien du tout, même pas se connecter"
+  ],
+  "e": "Microsoft : la seule action demandée est de régler la langue, se connecter au réseau et vérifier ses identifiants.",
+  "x": [
+   "Les applications arrivent automatiquement.",
+   "Justement, plus besoin de réimager.",
+   "Il doit au moins se connecter et s'identifier."
+  ],
+  "n": 2
+ },
+ {
+  "t": "Déploiement et outils collaboratifs",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire) — vérifié : Microsoft Learn, « Sysprep (System Preparation) Overview », « Sysprep Command-Line Options », « Overview of Windows Autopilot », « Set up file storage and sharing in Microsoft 365 », « Intro to file collaboration in Microsoft 365 »",
+  "q": "Qu'est-ce que Microsoft Intune ?",
+  "o": [
+   "Un service cloud de gestion des appareils (paramètres, applications, conformité)",
+   "Une messagerie",
+   "Un logiciel de musique",
+   "Un serveur DNS"
+  ],
+  "e": "Intune gère les PC et smartphones à distance ; Autopilot inscrit les nouveaux PC dans Intune.",
+  "x": [
+   "La messagerie est Outlook / Exchange.",
+   "Ce n'est pas un logiciel de musique.",
+   "Le DNS résout des noms."
+  ],
+  "n": 1
+ },
+ {
+  "t": "Déploiement et outils collaboratifs",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire) — vérifié : Microsoft Learn, « Sysprep (System Preparation) Overview », « Sysprep Command-Line Options », « Overview of Windows Autopilot », « Set up file storage and sharing in Microsoft 365 », « Intro to file collaboration in Microsoft 365 »",
+  "q": "Dans Microsoft 365, où ranger ses fichiers de travail personnels ?",
+  "o": [
+   "Dans OneDrive : ils sont privés par défaut et peuvent être partagés",
+   "Dans un site SharePoint de toute l'entreprise",
+   "Sur le bureau du PC uniquement",
+   "En pièce jointe d'un mail envoyé à soi-même"
+  ],
+  "e": "OneDrive = espace personnel. Rien n'est partagé tant que l'utilisateur ne le décide pas.",
+  "x": [
+   "Un site SharePoint sert aux fichiers partagés.",
+   "Sur le bureau seul, pas de sauvegarde ni d'accès ailleurs.",
+   "Ce n'est pas un rangement."
+  ],
+  "n": 1
+ },
+ {
+  "t": "Déploiement et outils collaboratifs",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire) — vérifié : Microsoft Learn, « Sysprep (System Preparation) Overview », « Sysprep Command-Line Options », « Overview of Windows Autopilot », « Set up file storage and sharing in Microsoft 365 », « Intro to file collaboration in Microsoft 365 »",
+  "q": "Où sont stockés les fichiers déposés dans un canal Teams ?",
+  "o": [
+   "Dans le site SharePoint de l'équipe",
+   "Dans le OneDrive de chaque membre",
+   "Sur le serveur DHCP",
+   "Dans la boîte mail de l'équipe"
+  ],
+  "e": "Microsoft : un fichier joint dans un canal va dans la bibliothèque SharePoint de l'équipe ; un fichier joint dans une conversation privée (chat) va dans le OneDrive de l'utilisateur.",
+  "x": [
+   "C'est le cas d'un fichier envoyé en conversation privée.",
+   "Le DHCP distribue des adresses.",
+   "Les fichiers ne sont pas stockés dans un mail."
+  ],
+  "n": 1
+ },
+ {
+  "t": "Déploiement et outils collaboratifs",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire) — vérifié : Microsoft Learn, « Sysprep (System Preparation) Overview », « Sysprep Command-Line Options », « Overview of Windows Autopilot », « Set up file storage and sharing in Microsoft 365 », « Intro to file collaboration in Microsoft 365 »",
+  "q": "Pour partager un document de façon sûre, Microsoft conseille plutôt :",
+  "o": [
+   "D'envoyer un lien (Teams ou SharePoint) plutôt qu'une pièce jointe",
+   "D'envoyer le fichier en pièce jointe à tout le monde",
+   "De l'imprimer",
+   "De le copier sur une clé USB"
+  ],
+  "e": "Avec un lien, on garde le contrôle : qui peut voir ou modifier, et on peut retirer l'accès. Une pièce jointe peut être transférée sans contrôle.",
+  "x": [
+   "Une pièce jointe se transfère facilement.",
+   "Imprimer ne permet pas de collaborer.",
+   "Une clé USB se perd et ne se met pas à jour."
+  ],
+  "n": 2
+ },
+ {
+  "t": "Mises à jour",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire) — vérifié : Microsoft Learn, « Update release cycle for Windows clients », « Configure Windows Update client policies », « Windows Server Update Services (WSUS) overview », « Deploy Windows client updates using WSUS » ; Debian, manuel apt(8)",
+  "q": "Quel jour Microsoft publie-t-il ses mises à jour de sécurité mensuelles ?",
+  "o": [
+   "Le 2e mardi de chaque mois (« Patch Tuesday »)",
+   "Le 1er lundi de chaque mois",
+   "Le dernier vendredi du mois",
+   "Chaque jour à minuit"
+  ],
+  "e": "Des mises à jour « hors bande » (out-of-band) peuvent sortir à tout moment pour un problème urgent.",
+  "x": [
+   "Ce n'est pas le lundi.",
+   "Ce n'est pas le vendredi.",
+   "Pas tous les jours."
+  ],
+  "n": 1
+ },
+ {
+  "t": "Mises à jour",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire) — vérifié : Microsoft Learn, « Update release cycle for Windows clients », « Configure Windows Update client policies », « Windows Server Update Services (WSUS) overview », « Deploy Windows client updates using WSUS » ; Debian, manuel apt(8)",
+  "q": "Que veut dire qu'une mise à jour Windows est « cumulative » ?",
+  "o": [
+   "Elle contient aussi tous les correctifs déjà publiés avant",
+   "Elle s'installe en plusieurs fois",
+   "Elle ne concerne qu'un seul logiciel",
+   "Elle doit être payée"
+  ],
+  "e": "Installer la dernière mise à jour cumulative suffit à avoir tous les correctifs.",
+  "x": [
+   "Elle s'installe en une fois.",
+   "Elle couvre le système.",
+   "Elle est gratuite."
+  ],
+  "n": 1
+ },
+ {
+  "t": "Mises à jour",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire) — vérifié : Microsoft Learn, « Update release cycle for Windows clients », « Configure Windows Update client policies », « Windows Server Update Services (WSUS) overview », « Deploy Windows client updates using WSUS » ; Debian, manuel apt(8)",
+  "q": "Qu'est-ce que WSUS ?",
+  "o": [
+   "Un rôle Windows Server qui permet d'approuver et de distribuer les mises à jour Microsoft dans l'entreprise",
+   "Un antivirus",
+   "Un service de messagerie",
+   "Un outil de partitionnement"
+  ],
+  "e": "Les postes téléchargent leurs mises à jour depuis le serveur WSUS de l'entreprise, après approbation par l'administrateur.",
+  "x": [
+   "Ce n'est pas un antivirus.",
+   "Ce n'est pas une messagerie.",
+   "Rien à voir avec les partitions."
+  ],
+  "n": 1
+ },
+ {
+  "t": "Mises à jour",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire) — vérifié : Microsoft Learn, « Update release cycle for Windows clients », « Configure Windows Update client policies », « Windows Server Update Services (WSUS) overview », « Deploy Windows client updates using WSUS » ; Debian, manuel apt(8)",
+  "q": "Comment indique-t-on aux postes Windows d'utiliser le serveur WSUS ?",
+  "o": [
+   "Par une stratégie de groupe (GPO)",
+   "En changeant leur adresse IP",
+   "En installant WSUS sur chaque poste",
+   "En modifiant le DNS public"
+  ],
+  "e": "Microsoft : on utilise une GPO pour pointer les postes vers le serveur WSUS.",
+  "x": [
+   "L'adresse IP n'y change rien.",
+   "WSUS s'installe sur un serveur.",
+   "Le DNS public ne sert pas à ça."
+  ],
+  "n": 2
+ },
+ {
+  "t": "Mises à jour",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire) — vérifié : Microsoft Learn, « Update release cycle for Windows clients », « Configure Windows Update client policies », « Windows Server Update Services (WSUS) overview », « Deploy Windows client updates using WSUS » ; Debian, manuel apt(8)",
+  "q": "Où en est WSUS aujourd'hui ?",
+  "o": [
+   "Il est déprécié (plus de nouvelles fonctions) mais toujours pris en charge, y compris dans Windows Server 2025",
+   "Il a disparu de toutes les versions de Windows Server",
+   "Il vient de sortir",
+   "Il est obligatoire pour Windows 11"
+  ],
+  "e": "« Déprécié » = plus développé, mais encore supporté et corrigé. Microsoft pousse vers des solutions cloud (Windows Update client policies, Intune, Autopatch).",
+  "x": [
+   "Il est encore présent et supporté.",
+   "Il existe depuis longtemps.",
+   "Windows 11 peut se mettre à jour sans WSUS."
+  ],
+  "n": 2
+ },
+ {
+  "t": "Mises à jour",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire) — vérifié : Microsoft Learn, « Update release cycle for Windows clients », « Configure Windows Update client policies », « Windows Server Update Services (WSUS) overview », « Deploy Windows client updates using WSUS » ; Debian, manuel apt(8)",
+  "q": "Quelle différence entre une « mise à jour de qualité » et une « mise à jour de fonctionnalité » Windows ?",
+  "o": [
+   "Qualité : correctifs mensuels ; fonctionnalité : une fois par an, avec de nouvelles fonctions et une nouvelle version",
+   "Aucune différence",
+   "Qualité : payante ; fonctionnalité : gratuite",
+   "Qualité : seulement pour les serveurs"
+  ],
+  "e": "Les mises à jour de qualité corrigent (sécurité, fiabilité) ; la mise à jour de fonctionnalité change la version de Windows (par exemple 24H2 → 25H2).",
+  "x": [
+   "Elles sont bien différentes.",
+   "Les deux sont gratuites.",
+   "Les deux concernent les postes."
+  ],
+  "n": 2
+ },
+ {
+  "t": "Mises à jour",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire) — vérifié : Microsoft Learn, « Update release cycle for Windows clients », « Configure Windows Update client policies », « Windows Server Update Services (WSUS) overview », « Deploy Windows client updates using WSUS » ; Debian, manuel apt(8)",
+  "q": "Bonne pratique avant de déployer une mise à jour à tout le parc :",
+  "o": [
+   "L'installer d'abord sur un petit groupe de test, puis élargir si tout va bien",
+   "L'installer partout le même soir",
+   "Ne jamais installer les mises à jour",
+   "Attendre une panne pour l'installer"
+  ],
+  "e": "Microsoft permet de reporter les mises à jour pour un déploiement progressif (anneaux). On limite ainsi l'impact d'une mise à jour qui pose problème.",
+  "x": [
+   "Si elle pose problème, tout le parc est touché.",
+   "Sans mises à jour, les failles restent ouvertes.",
+   "Attendre une panne est trop tard."
+  ],
+  "n": 3
+ },
+ {
+  "t": "Mises à jour",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire) — vérifié : Microsoft Learn, « Update release cycle for Windows clients », « Configure Windows Update client policies », « Windows Server Update Services (WSUS) overview », « Deploy Windows client updates using WSUS » ; Debian, manuel apt(8)",
+  "q": "Avec les stratégies Windows Update, de combien de jours au maximum peut-on reporter une mise à jour de qualité ?",
+  "o": [
+   "30 jours",
+   "7 jours",
+   "365 jours",
+   "On ne peut pas la reporter"
+  ],
+  "e": "Le paramètre DeferQualityUpdatesPeriodInDays permet un report jusqu'à 30 jours après la publication.",
+  "x": [
+   "On peut aller au-delà de 7 jours.",
+   "365 jours n'est pas possible pour une mise à jour de qualité.",
+   "Le report est possible."
+  ],
+  "n": 2
+ },
+ {
+  "t": "Mises à jour",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire) — vérifié : Microsoft Learn, « Update release cycle for Windows clients », « Configure Windows Update client policies », « Windows Server Update Services (WSUS) overview », « Deploy Windows client updates using WSUS » ; Debian, manuel apt(8)",
+  "q": "Sous Debian, quelle commande met à jour la liste des paquets disponibles (sans rien installer) ?",
+  "o": [
+   "apt update",
+   "apt upgrade",
+   "apt remove",
+   "apt list"
+  ],
+  "e": "apt update rafraîchit la liste ; apt upgrade installe ensuite les nouvelles versions des paquets installés.",
+  "x": [
+   "apt upgrade installe les mises à jour.",
+   "apt remove désinstalle.",
+   "apt list affiche des paquets."
+  ],
+  "n": 1
+ },
+ {
+  "t": "Mises à jour",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire) — vérifié : Microsoft Learn, « Update release cycle for Windows clients », « Configure Windows Update client policies », « Windows Server Update Services (WSUS) overview », « Deploy Windows client updates using WSUS » ; Debian, manuel apt(8)",
+  "q": "Windows 10 a atteint sa fin de support le 14 octobre 2025. Qu'est-ce que cela signifie ?",
+  "o": [
+   "Il ne reçoit plus de mises à jour de qualité ni de fonctionnalité",
+   "Il cesse de démarrer",
+   "Il devient gratuit",
+   "Il passe automatiquement en Windows 11"
+  ],
+  "e": "Un système sans correctifs de sécurité devient risqué : il faut prévoir la migration (ou une solution de support étendu).",
+  "x": [
+   "Il démarre toujours, mais n'est plus corrigé.",
+   "La fin de support ne change pas la licence.",
+   "La migration n'est pas automatique."
+  ],
+  "n": 2
+ },
+ {
+  "t": "Anglais technique",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire) — extraits en anglais de la documentation officielle Microsoft Learn (Sysprep, WSUS, Entra Connect, Windows Update)",
+  "q": "Dans une documentation, « deprecated » veut dire :",
+  "o": [
+   "Déprécié : plus développé, peut être retiré plus tard, mais encore utilisable",
+   "Supprimé immédiatement",
+   "Nouveau",
+   "Gratuit"
+  ],
+  "e": "Microsoft : une fonction dépréciée n'est plus développée et pourra être retirée, mais elle reste supportée en attendant.",
+  "x": [
+   "Supprimé se dit « removed ».",
+   "Nouveau se dit « new ».",
+   "Gratuit se dit « free »."
+  ],
+  "n": 0
+ },
+ {
+  "t": "Anglais technique",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire) — extraits en anglais de la documentation officielle Microsoft Learn (Sysprep, WSUS, Entra Connect, Windows Update)",
+  "q": "« Troubleshoot » signifie :",
+  "o": [
+   "Dépanner, rechercher la cause d'un problème",
+   "Installer",
+   "Sauvegarder",
+   "Supprimer"
+  ],
+  "e": "Une rubrique « Troubleshooting » donne les symptômes, les causes et les solutions.",
+  "x": [
+   "Installer = install.",
+   "Sauvegarder = back up.",
+   "Supprimer = delete / remove."
+  ],
+  "n": 0
+ },
+ {
+  "t": "Anglais technique",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire) — extraits en anglais de la documentation officielle Microsoft Learn (Sysprep, WSUS, Entra Connect, Windows Update)",
+  "q": "« Prerequisites » signifie :",
+  "o": [
+   "Les prérequis : ce qu'il faut avoir avant de commencer",
+   "Les résultats",
+   "Les erreurs",
+   "Les mises à jour"
+  ],
+  "e": "À lire en premier dans une procédure : versions, droits, licences, réseau nécessaires.",
+  "x": [
+   "Résultats = results.",
+   "Erreurs = errors.",
+   "Mises à jour = updates."
+  ],
+  "n": 0
+ },
+ {
+  "t": "Anglais technique",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire) — extraits en anglais de la documentation officielle Microsoft Learn (Sysprep, WSUS, Entra Connect, Windows Update)",
+  "q": "Une documentation écrit « You must restart » puis « You should back up ». Quelle différence ?",
+  "o": [
+   "« must » = obligatoire ; « should » = recommandé",
+   "Aucune différence",
+   "« must » = interdit ; « should » = obligatoire",
+   "« should » = obligatoire ; « must » = facultatif"
+  ],
+  "e": "Repère clé dans les docs techniques : must (obligatoire), should (conseillé), may (possible), must not (interdit).",
+  "x": [
+   "La nuance est importante.",
+   "Interdit se dit « must not ».",
+   "C'est l'inverse."
+  ],
+  "n": 1
+ },
+ {
+  "t": "Anglais technique",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire) — extraits en anglais de la documentation officielle Microsoft Learn (Sysprep, WSUS, Entra Connect, Windows Update)",
+  "q": "« Moving or copying a Windows image to a different computer without running the Sysprep /generalize command is not supported. » Que dit cette phrase ?",
+  "o": [
+   "Copier une image sur un autre PC sans « sysprep /generalize » n'est pas pris en charge",
+   "Il faut toujours copier les images sans Sysprep",
+   "Sysprep supprime l'image",
+   "Les images Windows ne peuvent pas être copiées"
+  ],
+  "e": "« not supported » = non pris en charge : Microsoft n'aidera pas en cas de problème.",
+  "x": [
+   "C'est le contraire.",
+   "Sysprep prépare l'image, il ne la supprime pas.",
+   "On peut les copier, après généralisation."
+  ],
+  "n": 1
+ },
+ {
+  "t": "Anglais technique",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire) — extraits en anglais de la documentation officielle Microsoft Learn (Sysprep, WSUS, Entra Connect, Windows Update)",
+  "q": "« WSUS is deprecated and is no longer adding new features. However, it continues to be supported for production deployments. » Que comprends-tu ?",
+  "o": [
+   "WSUS n'aura plus de nouvelles fonctions, mais il reste supporté en production",
+   "WSUS est supprimé dès aujourd'hui",
+   "WSUS reçoit beaucoup de nouvelles fonctions",
+   "WSUS n'est plus supporté en production"
+  ],
+  "e": "« However » = cependant. « no longer » = ne… plus.",
+  "x": [
+   "Déprécié n'est pas supprimé.",
+   "« no longer adding new features » = plus de nouvelles fonctions.",
+   "« continues to be supported » = toujours supporté."
+  ],
+  "n": 2
+ },
+ {
+  "t": "Anglais technique",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire) — extraits en anglais de la documentation officielle Microsoft Learn (Sysprep, WSUS, Entra Connect, Windows Update)",
+  "q": "« PHS has dependencies on AD only during synchronization, not during authentication. » Que dit cette phrase ?",
+  "o": [
+   "Avec PHS, l'AD local n'est nécessaire que pendant la synchronisation, pas pendant la connexion",
+   "PHS ne fonctionne jamais sans l'AD",
+   "PHS remplace l'AD",
+   "L'AD n'est jamais utilisé"
+  ],
+  "e": "« only during » = seulement pendant ; « not during » = pas pendant.",
+  "x": [
+   "La phrase dit l'inverse pour la connexion.",
+   "PHS ne remplace pas l'AD.",
+   "L'AD sert pendant la synchronisation."
+  ],
+  "n": 2
+ },
+ {
+  "t": "Anglais technique",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire) — extraits en anglais de la documentation officielle Microsoft Learn (Sysprep, WSUS, Entra Connect, Windows Update)",
+  "q": "« Quality updates are typically published on the second Tuesday of every month, although they can be released at any time. » Que dit cette phrase ?",
+  "o": [
+   "En général le 2e mardi du mois, mais elles peuvent sortir à tout moment",
+   "Toujours le 2e mardi, jamais un autre jour",
+   "Tous les mardis",
+   "Seulement une fois par an"
+  ],
+  "e": "« typically » = en général ; « although » = bien que ; « at any time » = à tout moment.",
+  "x": [
+   "« although they can be released at any time » laisse d'autres jours possibles.",
+   "« second Tuesday » = 2e mardi.",
+   "C'est mensuel."
+  ],
+  "n": 1
+ },
+ {
+  "t": "Anglais technique",
+  "s": "Notion générale (pas dans les cours que j'ai pu lire) — extraits en anglais de la documentation officielle Microsoft Learn (Sysprep, WSUS, Entra Connect, Windows Update)",
+  "q": "Sur un message d'erreur, « Access denied » veut dire :",
+  "o": [
+   "Accès refusé (problème de droits ou d'autorisation)",
+   "Accès accordé",
+   "Mot de passe expiré",
+   "Fichier introuvable"
+  ],
+  "e": "À traduire en réflexe de dépannage : vérifier les droits (NTFS, partage, groupe de l'utilisateur).",
+  "x": [
+   "Accordé = granted.",
+   "Expiré = expired.",
+   "Introuvable = not found."
+  ],
+  "n": 1
  }
 ]
