@@ -158,6 +158,14 @@ h1 small{font-weight:400;color:var(--muted);font-size:13px;margin-left:6px}
 /* Encouragements */
 .streak{font-size:14px;font-weight:600}
 .cheer{font-size:28px;line-height:1}
+/* Entretien technique */
+#orBody{display:flex;flex-direction:column;gap:14px}
+#orBody h2{font-size:22px;margin:0}#orBody p{margin:0}
+.orclock{font:600 34px var(--f-mono);font-variant-numeric:tabular-nums}
+.orclock.low{text-decoration:underline dashed}
+.ortip{border-left:3px solid var(--accent);padding:4px 0 4px 12px;color:var(--muted)}
+/* Fiche d'intervention (Dépannage) */
+.fiche-int textarea{min-height:150px}
 /* Filtres du quiz (thèmes et niveaux), repliables */
 .qtop{align-items:flex-start}
 .filtres{flex:1 1 260px;min-width:0}
@@ -462,6 +470,7 @@ details summary{cursor:pointer;font-weight:500}
     <button data-tab="quiz" data-qm="ouv" data-sec="cours"><span class="ic" aria-hidden="true">✍️</span><span class="lb">Questions ouvertes</span></button>
     <button data-tab="quiz" data-qm="rev" data-sec="cours"><span class="ic" aria-hidden="true">🔁</span><span class="lb">À revoir</span> <span class="cnt" id="revCnt"></span></button>
     <button data-tab="quiz" data-qm="exam" data-sec="cours"><span class="ic" aria-hidden="true">⏱️</span><span class="lb">Examen blanc</span></button>
+    <button data-tab="quiz" data-qm="oral" data-sec="cours"><span class="ic" aria-hidden="true">🎤</span><span class="lb">Entretien technique</span></button>
     <button data-tab="quiz" data-qm="fiche" data-sec="cours"><span class="ic" aria-hidden="true">📒</span><span class="lb">Fiches</span></button>
     <button data-tab="quiz" data-qm="bilan" data-sec="cours"><span class="ic" aria-hidden="true">📊</span><span class="lb">Mon bilan</span></button>
     <div class="grp" data-sec="prat">Pratique</div>
@@ -543,6 +552,7 @@ details summary{cursor:pointer;font-weight:500}
   <div class="card serend" id="qEnd" hidden></div>
   <div class="card serend" id="oqEnd" hidden></div>
   <div class="card exam" id="exCard" hidden><div id="exBody"></div></div>
+  <div class="card oral" id="orCard" hidden><div id="orBody"></div></div>
   <div id="fiCard" hidden><div class="chips" id="fiTheme"></div><article class="card fiche" id="fiBody"></article></div>
   <p class="foot" id="oqCount" hidden></p>
   <p class="foot" id="qCount"></p>
@@ -1942,9 +1952,27 @@ function depEnd(){
    <div><strong>Tes tests, un par un</strong>
     <ul class="review">${s.tests.map((t,k)=>{const u=dep.used.has(k);if(!u&&!t[3])return'';return `<li class="${u?(t[3]?'ok':'ko'):''}" data-m="${u?(t[3]?'✔':'✘'):'○'}"><b>${esc(t[0])}</b>${u?'':' <span class="empty">(pas lancé, mais utile)</span>'} : ${esc(t[4])}</li>`}).join('')}</ul></div>
    <div class="empty">Source : ${esc(s.src)}</div>
+   <div class="fiche-int"><strong>4 · Ta fiche d'intervention</strong> <span class="empty">— comme à l'examen : tu dois tracer ce que tu fais. Rédige la clôture du ticket.</span>
+    <textarea class="oqin" id="depFi" placeholder="Symptôme, tests réalisés et résultats, cause, action corrective, vérification, information de l'utilisateur…">${esc((S.depFiche||{})[s.id]||'')}</textarea>
+    <div class="actions"><button class="btn" id="depFiOk">Comparer avec la fiche modèle</button></div><div id="depFiR"></div></div>
    <div class="actions"><button class="btn primary" id="depNext">Scénario suivant</button><button class="btn" id="depAgain">Recommencer</button><button class="btn" id="depAll">Tous les scénarios</button></div>`;
   const i=dep.i;
   $('#depNext').onclick=()=>{let n=DEP.findIndex((x,j)=>j>i&&S.depBest[x.id]==null);if(n<0)n=DEP.findIndex(x=>S.depBest[x.id]==null);depStart(n<0?(i+1)%DEP.length:n)};
+  $('#depFi').oninput=e=>{S.depFiche=S.depFiche||{};S.depFiche[s.id]=e.target.value;save()};
+  $('#depFiOk').onclick=()=>{const t=nrm($('#depFi').value),good=s.tests.filter(x=>x[3]),cz=s.cause.find(c=>c[1]),fx=s.fix.find(c=>c[1]);
+    const P=[['Le symptôme (ce que l\'utilisateur constate)',['symptome','constat','ne peut','plus de','n\'arrive','signal','probleme']],
+      ['Les tests réalisés et leurs résultats',['test','ping','ipconfig','nslookup','verifi','resultat',...good.map(x=>String(x[1]).replace(/^[^>#$]*[>#$]\s*/,'').split(' ')[0].toLowerCase()).filter(w=>w.length>2)]],
+      ['La cause trouvée',['cause','parce que','origine','car ','du a','venait']],
+      ['L\'action corrective',['corrig','modifi','reconfigur','redemarr','remplac','ajout','supprim','activ','action']],
+      ['La vérification après correction',['verifi','teste','fonctionne','ok','retabli','de nouveau']],
+      ['L\'utilisateur informé, ticket clôturé',['utilisateur','inform','prevenu','clotur','ferme']]];
+    $('#depFiR').innerHTML=`<ul class="ptl">${P.map(([l,ks])=>`<li><label><input type="checkbox" ${ks.some(k=>t.includes(nk(k)))?'checked':''}>${esc(l)}</label></li>`).join('')}</ul>
+     <div><strong>Fiche modèle</strong></div><p class="modele" style="white-space:pre-line">${esc(`Symptôme : ${s.user} (${s.who})
+Tests : ${good.map(x=>x[0]).join(' ; ')}
+Cause : ${cz?cz[0]:''}
+Action : ${fx?fx[0]:''}
+Vérification : relancer le test qui échouait et confirmer avec l'utilisateur que tout fonctionne.
+Clôture : utilisateur informé, ticket fermé.`)}</p>`};
   $('#depAgain').onclick=()=>depStart(i);
   $('#depAll').onclick=depList;
   setTimeout(()=>e.scrollIntoView({behavior:'smooth',block:'start'}),50);
@@ -2011,7 +2039,7 @@ function tiRender(){
   <div class="card"><span class="eyebrow">L'examen</span><h3>Ce qui t'attend devant le jury</h3>
    <p><strong>Mise en situation professionnelle</strong> : des tâches à réaliser sur des machines virtuelles. Tu notes ce que tu fais (traçabilité), puis tu le présentes à l'oral au jury.</p>
    <p><strong>Questionnaire professionnel</strong> : des questions écrites. Dans chaque bloc, au moins une question porte sur une documentation technique <strong>en anglais</strong>.</p><div class="ti-links"><button class="btn" data-q="Anglais technique" data-m="qcm">S'entraîner à l'anglais technique</button></div>
-   <p><strong>Entretien technique</strong> : le jury te questionne sur ce que tu as fait.</p>
+   <p><strong>Entretien technique</strong> : le jury te questionne sur ce que tu as fait.</p><div class="ti-links"><button class="btn" data-tab="quiz" data-qm2="oral">🎤 S'entraîner à l'entretien technique</button></div>
    <p><strong>Entretien final</strong> (15 min) : le jury échange avec toi sur ton parcours et ton <strong>dossier professionnel</strong> (des exemples réels de ton travail que tu as rédigés).</p>
    <p>Durée totale annoncée pour le titre complet : <strong>7 h</strong>. Durées indiquées pour chaque bloc :</p>
    <table class="ti-ep"><tr><th>Bloc</th><th>Mise en situation</th><th>Entretien technique</th><th>Questionnaire</th><th>Total</th></tr>${ep.map(r=>`<tr>${r.map(c=>`<td>${c}</td>`).join('')}</tr>`).join('')}</table>
@@ -2024,7 +2052,7 @@ function tiRender(){
       <div class="ti-links">${c.t.length?`<button class="btn" data-q="cp:${k}" data-m="qcm">S'entraîner (QCM)</button>`:''}${c.go.map(([t,l])=>`<button class="btn" data-tab="${t}">${esc(l)}</button>`).join('')}</div></div>`}).join('')}</div>`}).join('')}
   <p class="ti-src">Sources : fiche <a href="https://www.francecompetences.fr/recherche/rncp/42463" target="_blank" rel="noopener">RNCP 42463 (France compétences)</a> · <a href="https://www.legifrance.gouv.fr/jorf/id/JORFTEXT000054273839" target="_blank" rel="noopener">arrêté du 16 juin 2026 (Légifrance)</a>. La réussite affichée vient de ta dernière réponse à chaque question.</p>`;
   $$('#tiBody [data-q]').forEach(b=>b.onclick=()=>goQuiz(b.dataset.q,b.dataset.m));
-  $$('#tiBody [data-tab]').forEach(b=>b.onclick=()=>$(`#sideNav button[data-tab="${b.dataset.tab}"]`).click());
+  $$('#tiBody [data-tab]').forEach(b=>b.onclick=()=>$(`#sideNav button[data-tab="${b.dataset.tab}"]`+(b.dataset.qm2?`[data-qm="${b.dataset.qm2}"]`:'')).click());
 }
 function couverture(){
   const nb=t=>{const q=QUIZ.filter(x=>x.t===t).length,o=OUV.filter(x=>x.t===t).length;return q||o?`${t} : ${q} QCM${o?' + '+o+' ouvertes':''}${HCT.includes(t)?' <span class="hc">(hors cours)</span>':''}`:''};
@@ -2135,7 +2163,7 @@ const SRS_J=[1,1,3,7,14,30];
 function srsMark(k,ok){const c=S.srs[k];const b=ok?(c?Math.min(5,c[0]+1):2):0;S.srs[k]=[b,DAY()+SRS_J[b]]}
 const isDue=x=>{const c=S.srs[qKey(x)];return !!c&&c[1]<=DAY()};
 function revCount(){const n=QUIZ.filter(isDue).length;$('#revCnt').textContent=n||'';$('#revCnt').title=n+' question(s) à revoir aujourd\'hui';return n}
-let qMode=['ouv','rev','exam','fiche','bilan'].includes(S.pref.qMode)?S.pref.qMode:'qcm', oqCur=null, oqLast=null, oqDone=false, oqCounted=false;
+let qMode=['ouv','rev','exam','fiche','bilan','oral'].includes(S.pref.qMode)?S.pref.qMode:'qcm', oqCur=null, oqLast=null, oqDone=false, oqCounted=false;
 const nrm=t=>' '+String(t).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[’`]/g,"'").replace(/\s+/g,' ')+' ';
 const nk=t=>String(t).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[’`]/g,"'");
 function oqNew(){
@@ -2277,10 +2305,61 @@ function fiRender(){
   $('#fiGo').onclick=()=>{qTheme=S.pref.qTheme=fiTheme;chips('qTheme',qTheme,v=>{qTheme=S.pref.qTheme=v;save();qRefresh()});setQMode('qcm');window.scrollTo({top:0})};
   $('#fiPrint').onclick=()=>window.print();
 }
-function qRefresh(){qFiltSum();qMode==='ouv'?oqNew():qMode==='exam'?exRender():qMode==='fiche'?fiRender():qMode==='bilan'?(bilan(),couverture()):qNew()}
+
+/* ---------- Entretien technique (oral) ----------
+   Comme devant le jury : une question, 2 minutes pour répondre à voix haute (des notes possibles), puis les points attendus à cocher.
+   Questions : les questions ouvertes (périmètre au choix) + « raconte ton lab » pour les labs Cisco et Linux commencés ou réussis. */
+S.orals=S.orals||[];let OR=null,orTimer=null,orScope=S.pref.orScope||'cours';
+const OR_N=5,OR_SEC=120;
+function labsFaits(){const L=[];const add=(key,labs,sys)=>{let st={};try{st=JSON.parse(localStorage.getItem(key)||'{}').labs||{}}catch(e){}
+  (labs||[]).forEach(l=>{const x=st[l.id];if(l.tasks.length&&x&&(x.done||x.n>0))L.push({sys,l})})};
+  add('tssr-cisco',typeof CiscoLabs!=='undefined'?CiscoLabs.LABS:[],'Cisco');add('tssr-linux',typeof LinuxLabs!=='undefined'?LinuxLabs.LABS:[],'Linux');return L}
+function orStart(){const Ls=shuffle(labsFaits()).slice(0,2),sel=selThemes(orScope);
+  const pool=OUV.filter(x=>sel?sel.includes(x.t):orScope==='all'||!isHC(x));
+  const it=[...Ls.map(({sys,l})=>({k:'lab',sys,id:l.id})),...exDraw(pool,OR_N-Ls.length).map(x=>({k:'o',key:qKey(x)}))];
+  OR={items:shuffle(it),i:0,res:[],t0:Date.now(),phase:'q',notes:''};orRender()}
+function orItem(it){if(it.k==='o'){const x=KQ.get(it.key);return x&&{q:x.q,pts:x.p.map(([l,k])=>[l,k]),model:x.r,src:x.s,t:x.t}}
+  const labs=it.sys==='Cisco'?CiscoLabs.LABS:LinuxLabs.LABS,l=labs.find(z=>z.id===it.id);if(!l)return null;const T=l.tasks.slice(0,6);
+  return{q:`Lab ${it.sys} « ${l.titre} » : explique au jury ce que tu as configuré, dans quel ordre, et comment tu as vérifié que ça marchait.`,
+    pts:T.map(t=>[t[0],[]]),model:T.map(t=>`• ${t[0]} → ${t[1].split('\n')[0]}`).join('\n'),src:`Lab ${it.sys} n° ${l.n}`,t:'Lab '+it.sys}}
+function orTick(){clearInterval(orTimer);orTimer=setInterval(()=>{const c=$('#orClock');if(!c||!OR||OR.phase!=='q'||qMode!=='oral'){clearInterval(orTimer);return}
+  const left=Math.max(0,OR_SEC-Math.floor((Date.now()-OR.q0)/1000));c.textContent=`${Math.floor(left/60)}:${String(left%60).padStart(2,'0')}`;c.classList.toggle('low',left<=20);
+  if(!left){c.textContent='Temps écoulé';clearInterval(orTimer)}},500)}
+function orRender(){const B=$('#orBody');clearInterval(orTimer);
+  if(!OR){const nL=labsFaits().length,last=S.orals[0];
+    B.innerHTML=`<h2>🎤 Entretien technique</h2>
+    <p>À l'examen, après la mise en situation et le questionnaire, le jury t'interroge à l'oral (30 min par bloc) sur ce que tu as fait et sur tes connaissances. Entraîne-toi ici : <strong>${OR_N} questions, 2 minutes chacune, réponds à voix haute</strong> comme devant le jury. Ensuite, tu coches ce que tu as vraiment dit.</p>
+    <div class="ortip"><strong>Méthode :</strong> reformule la question ; réponds dans l'ordre <em>contexte → ce que j'ai fait → comment j'ai vérifié</em> ; utilise le bon vocabulaire ; si tu ne sais pas, dis-le et explique comment tu chercherais (documentation, commande de vérification).</div>
+    <div><div class="eyebrow">Questions sur</div><div class="chips" id="orScope"><button class="chip" data-v="cours">Mes cours</button><button class="chip" data-v="all">Tout le TSSR</button>${TITRE.blocs.map((b,i)=>`<button class="chip" data-v="bc:${i}">Bloc ${i+1} · ${esc(b.court)}</button>`).join('')}</div></div>
+    <p class="empty">${nL?`Il y aura aussi jusqu'à 2 questions sur tes labs (${nL} lab${nL>1?'s':''} commencé${nL>1?'s':''} ou réussi${nL>1?'s':''}).`:'Fais quelques labs Cisco ou Linux : le jury te demandera aussi de les raconter.'}</p>
+    <div class="actions"><button class="btn primary" id="orGo">Commencer l'entretien</button></div>
+    ${last?`<p class="empty">Dernier entretien : ${last.p} % des points (${last.d}).</p>`:''}`;
+    chips('orScope',orScope,v=>{orScope=S.pref.orScope=v;save()});$('#orGo').onclick=orStart;return}
+  if(OR.i>=OR.items.length){const tot=OR.res.reduce((a,r)=>a+r.t,0),got=OR.res.reduce((a,r)=>a+r.n,0),pc=tot?Math.round(100*got/tot):0;
+    if(!OR.saved){OR.saved=1;S.orals.unshift({d:new Date().toISOString().slice(0,10),p:pc});S.orals=S.orals.slice(0,10);save()}
+    B.innerHTML=`<span class="eyebrow">Entretien terminé</span><div class="cheer" aria-hidden="true">${pc>=80?'🏆':pc>=50?'👍':'💪'}</div><div class="drend" style="font:700 40px/1.1 var(--f-ui)">${pc} %</div>
+     <p>Tu as cité ${got} point${got>1?'s':''} attendu${got>1?'s':''} sur ${tot}.</p>
+     <ol class="serbad">${OR.res.map(r=>`<li>${esc(r.q)}<br><span class="empty">→ ${r.n}/${r.t} points</span></li>`).join('')}</ol>
+     <div class="actions"><button class="btn primary" id="orAgain">Nouvel entretien</button><button class="btn" id="orBack">Changer les réglages</button></div>`;
+    $('#orAgain').onclick=orStart;$('#orBack').onclick=()=>{OR=null;orRender()};return}
+  const it=OR.items[OR.i],x=orItem(it);if(!x){OR.i++;orRender();return}
+  const head=`<div class="bar"><span class="eyebrow">Question ${OR.i+1}/${OR.items.length} · ${esc(x.t)}</span>${OR.phase==='q'?'<span class="orclock" id="orClock">2:00</span>':''}</div><div class="q">${esc(x.q)}</div>`;
+  if(OR.phase==='q'){OR.q0=OR.q0||Date.now();
+    B.innerHTML=head+`<p class="empty">Réponds à voix haute. Tu peux noter tes idées ici (facultatif) :</p><textarea class="oqin" id="orNotes" placeholder="Mes notes…">${esc(OR.notes)}</textarea>
+     <div class="actions"><button class="btn primary" id="orDone">J'ai fini de répondre</button></div>`;
+    $('#orNotes').oninput=e=>OR.notes=e.target.value;$('#orDone').onclick=()=>{OR.phase='c';orRender()};orTick();return}
+  const t=nrm(OR.notes||'');
+  B.innerHTML=head+`<div><strong>Points attendus</strong> <span class="empty">— coche ceux que tu as vraiment dits</span></div>
+   <ul class="ptl">${x.pts.map(([l,ks],i)=>`<li><label><input type="checkbox" ${ks.some(k=>t.includes(nk(k)))?'checked':''}>${esc(l)}</label></li>`).join('')}</ul>
+   <div><strong>${it.k==='lab'?'Ce que le jury attend (tâches du lab et commandes)':'Réponse modèle'}</strong></div><p class="modele" style="white-space:pre-line">${esc(x.model)}</p>
+   <div class="empty">Source : ${esc(x.src)}</div>
+   <div class="actions"><button class="btn primary" id="orNext">${OR.i+1<OR.items.length?'Question suivante →':'Voir mon bilan'}</button></div>`;
+  $('#orNext').onclick=()=>{const c=$$('#orBody .ptl input');OR.res.push({q:x.q,n:c.filter(z=>z.checked).length,t:c.length});OR.i++;OR.phase='q';OR.q0=0;OR.notes='';orRender();window.scrollTo({top:0})};
+}
+function qRefresh(){qFiltSum();qMode==='ouv'?oqNew():qMode==='exam'?exRender():qMode==='fiche'?fiRender():qMode==='bilan'?(bilan(),couverture()):qMode==='oral'?orRender():qNew()}
 function qFiltSum(){const th=qTheme==='all'?'Tout le TSSR':qTheme==='cours'?'Mes cours seulement':selName(qTheme);$('#qFiltSum').textContent=th+' · '+(qNiv==='all'?'tous niveaux':'niveau '+qNiv)}
 function setQMode(v){if(v===qMode)return;qMode=S.pref.qMode=v;save();qApply();navMark()}
-function qApply(){const bi=qMode==='bilan',fi=qMode==='fiche'||bi,ex=qMode==='exam'||fi,o=qMode==='ouv',rv=qMode==='rev'||ex;$('#quiz .qtop').hidden=bi||qMode==='fiche';$('#qFiltres').hidden=rv;$('#exCard').hidden=qMode!=='exam';$('#fiCard').hidden=qMode!=='fiche';$('#biCard').hidden=!bi;$('#qEnd').hidden=true;$('#oqEnd').hidden=true;revCount();$('#qcmCard').hidden=o||ex;$('#qCount').hidden=o||ex;$('#quiz .kb').hidden=o||ex;$('#oqCard').hidden=!o;$('#oqCount').hidden=!o;
+function qApply(){const or=qMode==='oral',bi=qMode==='bilan',fi=qMode==='fiche'||bi||or,ex=qMode==='exam'||fi,o=qMode==='ouv',rv=qMode==='rev'||ex;$('#quiz .qtop').hidden=bi||qMode==='fiche';$('#qFiltres').hidden=rv;$('#exCard').hidden=qMode!=='exam';$('#fiCard').hidden=qMode!=='fiche';$('#biCard').hidden=!bi;$('#orCard').hidden=!or;$('#qEnd').hidden=true;$('#oqEnd').hidden=true;revCount();$('#qcmCard').hidden=o||ex;$('#qCount').hidden=o||ex;$('#quiz .kb').hidden=o||ex;$('#oqCard').hidden=!o;$('#oqCount').hidden=!o;
   $$('#quiz [data-score="quiz"]').forEach(e=>e.hidden=o);$$('#quiz [data-score="ouv"]').forEach(e=>e.hidden=!o);qRefresh()}
 $('#qGive').onclick=()=>qAnswer(null);
 renderScore('quiz');renderScore('ouv');
