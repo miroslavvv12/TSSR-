@@ -158,9 +158,6 @@ h1 small{font-weight:400;color:var(--muted);font-size:13px;margin-left:6px}
 /* Encouragements */
 .streak{font-size:14px;font-weight:600}
 .cheer{font-size:28px;line-height:1}
-.confetti{position:fixed;inset:0;pointer-events:none;z-index:80;overflow:hidden}
-.confetti i{position:absolute;top:-12px;width:9px;height:14px;border-radius:2px;animation:conf 2.4s ease-in forwards}
-@keyframes conf{to{transform:translateY(105vh) rotate(540deg);opacity:.6}}
 /* Filtres du quiz (thèmes et niveaux), repliables */
 .qtop{align-items:flex-start}
 .filtres{flex:1 1 260px;min-width:0}
@@ -1092,16 +1089,13 @@ function serEnd(m,card,end,desc,again){
    ${bad.length?`<div><strong>À retravailler :</strong></div><ol class="serbad">${bad.map(([q,r])=>`<li>${esc(q)}<br><span class="empty">→ ${esc(r)}</span></li>`).join('')}</ol>`:'<p style="margin:0">Aucune erreur sur cette série.</p>'}
    <div class="actions">${bad.length?`<button class="btn primary" data-s="rev">Revoir mes ${bad.length} erreur${bad.length>1?'s':''}</button>`:''}<button class="btn${bad.length?'':' primary'}" data-s="next">Série suivante</button></div>`;
   E.querySelectorAll('[data-s]').forEach(b=>b.onclick=()=>{const r=b.dataset.s==='rev'&&x.bad.length>0;S.serRev[m]=r?x.bad.slice():[];S.ser[m]={n:0,ok:0,bad:[],len:r?x.bad.length:SER_N,rev:r};save();E.hidden=true;$(card).hidden=false;again();window.scrollTo({top:0})});
-  if(p>=.8&&E.offsetParent)confetti();window.scrollTo({top:0});const f=E.querySelector('.btn.primary');if(f&&E.offsetParent)f.focus({preventScroll:true})}
+  window.scrollTo({top:0});const f=E.querySelector('.btn.primary');if(f&&E.offsetParent)f.focus({preventScroll:true})}
 const cut=(t,n)=>{t=String(t);return t.length>n?t.slice(0,n-1)+'…':t};
 
 /* Encouragements : un mot gentil quand c'est juste, une série de bonnes réponses d'affilée */
 const BRAVO=['Bravo !','Bien joué !','Exact !','Parfait !','Bien vu !','Excellent !','Top !'];
 const ALLEZ=['Pas grave : c\'est en se trompant qu\'on retient.','Pas cette fois : lis l\'explication, elle reviendra.','Presque ! Regarde bien la correction.'];
 function cheer(ok){S.streak=ok?(S.streak||0)+1:0;save();if(!ok)return pick(ALLEZ);const n=S.streak;return pick(BRAVO)+(n>=3?` 🔥 ${n} de suite`:'')}
-function confetti(){if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;const C=['--c-titre','--c-cours','--c-prat','--c-memo'],cs=getComputedStyle(document.documentElement),d=document.createElement('div');d.className='confetti';d.setAttribute('aria-hidden','true');
-  for(let i=0;i<40;i++){const e=document.createElement('i');e.style.left=Math.random()*100+'%';e.style.background=cs.getPropertyValue(C[i%4]).trim()||'#999';e.style.animationDelay=(Math.random()*.6)+'s';e.style.transform=`rotate(${Math.random()*180}deg)`;d.appendChild(e)}
-  document.body.appendChild(d);setTimeout(()=>d.remove(),3200)}
 
 /* =========================================================
    2. COMMANDES
