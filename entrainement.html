@@ -180,6 +180,9 @@ h1 small{font-weight:400;color:var(--muted);font-size:13px;margin-left:6px}
 .ortip{border-left:3px solid var(--accent);padding:4px 0 4px 12px;color:var(--muted)}
 /* Fiche d'intervention (Dépannage) */
 .fiche-int textarea{min-height:150px}
+/* Message bref (objectif atteint) */
+.toast{position:fixed;left:50%;bottom:calc(70px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:70;background:var(--fg);color:var(--bg);padding:10px 16px;border-radius:12px;font:600 15px var(--f-ui);box-shadow:0 6px 20px rgba(0,0,0,.25);max-width:calc(100vw - 32px);text-align:center}
+#homeCards .big{font:600 30px/1.1 var(--f-ui)}
 /* Filtres du quiz (thèmes et niveaux), repliables */
 .qtop{align-items:flex-start}
 .filtres{flex:1 1 260px;min-width:0}
@@ -477,7 +480,7 @@ details summary{cursor:pointer;font-weight:500}
 <aside id="side" class="side" aria-label="Menu">
   <div class="sidetop"><span>Menu</span><button id="sideClose" class="sideclose" aria-label="Fermer le menu">✕</button></div>
   <nav id="sideNav">
-    <button data-tab="home" data-sec="titre"><span class="ic" aria-hidden="true">🏠</span><span class="lb">Accueil</span></button>
+    <button data-tab="home" data-sec="titre"><span class="ic" aria-hidden="true">🏠</span><span class="lb">Accueil</span> <span class="cnt" id="goalCnt"></span></button>
     <button data-tab="titre" data-sec="titre"><span class="ic" aria-hidden="true">🎓</span><span class="lb">Mon titre TSSR</span></button>
     <div class="grp" data-sec="cours">Cours</div>
     <button data-tab="quiz" data-qm="qcm" data-sec="cours"><span class="ic" aria-hidden="true">📝</span><span class="lb">QCM</span></button>
@@ -811,7 +814,20 @@ let S={};try{S=JSON.parse(localStorage.getItem(KEY)||'{}')||{}}catch(e){}
 S.score=S.score||{};S.miss=S.miss||{};S.pref=S.pref||{};S.chrono=S.chrono||{};
 const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}};
 function renderScore(m){const s=S.score[m];$$(`[data-score="${m}"]`).forEach(e=>e.textContent=s&&s.n?`${s.ok}/${s.n} justes · ${Math.round(100*s.ok/s.n)} %`:'')}
-function tally(m,ok){const s=S.score[m]||(S.score[m]={ok:0,n:0});s.n++;if(ok)s.ok++;save();renderScore(m)}
+function tally(m,ok){const s=S.score[m]||(S.score[m]={ok:0,n:0});s.n++;if(ok)s.ok++;dayCount();save();renderScore(m)}
+/* ---------- Objectif du jour et jours d'affilée ----------
+   S.day = {d: jour, n: réponses du jour} ; S.goal = objectif (20 par défaut) ; S.dstreak = {last: dernier jour où l'objectif a été atteint, n: jours d'affilée}. */
+const today=()=>{const d=new Date();return Math.floor((d.getTime()-d.getTimezoneOffset()*60000)/864e5)};
+function dayN(){return S.day&&S.day.d===today()?S.day.n:0}
+const goal=()=>S.goal||20;
+function dstreak(){const z=S.dstreak;return z&&z.last>=today()-1?z.n:0}
+function dayCount(){const t=today();if(!S.day||S.day.d!==t)S.day={d:t,n:0};S.day.n++;
+  if(S.day.n===goal()){const z=S.dstreak||{last:-9,n:0};if(z.last!==t){z.n=z.last===t-1?z.n+1:1;z.last=t;S.dstreak=z}
+    toast(`🎯 Objectif du jour atteint !${S.dstreak.n>1?` 🔥 ${S.dstreak.n} jours d'affilée`:''}`)}
+  goalMark()}
+function goalMark(){const e=$('#goalCnt');if(e){const n=dayN();e.textContent=n>=goal()?'🎯':`${n}/${goal()}`;e.title=`Objectif du jour : ${n}/${goal()}`}}
+function toast(t){let e=$('#toast');if(!e){e=document.createElement('div');e.id='toast';e.className='toast';e.setAttribute('role','status');document.body.appendChild(e)}
+  e.textContent=t;e.hidden=false;clearTimeout(e._t);e._t=setTimeout(()=>e.hidden=true,3500)}
 ['quiz','ouv','sr','cmd','ports','ordre','dep'].forEach(renderScore);
 $('#reset').onclick=()=>{$('#resetConfirm').hidden=false};
 $('#resetYes').onclick=()=>{S.score={};S.miss={};S.chrono={};S.qlast={};S.qdue={};S.qn=0;S.srs={};save();['quiz','ouv','sr','cmd','ports','ordre','dep'].forEach(renderScore);$('#resetConfirm').hidden=true;if(srMode==='chrono')crReset();S.depBest={};S.osiBest={};save();depList();osiNew();if(typeof revCount==='function')revCount()};
@@ -2368,7 +2384,7 @@ function orRender(){const B=$('#orBody');clearInterval(orTimer);
    <div><strong>${it.k==='lab'?'Ce que le jury attend (tâches du lab et commandes)':'Réponse modèle'}</strong></div><p class="modele" style="white-space:pre-line">${esc(x.model)}</p>
    <div class="empty">Source : ${esc(x.src)}</div>
    <div class="actions"><button class="btn primary" id="orNext">${OR.i+1<OR.items.length?'Question suivante →':'Voir mon bilan'}</button></div>`;
-  $('#orNext').onclick=()=>{const c=$$('#orBody .ptl input');OR.res.push({q:x.q,n:c.filter(z=>z.checked).length,t:c.length});OR.i++;OR.phase='q';OR.q0=0;OR.notes='';orRender();window.scrollTo({top:0})};
+  $('#orNext').onclick=()=>{dayCount();save();const c=$$('#orBody .ptl input');OR.res.push({q:x.q,n:c.filter(z=>z.checked).length,t:c.length});OR.i++;OR.phase='q';OR.q0=0;OR.notes='';orRender();window.scrollTo({top:0})};
 }
 function qRefresh(){qFiltSum();qMode==='ouv'?oqNew():qMode==='exam'?exRender():qMode==='fiche'?fiRender():qMode==='bilan'?(bilan(),couverture()):qMode==='oral'?orRender():qNew()}
 function qFiltSum(){const th=qTheme==='all'?'Tout le TSSR':qTheme==='cours'?'Mes cours seulement':selName(qTheme);$('#qFiltSum').textContent=th+' · '+(qNiv==='all'?'tous niveaux':'niveau '+qNiv)}
@@ -2409,7 +2425,13 @@ document.addEventListener('keydown',ev=>{
   }
 });
 
-function homeRender(){const n=revCount(),C=[],h=new Date().getHours();$('#homeHi').textContent=h<5||h>=18?'Bonsoir 🌙':h<12?'Bonjour ☀️':'Bon après-midi 🌤️';
+function homeRender(){const n=revCount(),C=[],h=new Date().getHours();
+  {const d=dayN(),g=goal(),st=dstreak(),ok=d>=g;
+   C.push(['goal','Objectif du jour',`<div class="big">${Math.min(d,g)}<span style="font-size:18px;font-weight:500"> / ${g}</span></div>
+    <div class="serbar"><span class="track" aria-hidden="true"><i style="width:${Math.min(100,Math.round(100*d/g))}%"></i></span></div>
+    <p>${ok?'🎯 Bravo, objectif atteint aujourd\'hui !':`Encore ${g-d} réponse${g-d>1?'s':''} : QCM, questions ouvertes, commandes, exercices… tout compte.`}</p>
+    <p>${st?`🔥 ${st} jour${st>1?'s':''} d'affilée`:'Atteins ton objectif pour lancer ta série de jours 🔥'}</p>
+    <div class="chips" id="goalSet"><span class="nivlab">Mon objectif</span>${[10,20,30,50].map(v=>`<button class="chip" data-v="${v}">${v}</button>`).join('')}</div>`,ok?'':'Continuer']);}$('#homeHi').textContent=h<5||h>=18?'Bonsoir 🌙':h<12?'Bonjour ☀️':'Bon après-midi 🌤️';
   // 1. Reprendre là où on s'était arrêté
   const lt=S.pref.lastTab,rb=lt&&$(`#sideNav button[data-tab="${lt}"]`+(lt==='quiz'?`[data-qm="${qMode}"]`:''));
   if(rb)C.push(['go','Reprendre',`<p>Tu t'étais arrêté sur <strong>${esc(rb.querySelector('.lb').textContent.trim())}</strong>.</p>`,'Continuer →']);
@@ -2423,15 +2445,17 @@ function homeRender(){const n=revCount(),C=[],h=new Date().getHours();$('#homeHi
   // 4. Progression
   const sc=S.score.quiz,seen=QUIZ.filter(x=>S.qlast[qKey(x)]!=null).length,ex=S.exams&&S.exams[0];
   C.push(['prog','Ma progression',`<p>${seen} question${seen>1?'s':''} vue${seen>1?'s':''} sur ${QUIZ.length}${sc&&sc.n?` · ${Math.round(100*sc.ok/sc.n)} % de bonnes réponses`:''}.</p>${ex?`<p>Dernier examen blanc : <strong>${String(ex.note).replace('.',',')}/20</strong> (${ex.d}).</p>`:'<p>Pas encore d\'examen blanc.</p>'}`,'Voir mon bilan']);
-  const HC={go:['▶️','--c-titre'],rev:['🔁','--c-cours'],weak:['🎯','--c-memo'],prog:['📈','--c-prat']};
-  $('#homeCards').innerHTML=C.map(([k,h,body,btn])=>`<div class="card hcard" style="--hc:var(${HC[k][1]})"><div class="bar"><span class="eyebrow" style="color:var(${HC[k][1]})">${h}</span><span class="hic" aria-hidden="true">${HC[k][0]}</span></div>${body}${btn?`<div class="actions"><button class="btn${k==='go'||k==='rev'&&n?' primary':''}" data-h="${k}">${btn}</button></div>`:''}</div>`).join('');
+  const HC={goal:['🎯','--c-titre'],go:['▶️','--c-titre'],rev:['🔁','--c-cours'],weak:['🎯','--c-memo'],prog:['📈','--c-prat']};
+  $('#homeCards').innerHTML=C.map(([k,h,body,btn])=>`<div class="card hcard" style="--hc:var(${HC[k][1]})"><div class="bar"><span class="eyebrow" style="color:var(${HC[k][1]})">${h}</span><span class="hic" aria-hidden="true">${HC[k][0]}</span></div>${body}${btn?`<div class="actions"><button class="btn${k==='go'||k==='goal'||k==='rev'&&n?' primary':''}" data-h="${k}">${btn}</button></div>`:''}</div>`).join('');
   const nav=(t,qm)=>$(`#sideNav button[data-tab="${t}"]`+(qm?`[data-qm="${qm}"]`:'')).click();
+  chips('goalSet',String(goal()),v=>{S.goal=+v;save();homeRender();goalMark()});
   $$('#homeCards [data-h]').forEach(b=>b.onclick=()=>{const k=b.dataset.h;
+    if(k==='goal'){(rb||$('#sideNav button[data-qm="qcm"]')).click();return}
     if(k==='go')rb.click();else if(k==='rev')nav('quiz','rev');else if(k==='prog')nav('quiz','bilan');
     else{if(w&&w.p<100){qTheme=S.pref.qTheme=w.t;qNiv=S.pref.qNiv='all';chips('qTheme',qTheme,v=>{qTheme=S.pref.qTheme=v;save();qRefresh()});chips('qNiv',qNiv,v=>{qNiv=S.pref.qNiv=v;save();qRefresh()});save();if(qMode==='qcm')qRefresh()}nav('quiz','qcm')}})}
 // À chaque ouverture : la page d'accueil (« Reprendre » ramène à la dernière rubrique).
 if(S.pref.tab&&S.pref.tab!=='home')S.pref.lastTab=S.pref.tab;
-tab('home');
+goalMark();tab('home');
 })();
 </script>
 <script>
